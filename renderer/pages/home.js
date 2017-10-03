@@ -17,9 +17,7 @@ import {
   Heading
 } from 'ooni-components'
 
-import { ipcRenderer } from 'electron'
-
-export default class extends React.Component {
+class Home extends React.Component {
   render() {
     return (
       <Layout>
@@ -32,27 +30,19 @@ export default class extends React.Component {
           <Flex wrap>
             <Box w={[1/2]}>
               <Heading h={2}>Web Censorship</Heading>
-              <Link href={{ pathname: '/start', query: { name: 'web-censorship' } }}>
-                <Button>Run</Button>
-              </Link>
+              <Button>Run</Button>
             </Box>
             <Box w={[1/2]}>
               <Heading h={2}>Middleboxes</Heading>
-              <Link href={{ pathname: '/start', query: { name: 'middleboxes' } }}>
-                <Button>Run</Button>
-              </Link>
+              <Button>Run</Button>
             </Box>
             <Box w={[1/2]}>
               <Heading h={2}>Instant Messaging</Heading>
-              <Link href={{ pathname: '/start', query: { name: 'instant-messaging' } }}>
-                <Button>Run</Button>
-              </Link>
+              <Button>Run</Button>
             </Box>
             <Box w={[1/2]}>
               <Heading h={2}>Network Neutrality</Heading>
-              <Link href={{ pathname: '/start', query: { name: 'network-neutrality' } }}>
-                <Button>Run</Button>
-              </Link>
+              <Button>Run</Button>
             </Box>
           </Flex>
         </Container>
@@ -60,3 +50,5 @@ export default class extends React.Component {
     )
   }
 }
+
+export default Home

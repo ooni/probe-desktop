@@ -16,6 +16,14 @@ const { resolve } = require('app-root-path')
 const { getConfig } = require('./util/config')
 const { startAutoUpdater } = require('./update')
 
+import toggleWindow from './windows/toggle'
+
+import {
+  mainWindow,
+  onboardWindow,
+  aboutWindow
+} from './windows'
+
 // <cargo-cult>Apparently this is needed to prevent garbage collection of the
 // tray icon</cargo-cult>
 let tray = null
@@ -26,16 +34,6 @@ app.setName('OONI Probe')
 process.on('uncaughtException', () => {
   // XXX handle the exception in util/exception
 })
-
-// <cargo-cult>
-// Hide dock icon before the app starts
-// This is only required for development because
-// we're setting a property on the bundled app
-// in production, which prevents the icon from flickering
-// </cargo-cult>
-if (isDev && process.platform === 'darwin') {
-  app.dock.hide()
-}
 
 if (!isDev && firstRun()) {
  app.setLoginItemSettings({
@@ -62,28 +60,35 @@ app.on('ready', async () => {
     config = {}
   }
 
-  const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600
-  })
-
-  const devUrl = 'http://localhost:8000/home'
-
-  const prodUrl = format({
-    pathname: resolve('renderer/out/home/index.html'),
-    protocol: 'file:',
-    slashes: true
-  })
-
-  const url = isDev ? devUrl : prodUrl
   await prepareNext('./renderer')
 
-  startAutoUpdater(mainWindow)
+  const windows = {
+    main: mainWindow(),
+    onboard: onboardWindow(),
+    about: aboutWindow()
+  }
+
+  startAutoUpdater(windows.main)
+
+  // Make the window instances accessible from everywhere
+  global.windows = windows
+
+  const { wasOpenedAtLogin } = app.getLoginItemSettings()
+
+  // XXX Only allow one instance of OONI Probe running
+  // at the same time
 
   if (config._informed_consent === false) {
-    // XXX Go through the onboarding
+    windows.onboard.once('ready-to-show', () => {
+      toggleWindow(null, windows.onboard)
+    })
   } else {
-    mainWindow.loadURL(url)
+    const mainWindow = windows.main
+    if (!wasOpenedAtLogin) {
+      mainWindow.once('ready-to-show', () => {
+        toggleWindow(null, mainWindow)
+      })
+    }
   }
 })
 

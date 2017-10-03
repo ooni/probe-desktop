@@ -41,7 +41,12 @@ injectGlobal`
 	footer, header, hgroup, menu, nav, section {
 		display: block;
 	}
+
 	body {
+    /* This is required to make the window draggable when hidden-inset is set to window style:
+     * See: https://github.com/electron/electron/blob/master/docs/api/frameless-window.md#draggable-region
+     */
+    //-webkit-app-region: drag;
 		line-height: 1;
 	}
 	ol, ul {
