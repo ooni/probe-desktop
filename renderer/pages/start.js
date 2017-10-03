@@ -19,10 +19,12 @@ import {
 
 import { ipcRenderer } from 'electron'
 
+// XXX use this:
+// https://github.com/electron/electron/blob/master/docs/api/remote.md
+
 export default class extends React.Component {
 
   static async getInitialProps({ req, query }) {
-    console.log('get initial props', req, query)
     return {testName: query.name}
   }
 
@@ -44,7 +46,6 @@ export default class extends React.Component {
         testOutput: '',
         running: true
       })
-      ipcRenderer.send('start-test', testName)
     }
   }
 
@@ -59,13 +60,9 @@ export default class extends React.Component {
   }
 
   componentDidMount() {
-    ipcRenderer.on('test-output', this.onTestOutput)
-    ipcRenderer.on('test-done', this.onTestDone)
   }
 
   componentWillUnmount() {
-    ipcRenderer.removeListener('test-output', this.onTestOutput)
-    ipcRenderer.removeListener('test-done', this.onTestDone)
   }
 
   render() {
