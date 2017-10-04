@@ -1,7 +1,7 @@
 const { homedir } = require('os')
 
 const ms = require('ms')
-const { getConfig } = require('./util/config')
+const { getConfig } = require('./utils/config')
 const { app, autoUpdater } = require('electron')
 const isDev = require('electron-is-dev')
 

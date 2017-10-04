@@ -3,10 +3,10 @@ import React from 'react'
 import { Provider, theme } from 'ooni-components'
 
 const Layout = props => (
-  <div>
+  <main>
     <Provider theme={theme}>
       { props.children }
     </Provider>
-  </div>
+  </main>
 )
 export default Layout

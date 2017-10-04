@@ -13,7 +13,7 @@ const firstRun = require('first-run')
 const isDev = require('electron-is-dev')
 const { resolve } = require('app-root-path')
 
-const { getConfig } = require('./util/config')
+const { getConfig } = require('./utils/config')
 const { startAutoUpdater } = require('./update')
 
 import toggleWindow from './windows/toggle'
@@ -91,4 +91,3 @@ app.on('ready', async () => {
     }
   }
 })
-

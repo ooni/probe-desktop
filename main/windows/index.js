@@ -58,7 +58,7 @@ export const mainWindow = () => {
     width: 800,
     height: windowHeight,
     title: 'OONI Probe',
-    //titleBarStyle: 'hidden-inset',
+    titleBarStyle: 'hidden-inset',
     show: false,
     webPreferences: {
       devTools: true
