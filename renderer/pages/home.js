@@ -5,11 +5,14 @@ import Link from 'next/link'
 import Layout from '../components/Layout'
 import Sidebar from '../components/SideBar'
 
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
+import MdCancel from 'react-icons/lib/md/cancel'
 import MdWeb from 'react-icons/lib/md/web'
 import MdChat from 'react-icons/lib/md/chat'
 import MdComputer from 'react-icons/lib/md/computer'
+import MdRestore from 'react-icons/lib/md/restore'
+import MdUnarchive from 'react-icons/lib/md/unarchive'
 
 import IoSpeedometer from 'react-icons/lib/io/speedometer'
 
@@ -19,29 +22,45 @@ import {
   Box,
   Flex,
   Heading,
-  Text
+  Text,
+  Card,
+  colors
 } from 'ooni-components'
 
 // XXX these should all go into components
+const dummyDesc = 'Blocking, nostrud do est, ut occaecat aute blocking, traffic manipulation minim excepteur.'
+const dummyLongDesc = 'In, internet in, Tor packet capture, blocking, internet Tor culpa, social media blocking connection reset traffic manipulation. Eu Tor aliquip, dolore network interference TCP, middlebox TLS handshake connection reset ut cupidatat TLS handshake traffic manipulation. Consectetur surveillance non Tor voluptate UDP surveillance DNS tampering ut Tor velit velit packet capture, consequat dolore eiusmod. Adipisicing UDP network interference UDP est Tor, middlebox TLS handshake internet proident, OONI OONI excepteur. Irure sunt, elit internet occaecat, DNS tampering, surveillance deserunt Open Observatory of Network Interference surveillance do.'
+const iconSize = 200
+const iconColor = colors.palette.black
 const testList  = [
     {
       name: 'Web Censorship',
-      icon: <MdWeb size={100} />
+      color: colors.palette.indigo4,
+      description: dummyDesc,
+      longDescription: dummyLongDesc,
+      icon: <MdWeb size={iconSize} color={iconColor} />,
     },
     {
-      name: 'IM App Censorship',
-      icon: <MdChat size={100} />
+      name: 'IM Blocking',
+      color: colors.palette.green4,
+      description: dummyDesc,
+      longDescription: dummyLongDesc,
+      icon: <MdChat size={iconSize} color={iconColor} />
     },
     {
-      name: 'Performance & Net Neutrality',
-      icon: <IoSpeedometer size={100} />
+      name: 'Performance',
+      color: colors.palette.fuschia4,
+      description: dummyDesc,
+      longDescription: dummyLongDesc,
+      icon: <IoSpeedometer size={iconSize} color={iconColor} />
     },
-
     {
-      name: 'Middle box detection',
-      icon: <MdComputer size={100} />
+      name: 'Middle boxes',
+      color: colors.palette.yellow4,
+      description: dummyDesc,
+      longDescription: dummyLongDesc,
+      icon: <MdUnarchive size={iconSize} color={iconColor} />
     },
-
 ]
 
 const StyledRunTestCard = styled.div`
@@ -57,45 +76,223 @@ const StyledRunTestCard = styled.div`
   }
 `
 
-const RunTestCard = ({name, icon}) => (
-  <Box w={[1/2]}>
-    <Flex align='center'>
-      <Box>
-      <StyledRunTestCard>
-        {icon}
-        <Text>{name}</Text>
-      </StyledRunTestCard>
+const CardContent = styled.div`
+  position: relative;
+  z-index: 10;
+`
+
+const BgIcon = styled.div`
+  position: absolute;
+  right: ${props => props.active ? '0' : '-30px'};
+  top: ${props => props.active ? '0' : '-30px'};
+  z-index: -100;
+  opacity: 0.5;
+`
+const RunTestCardContent = ({name, description, icon}) => (
+  <CardContent>
+    <Heading h={2}>{name}</Heading>
+    <Flex pt={5}>
+      <Box w={3/4} pr={4}>
+        <Text>{description}</Text>
+      </Box>
+      <Box w={1/4} mr={2}>
+        <Button inverted>
+        Run
+        </Button>
       </Box>
     </Flex>
+    <BgIcon>
+      {icon}
+    </BgIcon>
+  </CardContent>
+)
+
+const RunTestCard = ({name, icon, color, description, onClick}) => (
+  <Box w={1/2} pr={3} pb={3}>
+    <Card bg={color} color='white' onClick={onClick}>
+      <RunTestCardContent icon={icon} name={name} description={description} />
+    </Card>
   </Box>
 )
 
+const Shrinking = keyframes`
+  from {
+    visibility: visible;
+    height: 200px;
+    width: 50%;
+    opacity: 1;
+  }
+  to {
+    visibility: hidden;
+    height: 0px;
+    width: 0%;
+    opacity: 0;
+  }
+`
+
+const Growing = keyframes`
+  from {
+    padding: 0px;
+    width: 50%;
+  }
+  to {
+    padding: 20px;
+    width: 100%;
+  }
+`
+
+const StyledGrowingContainer = styled(Box)`
+  ${props => props.active ? 'width: 100%;' : 'height: 0;overflow: hidden;'}
+  visibility: ${props => props.active ? 'visible' : 'hidden'};
+  animation: ${props => props.active ? Growing : Shrinking } 0.3s ease;
+  background-color: ${props => props.color};
+  padding: ${props => props.active ? '20px' : '0'};
+  position: relative;
+`
+
+const AnimatedTestDetails = keyframes`
+  from {
+    border-radius: 10px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding: 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.38);
+  }
+  to {
+    border-radius: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+    box-shadow: none;
+  }
+`
+
+const StyledTestDetails = styled(Card)`
+  border-radius: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 0px;
+  box-shadow: none;
+  &:hover {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+  &:active {
+    box-shadow: none;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+  ${props => props.active ? `animation: ${AnimatedTestDetails} 0.3s ease;` : ''}
+`
+const CenterIcon = styled.div`
+  text-align: center;
+`
+
+const CloseButton = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: ${props => props.theme.colors.black};
+  &:hover {
+    color: ${props => props.theme.colors.gray7};
+  }
+  &:active {
+    color: ${props => props.theme.colors.gray6};
+  }
+`
+
+const CenterBox = styled(Box)`
+  width: 100%;
+  text-align: center;
+  p {
+    display: inline-block;
+    padding-right: 5px;
+  }
+`
+
+const OpenTestCard = (props) => {
+  const {
+    name, icon, color, description, longDescription, onClick, active
+  } = props
+  return (
+  <div style={{width: '100%'}}>
+  <StyledGrowingContainer active={active} color={color}>
+    <CloseButton {...props} onClick={onClick}>
+      <MdCancel size={30} />
+    </CloseButton>
+    <StyledTestDetails bg={color} color='white' active={active}>
+      {active && <div>
+        <CenterIcon>
+        {React.cloneElement(icon, {color:'white'})}
+        </CenterIcon>
+        <Heading center h={1}>{name}</Heading>
+        <Flex center wrap>
+        <CenterBox pb={2}>
+          <Button hollow inverted fontSize={1}>
+            Configure
+          </Button>
+        </CenterBox>
+        <CenterBox pb={4}>
+          <Text bold>~2</Text><Text>minutes </Text>
+          <Text bold>10.4</Text><Text>MB</Text>
+        </CenterBox>
+        <CenterBox>
+          <Button inverted fontSize={2}>
+            Run
+          </Button>
+        </CenterBox>
+        <CenterBox pb={2} pt={2}>
+          <MdRestore /> <Text bold>2 days</Text><Text>ago </Text>
+        </CenterBox>
+        </Flex>
+      </div>}
+      {!active && <RunTestCardContent icon={icon} name={name} description={description} />}
+    </StyledTestDetails>
+
+  </StyledGrowingContainer>
+  {active && <Container pt={2}>
+    <Heading h={3} center>Description</Heading>
+    <Text center>{longDescription}</Text>
+    </Container>}
+  </div>
+  )
+}
+
 class Home extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      activeIdx: null
+    }
+    this.toggleCard = this.toggleCard.bind(this)
+  }
+
+  toggleCard(idx) {
+    if (this.state.activeIdx !== null) {
+      this.setState({activeIdx: null})
+    } else {
+      this.setState({activeIdx: idx})
+    }
+  }
+
   render() {
+    const { activeIdx } = this.state
     return (
       <Layout>
         <Sidebar currentUrl={this.props.url}>
-          <Container pt={3} pb={3}>
-            <Flex>
-              <Box w={[1/2]}>
-                <Heading h={1}>Network info</Heading>
-                <Text>Type: WiFi</Text>
-                <Text>Name: Vodafone Italia</Text>
-                <Text>Country: Italy</Text>
-              </Box>
-              <Box w={[1/2]}>
-                <Heading h={1}>Stats</Heading>
-                <Text>Tests run: 100000</Text>
-                <Text>Networks tested: 20</Text>
-                <Text>Countries tested: 2</Text>
-              </Box>
-            </Flex>
-
-            <Heading h={1}>Pick a test</Heading>
-            <Flex wrap>
-              {testList.map((t) => <RunTestCard name={t.name} icon={t.icon} /> )}
-            </Flex>
-          </Container>
+          <Flex wrap p={activeIdx !== null ? 0 : 3}>
+            {testList.map((t, idx) => {
+              if (activeIdx === null) {
+                return <RunTestCard onClick={() => this.toggleCard(idx)} {...t} />
+              }
+              if (activeIdx === idx) {
+                return <OpenTestCard active onClick={() => this.toggleCard(idx)} {...t} />
+              } else {
+                return <OpenTestCard onClick={() => this.toggleCard(idx)} {...t} />
+              }
+            })}
+          </Flex>
         </Sidebar>
       </Layout>
     )
