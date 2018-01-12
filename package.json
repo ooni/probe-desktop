@@ -9,7 +9,8 @@
     "start": "electron -r babel-register .",
     "build": "next build renderer && next export renderer",
     "pack": "npm run build && build --dir",
-    "dist": "npm run build && build --dir"
+    "dist": "npm run build && build --dir",
+    "electron-rebuild": "electron-rebuild"
   },
   "build": {
     "appId": "io.ooni.ooniprobe",
@@ -38,6 +39,7 @@
     "babel-register": "^6.26.0",
     "electron": "1.7.5",
     "electron-builder": "19.22.1",
+    "electron-rebuild": "^1.7.3",
     "next": "3.0.6",
     "react": "15.6.1",
     "react-dom": "15.6.1",
@@ -46,16 +48,21 @@
   "dependencies": {
     "app-root-path": "2.0.1",
     "chokidar": "^1.7.0",
+    "debug": "^3.1.0",
     "electron-is-dev": "0.3.0",
     "electron-next": "3.1.1",
     "first-run": "^1.2.0",
     "fix-path": "^2.1.0",
     "fs-extra": "^4.0.2",
+    "moment": "^2.20.1",
+    "mri": "^1.1.0",
     "ms": "^2.0.0",
     "nuka-carousel": "^2.3.0",
     "ooni-components": "^0.1.0-beta.6",
     "react-animations": "^0.1.0",
     "react-icons": "^2.2.5",
+    "sequelize": "^4.31.0",
+    "sqlite3": "^3.1.13",
     "styled-components": "^2.1.2"
   }
 }
