@@ -88,10 +88,11 @@ export const Sidebar = ({children, currentUrl}) => (
   <Flex style={{height: '100%', overflow: 'hidden'}}>
     <Box>
       <SidebarContainer>
-        {Object.keys(navigationPaths).map((path) => {
+        {Object.keys(navigationPaths).map((path, idx) => {
           const info = navigationPaths[path]
           return (
             <NavItem
+              key={idx}
               currentUrl={currentUrl}
               href={path}
               icon={info.icon}

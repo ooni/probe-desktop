@@ -1,3 +1,4 @@
+import electron from 'electron'
 import React from 'react'
 
 import Link from 'next/link'
@@ -35,6 +36,7 @@ const iconColor = colors.palette.black
 const testList  = [
     {
       name: 'Web Censorship',
+      camelName: 'webCensorship',
       color: colors.palette.indigo4,
       description: dummyDesc,
       longDescription: dummyLongDesc,
@@ -42,6 +44,7 @@ const testList  = [
     },
     {
       name: 'IM Blocking',
+      camelName: 'imBlocking',
       color: colors.palette.green4,
       description: dummyDesc,
       longDescription: dummyLongDesc,
@@ -49,6 +52,7 @@ const testList  = [
     },
     {
       name: 'Performance',
+      camelName: 'performance',
       color: colors.palette.fuschia4,
       description: dummyDesc,
       longDescription: dummyLongDesc,
@@ -56,6 +60,7 @@ const testList  = [
     },
     {
       name: 'Middle boxes',
+      camelName: 'middleboxes',
       color: colors.palette.yellow4,
       description: dummyDesc,
       longDescription: dummyLongDesc,
@@ -213,12 +218,12 @@ const CenterBox = styled(Box)`
 
 const OpenTestCard = (props) => {
   const {
-    name, icon, color, description, longDescription, onClick, active
+    name, icon, color, description, longDescription, onClickClose, onClickRun, active
   } = props
   return (
   <div style={{width: '100%'}}>
   <StyledGrowingContainer active={active} color={color}>
-    <CloseButton {...props} onClick={onClick}>
+    <CloseButton {...props} onClick={onClickClose}>
       <MdCancel size={30} />
     </CloseButton>
     <StyledTestDetails bg={color} color='white' active={active}>
@@ -227,7 +232,7 @@ const OpenTestCard = (props) => {
         {React.cloneElement(icon, {color:'white'})}
         </CenterIcon>
         <Heading center h={1}>{name}</Heading>
-        <Flex center wrap>
+        <Flex wrap>
         <CenterBox pb={2}>
           <Button hollow inverted fontSize={1}>
             Configure
@@ -238,7 +243,7 @@ const OpenTestCard = (props) => {
           <Text bold>10.4</Text><Text>MB</Text>
         </CenterBox>
         <CenterBox>
-          <Button inverted fontSize={2}>
+          <Button inverted fontSize={2} onClick={onClickRun}>
             Run
           </Button>
         </CenterBox>
@@ -259,40 +264,125 @@ const OpenTestCard = (props) => {
   )
 }
 
+const CardList = ({testList, activeIdx, toggleCard, runTest}) => {
+  return (
+    <Flex wrap p={activeIdx !== null ? 0 : 3}>
+      {testList.map((t, idx) => {
+        if (activeIdx === null) {
+          return (
+            <RunTestCard
+              key={idx}
+              onClick={() => toggleCard(idx)}
+              {...t} />
+          )
+        }
+        return (
+          <OpenTestCard
+            key={idx}
+            active={activeIdx === idx}
+            onClickRun={() => runTest(idx)}
+            onClickClose={() => toggleCard(idx)} {...t} />
+        )
+      })}
+    </Flex>
+  )
+}
+
+const StyledRunningTest = styled.div`
+  text-align: center;
+`
+
+class RunningTestLog extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      logLine: '',
+      percentage: 0
+    }
+  }
+
+  componentDidMount() {
+    const { ipcRenderer } = require('electron')
+    console.log('registering ipcRenderer', ipcRenderer)
+    ipcRenderer.on('ooni', (event, message) => {
+      console.log(event, message)
+    })
+  }
+
+  render() {
+    const {
+      logLine,
+      percentage
+    } = this.state
+
+    return (
+      <div>
+        <div>{logLine}</div>
+        <div>{percentage}</div>
+      </div>
+    )
+  }
+}
+
+//name, icon, color, description, longDescription, onClickClose, active
+const RunningTest = ({activeTest}) => {
+  return <StyledRunningTest>
+    <Heading h={2}>{activeTest.name}</Heading>
+    <RunningTestLog />
+  </StyledRunningTest>
+}
+
 class Home extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      activeIdx: null
+      activeCardIdx: null,
+      activeTestIdx: null
     }
     this.toggleCard = this.toggleCard.bind(this)
+    this.runTest = this.runTest.bind(this)
+  }
+
+  componentDidMount() {
+    const remote = electron.remote
+    this.run = remote.require('./utils/ooni/run')
   }
 
   toggleCard(idx) {
-    if (this.state.activeIdx !== null) {
-      this.setState({activeIdx: null})
+    if (this.state.activeCardIdx !== null) {
+      this.setState({activeCardIdx: null})
     } else {
-      this.setState({activeIdx: idx})
+      this.setState({activeCardIdx: idx})
     }
   }
 
+  runTest (idx) {
+    this.setState({activeTestIdx: idx})
+    this.run({testGroupName: testList[idx].camelName}).then(() => {
+      this.setState({activeTestIdx: null})
+    })
+  }
+
   render() {
-    const { activeIdx } = this.state
+    const {
+      activeCardIdx,
+      activeTestIdx
+    } = this.state
     return (
       <Layout>
         <Sidebar currentUrl={this.props.url}>
-          <Flex wrap p={activeIdx !== null ? 0 : 3}>
-            {testList.map((t, idx) => {
-              if (activeIdx === null) {
-                return <RunTestCard onClick={() => this.toggleCard(idx)} {...t} />
-              }
-              if (activeIdx === idx) {
-                return <OpenTestCard active onClick={() => this.toggleCard(idx)} {...t} />
-              } else {
-                return <OpenTestCard onClick={() => this.toggleCard(idx)} {...t} />
-              }
-            })}
-          </Flex>
+          {activeTestIdx === null
+          && <CardList
+              testList={testList}
+              activeIdx={activeCardIdx}
+              toggleCard={this.toggleCard}
+              runTest={this.runTest} />
+          }
+          {activeTestIdx !== null
+          && <RunningTest
+              activeTest={testList[activeTestIdx]} />
+          }
+
         </Sidebar>
       </Layout>
     )

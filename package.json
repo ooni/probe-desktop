@@ -1,5 +1,5 @@
 {
-  "name": "electron-next-skeleton",
+  "name": "ooniprobe-desktop",
   "productName": "OONI Probe",
   "version": "0.0.1",
   "main": "main/index.js",
@@ -54,6 +54,7 @@
     "ms": "^2.0.0",
     "nuka-carousel": "^2.3.0",
     "ooni-components": "^0.1.0-beta.6",
+    "react-animations": "^0.1.0",
     "react-icons": "^2.2.5",
     "styled-components": "^2.1.2"
   }

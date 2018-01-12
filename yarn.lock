@@ -3596,8 +3596,8 @@ once@^1.3.0, once@^1.3.3:
     wrappy "1"
 
 ooni-components@^0.1.0-beta.6:
-  version "0.1.0-beta.6"
-  resolved "https://registry.yarnpkg.com/ooni-components/-/ooni-components-0.1.0-beta.6.tgz#540ba3b3fcb5cf1c3026ac466afe4f951f8ce3fe"
+  version "0.1.0-beta.7"
+  resolved "https://registry.yarnpkg.com/ooni-components/-/ooni-components-0.1.0-beta.7.tgz#17329fa9cb2596fcc0be96cd6abe581678ff5e05"
   dependencies:
     palx "^1.0.2"
     prop-types "^15.5.10"
@@ -3987,6 +3987,10 @@ rc@^1.0.1, rc@^1.1.2, rc@^1.1.6, rc@^1.1.7, rc@^1.2.1:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
+
+react-animations@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/react-animations/-/react-animations-0.1.0.tgz#519b6f4fe0f90b49fbfd4fcd73d978c5087130b1"
 
 react-deep-force-update@^2.0.1:
   version "2.1.1"
