@@ -297,14 +297,17 @@ class RunningTestLog extends React.Component {
     super(props)
     this.state = {
       logLine: '',
-      percent: 0
+      percent: 0,
+      runningTest: null
     }
     this.onMessage = this.onMessage.bind(this)
   }
 
   onMessage(event, message) {
-    console.log('got message', message)
     switch (message.key) {
+      case 'ooni.run.nettest.running':
+        this.setState({runningTest: message.value})
+        break
       case 'ooni.run.progress.percent':
         this.setState({percent: message.value})
         break
@@ -324,13 +327,15 @@ class RunningTestLog extends React.Component {
   render() {
     const {
       logLine,
-      percentage
+      percent,
+      runningTest
     } = this.state
 
     return (
       <div>
+        <Heading h={3}>Running {runningTest && runningTest.name}</Heading>
         <div>{logLine}</div>
-        <div>{percentage}</div>
+        <div>{percent*100}%</div>
       </div>
     )
   }
