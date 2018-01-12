@@ -297,16 +297,28 @@ class RunningTestLog extends React.Component {
     super(props)
     this.state = {
       logLine: '',
-      percentage: 0
+      percent: 0
+    }
+    this.onMessage = this.onMessage.bind(this)
+  }
+
+  onMessage(event, message) {
+    console.log('got message', message)
+    switch (message.key) {
+      case 'ooni.run.progress.percent':
+        this.setState({percent: message.value})
+        break
+      case 'ooni.run.progress.message':
+        this.setState({logLine: message.value})
+        break
+      default:
+        break
     }
   }
 
   componentDidMount() {
     const { ipcRenderer } = require('electron')
-    console.log('registering ipcRenderer', ipcRenderer)
-    ipcRenderer.on('ooni', (event, message) => {
-      console.log(event, message)
-    })
+    ipcRenderer.on('ooni', this.onMessage)
   }
 
   render() {
