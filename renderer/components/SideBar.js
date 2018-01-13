@@ -18,14 +18,16 @@ import {
 
 import Link from 'next/link'
 
-import MdHome from 'react-icons/lib/md/home'
-import MdList from 'react-icons/lib/md/list'
+import MdWeb from 'react-icons/lib/md/web'
+import MdHistory from 'react-icons/lib/md/history'
 
 const sidebarWidth = '100px'
 
 const TopbarContainer = styled.div`
-  background-color: transparent;
-  border-bottom: 1px solid ${props => props.theme.colors.gray4};
+  background-color: ${props => props.theme.colors.blue5};
+  color: ${props => props.theme.colors.white};
+  padding-top: 5px;
+  padding-bottom: 5px;
   /* This makes it possible to drag the window around from the side bar */
   -webkit-app-region: drag;
 `
@@ -55,7 +57,7 @@ const NavItem = ({href, icon, label, currentUrl}) => {
     <StyledNavItem isActive={isActive}>
       <Link href={href} prefetch>
         <Flex column align='center'>
-          <Box>
+          <Box pb={2}>
             {icon}
           </Box>
           <Box>
@@ -69,12 +71,12 @@ const NavItem = ({href, icon, label, currentUrl}) => {
 
 const navigationPaths = {
   '/home': {
-    name: 'Home',
-    icon: <MdHome size={60} />
+    name: 'Dashboard',
+    icon: <MdWeb size={60} />
   },
   '/results': {
-    name: 'Results',
-    icon: <MdList size={60} />
+    name: 'Test Results',
+    icon: <MdHistory size={60} />
   }
 }
 
@@ -82,7 +84,7 @@ const ContentContainer = styled(Box)`
   overflow: scroll;
   min-height: 100%;
   height: 100%;
-  background-color: ${props => props.theme.colors.gray1};
+  background-color: ${props => props.theme.colors.gray0};
 `
 export const Sidebar = ({children, currentUrl}) => (
   <Flex style={{height: '100%', overflow: 'hidden'}}>

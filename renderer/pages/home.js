@@ -218,7 +218,8 @@ const CenterBox = styled(Box)`
 
 const OpenTestCard = (props) => {
   const {
-    name, icon, color, description, longDescription, onClickClose, onClickRun, active
+    name, icon, color, description, longDescription,
+    onClickClose, onClickRun, active
   } = props
   return (
   <div style={{width: '100%'}}>
