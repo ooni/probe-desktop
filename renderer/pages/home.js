@@ -84,6 +84,10 @@ const StyledRunTestCard = styled.div`
 const CardContent = styled.div`
   position: relative;
   z-index: 10;
+  /* Disable text selection */
+  user-select: none;
+  /* Ensure we always have a pointer */
+  cursor: pointer;
 `
 
 const BgIcon = styled.div`

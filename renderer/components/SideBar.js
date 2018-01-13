@@ -35,16 +35,24 @@ const TopbarContainer = styled.div`
 const SidebarContainer = styled.div`
   border-radius: 0;
   padding: 0;
-  background-color: ${props => props.theme.colors.base};
+  background-color: ${props => props.theme.colors.gray1};
   width: ${sidebarWidth};
   padding-top: 50px;
   height: 100vh;
   /* This makes it possible to drag the window around from the side bar */
   -webkit-app-region: drag;
 `
+
 const StyledNavItem = styled.div`
-  color: ${props => props.isActive ? props.theme.colors.blue2 : props.theme.colors.gray3};
-  margin-bottom: 10px;
+  color: ${props => props.isActive ? props.theme.colors.blue5 : props.theme.colors.gray4};
+  margin-bottom: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-align: center;
+  /* Disable text selection */
+  user-select: none;
+  /* Ensure we always have a pointer */
+  cursor: pointer;
   &:active {
     color: ${props => props.theme.colors.blue2};
   }
