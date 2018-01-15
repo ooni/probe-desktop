@@ -65,7 +65,7 @@ export const mainWindow = () => {
     }
   })
 
-  win.loadURL(windowURL('home'))
+  win.loadURL(windowURL('dashboard'))
   return win
 }
 

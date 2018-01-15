@@ -20,6 +20,7 @@ import Link from 'next/link'
 
 import MdWeb from 'react-icons/lib/md/web'
 import MdHistory from 'react-icons/lib/md/history'
+import MdCog from 'react-icons/lib/fa/cog'
 
 const sidebarWidth = '100px'
 
@@ -78,13 +79,17 @@ const NavItem = ({href, icon, label, currentUrl}) => {
 }
 
 const navigationPaths = {
-  '/home': {
+  '/dashboard': {
     name: 'Dashboard',
     icon: <MdWeb size={60} />
   },
   '/results': {
     name: 'Test Results',
     icon: <MdHistory size={60} />
+  },
+  '/settings': {
+    name: 'Settings',
+    icon: <MdCog size={60} />
   }
 }
 
@@ -92,6 +97,7 @@ const ContentContainer = styled(Box)`
   overflow: scroll;
   min-height: 100%;
   height: 100%;
+  padding-bottom: 32px;
   background-color: ${props => props.theme.colors.gray0};
 `
 export const Sidebar = ({children, currentUrl}) => (
