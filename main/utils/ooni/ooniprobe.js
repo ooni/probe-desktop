@@ -12,14 +12,14 @@ class Ooniprobe extends EventEmitter {
     return new Promise((resolve, reject) => {
       self.emit('starting', testGroupName)
       const options = {
-        stdio: ['ignore', 'ignore', 'ignore', 'ipc']
+        stdio: ['pipe', 'pipe', 'pipe']
       }
-      const argv = ['--ipc', 'run', testGroupName]
+      const argv = ['--batch', 'run', testGroupName]
       console.log('running', self._binaryPath, argv, options)
       const ooni = childProcess.spawn(self._binaryPath, argv, options)
 
-      ooni.on('message', msg => {
-        console.log('got message', msg);
+      ooni.stderr.on('data', data => {
+        const msg = JSON.parse(data.toString())
         self.emit('message', msg)
       })
 

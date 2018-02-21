@@ -3,7 +3,7 @@ const { Ooniprobe } = require('./ooniprobe')
 module.exports = async ({testGroupName, options}) => {
   console.log(Ooniprobe)
   const ooni = new Ooniprobe({
-    binaryPath: '/Users/x/code/OONI/ooniprobe-cli/packed/ooni'
+    binaryPath: '/Users/x/golang/src/github.com/openobservatory/gooni/ooni'
   })
   console.log(global)
   windows.main.send('starting', testGroupName)
