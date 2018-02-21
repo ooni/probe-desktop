@@ -83,10 +83,9 @@ app.on('ready', async () => {
       toggleWindow(null, windows.onboard)
     })
   } else {
-    const mainWindow = windows.main
     if (!wasOpenedAtLogin) {
-      mainWindow.once('ready-to-show', () => {
-        toggleWindow(null, mainWindow)
+      windows.main.once('ready-to-show', () => {
+        toggleWindow(null, windows.main)
       })
     }
   }

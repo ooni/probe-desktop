@@ -82,7 +82,7 @@ export const setConfigKey = async (key, value, existingValue) => {
 
   let config = await readConfigFile()
   if (existingValue !== undefined) {
-    if (existingValue !== getDescendantProp(config, key))) {
+    if (existingValue !== getDescendantProp(config, key)) {
       throw Error('Inconsistency detected')
     }
   }

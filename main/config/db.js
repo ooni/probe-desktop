@@ -69,10 +69,11 @@ export const Result = sequelize.define('result', {
   dataUsageDown: Sequelize.INTEGER
 })
 Result.hasMany(Measurement, { as: 'Measurements' })
-sequelize.sync()
 
 export const initDb = async () => {
+  debug('ensureDir')
   await fs.ensureDir(DB_DIR)
+  debug('sync')
   await sequelize.sync()
 }
 
