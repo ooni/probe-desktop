@@ -9,6 +9,11 @@ const updateBinary = async () => {
   // XXX
 }
 
+const checkForUpdates = async () => {
+  // XXX
+  console.log("checking for updates")
+}
+
 // This is used to update the ooniprobe-cli
 const startBinaryUpdates = () => {
   const binaryUpdateTimer = time =>
@@ -64,7 +69,7 @@ const startAppUpdates = async mainWindow => {
 
 }
 
-export const startAutoUpdater = mainWindow => {
+const startAutoUpdater = mainWindow => {
   if (process.platform === 'linux') {
     // Sorry linux, no auto-update for you
     // Maybe we can implement this by downloading binary blobs, I bet the
@@ -78,4 +83,6 @@ export const startAutoUpdater = mainWindow => {
   }
 }
 
-export default startAutoUpdater
+module.exports = {
+  startAutoUpdater
+}

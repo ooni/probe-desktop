@@ -13,7 +13,7 @@ const windowURL = page => {
   return path.join('file://', resolve('./renderer/out'), page, 'index.html')
 }
 
-export const onboardWindow = () => {
+const onboardWindow = () => {
   const win = new electron.BrowserWindow({
     width: 800,
     height: 600,
@@ -30,7 +30,7 @@ export const onboardWindow = () => {
   return win
 }
 
-export const aboutWindow = () => {
+const aboutWindow = () => {
   const win = new electron.BrowserWindow({
     width: 360,
     height: 408,
@@ -47,7 +47,7 @@ export const aboutWindow = () => {
   return win
 }
 
-export const mainWindow = () => {
+const mainWindow = () => {
   let windowHeight = 600
 
   if (isWinOS) {
@@ -69,7 +69,7 @@ export const mainWindow = () => {
   return win
 }
 
-export default {
+module.exports = {
   mainWindow,
   onboardWindow,
   aboutWindow

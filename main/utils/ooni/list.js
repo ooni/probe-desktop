@@ -3,7 +3,7 @@ const {
   Result
 } = require('../../config/db')
 
-export const listMeasurements = async () => {
+const listMeasurements = async () => {
   const result = Measurement.findAndCountAll({group: 'reportId'})
   return result.rows.map(row => ({
       name: row.name,
@@ -15,7 +15,7 @@ export const listMeasurements = async () => {
   }))
 }
 
-export const listResults = async () => {
+const listResults = async () => {
   const result = await Result.findAndCountAll()
   const results = await Promise.all(result.rows.map(async (row) => {
     const measurements = await row.getMeasurements()

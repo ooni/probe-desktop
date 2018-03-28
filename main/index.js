@@ -16,13 +16,13 @@ const { resolve } = require('app-root-path')
 const { getConfig } = require('./utils/config')
 const { startAutoUpdater } = require('./update')
 
-import toggleWindow from './windows/toggle'
+const toggleWindow = require('./windows/toggle')
 
-import {
+const {
   mainWindow,
   onboardWindow,
   aboutWindow
-} from './windows'
+} = require('./windows')
 
 // <cargo-cult>Apparently this is needed to prevent garbage collection of the
 // tray icon</cargo-cult>
@@ -77,7 +77,6 @@ app.on('ready', async () => {
 
   // XXX Only allow one instance of OONI Probe running
   // at the same time
-
   if (config._informed_consent === false) {
     windows.onboard.once('ready-to-show', () => {
       toggleWindow(null, windows.onboard)

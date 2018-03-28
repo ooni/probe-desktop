@@ -22,4 +22,4 @@ const toggleWindow = (event, window) => {
   }
 }
 
-export default toggleWindow
+module.exports = toggleWindow

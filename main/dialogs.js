@@ -1,9 +1,9 @@
-import { dialog } from 'electron'
-import sudo from 'sudo-prompt'
-import { resolve as resolvePath } from 'app-root-path'
+const { dialog } = require('electron')
+const sudo = require('sudo-prompt')
+const resolvePath = require('app-root-path').resolve
 
 
-export const runAsRoot = (command, why) => {
+const runAsRoot = (command, why) => {
   const answer = dialog.showMessageBox({
     type: 'question',
     message: 'OONI Probe Needs More Permissions',
@@ -27,4 +27,7 @@ export const runAsRoot = (command, why) => {
       resolve()
     })
   })
+}
+module.exports = {
+  runAsRoot
 }

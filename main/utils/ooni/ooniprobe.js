@@ -1,10 +1,11 @@
 const { EventEmitter } = require('events')
 const childProcess = require('child_process')
+const { getBinaryPath } = require('../binary')
 
 class Ooniprobe extends EventEmitter {
-  constructor({binaryPath}) {
+  constructor(props) {
     super()
-    this._binaryPath = binaryPath
+    this._binaryPath = (props && props.binaryPath) || getBinaryPath()
   }
 
   run({testGroupName, argv}) {

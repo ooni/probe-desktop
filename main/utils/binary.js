@@ -1,31 +1,37 @@
-import * as fs from 'fs-extra'
+const fs = require('fs-extra')
+const path = require('path')
+const isDev = require('electron-is-dev')
 
-export const getBinarySuffix = () => (process.platform === 'win32' ? '.exe' : '')
+const { app } = require('electron')
 
-export const getDirectory = () => {
-  if (process.platform === 'win32') {
-    const path = `${process.env.LOCALAPPDATA}\\ooniprobe-cli`
-    // XXX not sure if this is actually what the sync function is called
-    fs.syncEnsureDir(path)
-    return path
+const getBinarySuffix = () => (process.platform === 'win32' ? '.exe' : '')
+
+const getBinaryDirectory = () => {
+  // XXX only macos development is currently supported
+  if (isDev) {
+    return './bin/mac_x64/ooni'
   }
-  const paths = process.env.PATH.split(':')
-  // On unix we prefer to store out binary in ~/bin if it's in the users path,
-  // other we will go for /usr/local/bin if that is in the path. Otherwise just
-  // /usr/bin, though this is sub-optimal as it can conflict with system-wide
-  // installs
-  const firstCandidate = path.join(process.env.HOME, 'bin')
-  const secondCandidate = path.join('/usr/local/bin')
-  if (paths.includes(firstCandidate)) {
-    return firstCandidate
-  } else if (paths.includes(secondCandidate)) {
-    return secondCandidate
+
+  const appPath = app.getPath('exe')
+
+  if (process.platform === 'darwin') {
+    return path.join(appPath, '../../Resources/app');
   }
-  return '/usr/bin'
+  if (process.platform === 'linux') {
+    return path.join(path.dirname(appPath), './resources/app')
+  }
+  // On windows and other platforms we should just use relative paths and hope
+  // for the best
+  return './resources/app'
 }
 
-export const getFile = () => {
-  const directoryPath = getDirectory()
+const getBinaryPath = () => {
+  const directoryPath = getBinaryDirectory()
   const suffix = getBinarySuffix()
   return path.join(directoryPath, 'ooni' + suffix)
+}
+module.exports = {
+  getBinaryPath,
+  getBinaryDirectory,
+  getBinarySuffix
 }
