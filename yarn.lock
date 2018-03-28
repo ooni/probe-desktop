@@ -1902,6 +1902,13 @@ electron-builder@19.22.1:
     uuid-1345 "^0.99.6"
     yargs "^8.0.2"
 
+electron-debug@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/electron-debug/-/electron-debug-1.5.0.tgz#d88c02146efb7fc5ae1b21eac56fbe4987eae50c"
+  dependencies:
+    electron-is-dev "^0.3.0"
+    electron-localshortcut "^3.0.0"
+
 electron-download-tf@4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/electron-download-tf/-/electron-download-tf-4.3.1.tgz#7930f24a08e3669eaad38a5f7f288a10461caf72"
@@ -1930,13 +1937,26 @@ electron-download@^3.0.1:
     semver "^5.3.0"
     sumchecker "^1.2.0"
 
-electron-is-dev@0.3.0, electron-is-dev@>=0.3.0:
+electron-is-accelerator@^0.1.0:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/electron-is-accelerator/-/electron-is-accelerator-0.1.2.tgz#509e510c26a56b55e17f863a4b04e111846ab27b"
+
+electron-is-dev@0.3.0, electron-is-dev@>=0.3.0, electron-is-dev@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-0.3.0.tgz#14e6fda5c68e9e4ecbeff9ccf037cbd7c05c5afe"
 
-electron-next@3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/electron-next/-/electron-next-3.1.1.tgz#d6c7eb2a0fac82ae9119eba95471376587e8fcc7"
+electron-localshortcut@^3.0.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/electron-localshortcut/-/electron-localshortcut-3.1.0.tgz#10c1ffd537b8d39170aaf6e1551341f7780dd2ce"
+  dependencies:
+    debug "^2.6.8"
+    electron-is-accelerator "^0.1.0"
+    keyboardevent-from-electron-accelerator "^1.1.0"
+    keyboardevents-areequal "^0.2.1"
+
+electron-next@3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/electron-next/-/electron-next-3.1.4.tgz#e8de2d066d108cf85302b255eb9c31009f60df11"
   dependencies:
     app-root-path ">=2.0.1"
     electron-is-dev ">=0.3.0"
@@ -3111,6 +3131,14 @@ jsprim@^1.2.2:
 junk@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/junk/-/junk-1.0.3.tgz#87be63488649cbdca6f53ab39bec9ccd2347f592"
+
+keyboardevent-from-electron-accelerator@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/keyboardevent-from-electron-accelerator/-/keyboardevent-from-electron-accelerator-1.1.0.tgz#324614f6e33490c37ffc5be5876b3e85fe223c84"
+
+keyboardevents-areequal@^0.2.1:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/keyboardevents-areequal/-/keyboardevents-areequal-0.2.2.tgz#88191ec738ce9f7591c25e9056de928b40277194"
 
 kind-of@^3.0.2:
   version "3.2.2"
