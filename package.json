@@ -50,7 +50,7 @@
     "chokidar": "^1.7.0",
     "debug": "^3.1.0",
     "electron-is-dev": "0.3.0",
-    "electron-next": "3.1.1",
+    "electron-next": "3.1.4",
     "first-run": "^1.2.0",
     "fix-path": "^2.1.0",
     "fs-extra": "^4.0.2",
