@@ -1,6 +1,10 @@
 module.exports = {
   webpack(config) {
     config.target = 'electron-renderer'
+    config.node = {
+      __dirname: false,
+      __filename: false
+    }
     config.module.rules.push({
       test: /\.(eot|ttf|woff|woff2|otf)$/,
       use: [

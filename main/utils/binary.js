@@ -15,14 +15,14 @@ const getBinaryDirectory = () => {
   const appPath = app.getPath('exe')
 
   if (process.platform === 'darwin') {
-    return path.join(appPath, '../../Resources/app');
+    return path.join(appPath, '../../Resources/bin');
   }
   if (process.platform === 'linux') {
-    return path.join(path.dirname(appPath), './resources/app')
+    return path.join(path.dirname(appPath), './resources/bin')
   }
   // On windows and other platforms we should just use relative paths and hope
   // for the best
-  return './resources/app'
+  return './resources/bin'
 }
 
 const getBinaryPath = () => {

@@ -1,5 +1,7 @@
 const path = require('path')
 
+const { format } = require('url')
+
 const electron = require('electron')
 const isDev = require('electron-is-dev')
 const { resolve } = require('app-root-path')
@@ -7,10 +9,17 @@ const { resolve } = require('app-root-path')
 const isWinOS = process.platform === 'win32'
 
 const windowURL = page => {
-  if (isDev) {
-    return 'http://localhost:8000/' + page
+  if (page.indexOf('/') !== -1 || page.indexOf('\\') !== -1) {
+    throw Error('You pesky hax0r!')
   }
-  return path.join('file://', resolve('./renderer/out'), page, 'index.html')
+  const devPath = `http://localhost:8000/${page}`
+  let prodPath = format({
+    pathname: resolve(`renderer/out/${page}/index.html`),
+    protocol: 'file:',
+    slashes: true
+  })
+  const url = isDev ? devPath : prodPath
+  return url
 }
 
 const onboardWindow = () => {
@@ -21,9 +30,7 @@ const onboardWindow = () => {
     //titleBarStyle: 'hidden-inset',
     show: false,
     backgroundColor: '#fff',
-    webPreferences: {
-      devTools: true
-    }
+    webPreferences: {}
   })
 
   win.loadURL(windowURL('onboard'))
@@ -38,9 +45,7 @@ const aboutWindow = () => {
     //titleBarStyle: 'hidden-inset',
     show: false,
     backgroundColor: '#fff',
-    webPreferences: {
-      devTools: true
-    }
+    webPreferences: {}
   })
 
   win.loadURL(windowURL('about'))
@@ -60,9 +65,7 @@ const mainWindow = () => {
     title: 'OONI Probe',
     titleBarStyle: 'hidden-inset',
     show: false,
-    webPreferences: {
-      devTools: true
-    }
+    webPreferences: {}
   })
 
   win.loadURL(windowURL('dashboard'))

@@ -24,6 +24,9 @@ const {
   aboutWindow
 } = require('./windows')
 
+
+require('electron-debug')({showDevTools: true})
+
 // <cargo-cult>Apparently this is needed to prevent garbage collection of the
 // tray icon</cargo-cult>
 let tray = null
