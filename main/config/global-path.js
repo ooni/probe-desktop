@@ -16,4 +16,6 @@ const getOoniDir = () => {
   }
   return path.resolve(customPath)
 }
-module.exports = getOoniDir
+module.exports = {
+  getOoniDir
+}
