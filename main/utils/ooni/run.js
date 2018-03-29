@@ -1,13 +1,24 @@
 const { Ooniprobe } = require('./ooniprobe')
 
 module.exports = async ({testGroupName, options}) => {
-  console.log(Ooniprobe)
   const ooni = new Ooniprobe()
-  console.log(global)
   windows.main.send('starting', testGroupName)
-  ooni.on('message', (msg) => {
-    console.log('i got a msg', msg)
-    windows.main.send('ooni', msg)
+  ooni.on('data', (data) => {
+    switch(data.fields.type) {
+      case 'progress':
+        windows.main.send('ooni', {
+          key: 'ooni.run.progress',
+          percentage: data.fields.percentage,
+          message: data.message,
+          testKey: data.fields.key,
+        })
+        break
+      default:
+        windows.main.send('ooni', {
+          key: 'log',
+          value: data.message
+        })
+    }
   })
   const argv = []
   await ooni.run({testGroupName, argv})

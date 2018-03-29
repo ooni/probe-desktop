@@ -2,6 +2,8 @@ const { EventEmitter } = require('events')
 const childProcess = require('child_process')
 const { getBinaryPath } = require('../binary')
 
+const debug = require('debug')('ooniprobe-desktop.utils.ooni.ooniprobe')
+
 class Ooniprobe extends EventEmitter {
   constructor(props) {
     super()
@@ -11,20 +13,37 @@ class Ooniprobe extends EventEmitter {
   run({testGroupName, argv}) {
     const self = this
     return new Promise((resolve, reject) => {
-      self.emit('starting', testGroupName)
       const options = {
         stdio: ['pipe', 'pipe', 'pipe']
       }
       const argv = ['--batch', 'run', testGroupName]
-      console.log('running', self._binaryPath, argv, options)
-      const ooni = childProcess.spawn(self._binaryPath, argv, options)
+
+      debug('running', self._binaryPath, argv, options)
+
+      let ooni
+      try {
+        ooni = childProcess.spawn(self._binaryPath, argv, options)
+      } catch (err) {
+        reject(err)
+      }
+
+      ooni.on('error', function(err) {
+        debug('cp.spawn.error:', err)
+        reject(err)
+      });
+
+      ooni.stdout.on('data', data => {
+        debug('stdout: ', data.toString())
+      })
 
       ooni.stderr.on('data', data => {
+        debug('stderr: ', data.toString())
         const msg = JSON.parse(data.toString())
-        self.emit('message', msg)
+        self.emit('data', msg)
       })
 
       ooni.on('exit', code => {
+        debug('exited with code', code)
         if (code === 0) {
           resolve()
           return

@@ -4,12 +4,16 @@ const isDev = require('electron-is-dev')
 
 const { app } = require('electron')
 
+const debug = require('debug')('ooniprobe-desktop.utils.binary')
+
 const getBinarySuffix = () => (process.platform === 'win32' ? '.exe' : '')
 
 const getBinaryDirectory = () => {
   // XXX only macos development is currently supported
   if (isDev) {
-    return './bin/mac_x64/ooni'
+    const binPath = path.join(__dirname, '..', '..', './bin/mac_x64')
+    debug('isDev', binPath)
+    return binPath
   }
 
   const appPath = app.getPath('exe')

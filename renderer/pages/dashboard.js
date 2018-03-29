@@ -308,16 +308,16 @@ class RunningTestLog extends React.Component {
     this.onMessage = this.onMessage.bind(this)
   }
 
-  onMessage(event, message) {
-    switch (message.key) {
-      case 'ooni.run.nettest.running':
-        this.setState({runningTest: message.value})
-        break
-      case 'ooni.run.progress.percent':
-        this.setState({percent: message.value})
-        break
-      case 'ooni.run.progress.message':
-        this.setState({logLine: message.value})
+  onMessage(event, data) {
+    switch (data.key) {
+      case 'ooni.run.progress':
+        this.setState({
+          percent: data.percentage,
+          logLine: data.message,
+          runningTest: {
+            name: data.testKey
+          }
+        })
         break
       default:
         break
