@@ -52,7 +52,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
-    "electron": "1.7.5",
+    "electron": "1.8.4",
     "electron-builder": "19.22.1",
     "electron-rebuild": "^1.7.3",
     "next": "3.0.6",
