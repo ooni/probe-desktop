@@ -36,7 +36,7 @@ const iconColor = colors.palette.black
 const testList  = [
     {
       name: 'Web Censorship',
-      camelName: 'webCensorship',
+      key: 'websites',
       color: colors.palette.indigo4,
       description: dummyDesc,
       longDescription: dummyLongDesc,
@@ -44,7 +44,7 @@ const testList  = [
     },
     {
       name: 'IM Blocking',
-      camelName: 'imBlocking',
+      key: 'im',
       color: colors.palette.green4,
       description: dummyDesc,
       longDescription: dummyLongDesc,
@@ -52,7 +52,7 @@ const testList  = [
     },
     {
       name: 'Performance',
-      camelName: 'performance',
+      key: 'performance',
       color: colors.palette.fuschia4,
       description: dummyDesc,
       longDescription: dummyLongDesc,
@@ -60,7 +60,7 @@ const testList  = [
     },
     {
       name: 'Middle boxes',
-      camelName: 'middleboxes',
+      key: 'middleboxes',
       color: colors.palette.yellow4,
       description: dummyDesc,
       longDescription: dummyLongDesc,
@@ -308,16 +308,16 @@ class RunningTestLog extends React.Component {
     this.onMessage = this.onMessage.bind(this)
   }
 
-  onMessage(event, message) {
-    switch (message.key) {
-      case 'ooni.run.nettest.running':
-        this.setState({runningTest: message.value})
-        break
-      case 'ooni.run.progress.percent':
-        this.setState({percent: message.value})
-        break
-      case 'ooni.run.progress.message':
-        this.setState({logLine: message.value})
+  onMessage(event, data) {
+    switch (data.key) {
+      case 'ooni.run.progress':
+        this.setState({
+          percent: data.percentage,
+          logLine: data.message,
+          runningTest: {
+            name: data.testKey
+          }
+        })
         break
       default:
         break
@@ -380,7 +380,7 @@ class Home extends React.Component {
 
   runTest (idx) {
     this.setState({activeTestIdx: idx})
-    this.run({testGroupName: testList[idx].camelName}).then(() => {
+    this.run({testGroupName: testList[idx].key}).then(() => {
       this.setState({activeTestIdx: null})
     })
   }

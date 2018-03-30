@@ -1,5 +1,7 @@
 const path = require('path')
 
+const { format } = require('url')
+
 const electron = require('electron')
 const isDev = require('electron-is-dev')
 const { resolve } = require('app-root-path')
@@ -7,13 +9,20 @@ const { resolve } = require('app-root-path')
 const isWinOS = process.platform === 'win32'
 
 const windowURL = page => {
-  if (isDev) {
-    return 'http://localhost:8000/' + page
+  if (page.indexOf('/') !== -1 || page.indexOf('\\') !== -1) {
+    throw Error('You pesky hax0r!')
   }
-  return path.join('file://', resolve('./renderer/out'), page, 'index.html')
+  const devPath = `http://localhost:8000/${page}`
+  let prodPath = format({
+    pathname: resolve(`renderer/out/${page}/index.html`),
+    protocol: 'file:',
+    slashes: true
+  })
+  const url = isDev ? devPath : prodPath
+  return url
 }
 
-export const onboardWindow = () => {
+const onboardWindow = () => {
   const win = new electron.BrowserWindow({
     width: 800,
     height: 600,
@@ -21,16 +30,14 @@ export const onboardWindow = () => {
     //titleBarStyle: 'hidden-inset',
     show: false,
     backgroundColor: '#fff',
-    webPreferences: {
-      devTools: true
-    }
+    webPreferences: {}
   })
 
   win.loadURL(windowURL('onboard'))
   return win
 }
 
-export const aboutWindow = () => {
+const aboutWindow = () => {
   const win = new electron.BrowserWindow({
     width: 360,
     height: 408,
@@ -38,16 +45,14 @@ export const aboutWindow = () => {
     //titleBarStyle: 'hidden-inset',
     show: false,
     backgroundColor: '#fff',
-    webPreferences: {
-      devTools: true
-    }
+    webPreferences: {}
   })
 
   win.loadURL(windowURL('about'))
   return win
 }
 
-export const mainWindow = () => {
+const mainWindow = () => {
   let windowHeight = 600
 
   if (isWinOS) {
@@ -60,16 +65,14 @@ export const mainWindow = () => {
     title: 'OONI Probe',
     titleBarStyle: 'hidden-inset',
     show: false,
-    webPreferences: {
-      devTools: true
-    }
+    webPreferences: {}
   })
 
   win.loadURL(windowURL('dashboard'))
   return win
 }
 
-export default {
+module.exports = {
   mainWindow,
   onboardWindow,
   aboutWindow

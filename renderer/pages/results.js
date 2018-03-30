@@ -129,7 +129,7 @@ class Results extends React.Component {
 
   componentDidMount() {
     const remote = electron.remote
-    const { listResults } = remote.require('./utils/ooni/list')
+    const { listResults } = remote.require('./database')
     listResults().then(results => {
       this.setState({
         loading: false,

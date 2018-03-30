@@ -4,7 +4,7 @@ const path = require('path')
 
 const mri = require('mri')
 
-export const getOoniDir = () => {
+const getOoniDir = () => {
   const args = mri(process.argv.slice(2), {
     string: ['ooni-home']
   })
@@ -16,4 +16,6 @@ export const getOoniDir = () => {
   }
   return path.resolve(customPath)
 }
-export default getOoniDir
+module.exports = {
+  getOoniDir
+}

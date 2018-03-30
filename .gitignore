@@ -2,6 +2,7 @@
 dist
 renderer/.next
 renderer/out
+/bin/
 
 # dependencies
 node_modules
