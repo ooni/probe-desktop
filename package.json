@@ -26,7 +26,13 @@
       "target": [
         "squirrel"
       ],
-      "icon": "main/static/icons/windows.ico"
+      "icon": "main/static/icons/windows.ico",
+      "extraFiles": [
+        {
+          "from": "./bin/${os}_${arch}",
+          "to": "./resources/bin"
+        }
+      ]
     },
     "mac": {
       "category": "public.app-category.tools",
