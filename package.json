@@ -55,7 +55,7 @@
     "electron": "1.8.4",
     "electron-builder": "19.22.1",
     "electron-rebuild": "^1.7.3",
-    "next": "3.0.6",
+    "next": "4.2.3",
     "react": "15.6.1",
     "react-dom": "15.6.1",
     "sudo-prompt": "^7.1.1"
