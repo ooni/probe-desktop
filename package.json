@@ -56,8 +56,8 @@
     "electron-builder": "19.22.1",
     "electron-rebuild": "^1.7.3",
     "next": "4.2.3",
-    "react": "15.6.1",
-    "react-dom": "15.6.1",
+    "react": "16",
+    "react-dom": "16",
     "sudo-prompt": "^7.1.1"
   },
   "dependencies": {

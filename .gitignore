@@ -3,6 +3,7 @@ dist
 renderer/.next
 renderer/out
 /bin/
+yarn-error.log
 
 # dependencies
 node_modules
