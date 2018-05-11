@@ -1,21 +1,22 @@
 {
-  "name": "ooniprobe-desktop",
+  "name": "probe-desktop",
   "description": "OONI Probe Desktop app",
   "author": "Open Observatory of Network Interference (OONI) <contact@openobservatory.org>",
   "productName": "OONI Probe",
   "version": "0.0.1",
   "main": "main/index.js",
   "license": "MIT",
-  "repository": "hellais/ooniprobe-desktop",
+  "repository": "ooni/probe-desktop",
   "scripts": {
     "start": "electron -r babel-register .",
     "build": "next build renderer && next export renderer",
-    "pack": "npm run build && build --dir",
-    "dist": "npm run build && build --dir",
-    "electron-rebuild": "electron-rebuild"
+    "pack": "npm run build && build --dir -mw",
+    "dist": "npm run build && build --dir -mw",
+    "electron-rebuild": "electron-rebuild",
+    "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns"
   },
   "build": {
-    "appId": "io.ooni.ooniprobe",
+    "appId": "io.ooni.probe-desktop",
     "asar": true,
     "files": [
       "**/*",
@@ -26,7 +27,7 @@
       "target": [
         "squirrel"
       ],
-      "icon": "main/static/icons/windows.ico",
+      "icon": "main/static/icons/app.ico",
       "extraFiles": [
         {
           "from": "./bin/${os}_${arch}",
@@ -36,7 +37,7 @@
     },
     "mac": {
       "category": "public.app-category.tools",
-      "icon": "main/static/icons/mac.icns",
+      "icon": "main/static/icons/app.icns",
       "extraFiles": [
         {
           "from": "./bin/${os}_${arch}",
@@ -55,6 +56,7 @@
     "electron": "1.8.4",
     "electron-builder": "19.22.1",
     "electron-rebuild": "^1.7.3",
+    "icon-gen": "^1.2.1",
     "next": "4.2.3",
     "react": "16",
     "react-dom": "16",
