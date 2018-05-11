@@ -24,8 +24,11 @@ const {
   aboutWindow
 } = require('./windows')
 
-
-require('electron-debug')({showDevTools: true})
+require('electron-unhandled')()
+require('electron-debug')({
+  showDevTools: true,
+  enabled: parseInt(process.env.FORCE_ELECTRON_DEBUG, 10) === 1
+})
 
 // <cargo-cult>Apparently this is needed to prevent garbage collection of the
 // tray icon</cargo-cult>

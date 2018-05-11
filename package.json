@@ -1,5 +1,5 @@
 {
-  "name": "probe-desktop",
+  "name": "ooniprobe-desktop",
   "description": "OONI Probe Desktop app",
   "author": "Open Observatory of Network Interference (OONI) <contact@openobservatory.org>",
   "productName": "OONI Probe",
@@ -10,28 +10,36 @@
   "scripts": {
     "start": "electron -r babel-register .",
     "build": "next build renderer && next export renderer",
-    "pack": "npm run build && build --dir -mw",
+    "pack": "npm run build && build -mw",
+    "pack:win": "npm run build && build --win --x64",
+    "pack:mac": "npm run build && build --mac",
     "dist": "npm run build && build --dir -mw",
     "electron-rebuild": "electron-rebuild",
-    "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns"
+    "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
+    "postinstall": "electron-builder install-app-deps"
   },
   "build": {
-    "appId": "io.ooni.probe-desktop",
-    "asar": true,
+    "appId": "io.ooni.ooniprobe-desktop",
+    "asar": false,
     "files": [
       "**/*",
+      "!bin",
       "!renderer",
       "renderer/out"
     ],
     "win": {
       "target": [
-        "squirrel"
+        "nsis"
       ],
       "icon": "main/static/icons/app.ico",
       "extraFiles": [
         {
-          "from": "./bin/${os}_${arch}",
-          "to": "./resources/bin"
+          "from": "./bin/win_x64/ooni.exe",
+          "to": "./resources/bin/ooni.exe"
+        },
+        {
+          "from": "./bin/cert.pem",
+          "to": "./resources/cert.pem"
         }
       ]
     },
@@ -40,8 +48,12 @@
       "icon": "main/static/icons/app.icns",
       "extraFiles": [
         {
-          "from": "./bin/${os}_${arch}",
-          "to": "./Resources/bin"
+          "from": "./bin/mac_x64/ooni",
+          "to": "./Resources/bin/ooni"
+        },
+        {
+          "from": "./bin/cert.pem",
+          "to": "./Resources/cert.pem"
         }
       ]
     }
@@ -69,6 +81,7 @@
     "electron-debug": "^1.5.0",
     "electron-is-dev": "0.3.0",
     "electron-next": "3.1.4",
+    "electron-unhandled": "^1.1.0",
     "first-run": "^1.2.0",
     "fix-path": "^2.1.0",
     "fs-extra": "^4.0.2",

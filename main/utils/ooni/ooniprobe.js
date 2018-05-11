@@ -1,6 +1,6 @@
 const { EventEmitter } = require('events')
 const childProcess = require('child_process')
-const { getBinaryPath } = require('../binary')
+const { getBinaryPath } = require('../paths')
 
 const debug = require('debug')('ooniprobe-desktop.utils.ooni.ooniprobe')
 
@@ -14,7 +14,10 @@ class Ooniprobe extends EventEmitter {
     const self = this
     return new Promise((resolve, reject) => {
       const options = {
-        stdio: ['pipe', 'pipe', 'pipe']
+        stdio: ['pipe', 'pipe', 'pipe'],
+        env: {
+          "SSL_CERT_FILE": ""
+        }
       }
       const argv = ['--batch', 'run', testGroupName]
 
