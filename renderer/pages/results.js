@@ -118,12 +118,19 @@ const ResultsHeader = ({testCount, networkCount, dataUsage}) => {
   )
 }
 
+const ErrorView = ({error}) => {
+  return <div>
+  <Text>{error.toString()}</Text>
+  </div>
+}
+
 class Results extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       loading: true,
-      results: []
+      results: [],
+      error: null
     }
   }
 
@@ -135,18 +142,25 @@ class Results extends React.Component {
         loading: false,
         results
       })
+    }).catch(err => {
+      this.setState({
+        error: err
+      })
     })
   }
 
   render() {
     const {
       loading,
-      results
+      results,
+      error
     } = this.state
 
     return (
       <Layout>
         <Sidebar currentUrl={this.props.url}>
+
+          {!error && <div>
           <ResultsHeader testCount={42} networkCount={2} dataUsage={{up: 1024*23, down: 1024*21}} />
           <Container pt={3}>
             <Text>These are the OONI Probe measurements gathered</Text>
@@ -155,6 +169,9 @@ class Results extends React.Component {
               <ResultRow  {...result} />
             ))}
           </Container>
+          </div>}
+          {error && <ErrorView error={error} />}
+
         </Sidebar>
       </Layout>
     )

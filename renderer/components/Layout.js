@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Provider, theme } from 'ooni-components'
+import withSentry from './withSentry'
 
 const Layout = props => (
   <main>
@@ -9,4 +10,5 @@ const Layout = props => (
     </Provider>
   </main>
 )
-export default Layout
+
+export default withSentry(Layout)

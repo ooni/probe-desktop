@@ -1,6 +1,6 @@
 const fs = require('fs-extra')
 const path = require('path')
-const isDev = require('electron-is-dev')
+const { is } = require('electron-util')
 
 const { app } = require('electron')
 
@@ -10,31 +10,34 @@ const getBinarySuffix = () => (process.platform === 'win32' ? '.exe' : '')
 
 const getResourcesDirectory = () => {
   // XXX only macos development is currently supported
-  if (isDev) {
+  if (is.development) {
     const rsrcPath = path.join(__dirname, '..', '..')
-    debug('isDev', rsrcPath)
+    debug('💣 development mode', rsrcPath)
     return binPath
   }
 
   const appPath = app.getPath('exe')
 
-  if (process.platform === 'darwin') {
+  if (is.macos) {
     return path.join(appPath, '../../Resources');
   }
-  if (process.platform === 'linux') {
+  if (is.linux) {
     return path.join(path.dirname(appPath), './resources')
   }
   // On windows and other platforms we should just use relative paths and hope
   // for the best
+  if (is.windows) {
+    return './resources'
+  }
   return './resources'
 }
 
 const getBinaryDirectory = () => {
   // XXX only macos development is currently supported
-  if (isDev) {
+  if (is.development) {
     return path.join(getResourcesDirectory(), 'bin/mac_x64')
   }
-  return path.join(getResourcesDirectory(), 'bin/mac_x64')
+  return path.join(getResourcesDirectory(), 'bin')
 }
 
 const getBinaryPath = () => {

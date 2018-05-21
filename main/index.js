@@ -2,8 +2,6 @@
 const { format } = require('url')
 const { spawn } = require('child_process')
 
-const MK_BIN = '../measurement-kit/measurement_kit'
-
 // Packages
 const { BrowserWindow, app, ipcMain } = require('electron')
 const prepareNext = require('electron-next')
@@ -24,6 +22,11 @@ const {
   aboutWindow
 } = require('./windows')
 
+const SENTRY_DSN = 'https://e1eef2aaa6054d94bffc4a648fb78f09@sentry.io/1210892'
+const { init } = require('@sentry/electron')
+init({ dsn: SENTRY_DSN })
+
+require('debug-to-file')
 require('electron-unhandled')()
 require('electron-debug')({
   showDevTools: true,
