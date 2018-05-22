@@ -1,8 +1,7 @@
 import React from 'react'
 import Raven from 'raven-js'
 
-const { getSentryConfig } = require('../../main/utils/config')
-
+const { getSentryConfig } = require('../../main/utils/sentry')
 const sentryConfig = getSentryConfig()
 
 const withSentry = (Child) => {

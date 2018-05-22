@@ -11,7 +11,8 @@ const firstRun = require('first-run')
 const isDev = require('electron-is-dev')
 const { resolve } = require('app-root-path')
 
-const { getConfig, getSentryConfig } = require('./utils/config')
+const { getConfig } = require('./utils/config')
+const { getSentryConfig } = require('./utils/sentry')
 const { startAutoUpdater } = require('./update')
 
 const toggleWindow = require('./windows/toggle')
