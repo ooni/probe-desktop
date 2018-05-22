@@ -4,8 +4,7 @@
     "inline-react-svg"
   ],
   "presets": [
-    "es2015",
-    "react",
-    "next/babel"
+    "next/babel",
+    "babel-preset-stage-0"
   ]
 }
