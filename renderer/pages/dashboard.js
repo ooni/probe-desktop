@@ -374,7 +374,8 @@ class Home extends React.Component {
     super(props)
     this.state = {
       activeCardIdx: null,
-      activeTestIdx: null
+      activeTestIdx: null,
+      error: null
     }
     this.toggleCard = this.toggleCard.bind(this)
     this.runTest = this.runTest.bind(this)
@@ -397,13 +398,16 @@ class Home extends React.Component {
     this.setState({activeTestIdx: idx})
     this.run({testGroupName: testList[idx].key}).then(() => {
       this.setState({activeTestIdx: null})
+    }).catch(error => {
+      this.setState({error: error})
     })
   }
 
   render() {
     const {
       activeCardIdx,
-      activeTestIdx
+      activeTestIdx,
+      error
     } = this.state
     return (
       <Layout>
@@ -419,6 +423,7 @@ class Home extends React.Component {
           && <RunningTest
               activeTest={testList[activeTestIdx]} />
           }
+          {error && <p>Error: error.toString()</p>}
 
         </Sidebar>
       </Layout>

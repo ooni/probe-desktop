@@ -20,7 +20,7 @@
   },
   "build": {
     "appId": "io.ooni.ooniprobe-desktop",
-    "asar": false,
+    "asar": true,
     "files": [
       "**/*",
       "!bin",
