@@ -2,7 +2,7 @@ const fs = require('fs-extra')
 const path = require('path')
 const { is } = require('electron-util')
 
-const { app } = require('electron')
+const electron = require('electron')
 
 const debug = require('debug')('ooniprobe-desktop.utils.binary')
 
@@ -13,10 +13,10 @@ const getResourcesDirectory = () => {
   if (is.development) {
     const rsrcPath = path.join(__dirname, '..', '..')
     debug('💣 development mode', rsrcPath)
-    return binPath
+    return rsrcPath
   }
 
-  const appPath = app.getPath('exe')
+  const appPath = (electron.app || electron.remote.app).getPath('exe')
 
   if (is.macos) {
     return path.join(appPath, '../../Resources');
@@ -50,8 +50,18 @@ const getSSLCertFilePath = () => {
   return path.join(getResourcesDirectory(), 'cert.pem')
 }
 
+const getHomeDir = () => {
+  const userDataPath = (electron.app || electron.remote.app).getPath('userData')
+  if (is.development) {
+    return path.join(getResourcesDirectory(), 'ooni_home')
+  }
+  return path.join(userDataPath, 'ooni_home')
+}
+
 module.exports = {
   getBinaryPath,
   getBinaryDirectory,
-  getBinarySuffix
+  getBinarySuffix,
+  getSSLCertFilePath,
+  getHomeDir,
 }

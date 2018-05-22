@@ -13,3 +13,7 @@ package-lock.json
 npm-debug.log
 
 .DS_Store
+
+# development
+ooni_home
+cert.pem

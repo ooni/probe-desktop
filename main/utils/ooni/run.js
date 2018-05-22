@@ -4,6 +4,14 @@ module.exports = async ({testGroupName, options}) => {
   const ooni = new Ooniprobe()
   windows.main.send('starting', testGroupName)
   ooni.on('data', (data) => {
+    if (data.level == 'error') {
+      windows.main.send('ooni', {
+        key: 'error',
+        message: data.message
+      })
+      return
+    }
+
     switch(data.fields.type) {
       case 'progress':
         windows.main.send('ooni', {

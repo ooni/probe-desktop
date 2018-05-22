@@ -98,6 +98,7 @@
     "raven-js": "^3.25.2",
     "react-animations": "^0.1.0",
     "react-icons": "^2.2.5",
+    "split2": "^2.2.0",
     "sqlite3": "^3.1.13",
     "styled-components": "^2.1.2"
   }

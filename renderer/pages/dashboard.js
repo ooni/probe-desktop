@@ -28,6 +28,8 @@ import {
   colors
 } from 'ooni-components'
 
+const debug = require('debug')('ooniprobe-desktop.renderer.pages.dashboard')
+
 // XXX these should all go into components
 const dummyDesc = 'Blocking, nostrud do est, ut occaecat aute blocking, traffic manipulation minim excepteur.'
 const dummyLongDesc = 'In, internet in, Tor packet capture, blocking, internet Tor culpa, social media blocking connection reset traffic manipulation. Eu Tor aliquip, dolore network interference TCP, middlebox TLS handshake connection reset ut cupidatat TLS handshake traffic manipulation. Consectetur surveillance non Tor voluptate UDP surveillance DNS tampering ut Tor velit velit packet capture, consequat dolore eiusmod. Adipisicing UDP network interference UDP est Tor, middlebox TLS handshake internet proident, OONI OONI excepteur. Irure sunt, elit internet occaecat, DNS tampering, surveillance deserunt Open Observatory of Network Interference surveillance do.'
@@ -303,7 +305,8 @@ class RunningTestLog extends React.Component {
     this.state = {
       logLine: '',
       percent: 0,
-      runningTest: null
+      runningTest: null,
+      error: null
     }
     this.onMessage = this.onMessage.bind(this)
   }
@@ -319,6 +322,16 @@ class RunningTestLog extends React.Component {
           }
         })
         break
+      case 'error':
+        debug('error received', data)
+        this.setState({
+          error: data.message,
+          runningTest: null,
+        })
+        break
+      case 'log':
+        debug('log received', data)
+        break
       default:
         break
     }
@@ -333,7 +346,8 @@ class RunningTestLog extends React.Component {
     const {
       logLine,
       percent,
-      runningTest
+      runningTest,
+      error
     } = this.state
 
     return (
@@ -341,6 +355,7 @@ class RunningTestLog extends React.Component {
         <Heading h={3}>Running {runningTest && runningTest.name}</Heading>
         <div>{logLine}</div>
         <div>{percent*100}%</div>
+        {error && <p>{error}</p>}
       </div>
     )
   }

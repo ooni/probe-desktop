@@ -1,6 +1,9 @@
 const { EventEmitter } = require('events')
 const childProcess = require('child_process')
-const { getBinaryPath, getSSLCertFilePath } = require('../paths')
+
+const split2 = require('split2')
+
+const { getBinaryPath, getSSLCertFilePath, getHomeDir } = require('../paths')
 
 const debug = require('debug')('ooniprobe-desktop.utils.ooni.ooniprobe')
 
@@ -16,6 +19,7 @@ class Ooniprobe extends EventEmitter {
       const options = {
         stdio: ['pipe', 'pipe', 'pipe'],
         env: {
+          "OONI_HOME": getHomeDir(),
           "SSL_CERT_FILE": getSSLCertFilePath()
         }
       }
@@ -39,10 +43,14 @@ class Ooniprobe extends EventEmitter {
         debug('stdout: ', data.toString())
       })
 
-      ooni.stderr.on('data', data => {
-        debug('stderr: ', data.toString())
-        const msg = JSON.parse(data.toString())
-        self.emit('data', msg)
+      ooni.stderr.pipe(split2()).on('data', line => {
+        debug('stderr: ', line.toString())
+        try {
+          const msg = JSON.parse(line.toString('utf8'))
+          self.emit('data', msg)
+        } catch (err) {
+          debug('failed to call JSON.parse', line.toString('utf8'), err)
+        }
       })
 
       ooni.on('exit', code => {
