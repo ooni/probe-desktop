@@ -62,7 +62,7 @@ export class ResultRow extends React.Component {
       summary
     } = this.props
     return <div>
-    <Flex center pt={2} pb={2}>
+    <Flex pt={2} pb={2}>
       <Box pr={2} w={1/7}>
         {this.renderIcon()}
       </Box>

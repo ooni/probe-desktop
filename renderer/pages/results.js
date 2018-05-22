@@ -138,11 +138,13 @@ class Results extends React.Component {
     const remote = electron.remote
     const { listResults } = remote.require('./database')
     listResults().then(results => {
+      console.log('results', results)
       this.setState({
         loading: false,
         results
       })
     }).catch(err => {
+      console.log('error triggered')
       this.setState({
         error: err
       })

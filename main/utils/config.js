@@ -1,9 +1,9 @@
 const path = require('path')
-const { homedir } = require('os')
-
 const fs = require('fs-extra')
 
-const OONI_CONFIG_PATH = path.join(homedir(), '.ooni', 'config.json')
+const { getHomeDir } = require('./paths')
+
+const OONI_CONFIG_PATH = path.join(getHomeDir(), 'config.json')
 
 const getConfig = async () => {
   const config = await fs.readJson(OONI_CONFIG_PATH)

@@ -1,10 +1,9 @@
 const sqlite3 = require('sqlite3')//.verbose()
 const path = require('path')
 
-const { getOoniDir } = require('./config/global-path')
+const { getHomeDir } = require('./utils/paths')
 
-const OONI_DIR = getOoniDir()
-
+const OONI_DIR = getHomeDir()
 const DB_DIR = path.join(OONI_DIR, 'db')
 
 const db = new sqlite3.Database(path.join(DB_DIR, 'main.sqlite3'))

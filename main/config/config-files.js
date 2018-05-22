@@ -5,9 +5,9 @@ const path = require('path')
 
 const lockFile = require('lockfile')
 
-const { getOoniDir } = require('./global-path')
+const { getHomeDir } = require('../utils/paths')
 
-const OONI_DIR = getOoniDir()
+const OONI_DIR = getHomeDir()
 const CONFIG_FILE_PATH = path.join(OONI_DIR, 'config.json')
 const CONFIG_LOCK_PATH = path.join(OONI_DIR, 'config.lock')
 
