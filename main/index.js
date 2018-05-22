@@ -11,7 +11,7 @@ const firstRun = require('first-run')
 const isDev = require('electron-is-dev')
 const { resolve } = require('app-root-path')
 
-const { getConfig } = require('./utils/config')
+const { getConfig, getSentryConfig } = require('./utils/config')
 const { startAutoUpdater } = require('./update')
 
 const toggleWindow = require('./windows/toggle')
@@ -22,9 +22,8 @@ const {
   aboutWindow
 } = require('./windows')
 
-const SENTRY_DSN = 'https://e1eef2aaa6054d94bffc4a648fb78f09@sentry.io/1210892'
 const { init } = require('@sentry/electron')
-init({ dsn: SENTRY_DSN })
+init(getSentryConfig())
 
 require('debug-to-file')
 require('electron-unhandled')()

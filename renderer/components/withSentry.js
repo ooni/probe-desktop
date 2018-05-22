@@ -1,7 +1,9 @@
 import React from 'react'
 import Raven from 'raven-js'
 
-const SENTRY_DSN = 'https://e1eef2aaa6054d94bffc4a648fb78f09@sentry.io/1210892'
+const { getSentryConfig } = require('../../main/utils/config')
+
+const sentryConfig = getSentryConfig()
 
 const withSentry = (Child) => {
   return class WrappedComponent extends React.Component {
@@ -16,9 +18,7 @@ const withSentry = (Child) => {
       this.state = {
         error: null
       }
-      Raven.config(
-        SENTRY_DSN
-      ).install()
+      Raven.config(sentryConfig.dsn, sentryConfig).install()
     }
 
     componentDidCatch (error, errorInfo) {
