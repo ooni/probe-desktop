@@ -1,23 +1,3 @@
-// Autogenerted code. Do not edit
-const fs = require('fs-extra')
-const path = require('path')
-const { homedir } = require('os')
-
-const oldOoniHomePath = path.join(homedir(), '.ooni')
-const oldOoniHomeExists = () => (fs.pathExists(path.join(oldOoniHomePath, 'ooniprobe.conf')))
-const backupLegacyHome = async () => {
-  const legacyPath = path.join(homedir(),
-                               '.ooni-legacy')
-  err = await fs.move(oldOoniHomePath, legacyPath)
-  if (err) {
-    console.error(`Failed to rename ${oldOoniHomePath} to ${legacyPath}`)
-    console.error(err)
-    await exit(1)
-    return
-  }
-  console.log(`Renamed ${oldOoniHomePath} to ${legacyPath}`)
-}
-
 const CONFIG_VERSION = '0.0.1'
 
 const defaultConfig = {
@@ -85,9 +65,6 @@ const defaultConfig = {
 }
 
 module.exports = {
-  oldOoniHomePath,
-  oldOoniHomeExists,
-  backupLegacyHome,
   CONFIG_VERSION,
   defaultConfig
 }
