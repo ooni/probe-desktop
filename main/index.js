@@ -23,14 +23,16 @@ const {
   aboutWindow
 } = require('./windows')
 
-const { init } = require('@sentry/electron')
-init(getSentryConfig())
+const Sentry = require('@sentry/electron')
+Sentry.init(getSentryConfig())
 
 require('debug-to-file')
 require('electron-unhandled')()
 require('electron-debug')({
   showDevTools: true,
-  enabled: parseInt(process.env.FORCE_ELECTRON_DEBUG, 10) === 1
+  // null means activate it only if isDev == true. FORCE_ELECTRON_DEBUG will
+  // make sure it's always enabled even in "production" builds.
+  enabled: parseInt(process.env.FORCE_ELECTRON_DEBUG, 10) === 1 ? true : null
 })
 
 // <cargo-cult>Apparently this is needed to prevent garbage collection of the
@@ -40,15 +42,22 @@ let tray = null
 // Set the application name
 app.setName('OONI Probe')
 
-process.on('uncaughtException', () => {
-  // XXX handle the exception in util/exception
+process.on('uncaughtException', error => {
+  Sentry.captureException(error, {
+    tags: {
+      'process.on': 'uncaughtException'
+    }
+  })
 })
 
+/*
+XXX currently disable starting at login. It's a bit annoying while developing.
 if (!isDev && firstRun()) {
  app.setLoginItemSettings({
     openAtLogin: true
   })
 }
+*/
 
 // This set $PATH properly based on .zsrch/.bashrc/etc.
 fixPath()
