@@ -1,5 +1,6 @@
 import electron from 'electron'
 import React from 'react'
+import Raven from 'raven-js'
 
 import Link from 'next/link'
 
@@ -399,6 +400,7 @@ class Home extends React.Component {
     this.run({testGroupName: testList[idx].key}).then(() => {
       this.setState({activeTestIdx: null})
     }).catch(error => {
+      Raven.captureException(error, {extra: {scope: 'renderer.runTest'}})
       this.setState({error: error})
     })
   }

@@ -1,5 +1,6 @@
 import electron from 'electron'
 import React from 'react'
+import Raven from 'raven-js'
 
 import Link from 'next/link'
 
@@ -144,6 +145,7 @@ class Results extends React.Component {
         results
       })
     }).catch(err => {
+      Raven.captureException(err, {extra: {scope: 'renderer.listResults'}})
       console.log('error triggered')
       this.setState({
         error: err
