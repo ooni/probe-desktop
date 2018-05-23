@@ -5,8 +5,13 @@ const { getHomeDir } = require('./utils/paths')
 
 const OONI_DIR = getHomeDir()
 const DB_DIR = path.join(OONI_DIR, 'db')
+const MAIN_DB_PATH = path.join(DB_DIR, 'main.sqlite3')
 
-const db = new sqlite3.Database(path.join(DB_DIR, 'main.sqlite3'))
+const debug = require('debug')('ooniprobe-desktop.main.database')
+
+debug('database path', MAIN_DB_PATH)
+
+const db = new sqlite3.Database(MAIN_DB_PATH)
 
 const listMeasurements = () => {
   return new Promise((resolve, reject) => {

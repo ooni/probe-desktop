@@ -85,7 +85,7 @@
     "debug-to-file": "^1.0.9",
     "electron-debug": "^1.5.0",
     "electron-is-dev": "0.3.0",
-    "electron-next": "hellais/electron-next#8fa10988d6324bf5b645b8a8308b9c6eeede10fd",
+    "electron-next": "hellais/electron-next#ba27a7d25ca71e28436a9d6843c27b83cde1607c",
     "electron-unhandled": "^1.1.0",
     "electron-util": "^0.8.2",
     "first-run": "^1.2.0",

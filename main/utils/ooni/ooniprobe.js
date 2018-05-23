@@ -3,6 +3,8 @@ const childProcess = require('child_process')
 
 const split2 = require('split2')
 
+const Sentry = require('@sentry/electron')
+
 const { getBinaryPath, getSSLCertFilePath, getHomeDir } = require('../paths')
 
 const debug = require('debug')('ooniprobe-desktop.utils.ooni.ooniprobe')
@@ -50,6 +52,13 @@ class Ooniprobe extends EventEmitter {
           self.emit('data', msg)
         } catch (err) {
           debug('failed to call JSON.parse', line.toString('utf8'), err)
+          Sentry.addBreadcrumb({
+            message: 'got unparseable line from ooni cli',
+            category: 'internal',
+            data: {
+               line: line.toString('utf8')
+            }
+          })
         }
       })
 

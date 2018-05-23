@@ -43,11 +43,7 @@ let tray = null
 app.setName('OONI Probe')
 
 process.on('uncaughtException', error => {
-  Sentry.captureException(error, {
-    tags: {
-      'process.on': 'uncaughtException'
-    }
-  })
+  Sentry.captureException(error)
 })
 
 /*
