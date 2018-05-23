@@ -423,7 +423,7 @@ class Home extends React.Component {
           && <RunningTest
               activeTest={testList[activeTestIdx]} />
           }
-          {error && <p>Error: error.toString()</p>}
+          {error && <p>Error: {error.toString()}</p>}
 
         </Sidebar>
       </Layout>
