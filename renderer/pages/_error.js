@@ -1,6 +1,6 @@
 import React from 'react'
 import Raven from 'raven-js'
-import { getSentryConfig } from '../main/utils/sentry'
+import { getSentryConfig } from '../../main/utils/sentry'
 
 export default class Error extends React.Component {
   static getInitialProps({ res, err }) {

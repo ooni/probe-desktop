@@ -2,8 +2,9 @@ import Document, { Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 
 import globalStyle from '../components/globalStyle'
+import withSentry from '../components/withSentry'
 
-export default class MyDocument extends Document {
+class CustomDocument extends Document {
   render () {
     const sheet = new ServerStyleSheet()
     const main = sheet.collectStyles(<Main />)
@@ -24,3 +25,5 @@ export default class MyDocument extends Document {
     )
   }
 }
+
+export default withSentry(CustomDocument)
