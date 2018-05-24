@@ -146,7 +146,7 @@ class Results extends React.Component {
       })
     }).catch(err => {
       Raven.captureException(err, {extra: {scope: 'renderer.listResults'}})
-      console.log('error triggered')
+      console.log('error triggered', err)
       this.setState({
         error: err
       })

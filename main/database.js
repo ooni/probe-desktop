@@ -1,4 +1,7 @@
-const sqlite3 = require('sqlite3')//.verbose()
+const fs = require('fs-extra')
+const SQL = require('sql.js')
+
+// Load the db
 const path = require('path')
 
 const { getHomeDir } = require('./utils/paths')
@@ -11,65 +14,68 @@ const debug = require('debug')('ooniprobe-desktop.main.database')
 
 debug('database path', MAIN_DB_PATH)
 
-const db = new sqlite3.Database(MAIN_DB_PATH)
+const loadDB = (path) => {
+  return new SQL.Database(fs.readFileSync(path))
+}
+
+const getAllRows = (db, query) => {
+  let res = db.exec(query)
+  // Funky js map reduce magic to map column names to rows
+  return res[0].values.map(row => {
+    return row.reduce((a, v, i) => {
+      a[res[0].columns[i]] = v
+      return a
+    }, {})
+  })
+}
 
 const listMeasurements = () => {
   return new Promise((resolve, reject) => {
-    db.all(`SELECT
-	results.name,
-	results.start_time,
-	results.runtime,
-	results.summary,
-	results.done,
-	measurements.asn,
-	measurements.country
-FROM results
-INNER JOIN measurements ON measurements.result_id = results.id
-GROUP BY results.id;`,
-  (err, rows) => {
-    if (err) {
-      return reject(err)
+    const db = loadDB(MAIN_DB_PATH)
+    try {
+      let rows = getAllRows(db, `SELECT
+        results.name,
+        results.start_time,
+        results.runtime,
+        results.summary,
+        results.done,
+        measurements.asn,
+        measurements.country,
+        results.data_usage_up,
+        results.data_usage_down
+        FROM results
+        INNER JOIN measurements ON measurements.result_id = results.id
+        GROUP BY results.id;`)
+      resolve(rows)
+    } catch (err) {
+      console.log('got error', err)
+      reject(err)
     }
-    resolve(result.rows.map(row => ({
-      name: row.name,
-      network: row.asn,
-      asn: row.asn,
-      country: row.country,
-      date: row.start_time,
-      summary: JSON.parse(row.summary)
-    })))
-  })
   })
 }
 
 const listResults = () => {
   return new Promise((resolve, reject) => {
-    db.all(`SELECT
-	results.name,
-	results.start_time,
-	results.runtime,
-	results.summary,
-	results.done,
-	measurements.asn,
-	measurements.country
-FROM results
-INNER JOIN measurements ON measurements.result_id = results.id
-GROUP BY results.id;`,
-  (err, rows) => {
-    if (err) {
-      return reject(err)
+    const db = loadDB(MAIN_DB_PATH)
+    try {
+      let rows = getAllRows(db, `SELECT
+        results.name,
+        results.start_time,
+        results.runtime,
+        results.summary,
+        results.done,
+        measurements.asn,
+        measurements.country,
+        results.data_usage_up,
+        results.data_usage_down
+        FROM results
+        INNER JOIN measurements ON measurements.result_id = results.id
+        GROUP BY results.id;`)
+      resolve(rows)
+    } catch (err) {
+      console.log('got error', err)
+      reject(err)
     }
-    resolve(rows.map(row => ({
-      name: row.name,
-      network: row.asn,
-      asn: row.asn,
-      country: row.country,
-      dataUsageUp: row.data_usage_up,
-      dataUsageDown: row.data_usage_down,
-      date: row.start_time,
-      summary: JSON.parse(row.summary)
-    })))
-  })
   })
 }
 

@@ -15,11 +15,11 @@
     "pack:mac": "npm run build && build --mac",
     "dist": "npm run build && build --dir -mw",
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "install-app-deps"
   },
   "build": {
     "appId": "io.ooni.ooniprobe-desktop",
-    "asar": false,
+    "asar": true,
     "files": [
       "**/*",
       "!bin",
@@ -102,7 +102,7 @@
     "react-animations": "^0.1.0",
     "react-icons": "^2.2.5",
     "split2": "^2.2.0",
-    "sqlite3": "^3.1.13",
+    "sql.js": "^0.5.0",
     "styled-components": "^2.1.2"
   }
 }

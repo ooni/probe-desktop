@@ -57,10 +57,9 @@ export class ResultRow extends React.Component {
       date,
       network,
       country,
-      dataUsageDown,
-      dataUsageUp,
       summary
     } = this.props
+
     return <div>
     <Flex pt={2} pb={2}>
       <Box pr={2} w={1/7}>
