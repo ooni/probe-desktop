@@ -54,7 +54,7 @@ export class ResultRow extends React.Component {
     const {
       name,
       asn,
-      date,
+      start_time,
       network,
       country,
       summary
@@ -74,8 +74,8 @@ export class ResultRow extends React.Component {
           <NetworkName>{network}</NetworkName>
         </Box>
         <Box>
-        <Location>{asn} ({country})</Location>
-        <Date>{moment(date).format('ll')}</Date>
+        <Location>AS{asn} ({country})</Location>
+        <Date>{moment(start_time).format('ll')}</Date>
         </Box>
         </Flex>
       </Box>

@@ -59,18 +59,17 @@ const listResults = () => {
     const db = loadDB(MAIN_DB_PATH)
     try {
       let rows = getAllRows(db, `SELECT
+        results.id,
         results.name,
         results.start_time,
         results.runtime,
         results.summary,
         results.done,
-        measurements.asn,
-        measurements.country,
+        results.asn,
+        results.country,
         results.data_usage_up,
         results.data_usage_down
-        FROM results
-        INNER JOIN measurements ON measurements.result_id = results.id
-        GROUP BY results.id;`)
+        FROM results;`)
       resolve(rows)
     } catch (err) {
       console.log('got error', err)

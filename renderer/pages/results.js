@@ -36,7 +36,7 @@ font-size: 16px;
 const TestCount = ({testCount}) => {
   return (
     <Box pr={2} w={1/3}>
-      <Flex center column>
+      <Flex column>
       <Count>{testCount}</Count>
       <Unit>Tests</Unit>
       </Flex>
@@ -47,7 +47,7 @@ const TestCount = ({testCount}) => {
 const NetworkCount = ({networkCount}) => {
   return (
     <Box pr={2} w={1/3}>
-    <Flex center column>
+    <Flex column>
     <Count>{networkCount}</Count>
     <Unit>Networks</Unit>
     </Flex>
@@ -82,7 +82,7 @@ const HumanFilesize = ({size}) => {
 const DataUsage = ({dataUsage}) => {
   return (
     <Box pr={2} w={1/3}>
-    <Flex center column>
+    <Flex column>
     <Box>
       <Flex column>
         <HumanFilesize size={dataUsage.up} />
@@ -170,7 +170,7 @@ class Results extends React.Component {
             <Text>These are the OONI Probe measurements gathered</Text>
             {loading && <Text>Loading</Text>}
             {results.map(result => (
-              <ResultRow  {...result} />
+              <ResultRow  key={result.id} {...result} />
             ))}
           </Container>
           </div>}
