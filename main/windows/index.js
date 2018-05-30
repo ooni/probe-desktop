@@ -24,8 +24,8 @@ const windowURL = page => {
 
 const onboardWindow = () => {
   const win = new electron.BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 860,
+    height: 720,
     title: 'Welcome to OONI Probe',
     //titleBarStyle: 'hidden-inset',
     show: false,
@@ -53,14 +53,14 @@ const aboutWindow = () => {
 }
 
 const mainWindow = () => {
-  let windowHeight = 600
+  let windowHeight = 720
 
   if (isWinOS) {
     windowHeight -= 12
   }
 
   const win = new electron.BrowserWindow({
-    width: 800,
+    width: 860,
     height: windowHeight,
     title: 'OONI Probe',
     titleBarStyle: 'hidden-inset',

@@ -65,12 +65,29 @@ const listResults = () => {
         results.runtime,
         results.summary,
         results.done,
+        results.network_name,
         results.asn,
         results.country,
         results.data_usage_up,
         results.data_usage_down
-        FROM results;`)
-      resolve(rows)
+        FROM results;`),
+        networkSet = new Set(),
+        dataUsageUp = 0,
+        dataUsageDown = 0
+
+      rows.forEach(row => {
+        networkSet.add(row.asn)
+        dataUsageUp += row.data_usage_up
+        dataUsageDown += row.data_usage_down
+      })
+
+      resolve({
+        rows: rows,
+        testCount: rows.length,
+        networkCount: networkSet.size,
+        dataUsageUp,
+        dataUsageDown,
+      })
     } catch (err) {
       console.log('got error', err)
       reject(err)

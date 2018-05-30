@@ -130,7 +130,11 @@ class Results extends React.Component {
     super(props)
     this.state = {
       loading: true,
-      results: [],
+      rows: [],
+      testCount: -1,
+      networkCount: -1,
+      dataUsageUp: -1,
+      dataUsageDown: -1,
       error: null
     }
   }
@@ -139,10 +143,14 @@ class Results extends React.Component {
     const remote = electron.remote
     const { listResults } = remote.require('./database')
     listResults().then(results => {
-      console.log('results', results)
+      console.log(results)
       this.setState({
         loading: false,
-        results
+        rows: results.rows,
+        testCount: results.testCount,
+        networkCount: results.networkCount,
+        dataUsageUp: results.dataUsageUp,
+        dataUsageDown: results.dataUsageDown,
       })
     }).catch(err => {
       Raven.captureException(err, {extra: {scope: 'renderer.listResults'}})
@@ -156,7 +164,11 @@ class Results extends React.Component {
   render() {
     const {
       loading,
-      results,
+      rows,
+      networkCount,
+      testCount,
+      dataUsageUp,
+      dataUsageDown,
       error
     } = this.state
 
@@ -165,12 +177,12 @@ class Results extends React.Component {
         <Sidebar currentUrl={this.props.url}>
 
           {!error && <div>
-          <ResultsHeader testCount={42} networkCount={2} dataUsage={{up: 1024*23, down: 1024*21}} />
+          {!loading && <ResultsHeader testCount={testCount} networkCount={networkCount} dataUsage={{up: dataUsageUp, down: dataUsageDown}} />}
           <Container pt={3}>
             <Text>These are the OONI Probe measurements gathered</Text>
             {loading && <Text>Loading</Text>}
-            {results.map(result => (
-              <ResultRow  key={result.id} {...result} />
+            {rows.map(row => (
+              <ResultRow  key={row.id} {...row} />
             ))}
           </Container>
           </div>}

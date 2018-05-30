@@ -94,10 +94,9 @@ const navigationPaths = {
 }
 
 const ContentContainer = styled(Box)`
-  overflow: scroll;
+  overflow: auto;
   min-height: 100%;
   height: 100%;
-  padding-bottom: 32px;
   background-color: ${props => props.theme.colors.gray0};
 `
 export const Sidebar = ({children, currentUrl}) => (
