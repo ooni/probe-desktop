@@ -46,7 +46,7 @@ export class ResultRow extends React.Component {
 
   renderSummary(summary) {
     return <Text>
-    {JSON.stringify(summary, null, ' ')}
+    {JSON.stringify(JSON.parse(summary), null, ' ')}
     </Text>
   }
 
