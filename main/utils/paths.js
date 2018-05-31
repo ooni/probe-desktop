@@ -24,11 +24,12 @@ const getResourcesDirectory = () => {
   if (is.linux) {
     return path.join(path.dirname(appPath), './resources')
   }
-  // On windows and other platforms we should just use relative paths and hope
-  // for the best
   if (is.windows) {
-    return './resources'
+    return path.join(path.dirname(appPath), './resources')
   }
+
+  // Other platforms we should just use relative paths and hope
+  // for the best
   return './resources'
 }
 
