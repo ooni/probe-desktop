@@ -15,7 +15,8 @@
     "pack:mac": "npm run build && build --mac",
     "dist": "npm run build && build --dir -mw",
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
-    "postinstall": "install-app-deps"
+    "postinstall": "install-app-deps",
+    "cp-bin": "cp ../probe-cli/dist/ooni.exe bin/win_x64 && cp ../probe-cli/dist/ooni bin/mac_x64"
   },
   "build": {
     "appId": "io.ooni.ooniprobe-desktop",
@@ -96,6 +97,7 @@
     "moment": "^2.20.1",
     "mri": "^1.1.0",
     "ms": "^2.0.0",
+    "npm": "^6.1.0",
     "nuka-carousel": "^2.3.0",
     "ooni-components": "^0.1.0-beta.6",
     "raven-js": "^3.25.2",
