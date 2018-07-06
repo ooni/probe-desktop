@@ -53,14 +53,14 @@ const aboutWindow = () => {
 }
 
 const mainWindow = () => {
-  let windowHeight = 720
+  let windowHeight = 640
 
   if (isWinOS) {
     windowHeight -= 12
   }
 
   const win = new electron.BrowserWindow({
-    width: 860,
+    width: 1024,
     height: windowHeight,
     title: 'OONI Probe',
     titleBarStyle: 'hidden-inset',
@@ -68,7 +68,7 @@ const mainWindow = () => {
     webPreferences: {}
   })
 
-  win.loadURL(windowURL('dashboard'))
+  win.loadURL(windowURL('home'))
   return win
 }
 

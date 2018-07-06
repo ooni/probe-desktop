@@ -45,6 +45,7 @@ const SidebarContainer = styled.div`
 `
 
 const StyledNavItem = styled.div`
+  position: relative;
   color: ${props => props.isActive ? props.theme.colors.blue5 : props.theme.colors.gray4};
   margin-bottom: 16px;
   padding-left: 16px;
@@ -57,7 +58,20 @@ const StyledNavItem = styled.div`
   &:active {
     color: ${props => props.theme.colors.blue2};
   }
+  &:hover {
+    color: ${props => props.theme.colors.blue4};
+  }
   -webkit-app-region: no-drag;
+`
+
+const ColoredStrip = styled.span`
+  display: ${props => props.active ? 'block' : 'none'};
+  height: 100%;
+  width: 8px;
+  background: ${props => props.theme.colors.blue5};
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
 `
 
 const NavItem = ({href, icon, label, currentUrl}) => {
@@ -66,7 +80,7 @@ const NavItem = ({href, icon, label, currentUrl}) => {
     <StyledNavItem isActive={isActive}>
       <Link href={href} prefetch>
         <Flex column align='center'>
-          <Box pb={2}>
+          <Box>
             {icon}
           </Box>
           <Box>
@@ -74,22 +88,23 @@ const NavItem = ({href, icon, label, currentUrl}) => {
           </Box>
         </Flex>
       </Link>
+      <ColoredStrip active={isActive} />
     </StyledNavItem>
   )
 }
 
 const navigationPaths = {
-  '/dashboard': {
-    name: 'Dashboard',
-    icon: <MdWeb size={60} />
+  '/home': {
+    name: 'Home',
+    icon: <MdWeb size={40} />
   },
   '/results': {
     name: 'Test Results',
-    icon: <MdHistory size={60} />
+    icon: <MdHistory size={40} />
   },
   '/settings': {
     name: 'Settings',
-    icon: <MdCog size={60} />
+    icon: <MdCog size={40} />
   }
 }
 

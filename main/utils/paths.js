@@ -27,7 +27,7 @@ const getResourcesDirectory = () => {
   if (is.windows) {
     return path.join(path.dirname(appPath), './resources')
   }
-
+  
   // Other platforms we should just use relative paths and hope
   // for the best
   return './resources'

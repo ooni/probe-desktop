@@ -99,12 +99,18 @@
     "ms": "^2.0.0",
     "npm": "^6.1.0",
     "nuka-carousel": "^2.3.0",
-    "ooni-components": "^0.1.0-beta.6",
+    "ooni-components": "0.1.0",
     "raven-js": "^3.25.2",
     "react-animations": "^0.1.0",
     "react-icons": "^2.2.5",
     "split2": "^2.2.0",
     "sql.js": "^0.5.0",
-    "styled-components": "^2.1.2"
+    "styled-components": "2.4.1"
+  },
+  "resolutions": {
+    "grid-styled": "2.0.0-11",
+    "rebass": "1.0.4",
+    "styled-components": "2.4.1",
+    "styled-system": "1.1.0"
   }
 }

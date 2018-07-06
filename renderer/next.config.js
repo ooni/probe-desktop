@@ -29,7 +29,7 @@ module.exports = withSourceMaps(withProgressBar({
     // when it's exporting the static bundle for the use
     // in the production version of your app
     return {
-      '/dashboard': { page: '/dashboard' },
+      '/home': { page: '/home' },
       '/results': { page: '/results' },
       '/settings': { page: '/settings' },
       '/onboard': { page: '/onboard' }

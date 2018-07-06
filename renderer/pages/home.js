@@ -4,19 +4,10 @@ import Raven from 'raven-js'
 
 import Link from 'next/link'
 
-import Layout from '../components/Layout'
-import Sidebar from '../components/SideBar'
-
 import styled, { keyframes } from 'styled-components'
 
 import MdCancel from 'react-icons/lib/md/cancel'
-import MdWeb from 'react-icons/lib/md/web'
-import MdChat from 'react-icons/lib/md/chat'
-import MdComputer from 'react-icons/lib/md/computer'
 import MdRestore from 'react-icons/lib/md/restore'
-import MdUnarchive from 'react-icons/lib/md/unarchive'
-
-import IoSpeedometer from 'react-icons/lib/io/speedometer'
 
 import {
   Button,
@@ -29,47 +20,12 @@ import {
   colors
 } from 'ooni-components'
 
-const debug = require('debug')('ooniprobe-desktop.renderer.pages.dashboard')
+import Layout from '../components/Layout'
+import Sidebar from '../components/SideBar'
 
-// XXX these should all go into components
-const dummyDesc = 'Blocking, nostrud do est, ut occaecat aute blocking, traffic manipulation minim excepteur.'
-const dummyLongDesc = 'In, internet in, Tor packet capture, blocking, internet Tor culpa, social media blocking connection reset traffic manipulation. Eu Tor aliquip, dolore network interference TCP, middlebox TLS handshake connection reset ut cupidatat TLS handshake traffic manipulation. Consectetur surveillance non Tor voluptate UDP surveillance DNS tampering ut Tor velit velit packet capture, consequat dolore eiusmod. Adipisicing UDP network interference UDP est Tor, middlebox TLS handshake internet proident, OONI OONI excepteur. Irure sunt, elit internet occaecat, DNS tampering, surveillance deserunt Open Observatory of Network Interference surveillance do.'
-const iconSize = 200
-const iconColor = colors.palette.black
-const testList  = [
-    {
-      name: 'Web Censorship',
-      key: 'websites',
-      color: colors.palette.indigo4,
-      description: dummyDesc,
-      longDescription: dummyLongDesc,
-      icon: <MdWeb size={iconSize} color={iconColor} />,
-    },
-    {
-      name: 'IM Blocking',
-      key: 'im',
-      color: colors.palette.green4,
-      description: dummyDesc,
-      longDescription: dummyLongDesc,
-      icon: <MdChat size={iconSize} color={iconColor} />
-    },
-    {
-      name: 'Performance',
-      key: 'performance',
-      color: colors.palette.fuschia4,
-      description: dummyDesc,
-      longDescription: dummyLongDesc,
-      icon: <IoSpeedometer size={iconSize} color={iconColor} />
-    },
-    {
-      name: 'Middle boxes',
-      key: 'middleboxes',
-      color: colors.palette.yellow4,
-      description: dummyDesc,
-      longDescription: dummyLongDesc,
-      icon: <MdUnarchive size={iconSize} color={iconColor} />
-    },
-]
+import { testList } from '../components/test-info'
+
+const debug = require('debug')('ooniprobe-desktop.renderer.pages.dashboard')
 
 const StyledRunTestCard = styled.div`
   padding: 30px;
