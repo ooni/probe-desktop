@@ -25,6 +25,10 @@ import MdCog from 'react-icons/lib/fa/cog'
 const sidebarWidth = '100px'
 
 const TopbarContainer = styled.div`
+  position: fixed;
+  z-index: 1000;
+  width: 100%;
+  margin-left: 100px;
   background-color: ${props => props.theme.colors.gray5};
   color: ${props => props.theme.colors.white};
   padding-top: 5px;
@@ -34,11 +38,12 @@ const TopbarContainer = styled.div`
 `
 
 const SidebarContainer = styled.div`
+  position: fixed;
   border-radius: 0;
   padding: 0;
+  padding-top: 50px;
   background-color: ${props => props.theme.colors.gray1};
   width: ${sidebarWidth};
-  padding-top: 50px;
   height: 100vh;
   /* This makes it possible to drag the window around from the side bar */
   -webkit-app-region: drag;
@@ -109,36 +114,33 @@ const navigationPaths = {
 }
 
 const ContentContainer = styled(Box)`
-  overflow: auto;
-  min-height: 100%;
-  height: 100%;
+  position: absolute;
+  top: 50px;
+  left: 100px;
   background-color: ${props => props.theme.colors.gray0};
+  z-index: 10;
 `
 export const Sidebar = ({children, currentUrl}) => (
-  <Flex style={{height: '100%', overflow: 'hidden'}}>
-    <Box>
-      <SidebarContainer>
-        {Object.keys(navigationPaths).map((path, idx) => {
-          const info = navigationPaths[path]
-          return (
-            <NavItem
-              key={idx}
-              currentUrl={currentUrl}
-              href={path}
-              icon={info.icon}
-              label={info.name} />
-          )
-        })}
-      </SidebarContainer>
-    </Box>
-    <Box style={{width: '100%', height: '100%'}}>
-      <TopbarContainer>
-        <Heading h={5} center>{navigationPaths[currentUrl.pathname].name}</Heading>
-      </TopbarContainer>
-      <ContentContainer>
-        {children}
-      </ContentContainer>
-    </Box>
-  </Flex>
+  <div>
+    <SidebarContainer>
+      {Object.keys(navigationPaths).map((path, idx) => {
+        const info = navigationPaths[path]
+        return (
+          <NavItem
+            key={idx}
+            currentUrl={currentUrl}
+            href={path}
+            icon={info.icon}
+            label={info.name} />
+        )
+      })}
+    </SidebarContainer>
+    <TopbarContainer>
+      <Heading h={5} center>{navigationPaths[currentUrl.pathname].name}</Heading>
+    </TopbarContainer>
+    <ContentContainer>
+      {children}
+    </ContentContainer>
+  </div>
 )
 export default Sidebar

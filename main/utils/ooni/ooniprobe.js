@@ -21,8 +21,8 @@ class Ooniprobe extends EventEmitter {
       const options = {
         stdio: ['pipe', 'pipe', 'pipe'],
         env: {
-          "OONI_HOME": getHomeDir(),
-          "SSL_CERT_FILE": getSSLCertFilePath()
+          'OONI_HOME': getHomeDir(),
+          'SSL_CERT_FILE': getSSLCertFilePath()
         }
       }
       const argv = ['--batch', 'run', testGroupName]
@@ -39,7 +39,7 @@ class Ooniprobe extends EventEmitter {
       ooni.on('error', function(err) {
         debug('cp.spawn.error:', err)
         reject(err)
-      });
+      })
 
       ooni.stdout.on('data', data => {
         debug('stdout: ', data.toString())
@@ -56,7 +56,7 @@ class Ooniprobe extends EventEmitter {
             message: 'got unparseable line from ooni cli',
             category: 'internal',
             data: {
-               line: line.toString('utf8')
+              line: line.toString('utf8')
             }
           })
         }
