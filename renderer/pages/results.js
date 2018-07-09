@@ -4,7 +4,10 @@ import Raven from 'raven-js'
 
 import Link from 'next/link'
 
-import moment from 'moment'
+import Moment from 'moment'
+import { extendMoment } from 'moment-range'
+const moment = extendMoment(Moment)
+
 import humanize from 'humanize'
 
 import Layout from '../components/Layout'
@@ -125,12 +128,29 @@ const ErrorView = ({error}) => {
   </div>
 }
 
+const groupRowsByMonth = (rows) => {
+  // We assume the rows are sorted from newest to oldest
+  console.log(rows.length, rows[rows.length - 1])
+  const start = moment(rows[rows.length - 1].start_time)
+  const end = moment()
+  let range = moment.range(start, end)
+  let byMonth = {}
+  Array.from(range.by('month')).map(m => {
+    byMonth[m.format('YYYY-MM-01')] = []
+  })
+  rows.map(row => {
+    const month = moment(row.start_time).format('YYYY-MM-01')
+    byMonth[month].push(row)
+  })
+  return Object.keys(byMonth).sort().reverse().map(key => [key, byMonth[key]])
+}
+
 class Results extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       loading: true,
-      rows: [],
+      byMonth: [],
       testCount: -1,
       networkCount: -1,
       dataUsageUp: -1,
@@ -146,7 +166,7 @@ class Results extends React.Component {
       console.log(results)
       this.setState({
         loading: false,
-        rows: results.rows,
+        byMonth: groupRowsByMonth(results.rows),
         testCount: results.testCount,
         networkCount: results.networkCount,
         dataUsageUp: results.dataUsageUp,
@@ -164,7 +184,7 @@ class Results extends React.Component {
   render() {
     const {
       loading,
-      rows,
+      byMonth,
       networkCount,
       testCount,
       dataUsageUp,
@@ -181,9 +201,15 @@ class Results extends React.Component {
           <Container pt={3}>
             <Text>These are the OONI Probe measurements gathered</Text>
             {loading && <Text>Loading</Text>}
-            {rows.map(row => (
-              <ResultRow  key={row.id} {...row} />
-            ))}
+            {byMonth.map(kv => {
+              const [ month, rows ] = kv
+              return (
+                <div key={month}>
+                  <Heading h={4}>{month}</Heading>
+                  {rows.map(row => <ResultRow  key={row.id} {...row} />)}
+                </div>
+              )
+            })}
           </Container>
           </div>}
           {error && <ErrorView error={error} />}

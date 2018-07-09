@@ -25,7 +25,7 @@ import MdCog from 'react-icons/lib/fa/cog'
 const sidebarWidth = '100px'
 
 const TopbarContainer = styled.div`
-  background-color: ${props => props.theme.colors.blue5};
+  background-color: ${props => props.theme.colors.gray5};
   color: ${props => props.theme.colors.white};
   padding-top: 5px;
   padding-bottom: 5px;

@@ -70,7 +70,8 @@ const listResults = () => {
         results.country,
         results.data_usage_up,
         results.data_usage_down
-        FROM results;`),
+        FROM results
+        ORDER BY results.start_time DESC;`),
         networkSet = new Set(),
         dataUsageUp = 0,
         dataUsageDown = 0
