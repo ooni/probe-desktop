@@ -1,3 +1,5 @@
+/* global require */
+
 import electron from 'electron'
 import React from 'react'
 

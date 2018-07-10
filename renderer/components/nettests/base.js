@@ -7,14 +7,13 @@ import moment from 'moment'
 import MdInfo from 'react-icons/lib/md/info'
 
 import {
-  Button,
-  Container,
   Box,
   Flex,
-  Heading,
   Text,
   Divider
 } from 'ooni-components'
+
+import Link from 'next/link'
 
 const TestName = styled.span`
   font-size: 18px;
@@ -46,7 +45,7 @@ export class ResultRow extends React.Component {
 
   renderSummary(summary) {
     return <Text>
-    {JSON.stringify(JSON.parse(summary), null, ' ')}
+      {JSON.stringify(JSON.parse(summary), null, ' ')}
     </Text>
   }
 
@@ -57,33 +56,39 @@ export class ResultRow extends React.Component {
       start_time,
       network,
       country,
-      summary
+      summary,
+      id
     } = this.props
 
     return <div>
-    <Flex pt={2} pb={2}>
-      <Box pr={2} w={1/7}>
-        {this.renderIcon()}
-      </Box>
-      <Box pr={2}>
-        <Flex column>
-        <Box pr={4} w={3/7}>
-          <TestName>{name}</TestName>
+      <Flex pt={2} pb={2}>
+        <Box pr={2} w={1/7}>
+          {this.renderIcon()}
         </Box>
-        <Box>
-          <NetworkName>{network}</NetworkName>
+        <Box pr={2}>
+          <Flex column>
+            <Box pr={4} w={3/7}>
+              <TestName>{name}</TestName>
+            </Box>
+            <Box>
+              <NetworkName>{network}</NetworkName>
+            </Box>
+            <Box>
+              <Location>AS{asn} ({country})</Location>
+              <Date>{moment(start_time).format('ll')}</Date>
+            </Box>
+          </Flex>
         </Box>
-        <Box>
-        <Location>AS{asn} ({country})</Location>
-        <Date>{moment(start_time).format('ll')}</Date>
+        <Box w={3/7}>
+          {this.renderSummary(summary)}
         </Box>
-        </Flex>
-      </Box>
-      <Box w={3/7}>
-      {this.renderSummary(summary)}
-      </Box>
-    </Flex>
-    <Divider />
+        <Box w={1/7}>
+          <Link href={{pathname: '/result', query: {id} }}>
+            <a>Go</a>
+          </Link>
+        </Box>
+      </Flex>
+      <Divider />
     </div>
   }
 }

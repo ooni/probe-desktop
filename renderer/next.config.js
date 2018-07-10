@@ -31,6 +31,7 @@ module.exports = withSourceMaps(withProgressBar({
     return {
       '/home': { page: '/home' },
       '/results': { page: '/results' },
+      '/result': { page: '/result' },
       '/settings': { page: '/settings' },
       '/onboard': { page: '/onboard' }
     }

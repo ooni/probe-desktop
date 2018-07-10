@@ -1,8 +1,7 @@
+/* global require */
 import electron from 'electron'
 import React from 'react'
 import Raven from 'raven-js'
-
-import Link from 'next/link'
 
 import Moment from 'moment'
 import { extendMoment } from 'moment-range'
@@ -13,17 +12,19 @@ import humanize from 'humanize'
 import Layout from '../components/Layout'
 import Sidebar from '../components/SideBar'
 import { ResultRow } from '../components/nettests/base'
+import ErrorView from '../components/ErrorView'
 
 import styled from 'styled-components'
 
 import {
-  Button,
   Container,
   Box,
   Flex,
   Heading,
   Text
 } from 'ooni-components'
+
+const debug = require('debug')('ooniprobe-desktop.renderer.pages.results')
 
 const Count = styled(Box)`
 text-align: center;
@@ -122,15 +123,17 @@ const ResultsHeader = ({testCount, networkCount, dataUsage}) => {
   )
 }
 
-const ErrorView = ({error}) => {
-  return <div>
-    <Text>{error.toString()}</Text>
-  </div>
+const ResultsSection = ({month, rows}) => {
+  return (
+    <div>
+      <Heading h={4}>{month}</Heading>
+      {rows.map(row => <ResultRow  key={row.id} {...row} />)}
+    </div>
+  )
 }
 
 const groupRowsByMonth = (rows) => {
   // We assume the rows are sorted from newest to oldest
-  console.log(rows.length, rows[rows.length - 1])
   const start = moment(rows[rows.length - 1].start_time)
   const end = moment()
   let range = moment.range(start, end).snapTo('month')
@@ -143,6 +146,24 @@ const groupRowsByMonth = (rows) => {
     byMonth[month].push(row)
   })
   return Object.keys(byMonth).sort().reverse().map(key => [key, byMonth[key]])
+}
+
+const FullWidth = styled.div`
+  width: 100%;
+`
+
+const ResultList = ({testCount, networkCount, dataUsageUp, dataUsageDown, byMonth}) => {
+  return (
+    <FullWidth>
+      <ResultsHeader
+        testCount={testCount}
+        networkCount={networkCount}
+        dataUsage={{up: dataUsageUp, down: dataUsageDown}} />
+      <Container pt={3}>
+        {byMonth.map(kv => <ResultsSection key={kv[0]} month={kv[0]} rows={kv[1]} />)}
+      </Container>
+    </FullWidth>
+  )
 }
 
 class Results extends React.Component {
@@ -163,7 +184,6 @@ class Results extends React.Component {
     const remote = electron.remote
     const { listResults } = remote.require('./database')
     listResults().then(results => {
-      console.log(results)
       this.setState({
         loading: false,
         byMonth: groupRowsByMonth(results.rows),
@@ -174,7 +194,7 @@ class Results extends React.Component {
       })
     }).catch(err => {
       Raven.captureException(err, {extra: {scope: 'renderer.listResults'}})
-      console.log('error triggered', err)
+      debug('error triggered', err)
       this.setState({
         error: err
       })
@@ -195,23 +215,13 @@ class Results extends React.Component {
     return (
       <Layout>
         <Sidebar currentUrl={this.props.url}>
-
-          {!error && <div style={{width: '100%'}}>
-            {!loading && <ResultsHeader testCount={testCount} networkCount={networkCount} dataUsage={{up: dataUsageUp, down: dataUsageDown}} />}
-            <Container pt={3}>
-              <Text>These are the OONI Probe measurements gathered</Text>
-              {loading && <Text>Loading</Text>}
-              {byMonth.map(kv => {
-                const [ month, rows ] = kv
-                return (
-                  <div key={month}>
-                    <Heading h={4}>{month}</Heading>
-                    {rows.map(row => <ResultRow  key={row.id} {...row} />)}
-                  </div>
-                )
-              })}
-            </Container>
-          </div>}
+          {loading && <Text>Loading</Text>}
+          <ResultList
+            networkCount={networkCount}
+            testCount={testCount}
+            dataUsageUp={dataUsageUp}
+            dataUsageDown={dataUsageDown}
+            byMonth={byMonth} />
           {error && <ErrorView error={error} />}
 
         </Sidebar>

@@ -105,13 +105,6 @@ const SidebarContainer = styled.div`
 `
 
 
-const Content = styled.div`
-  display: flex;
-  overflow: auto;
-  flex: 1;
-  width: 100%;
-`
-
 const WindowContainer = styled.div`
   position: absolute;
   top: 0px;
@@ -119,6 +112,13 @@ const WindowContainer = styled.div`
   left: 0;
   right: 0;
   display: flex;
+`
+
+const Content = styled.div`
+  display: flex;
+  overflow: auto;
+  flex: 1;
+  width: 100%;
 `
 
 const MainContainer = styled.div`
@@ -146,7 +146,6 @@ export const Sidebar = ({children, currentUrl}) => (
     <MainContainer>
 
       <TopBar w={1}>
-        <Heading h={5} center>{navigationPaths[currentUrl.pathname].name}</Heading>
       </TopBar>
 
       <Content>

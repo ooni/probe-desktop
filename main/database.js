@@ -1,3 +1,4 @@
+/* global require, module */
 const fs = require('fs-extra')
 const SQL = require('sql.js')
 
@@ -18,8 +19,7 @@ const loadDB = (path) => {
   return new SQL.Database(fs.readFileSync(path))
 }
 
-const getAllRows = (db, query) => {
-  let res = db.exec(query)
+const mapRows = (res) => {
   // Funky js map reduce magic to map column names to rows
   return res[0].values.map(row => {
     return row.reduce((a, v, i) => {
@@ -29,26 +29,31 @@ const getAllRows = (db, query) => {
   })
 }
 
-const listMeasurements = () => {
+const listMeasurements = (resultID) => {
   return new Promise((resolve, reject) => {
     const db = loadDB(MAIN_DB_PATH)
     try {
-      let rows = getAllRows(db, `SELECT
-        results.name,
+      let rows = mapRows(db.exec(`SELECT
+        results.name as result_name,
         results.start_time,
         results.runtime,
         results.summary,
         results.done,
+        measurements.id,
+        measurements.name as measurement_name,
+        measurements.input,
+        measurements.uploaded,
+        measurements.summary,
         measurements.asn,
         measurements.country,
         results.data_usage_up,
         results.data_usage_down
         FROM results
         INNER JOIN measurements ON measurements.result_id = results.id
-        GROUP BY results.id;`)
+        WHERE results.id = ${resultID};`)) // XXX do we care about SQLi?
       resolve(rows)
     } catch (err) {
-      console.log('got error', err)
+      debug('got error', err)
       reject(err)
     }
   })
@@ -58,7 +63,7 @@ const listResults = () => {
   return new Promise((resolve, reject) => {
     const db = loadDB(MAIN_DB_PATH)
     try {
-      let rows = getAllRows(db, `SELECT
+      let rows = mapRows(db.exec(`SELECT
         results.id,
         results.name,
         results.start_time,
@@ -71,7 +76,7 @@ const listResults = () => {
         results.data_usage_up,
         results.data_usage_down
         FROM results
-        ORDER BY results.start_time DESC;`),
+        ORDER BY results.start_time DESC;`)),
         networkSet = new Set(),
         dataUsageUp = 0,
         dataUsageDown = 0
