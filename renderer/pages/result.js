@@ -20,6 +20,7 @@ import Layout from '../components/Layout'
 import Sidebar from '../components/SideBar'
 import ErrorView from '../components/ErrorView'
 import MeasurementRow from '../components/result/MeasurementRow'
+import LoadingOverlay from '../components/LoadingOverlay'
 
 
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.results')
@@ -58,6 +59,7 @@ const StyledBackLink = styled.a`
   }
 `
 
+// XXX this is a bit sketchy. There is probably a better way of doing this.
 const FloatingBackButton = ({href, onClick}) => {
   if (onClick) {
     return (
@@ -193,7 +195,7 @@ class Result extends React.Component {
     return (
       <Layout>
         <Sidebar currentUrl={this.props.url}>
-          {loading && <Text>Loading</Text>}
+          <LoadingOverlay loading={loading} />
 
           <MainContainer>
 

@@ -13,6 +13,7 @@ import Layout from '../components/Layout'
 import Sidebar from '../components/SideBar'
 import { ResultRow } from '../components/nettests/base'
 import ErrorView from '../components/ErrorView'
+import LoadingOverlay from '../components/LoadingOverlay'
 
 import styled from 'styled-components'
 
@@ -215,7 +216,7 @@ class Results extends React.Component {
     return (
       <Layout>
         <Sidebar currentUrl={this.props.url}>
-          {loading && <Text>Loading</Text>}
+          <LoadingOverlay loading={loading} />
           <ResultList
             networkCount={networkCount}
             testCount={testCount}
