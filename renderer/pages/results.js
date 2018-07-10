@@ -21,8 +21,7 @@ import {
   Container,
   Box,
   Flex,
-  Heading,
-  Text
+  Heading
 } from 'ooni-components'
 
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.results')
