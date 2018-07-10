@@ -11,17 +11,19 @@ import {
   Text,
   Container,
   Box,
-  Divider
+  Divider,
+  Button
 } from 'ooni-components'
 
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.results')
 
-const MeasurementRow = (m) => {
-  debug('rendering', m)
+const MeasurementRow = ({measurement, onSelect}) => {
+  debug('rendering', measurement)
   return (
     <Box w={1}>
-      <Text>{m.measurement_name}</Text>
-      <Text>{m.input}</Text>
+      <Text>{measurement.measurement_name}</Text>
+      <Text>{measurement.input}</Text>
+      <Button onClick={() => onSelect(measurement)}>Open</Button>
       <Divider />
     </Box>
   )
