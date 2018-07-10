@@ -22,33 +22,6 @@ import MdWeb from 'react-icons/lib/md/web'
 import MdHistory from 'react-icons/lib/md/history'
 import MdCog from 'react-icons/lib/fa/cog'
 
-const sidebarWidth = '100px'
-
-const TopbarContainer = styled.div`
-  position: fixed;
-  z-index: 1000;
-  width: 100%;
-  margin-left: 100px;
-  background-color: ${props => props.theme.colors.gray5};
-  color: ${props => props.theme.colors.white};
-  padding-top: 5px;
-  padding-bottom: 5px;
-  /* This makes it possible to drag the window around from the side bar */
-  -webkit-app-region: drag;
-`
-
-const SidebarContainer = styled.div`
-  position: fixed;
-  border-radius: 0;
-  padding: 0;
-  padding-top: 50px;
-  background-color: ${props => props.theme.colors.gray1};
-  width: ${sidebarWidth};
-  height: 100vh;
-  /* This makes it possible to drag the window around from the side bar */
-  -webkit-app-region: drag;
-`
-
 const StyledNavItem = styled.div`
   position: relative;
   color: ${props => props.isActive ? props.theme.colors.blue5 : props.theme.colors.gray4};
@@ -113,15 +86,49 @@ const navigationPaths = {
   }
 }
 
-const ContentContainer = styled(Box)`
-  position: absolute;
-  top: 50px;
-  left: 100px;
-  background-color: ${props => props.theme.colors.gray0};
-  z-index: 10;
+const TopBar = styled(Box)`
+  height: 50px;
+  background-color: ${props => props.theme.colors.gray5};
+  color: ${props => props.theme.colors.white};
+  /* This makes it possible to drag the window around from the side bar */
+  -webkit-app-region: drag;
 `
+
+const sidebarWidth = '100px'
+
+const SidebarContainer = styled.div`
+  padding-top: 50px;
+  background-color: ${props => props.theme.colors.gray1};
+  width: ${sidebarWidth};
+  /* This makes it possible to drag the window around from the side bar */
+  -webkit-app-region: drag;
+`
+
+
+const Content = styled.div`
+  display: flex;
+  overflow: auto;
+  flex: 1;
+  width: 100%;
+`
+
+const WindowContainer = styled.div`
+  position: absolute;
+  top: 0px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+`
+
+const MainContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`
+
 export const Sidebar = ({children, currentUrl}) => (
-  <div>
+  <WindowContainer>
     <SidebarContainer>
       {Object.keys(navigationPaths).map((path, idx) => {
         const info = navigationPaths[path]
@@ -135,12 +142,19 @@ export const Sidebar = ({children, currentUrl}) => (
         )
       })}
     </SidebarContainer>
-    <TopbarContainer>
-      <Heading h={5} center>{navigationPaths[currentUrl.pathname].name}</Heading>
-    </TopbarContainer>
-    <ContentContainer>
-      {children}
-    </ContentContainer>
-  </div>
+
+    <MainContainer>
+
+      <TopBar w={1}>
+        <Heading h={5} center>{navigationPaths[currentUrl.pathname].name}</Heading>
+      </TopBar>
+
+      <Content>
+        {children}
+      </Content>
+
+    </MainContainer>
+
+  </WindowContainer>
 )
 export default Sidebar

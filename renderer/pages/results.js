@@ -40,8 +40,8 @@ const TestCount = ({testCount}) => {
   return (
     <Box pr={2} w={1/3}>
       <Flex column>
-      <Count>{testCount}</Count>
-      <Unit>Tests</Unit>
+        <Count>{testCount}</Count>
+        <Unit>Tests</Unit>
       </Flex>
     </Box>
   )
@@ -50,10 +50,10 @@ const TestCount = ({testCount}) => {
 const NetworkCount = ({networkCount}) => {
   return (
     <Box pr={2} w={1/3}>
-    <Flex column>
-    <Count>{networkCount}</Count>
-    <Unit>Networks</Unit>
-    </Flex>
+      <Flex column>
+        <Count>{networkCount}</Count>
+        <Unit>Networks</Unit>
+      </Flex>
     </Box>
   )
 }
@@ -85,15 +85,15 @@ const HumanFilesize = ({size}) => {
 const DataUsage = ({dataUsage}) => {
   return (
     <Box pr={2} w={1/3}>
-    <Flex column>
-    <Box>
       <Flex column>
-        <HumanFilesize size={dataUsage.up} />
-        <HumanFilesize size={dataUsage.down} />
+        <Box>
+          <Flex column>
+            <HumanFilesize size={dataUsage.up} />
+            <HumanFilesize size={dataUsage.down} />
+          </Flex>
+        </Box>
+        <Unit>Data</Unit>
       </Flex>
-    </Box>
-    <Unit>Data</Unit>
-    </Flex>
     </Box>
   )
 }
@@ -110,13 +110,13 @@ const ResultsHeader = ({testCount, networkCount, dataUsage}) => {
   return (
     <StyledResultsHeader>
       <Flex align='baseline' justify='space-around'>
-      <Box w={2/3}>
-        <Flex>
-        <TestCount testCount={testCount} />
-        <NetworkCount networkCount={networkCount} />
-        <DataUsage dataUsage={dataUsage} />
-        </Flex>
-      </Box>
+        <Box w={2/3}>
+          <Flex>
+            <TestCount testCount={testCount} />
+            <NetworkCount networkCount={networkCount} />
+            <DataUsage dataUsage={dataUsage} />
+          </Flex>
+        </Box>
       </Flex>
     </StyledResultsHeader>
   )
@@ -124,7 +124,7 @@ const ResultsHeader = ({testCount, networkCount, dataUsage}) => {
 
 const ErrorView = ({error}) => {
   return <div>
-  <Text>{error.toString()}</Text>
+    <Text>{error.toString()}</Text>
   </div>
 }
 
@@ -133,9 +133,9 @@ const groupRowsByMonth = (rows) => {
   console.log(rows.length, rows[rows.length - 1])
   const start = moment(rows[rows.length - 1].start_time)
   const end = moment()
-  let range = moment.range(start, end)
+  let range = moment.range(start, end).snapTo('month')
   let byMonth = {}
-  Array.from(range.by('month')).map(m => {
+  Array.from(range.by('month', { excludeEnd: false})).map(m => {
     byMonth[m.format('YYYY-MM-01')] = []
   })
   rows.map(row => {
@@ -196,21 +196,21 @@ class Results extends React.Component {
       <Layout>
         <Sidebar currentUrl={this.props.url}>
 
-          {!error && <div>
-          {!loading && <ResultsHeader testCount={testCount} networkCount={networkCount} dataUsage={{up: dataUsageUp, down: dataUsageDown}} />}
-          <Container pt={3}>
-            <Text>These are the OONI Probe measurements gathered</Text>
-            {loading && <Text>Loading</Text>}
-            {byMonth.map(kv => {
-              const [ month, rows ] = kv
-              return (
-                <div key={month}>
-                  <Heading h={4}>{month}</Heading>
-                  {rows.map(row => <ResultRow  key={row.id} {...row} />)}
-                </div>
-              )
-            })}
-          </Container>
+          {!error && <div style={{width: '100%'}}>
+            {!loading && <ResultsHeader testCount={testCount} networkCount={networkCount} dataUsage={{up: dataUsageUp, down: dataUsageDown}} />}
+            <Container pt={3}>
+              <Text>These are the OONI Probe measurements gathered</Text>
+              {loading && <Text>Loading</Text>}
+              {byMonth.map(kv => {
+                const [ month, rows ] = kv
+                return (
+                  <div key={month}>
+                    <Heading h={4}>{month}</Heading>
+                    {rows.map(row => <ResultRow  key={row.id} {...row} />)}
+                  </div>
+                )
+              })}
+            </Container>
           </div>}
           {error && <ErrorView error={error} />}
 

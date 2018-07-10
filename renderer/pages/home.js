@@ -5,16 +5,13 @@ import * as chroma from 'chroma-js'
 
 import Link from 'next/link'
 
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 
 import MdHelp from 'react-icons/lib/md/help'
-import MdCancel from 'react-icons/lib/md/cancel'
 import MdClear from 'react-icons/lib/md/clear'
-import MdRestore from 'react-icons/lib/md/restore'
 
 import {
   Button,
-  Container,
   Box,
   Flex,
   Heading,
@@ -56,46 +53,57 @@ const TopLeftFloatingButton = styled.div`
   cursor: pointer;
 `
 
+const ConfigureButton = styled(Button)`
+  font-size: 12px;
+  border-radius: 20px;
+  height: 25px;
+  line-height: 1;
+  padding-left: 15px;
+  padding-right: 15px;
+  text-transform: none;
+  border: 1px solid ${props => props.theme.colors.white};
+`
+
 const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, onConfigure}) => (
   <Box w={1/2} pr={3} pb={3}>
-  <Card bg={color} color='white' style={{position: 'relative'}}>
-    <TopLeftFloatingButton>
-      <MdHelp onClick={toggleCard} size={30} />
-    </TopLeftFloatingButton>
-  <CardContent>
-    <Heading h={2}>{name}</Heading>
-    <Button hollow inverted fontSize={1} onClick={onConfigure}>
+    <Card bg={color} color='white' style={{position: 'relative', padding: '20px 32px'}}>
+      <TopLeftFloatingButton>
+        <MdHelp onClick={toggleCard} size={30} />
+      </TopLeftFloatingButton>
+      <CardContent>
+        <Heading h={2}>{name}</Heading>
+        <ConfigureButton hollow inverted fontSize={1} onClick={onConfigure}>
       Configure
-    </Button>
-    <Flex pt={5}>
-      <Box w={3/4} pr={4}>
-        <Text>{description}</Text>
-      </Box>
-      <Box w={1/4} mr={2}>
-        <Button inverted fontSize={1} onClick={onRun}>
+        </ConfigureButton>
+        <Flex pt={5}>
+          <Box w={3/4} pr={4}>
+            <Text>{description}</Text>
+          </Box>
+          <Box w={1/4} mr={2}>
+            <Button inverted fontSize={1} onClick={onRun}>
         Run
-        </Button>
-      </Box>
-    </Flex>
-    <BgIcon>
-      {icon}
-    </BgIcon>
-  </CardContent>
-  </Card>
+            </Button>
+          </Box>
+        </Flex>
+        <BgIcon>
+          {icon}
+        </BgIcon>
+      </CardContent>
+    </Card>
   </Box>
 )
 
 const BackCardContent = ({name, longDescription, icon, color, toggleCard}) => (
   <Box w={1/2} pr={3} pb={3}>
-  <Card bg={chroma(color).darken(2).desaturate()} color='white' style={{position: 'relative'}}>
-    <TopLeftFloatingButton>
-      <MdClear onClick={toggleCard} size={30} />
-    </TopLeftFloatingButton>
-  <CardContent>
-    <Heading h={2}>{name}</Heading>
-    <Text>{longDescription}</Text>
-  </CardContent>
-  </Card>
+    <Card bg={chroma(color).darken(2).desaturate()} color='white' style={{position: 'relative'}}>
+      <TopLeftFloatingButton>
+        <MdClear onClick={toggleCard} size={30} />
+      </TopLeftFloatingButton>
+      <CardContent>
+        <Heading h={2}>{name}</Heading>
+        <Text>{longDescription}</Text>
+      </CardContent>
+    </Card>
   </Box>
 )
 
@@ -119,12 +127,12 @@ class RunTestCard extends React.Component {
 
     if (isFlipped) {
       return <BackCardContent
-                toggleCard={this.toggleCard}
-                {...this.props} />
+        toggleCard={this.toggleCard}
+        {...this.props} />
     }
     return <FrontCardContent
-              toggleCard={this.toggleCard}
-                {...this.props} />
+      toggleCard={this.toggleCard}
+      {...this.props} />
   }
 }
 

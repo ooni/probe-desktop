@@ -1,3 +1,4 @@
+/* global require */
 import React from 'react'
 import Router from 'next/router'
 
@@ -5,17 +6,8 @@ import Raven from 'raven-js'
 
 import styled from 'styled-components'
 
-import { withRouter } from 'next/router'
-
 import {
-  Button,
-  Container,
-  Box,
-  Flex,
   Heading,
-  Text,
-  Card,
-  colors
 } from 'ooni-components'
 
 import { testGroups } from '../test-info'
@@ -24,6 +16,9 @@ const debug = require('debug')('ooniprobe-desktop.renderer.components.home.runni
 
 const StyledRunningTest = styled.div`
   text-align: center;
+`
+
+const ScrollingLog = styled.div`
 `
 
 class RunningTestLog extends React.Component {
@@ -40,27 +35,27 @@ class RunningTestLog extends React.Component {
 
   onMessage(event, data) {
     switch (data.key) {
-      case 'ooni.run.progress':
-        this.setState({
-          percent: data.percentage,
-          logLine: data.message,
-          runningTest: {
-            name: data.testKey
-          }
-        })
-        break
-      case 'error':
-        debug('error received', data)
-        this.setState({
-          error: data.message,
-          runningTest: null,
-        })
-        break
-      case 'log':
-        debug('log received', data)
-        break
-      default:
-        break
+    case 'ooni.run.progress':
+      this.setState({
+        percent: data.percentage,
+        logLine: data.message,
+        runningTest: {
+          name: data.testKey
+        }
+      })
+      break
+    case 'error':
+      debug('error received', data)
+      this.setState({
+        error: data.message,
+        runningTest: null,
+      })
+      break
+    case 'log':
+      debug('log received', data)
+      break
+    default:
+      break
     }
   }
 
@@ -82,6 +77,8 @@ class RunningTestLog extends React.Component {
         <Heading h={3}>Running {runningTest && runningTest.name}</Heading>
         <div>{logLine}</div>
         <div>{percent*100}%</div>
+        <ScrollingLog>
+        </ScrollingLog>
         {error && <p>{error}</p>}
       </div>
     )
@@ -126,7 +123,7 @@ class Running extends React.Component {
 
   componentDidMount() {
     const {
-        testGroupName
+      testGroupName
     } = this.props
     const { remote } = require('electron')
 
