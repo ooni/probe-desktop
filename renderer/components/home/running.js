@@ -135,6 +135,8 @@ const WindowContainer = styled.div`
   right: 0;
   display: flex;
   background-color: ${props => props.bg};
+  /* This makes it possible to drag the window around from the side bar */
+  -webkit-app-region: drag;
 `
 
 const ContentContainer = styled.div`

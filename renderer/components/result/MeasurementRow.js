@@ -10,6 +10,7 @@ import styled from 'styled-components'
 import {
   Text,
   Container,
+  Flex,
   Box,
   Divider,
   Button

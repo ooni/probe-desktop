@@ -1,11 +1,15 @@
 import React from 'react'
 
 import {
-  theme
+  theme,
+  Text,
+  Flex,
+  Box
 } from 'ooni-components'
 
 // XXX this should be moved to the design-system
 
+import MdClear from 'react-icons/lib/md/clear'
 import MdChat from 'react-icons/lib/md/chat'
 import MdWeb from 'react-icons/lib/md/web'
 import MdComputer from 'react-icons/lib/md/computer'
@@ -15,26 +19,50 @@ import IoSpeedometer from 'react-icons/lib/io/speedometer'
 const iconSize = 200
 const iconColor = theme.colors.black
 
+//
+const formatNumber = (n) => {
+  return `${n}`
+}
+
+const renderWebsitesSummary = (summary) => {
+  if (summary == null) {
+    return <Text color={theme.colors.red5}>Error</Text>
+  }
+
+  return <Flex column>
+    <Box w={1}>
+      <Text color={theme.colors.red5}><MdClear /> {formatNumber(summary['Blocked'])} blocked</Text>
+    </Box>
+    <Box w={1}>
+      <Text><MdWeb /> {formatNumber(summary['Tested'])} tested</Text>
+    </Box>
+  </Flex>
+}
+
 export const testGroups = {
   'websites': {
     'color': theme.colors.indigo5,
     'name': 'Websites',
-    'icon': <MdWeb />
+    'icon': <MdWeb />,
+    renderSummary: renderWebsitesSummary
   },
   'im': {
     'color': theme.colors.cyan6,
     'name': 'Instant Messagging',
-    'icon': <MdChat />
+    'icon': <MdChat />,
+    renderSummary: renderWebsitesSummary
   },
   'middlebox': {
     'color': theme.colors.violet8,
     'name': 'Middlebox',
-    'icon': <MdUnarchive />
+    'icon': <MdUnarchive />,
+    renderSummary: renderWebsitesSummary
   },
   'performance': {
     'color': theme.colors.fuschia6,
     'name': 'Performance',
-    'icon': <IoSpeedometer />
+    'icon': <IoSpeedometer />,
+    renderSummary: renderWebsitesSummary
   }
 }
 

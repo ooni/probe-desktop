@@ -11,7 +11,7 @@ import humanize from 'humanize'
 
 import Layout from '../components/Layout'
 import Sidebar from '../components/SideBar'
-import { ResultRow } from '../components/nettests/base'
+import ResultRow from '../components/results/ResultRow'
 import ErrorView from '../components/ErrorView'
 import LoadingOverlay from '../components/LoadingOverlay'
 
@@ -123,10 +123,17 @@ const ResultsHeader = ({testCount, networkCount, dataUsage}) => {
   )
 }
 
+const MonthContainer = styled.div`
+  padding: 5px 20px;
+  background-color: ${props => props.theme.colors.gray1};
+`
+
 const ResultsSection = ({month, rows}) => {
   return (
     <div>
-      <Heading h={4}>{month}</Heading>
+      <MonthContainer>
+        <Heading h={5}>{moment(month).format('MMMM YYYY')}</Heading>
+      </MonthContainer>
       {rows.map(row => <ResultRow  key={row.id} {...row} />)}
     </div>
   )
@@ -159,9 +166,7 @@ const ResultList = ({testCount, networkCount, dataUsageUp, dataUsageDown, byMont
         testCount={testCount}
         networkCount={networkCount}
         dataUsage={{up: dataUsageUp, down: dataUsageDown}} />
-      <Container pt={3}>
-        {byMonth.map(kv => <ResultsSection key={kv[0]} month={kv[0]} rows={kv[1]} />)}
-      </Container>
+      {byMonth.map(kv => <ResultsSection key={kv[0]} month={kv[0]} rows={kv[1]} />)}
     </FullWidth>
   )
 }
