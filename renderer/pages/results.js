@@ -18,7 +18,6 @@ import LoadingOverlay from '../components/LoadingOverlay'
 import styled from 'styled-components'
 
 import {
-  Container,
   Box,
   Flex,
   Heading

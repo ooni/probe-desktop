@@ -3,17 +3,29 @@ import React from 'react'
 
 import Raven from 'raven-js'
 
+import moment from 'moment'
+
 import Link from 'next/link'
 import { withRouter } from 'next/router'
 
 import styled from 'styled-components'
 
+// XXX replace this with the correct icon
+import IconUpload from 'react-icons/lib/md/file-upload'
+import IconDownload from 'react-icons/lib/md/file-download'
+
+import MdFlag from 'react-icons/lib/md/flag'
+import MdTimer from 'react-icons/lib/md/timer'
+import MdSwapVert from 'react-icons/lib/md/swap-vert'
 import MdKeyboardArrowLeft from 'react-icons/lib/md/keyboard-arrow-left'
+import MdPublic from 'react-icons/lib/md/public'
 
 import {
+  Heading,
   Text,
   Container,
-  Flex
+  Flex,
+  Box
 } from 'ooni-components'
 
 import Layout from '../components/Layout'
@@ -22,6 +34,7 @@ import ErrorView from '../components/ErrorView'
 import MeasurementRow from '../components/result/MeasurementRow'
 import LoadingOverlay from '../components/LoadingOverlay'
 
+import { testGroups } from '../components/test-info'
 
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.results')
 
@@ -70,26 +83,62 @@ const FloatingBackButton = ({href, onClick}) => {
       </FloatingBackButtonContainer>
     )
   }
+}
+
+const TwoColumnTable = ({left, right}) => {
   return (
-    <FloatingBackButtonContainer>
-      <Link href={href}>
-        <StyledBackLink href={href}>
-          <MdKeyboardArrowLeft size={50} />
-        </StyledBackLink>
-      </Link>
-    </FloatingBackButtonContainer>
+    <Flex align='center' pb={1}>
+      <Box>
+        {left}
+      </Box>
+      <Box ml='auto'>
+        {right}
+      </Box>
+    </Flex>
   )
 }
 
-const ResultOverview = ({href, groupName}) => {
+const ResultOverviewContainer = styled.div`
+  position: relative;
+  width: 100%;
+  color: ${props => props.theme.colors.white};
+`
+
+// XXX groupName is also passed in
+const ResultOverview = ({href, startTime, dataUsageUp, dataUsageDown, runtime, networkName, country, asn}) => {
   return (
-    <div>
-      <FloatingBackButton href={href} />
+    <ResultOverviewContainer>
+      <Flex justify='center' align='center'>
+        <Box>
+          <Link href={href}>
+            <StyledBackLink href={href}>
+              <MdKeyboardArrowLeft size={50} />
+            </StyledBackLink>
+          </Link>
+        </Box>
+        <Box w={1}>
+          <Heading center h={3}>{startTime && moment(startTime).format('lll')}</Heading>
+        </Box>
+      </Flex>
       <Container>
-        <Text>Result Overview</Text>
-        <Text>{groupName}</Text>
+        <TwoColumnTable
+          left={<Text><MdSwapVert size={20} />Data Usage</Text>}
+          right={<Text><IconUpload /> {dataUsageUp} <IconDownload />{dataUsageDown}</Text>} />
+
+        <TwoColumnTable
+          left={<Text><MdTimer size={20} />Total runtime</Text>}
+          right={<Text>{moment.duration(runtime, 'seconds').humanize()}</Text>} />
+
+        <TwoColumnTable
+          left={<Text><MdFlag size={20} />Country</Text>}
+          right={<Text>{country}</Text>} />
+
+        <TwoColumnTable
+          left={<Text><MdPublic  size={20} />Network</Text>}
+          right={<Text>{networkName} ({asn})</Text>} />
+
       </Container>
-    </div>
+    </ResultOverviewContainer>
   )
 }
 
@@ -105,10 +154,16 @@ const MeasurementOverview = ({href, groupName, onBack}) => {
   )
 }
 
-const MeasurementList = ({measurements, onSelect}) => {
+const MeasurementList = ({groupName, measurements, onSelect}) => {
+  const group = testGroups[groupName]
   return (
-    <Flex wrap>
-      {measurements.map(m => <MeasurementRow key={m.id} measurement={m} onSelect={onSelect} />)}
+    <Flex wrap style={{width: '100%'}}>
+      <Box w={1}>
+        {measurements.map(m => React.cloneElement(
+          group.renderMeasurementRow(m, onSelect),
+          {key: m.id}
+        ))}
+      </Box>
     </Flex>
   )
 }
@@ -129,6 +184,13 @@ class Result extends React.Component {
     this.state = {
       measurements: [],
       selectedMeasurement: null,
+      startTime: null,
+      dataUsageUp: 0,
+      dataUsageDown: 0,
+      runtime: 0,
+      networkName: '',
+      country: '',
+      asn: '',
       groupName: null,
       loading: true,
       error: null,
@@ -152,10 +214,18 @@ class Result extends React.Component {
 
     listMeasurements(resultID).then(msmts => {
       debug(msmts)
+      const msmt = msmts[0]
       this.setState({
         loading: false,
         measurements: msmts,
-        groupName: msmts[0].result_name
+        startTime: msmt.start_time,
+        dataUsageUp: msmt.data_usage_up,
+        dataUsageDown: msmt.data_usage_down,
+        runtime: msmt.runtime,
+        networkName: msmt.network_name,
+        country: msmt.country,
+        asn: msmt.asn,
+        groupName: msmt.result_name
       })
     }).catch(err => {
       Raven.captureException(err, {extra: {scope: 'renderer.listMeasurements'}})
@@ -174,6 +244,13 @@ class Result extends React.Component {
 
   render() {
     const {
+      startTime,
+      dataUsageUp,
+      dataUsageDown,
+      runtime,
+      networkName,
+      country,
+      asn,
       groupName,
       measurements,
       selectedMeasurement,
@@ -192,6 +269,20 @@ class Result extends React.Component {
       href = `/result?id=${resultID}`
     }
 
+    const overviewProps = {
+      href,
+      groupName,
+      startTime,
+      dataUsageUp,
+      dataUsageDown,
+      runtime,
+      networkName,
+      country,
+      asn
+    }
+    debug('loading', selectedMeasurement)
+    const group = testGroups[groupName] || {}
+
     return (
       <Layout>
         <Sidebar currentUrl={this.props.url}>
@@ -199,16 +290,16 @@ class Result extends React.Component {
 
           <MainContainer>
 
-            <LeftColumn>
+            <LeftColumn color={group.color}>
               {selectedMeasurement
-                ? <MeasurementOverview href={href} groupName={groupName} onBack={() => this.onSelectMeasurement(null)} />
-                : <ResultOverview href={href} groupName={groupName} />}
+                ? <MeasurementOverview {...overviewProps} onBack={() => this.onSelectMeasurement(null)} />
+                : <ResultOverview {...overviewProps} />}
             </LeftColumn>
 
             <RightColumn>
               {selectedMeasurement
                 ? <MeasurementDetails measurement={selectedMeasurement} />
-                : <MeasurementList measurements={measurements} onSelect={this.onSelectMeasurement} />}
+                : <MeasurementList groupName={groupName} measurements={measurements} onSelect={this.onSelectMeasurement} />}
             </RightColumn>
 
           </MainContainer>

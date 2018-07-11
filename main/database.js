@@ -39,15 +39,16 @@ const listMeasurements = (resultID) => {
         results.runtime,
         results.summary,
         results.done,
+        results.network_name,
+        results.asn,
+        results.country,
+        results.data_usage_up,
+        results.data_usage_down,
         measurements.id,
         measurements.name as measurement_name,
         measurements.input,
         measurements.uploaded,
-        measurements.summary,
-        measurements.asn,
-        measurements.country,
-        results.data_usage_up,
-        results.data_usage_down
+        measurements.summary
         FROM results
         INNER JOIN measurements ON measurements.result_id = results.id
         WHERE results.id = ${resultID};`)) // XXX do we care about SQLi?

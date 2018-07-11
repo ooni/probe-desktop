@@ -1,5 +1,7 @@
 import React from 'react'
 
+import Link from 'next/link'
+
 import {
   theme,
   Text,
@@ -7,8 +9,12 @@ import {
   Box
 } from 'ooni-components'
 
+import styled from 'styled-components'
+import RightArrow from './RightArrow'
+
 // XXX this should be moved to the design-system
 
+import MdCheck from 'react-icons/lib/md/check'
 import MdClear from 'react-icons/lib/md/clear'
 import MdChat from 'react-icons/lib/md/chat'
 import MdWeb from 'react-icons/lib/md/web'
@@ -19,11 +25,6 @@ import IoSpeedometer from 'react-icons/lib/io/speedometer'
 const iconSize = 200
 const iconColor = theme.colors.black
 
-//
-const formatNumber = (n) => {
-  return `${n}`
-}
-
 const renderWebsitesSummary = (summary) => {
   if (summary == null) {
     return <Text color={theme.colors.red5}>Error</Text>
@@ -31,12 +32,62 @@ const renderWebsitesSummary = (summary) => {
 
   return <Flex column>
     <Box w={1}>
-      <Text color={theme.colors.red5}><MdClear /> {formatNumber(summary['Blocked'])} blocked</Text>
+      <Text color={theme.colors.red5}><MdClear /> {summary['Blocked']} blocked</Text>
     </Box>
     <Box w={1}>
-      <Text><MdWeb /> {formatNumber(summary['Tested'])} tested</Text>
+      <Text><MdWeb /> {summary['Tested']} tested</Text>
     </Box>
   </Flex>
+}
+
+const BorderedRow = styled(Flex)`
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid ${props => props.theme.colors.gray3};
+`
+
+const VerticalCenter = ({children}) => {
+  return (
+    <Flex justify='center' align='center' style={{height: '100%'}}>
+      <Box>
+        {children}
+      </Box>
+    </Flex>
+  )
+}
+
+const Status = ({ok}) => {
+  if (ok) {
+    return <MdCheck size={30} color={theme.colors.green5} />
+  }
+  return <MdClear size={30} color={theme.colors.green5} />
+}
+
+const renderWebsitesMeasurementRow = (measurement, onSelect) => {
+  if (measurement == null) {
+    return <Text color={theme.colors.red5}>Error</Text>
+  }
+
+  const summary = JSON.parse(measurement.summary)
+  return (
+    <BorderedRow>
+      <Box pr={2} pl={2} w={1/8}>
+        <MdComputer size={30}/>
+      </Box>
+      <Box w={6/8} h={1}>
+        {measurement.input}
+      </Box>
+      <Box w={1/8} h={1}>
+        <Status ok={!summary.blocked} />
+      </Box>
+      <Box w={1/8} style={{marginLeft: 'auto'}} onClick={() => onSelect(measurement)}>
+        <VerticalCenter>
+          <RightArrow />
+        </VerticalCenter>
+      </Box>
+    </BorderedRow>
+  )
 }
 
 export const testGroups = {
@@ -44,25 +95,29 @@ export const testGroups = {
     'color': theme.colors.indigo5,
     'name': 'Websites',
     'icon': <MdWeb />,
-    renderSummary: renderWebsitesSummary
+    renderSummary: renderWebsitesSummary,
+    renderMeasurementRow: renderWebsitesMeasurementRow,
   },
   'im': {
     'color': theme.colors.cyan6,
     'name': 'Instant Messagging',
     'icon': <MdChat />,
-    renderSummary: renderWebsitesSummary
+    renderSummary: renderWebsitesSummary,
+    renderMeasurementRow: renderWebsitesMeasurementRow,
   },
   'middlebox': {
     'color': theme.colors.violet8,
     'name': 'Middlebox',
     'icon': <MdUnarchive />,
-    renderSummary: renderWebsitesSummary
+    renderSummary: renderWebsitesSummary,
+    renderMeasurementRow: renderWebsitesMeasurementRow,
   },
   'performance': {
     'color': theme.colors.fuschia6,
     'name': 'Performance',
     'icon': <IoSpeedometer />,
-    renderSummary: renderWebsitesSummary
+    renderSummary: renderWebsitesSummary,
+    renderMeasurementRow: renderWebsitesMeasurementRow,
   }
 }
 

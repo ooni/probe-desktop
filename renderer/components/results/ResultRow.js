@@ -4,8 +4,6 @@ import styled from 'styled-components'
 
 import moment from 'moment'
 
-import MdChevronRight from 'react-icons/lib/md/chevron-right'
-
 import {
   theme,
   Box,
@@ -17,6 +15,7 @@ import {
 import Link from 'next/link'
 
 import { testGroups } from '../test-info'
+import RightArrow from '../RightArrow'
 
 const ColorCode = styled.div`
   height: 80px;
@@ -41,13 +40,6 @@ const VerticalCenter = ({children}) => {
   )
 }
 
-const RightArrow = styled.a`
-  cursor: pointer;
-  color: ${props => props.theme.colors.gray4};
-  &:hover {
-    color: ${props => props.theme.colors.gray6};
-  }
-`
 class ResultRow extends React.Component {
   constructor (props) {
     super(props)
@@ -125,7 +117,6 @@ class ResultRow extends React.Component {
     const {
       id
     } = this.props
-
     return <BorderedRow>
       <Flex>
         <Box pr={2} w={3/16}>
@@ -142,8 +133,10 @@ class ResultRow extends React.Component {
         </Box>
         <Box w={1/6} style={{marginLeft: 'auto'}}>
           <VerticalCenter>
-            <Link href={{pathname: '/result', query: {id} }}>
-              <RightArrow><MdChevronRight size={30} /></RightArrow>
+            <Link href={{ pathname: '/result', query: {id} }} passHref>
+              <a>
+                <RightArrow />
+              </a>
             </Link>
           </VerticalCenter>
         </Box>
