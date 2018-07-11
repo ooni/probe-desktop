@@ -57,11 +57,14 @@ const VerticalCenter = ({children}) => {
   )
 }
 
-const Status = ({ok}) => {
-  if (ok) {
+const Status = ({blocked}) => {
+  if (blocked === false) {
     return <MdCheck size={30} color={theme.colors.green5} />
   }
-  return <MdClear size={30} color={theme.colors.green5} />
+  if (blocked === true) {
+    return <MdClear size={30} color={theme.colors.red6} />
+  }
+  return <Text color={theme.colors.red5}>Error ({blocked})</Text>
 }
 
 const renderWebsitesMeasurementRow = (measurement, onSelect) => {
@@ -79,7 +82,7 @@ const renderWebsitesMeasurementRow = (measurement, onSelect) => {
         {measurement.input}
       </Box>
       <Box w={1/8} h={1}>
-        <Status ok={!summary.blocked} />
+        <Status blocked={summary.Blocked} />
       </Box>
       <Box w={1/8} style={{marginLeft: 'auto'}} onClick={() => onSelect(measurement)}>
         <VerticalCenter>
