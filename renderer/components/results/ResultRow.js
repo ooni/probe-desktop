@@ -115,7 +115,7 @@ class ResultRow extends React.Component {
 
   render() {
     const {
-      id
+      resultID
     } = this.props
     return <BorderedRow>
       <Flex>
@@ -133,7 +133,7 @@ class ResultRow extends React.Component {
         </Box>
         <Box w={1/6} style={{marginLeft: 'auto'}}>
           <VerticalCenter>
-            <Link href={{ pathname: '/result', query: {id} }} passHref>
+            <Link href={{ pathname: '/results', query: {resultID} }} passHref>
               <a>
                 <RightArrow />
               </a>

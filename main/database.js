@@ -1,6 +1,5 @@
 /* global require, module */
 const fs = require('fs-extra')
-const SQL = require('sql.js')
 
 // Load the db
 const path = require('path')
@@ -16,6 +15,7 @@ const debug = require('debug')('ooniprobe-desktop.main.database')
 debug('database path', MAIN_DB_PATH)
 
 const loadDB = (path) => {
+  const SQL = require('sql.js/js/sql-memory-growth')
   return new SQL.Database(fs.readFileSync(path))
 }
 
@@ -96,7 +96,7 @@ const listResults = () => {
         dataUsageDown,
       })
     } catch (err) {
-      console.log('got error', err)
+      debug('got error', err)
       reject(err)
     }
   })

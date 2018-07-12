@@ -3,235 +3,147 @@ import electron from 'electron'
 import React from 'react'
 import Raven from 'raven-js'
 
-import Moment from 'moment'
-import { extendMoment } from 'moment-range'
-const moment = extendMoment(Moment)
-
-import humanize from 'humanize'
+import { withRouter } from 'next/router'
 
 import Layout from '../components/Layout'
 import Sidebar from '../components/SideBar'
-import ResultRow from '../components/results/ResultRow'
+import TestResultsList from '../components/results/TestResultsList'
+import TestResult from '../components/results/TestResult'
+import TestResultDetails from '../components/results/TestResultDetails'
 import ErrorView from '../components/ErrorView'
 import LoadingOverlay from '../components/LoadingOverlay'
 
-import styled from 'styled-components'
-
-import {
-  Box,
-  Flex,
-  Heading
-} from 'ooni-components'
-
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.results')
-
-const Count = styled(Box)`
-text-align: center;
-font-size: 42px;
-font-weight: 300;
-`
-
-const Unit = styled(Box)`
-text-align: center;
-font-size: 16px;
-`
-
-const TestCount = ({testCount}) => {
-  return (
-    <Box pr={2} w={1/3}>
-      <Flex column>
-        <Count>{testCount}</Count>
-        <Unit>Tests</Unit>
-      </Flex>
-    </Box>
-  )
-}
-
-const NetworkCount = ({networkCount}) => {
-  return (
-    <Box pr={2} w={1/3}>
-      <Flex column>
-        <Count>{networkCount}</Count>
-        <Unit>Networks</Unit>
-      </Flex>
-    </Box>
-  )
-}
-
-const FileUnit = styled.span`
-  font-size: 14px;
-`
-
-const FileAmount = styled.span`
-  font-size: 24px;
-  font-weight: 300;
-`
-
-const StyledHumanFilesize = styled(Box)`
-  padding: 0px;
-  text-align: center;
-`
-
-const HumanFilesize = ({size}) => {
-  const human = humanize.filesize(size)
-  const [amount, unit] = human.split(' ')
-  return (
-    <StyledHumanFilesize>
-      <FileAmount>{amount}</FileAmount>
-      <FileUnit>{unit}</FileUnit>
-    </StyledHumanFilesize>
-  )
-}
-const DataUsage = ({dataUsage}) => {
-  return (
-    <Box pr={2} w={1/3}>
-      <Flex column>
-        <Box>
-          <Flex column>
-            <HumanFilesize size={dataUsage.up} />
-            <HumanFilesize size={dataUsage.down} />
-          </Flex>
-        </Box>
-        <Unit>Data</Unit>
-      </Flex>
-    </Box>
-  )
-}
-
-const StyledResultsHeader = styled.div`
-  background-color: ${props => props.theme.colors.blue5};
-  color: ${props => props.theme.colors.white};
-  width: 100%;
-  padding-top: 20px;
-  padding-bottom: 20px;
-`
-
-const ResultsHeader = ({testCount, networkCount, dataUsage}) => {
-  return (
-    <StyledResultsHeader>
-      <Flex align='baseline' justify='space-around'>
-        <Box w={2/3}>
-          <Flex>
-            <TestCount testCount={testCount} />
-            <NetworkCount networkCount={networkCount} />
-            <DataUsage dataUsage={dataUsage} />
-          </Flex>
-        </Box>
-      </Flex>
-    </StyledResultsHeader>
-  )
-}
-
-const MonthContainer = styled.div`
-  padding: 5px 20px;
-  background-color: ${props => props.theme.colors.gray1};
-`
-
-const ResultsSection = ({month, rows}) => {
-  return (
-    <div>
-      <MonthContainer>
-        <Heading h={5}>{moment(month).format('MMMM YYYY')}</Heading>
-      </MonthContainer>
-      {rows.map(row => <ResultRow  key={row.id} {...row} />)}
-    </div>
-  )
-}
-
-const groupRowsByMonth = (rows) => {
-  // We assume the rows are sorted from newest to oldest
-  const start = moment(rows[rows.length - 1].start_time)
-  const end = moment()
-  let range = moment.range(start, end).snapTo('month')
-  let byMonth = {}
-  Array.from(range.by('month', { excludeEnd: false})).map(m => {
-    byMonth[m.format('YYYY-MM-01')] = []
-  })
-  rows.map(row => {
-    const month = moment(row.start_time).format('YYYY-MM-01')
-    byMonth[month].push(row)
-  })
-  return Object.keys(byMonth).sort().reverse().map(key => [key, byMonth[key]])
-}
-
-const FullWidth = styled.div`
-  width: 100%;
-`
-
-const ResultList = ({testCount, networkCount, dataUsageUp, dataUsageDown, byMonth}) => {
-  return (
-    <FullWidth>
-      <ResultsHeader
-        testCount={testCount}
-        networkCount={networkCount}
-        dataUsage={{up: dataUsageUp, down: dataUsageDown}} />
-      {byMonth.map(kv => <ResultsSection key={kv[0]} month={kv[0]} rows={kv[1]} />)}
-    </FullWidth>
-  )
-}
 
 class Results extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       loading: true,
-      byMonth: [],
-      testCount: -1,
-      networkCount: -1,
-      dataUsageUp: -1,
-      dataUsageDown: -1,
+      resultsList: {},
+      measurementsList: [],
+      selectedMeasurement: null,
       error: null
     }
+    this.loadResults = this.loadResults.bind(this)
+    this.loadMeasurements = this.loadMeasurements.bind(this)
+    this.loadData = this.loadData.bind(this)
   }
 
-  componentDidMount() {
+  loadMeasurements(resultID) {
     const remote = electron.remote
-    const { listResults } = remote.require('./database')
-    listResults().then(results => {
-      this.setState({
+    const { listMeasurements } = remote.require('./database')
+    debug('loadMeasurements', resultID)
+    return listMeasurements(resultID).then(measurementsList => {
+      debug('measurementsList', measurementsList)
+      return this.setState({
         loading: false,
-        byMonth: groupRowsByMonth(results.rows),
-        testCount: results.testCount,
-        networkCount: results.networkCount,
-        dataUsageUp: results.dataUsageUp,
-        dataUsageDown: results.dataUsageDown,
+        measurementsList,
       })
     }).catch(err => {
-      Raven.captureException(err, {extra: {scope: 'renderer.listResults'}})
+      Raven.captureException(err, {extra: {scope: 'renderer.listMeasurements'}})
       debug('error triggered', err)
-      this.setState({
+      return this.setState({
         error: err
       })
     })
   }
 
+  loadResults() {
+    const remote = electron.remote
+    const { listResults } = remote.require('./database')
+
+    return listResults().then(results => {
+      return this.setState({
+        loading: false,
+        resultsList: results,
+      })
+    }).catch(err => {
+      Raven.captureException(err, {extra: {scope: 'renderer.listResults'}})
+      debug('error triggered', err)
+      return this.setState({
+        error: err
+      })
+    })
+  }
+
+  loadData() {
+    const { query } = this.props.router
+    debug('load data with', query)
+    if (query.resultID && !query.measurementID) {
+      return this.loadMeasurements(query.resultID)
+    }
+    if (query.resultID && query.measurementID) {
+      // XXX this is a bit sketch
+      return this.loadMeasurements(query.resultID).then(() => {
+        this.setState({
+          selectedMeasurement: this.state.measurementsList.filter(m => m.id == query.measurementID)[0]
+        })
+      })
+    }
+    return this.loadResults()
+  }
+
+  componentDidMount() {
+    this.loadData()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.router.query !== prevProps.router.query) {
+      this.loadData()
+    }
+  }
+
   render() {
     const {
       loading,
-      byMonth,
-      networkCount,
-      testCount,
-      dataUsageUp,
-      dataUsageDown,
+      resultsList,
+      measurementsList,
+      selectedMeasurement,
       error
     } = this.state
 
+    const {
+      pathname,
+      query
+    } = this.props.router
+
+    debug('loading', pathname, query)
+
+    if (query.resultID && !query.measurementID) {
+      return (
+        <Layout>
+          <Sidebar currentUrl={this.props.url}>
+            <LoadingOverlay loading={loading} />
+            <TestResult measurements={measurementsList} />
+            {error && <ErrorView error={error} />}
+          </Sidebar>
+        </Layout>
+      )
+    }
+
+    if (query.resultID && query.measurementID) {
+      return (
+        <Layout>
+          <Sidebar currentUrl={this.props.url}>
+            <LoadingOverlay loading={loading} />
+            <TestResultDetails measurement={selectedMeasurement} />
+            {error && <ErrorView error={error} />}
+          </Sidebar>
+        </Layout>
+      )
+    }
+
     return (
       <Layout>
-        <Sidebar currentUrl={this.props.url}>
+        <Sidebar currentUrl={pathname}>
           <LoadingOverlay loading={loading} />
-          <ResultList
-            networkCount={networkCount}
-            testCount={testCount}
-            dataUsageUp={dataUsageUp}
-            dataUsageDown={dataUsageDown}
-            byMonth={byMonth} />
+          {!loading && <TestResultsList results={resultsList} />}
           {error && <ErrorView error={error} />}
-
         </Sidebar>
       </Layout>
     )
   }
 }
 
-export default Results
+export default withRouter(Results)
