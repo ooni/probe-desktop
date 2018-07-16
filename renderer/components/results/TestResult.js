@@ -5,6 +5,8 @@ import moment from 'moment'
 
 import styled from 'styled-components'
 
+import TwoColumnHero from './TwoColumnHero'
+
 // XXX replace this with the correct icon
 import IconUpload from 'react-icons/lib/md/file-upload'
 import IconDownload from 'react-icons/lib/md/file-download'
@@ -27,26 +29,6 @@ import BackButton from './BackButton'
 import { testGroups } from '../test-info'
 
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.results')
-
-const LeftColumn = styled.div`
-  display: flex;
-  flex: 1;
-  width: 50%;
-  background-color: ${props => props.color || props.theme.colors.blue5};
-`
-
-const RightColumn = styled.div`
-  display: flex;
-  overflow: auto;
-  flex: 1;
-  width: 50%;
-`
-
-const MainContainer = styled.div`
-  flex: 1;
-  display: flex;
-  position: relative;
-`
 
 const TwoColumnTable = ({left, right}) => {
   return (
@@ -95,7 +77,6 @@ const ResultOverview = ({startTime, dataUsageUp, dataUsageDown, runtime, network
         <TwoColumnTable
           left={<Text><MdPublic  size={20} />Network</Text>}
           right={<Text>{networkName} ({asn})</Text>} />
-
       </Container>
     </ResultOverviewContainer>
   )
@@ -135,15 +116,10 @@ const TestResult = ({ measurements }) => {
 
   const overviewProps = mapOverviewProps(measurements)
   return (
-    <MainContainer>
-      <LeftColumn color={overviewProps.group.color}>
-        <ResultOverview {...overviewProps} />
-      </LeftColumn>
-
-      <RightColumn>
-        <MeasurementList group={overviewProps.group} measurements={measurements} />
-      </RightColumn>
-    </MainContainer>
+    <TwoColumnHero
+      bg={overviewProps.group.color}
+      left={<ResultOverview {...overviewProps} />}
+      right={<MeasurementList group={overviewProps.group} measurements={measurements} />} />
   )
 }
 

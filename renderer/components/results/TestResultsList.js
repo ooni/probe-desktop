@@ -1,4 +1,3 @@
-/* global require */
 import React from 'react'
 
 import Moment from 'moment'
@@ -16,8 +15,6 @@ import {
   Flex,
   Heading
 } from 'ooni-components'
-
-const debug = require('debug')('ooniprobe-desktop.renderer.pages.results')
 
 const Count = styled(Box)`
 text-align: center;

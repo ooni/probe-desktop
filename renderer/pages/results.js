@@ -15,6 +15,16 @@ import LoadingOverlay from '../components/LoadingOverlay'
 
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.results')
 
+const getChildPageName = (query) => {
+  if (query.resultID && !query.measurementID) {
+    return 'test-result'
+  }
+  if (query.resultID && query.measurementID) {
+    return 'test-result-details'
+  }
+  return 'test-results-list'
+}
+
 class Results extends React.Component {
   constructor(props) {
     super(props)
@@ -110,7 +120,9 @@ class Results extends React.Component {
 
     debug('loading', pathname, query)
 
-    if (query.resultID && !query.measurementID) {
+    const childPage = getChildPageName(query)
+
+    if (childPage === 'test-result') {
       return (
         <Layout>
           <Sidebar currentUrl={this.props.url}>
@@ -122,7 +134,7 @@ class Results extends React.Component {
       )
     }
 
-    if (query.resultID && query.measurementID) {
+    if (childPage === 'test-result-details') {
       return (
         <Layout>
           <Sidebar currentUrl={this.props.url}>
