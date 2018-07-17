@@ -1,12 +1,12 @@
+/* global require */
 import React from 'react'
-import Raven from 'raven-js'
-import { getSentryConfig } from '../../main/utils/sentry'
+
+const debug = require('debug')('ooniprobe-desktop.renderer.pages._error')
 
 export default class Error extends React.Component {
   static getInitialProps({ res, err }) {
-    Raven.config(getSentryConfig()).install()
-    Raven.captureException(err)
-    const statusCode = res ? res.statusCode : err ? err.statusCode : null;
+    debug('error', err)
+    const statusCode = res ? res.statusCode : err ? err.statusCode : null
     return { statusCode, err }
   }
 

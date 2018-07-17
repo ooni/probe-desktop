@@ -1,7 +1,11 @@
+/* global require */
+
 import React from 'react'
 import Raven from 'raven-js'
 
-const SENTRY_DSN = 'https://e1eef2aaa6054d94bffc4a648fb78f09@sentry.io/1210892'
+const debug = require('debug')('ooniprobe-desktop.renderer.withSentry')
+
+export const SENTRY_DSN = 'https://e1eef2aaa6054d94bffc4a648fb78f09@sentry.io/1210892'
 
 const withSentry = (Child) => {
   return class WrappedComponent extends React.Component {
@@ -19,8 +23,9 @@ const withSentry = (Child) => {
       Raven.config(SENTRY_DSN).install()
     }
 
-    componentDidCatch (error, errorInfo) {
+    componentDidCatch(error, errorInfo) {
       this.setState({ error })
+      debug('error', error)
       Raven.captureException(error, { extra: errorInfo })
     }
 

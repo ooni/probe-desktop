@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { FormattedMessage } from 'react-intl'
+
 import {
   theme,
   Text,
@@ -33,48 +35,64 @@ const renderWebsitesSummary = (summary) => {
   </Flex>
 }
 
+const LongDescription = ({name}) => {
+  return (
+    <div>
+      <FormattedMessage id={`Dashboard.${name}.Overview.Paragraph.1`} />
+      <FormattedMessage id={`Dashboard.${name}.Overview.Paragraph.2`} />
+    </div>
+  )
+}
 
 export const testGroups = {
   'websites': {
     'color': theme.colors.indigo5,
-    'name': 'Websites',
+    'name': <FormattedMessage id="Test.Websites.Fullname" />,
+    'description': <FormattedMessage id="Dashboard.Websites.Card.Description" />,
+    'longDescription': <LongDescription name='Websites' />,
     'icon': <MdWeb />,
     renderSummary: renderWebsitesSummary,
   },
   'im': {
     'color': theme.colors.cyan6,
-    'name': 'Instant Messagging',
+    'name': <FormattedMessage id="Test.InstantMessaging.Fullname" />,
+    'description': <FormattedMessage id="Dashboard.InstantMessaging.Card.Description" />,
+    'longDescription': <LongDescription name='InstantMessaging' />,
     'icon': <MdChat />,
     renderSummary: renderWebsitesSummary,
   },
   'middlebox': {
     'color': theme.colors.violet8,
-    'name': 'Middlebox',
+    'name': <FormattedMessage id="Test.Middleboxes.Fullname" />,
+    'description': <FormattedMessage id="Dashboard.Middleboxes.Card.Description" />,
+    'longDescription': <LongDescription name='Middleboxes' />,
     'icon': <MdUnarchive />,
     renderSummary: renderWebsitesSummary,
   },
   'performance': {
     'color': theme.colors.fuschia6,
-    'name': 'Performance',
+    'name': <FormattedMessage id="Test.Performance.Fullname" />,
+    'description': <FormattedMessage id="Dashboard.Performance.Card.Description" />,
+    'longDescription': <LongDescription name='Performance' />,
     'icon': <IoSpeedometer />,
     renderSummary: renderWebsitesSummary,
   },
   'default': {
     'color': theme.colors.blue5,
+    'description': '',
+    'longDescription': '',
     'name': 'Default',
     'icon': <IoSpeedometer />,
     renderSummary: renderWebsitesSummary,
   }
 }
 
-const dummyDesc = 'Blocking, nostrud do est, ut occaecat aute blocking, traffic manipulation minim excepteur.'
-const dummyLongDesc = 'In, internet in, Tor packet capture, blocking, internet Tor culpa, social media blocking connection reset traffic manipulation. Eu Tor aliquip, dolore network interference TCP, middlebox TLS handshake connection reset ut cupidatat TLS handshake traffic manipulation. Consectetur surveillance non Tor voluptate UDP surveillance DNS tampering ut Tor velit velit packet capture, consequat dolore eiusmod. Adipisicing UDP network interference UDP est Tor, middlebox TLS handshake internet proident, OONI OONI excepteur. Irure sunt, elit internet occaecat, DNS tampering, surveillance deserunt Open Observatory of Network Interference surveillance do.'
 export const testList  = ['websites', 'im', 'performance', 'middlebox'].map(key => ({
   name: testGroups[key].name,
   key: key,
   color: testGroups[key].color,
-  description: dummyDesc,
-  longDescription: dummyLongDesc,
+  description: testGroups[key].description,
+  longDescription: testGroups[key].longDescription,
   icon: React.cloneElement(
     testGroups[key].icon,
     {size: iconSize, color: iconColor}

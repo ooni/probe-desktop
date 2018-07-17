@@ -1,7 +1,7 @@
-const withProgressBar = require('next-progressbar')
+//const withProgressBar = require('next-progressbar')
 const withSourceMaps = require('@zeit/next-source-maps')
 
-module.exports = withSourceMaps(withProgressBar({
+module.exports = withSourceMaps({
   webpack: (config) => {
     config.target = 'electron-renderer'
 
@@ -31,9 +31,8 @@ module.exports = withSourceMaps(withProgressBar({
     return {
       '/home': { page: '/home' },
       '/results': { page: '/results' },
-      '/result': { page: '/result' },
       '/settings': { page: '/settings' },
       '/onboard': { page: '/onboard' }
     }
   }
-}))
+})
