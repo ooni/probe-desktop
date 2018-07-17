@@ -16,7 +16,7 @@ console.log("> Wrote locale-data to: ./renderer/static/locale-data.js")
 const lang = csvParse(readFileSync('./data/lang-en.csv'), {from: 2})
   .reduce((messages, row) => {
     const id = row[0]
-    const text = row[1]
+    const text = row[1].replace('{{', '{').replace('}}', '}')
 
     if (messages.hasOwnProperty(id)) {
       throw new Error(`Duplicate message id: ${id}`)
