@@ -153,7 +153,7 @@ const FullWidth = styled.div`
   width: 100%;
 `
 
-const TestResultsList = ({results}) => {
+const TestResults = ({results}) => {
   const {
     testCount,
     networkCount,
@@ -174,4 +174,4 @@ const TestResultsList = ({results}) => {
   )
 }
 
-export default TestResultsList
+export default TestResults

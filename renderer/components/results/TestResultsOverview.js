@@ -111,7 +111,7 @@ const mapOverviewProps = (measurements) => {
   }
 }
 
-const TestResult = ({ measurements }) => {
+const TestResultsOverview = ({ measurements }) => {
   debug('measurements', measurements)
 
   const overviewProps = mapOverviewProps(measurements)
@@ -123,4 +123,4 @@ const TestResult = ({ measurements }) => {
   )
 }
 
-export default TestResult
+export default TestResultsOverview

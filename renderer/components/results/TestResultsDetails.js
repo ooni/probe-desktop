@@ -55,7 +55,7 @@ const mapOverviewProps = (measurements) => {
   }
 }
 
-const TestResultDetails = ({measurement}) => {
+const TestResultsDetails = ({measurement}) => {
   const overviewProps = mapOverviewProps([measurement])
   return <TwoColumnHero
     bg={overviewProps.group.color}
@@ -63,4 +63,4 @@ const TestResultDetails = ({measurement}) => {
     right={<MeasurementDetails measurement={measurement} />} />
 }
 
-export default TestResultDetails
+export default TestResultsDetails

@@ -7,9 +7,9 @@ import { withRouter } from 'next/router'
 
 import Layout from '../components/Layout'
 import Sidebar from '../components/SideBar'
-import TestResultsList from '../components/results/TestResultsList'
-import TestResult from '../components/results/TestResult'
-import TestResultDetails from '../components/results/TestResultDetails'
+import TestResults from '../components/results/TestResults'
+import TestResultsOverview from '../components/results/TestResultsOverview'
+import TestResultsDetails from '../components/results/TestResultsDetails'
 import ErrorView from '../components/ErrorView'
 import LoadingOverlay from '../components/LoadingOverlay'
 
@@ -17,12 +17,12 @@ const debug = require('debug')('ooniprobe-desktop.renderer.pages.results')
 
 const getChildPageName = (query) => {
   if (query.resultID && !query.measurementID) {
-    return 'test-result'
+    return 'test-results-summary'
   }
   if (query.resultID && query.measurementID) {
     return 'test-result-details'
   }
-  return 'test-results-list'
+  return 'test-results'
 }
 
 class Results extends React.Component {
@@ -122,12 +122,12 @@ class Results extends React.Component {
 
     const childPage = getChildPageName(query)
 
-    if (childPage === 'test-result') {
+    if (childPage === 'test-results-overview') {
       return (
         <Layout>
           <Sidebar currentUrl={this.props.url}>
             <LoadingOverlay loading={loading} />
-            <TestResult measurements={measurementsList} />
+            <TestResultsOverview measurements={measurementsList} />
             {error && <ErrorView error={error} />}
           </Sidebar>
         </Layout>
@@ -139,7 +139,7 @@ class Results extends React.Component {
         <Layout>
           <Sidebar currentUrl={this.props.url}>
             <LoadingOverlay loading={loading} />
-            <TestResultDetails measurement={selectedMeasurement} />
+            <TestResultsDetails measurement={selectedMeasurement} />
             {error && <ErrorView error={error} />}
           </Sidebar>
         </Layout>
@@ -150,7 +150,7 @@ class Results extends React.Component {
       <Layout>
         <Sidebar currentUrl={pathname}>
           <LoadingOverlay loading={loading} />
-          {!loading && <TestResultsList results={resultsList} />}
+          {!loading && <TestResults results={resultsList} />}
           {error && <ErrorView error={error} />}
         </Sidebar>
       </Layout>
