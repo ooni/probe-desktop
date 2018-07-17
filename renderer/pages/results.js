@@ -17,10 +17,10 @@ const debug = require('debug')('ooniprobe-desktop.renderer.pages.results')
 
 const getChildPageName = (query) => {
   if (query.resultID && !query.measurementID) {
-    return 'test-results-summary'
+    return 'test-results-overview'
   }
   if (query.resultID && query.measurementID) {
-    return 'test-result-details'
+    return 'test-results-details'
   }
   return 'test-results'
 }
@@ -118,9 +118,9 @@ class Results extends React.Component {
       query
     } = this.props.router
 
-    debug('loading', pathname, query)
 
     const childPage = getChildPageName(query)
+    debug('loading', pathname, query, childPage)
 
     if (childPage === 'test-results-overview') {
       return (
@@ -134,7 +134,7 @@ class Results extends React.Component {
       )
     }
 
-    if (childPage === 'test-result-details') {
+    if (childPage === 'test-results-details') {
       return (
         <Layout>
           <Sidebar currentUrl={this.props.url}>

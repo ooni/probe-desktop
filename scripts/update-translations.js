@@ -10,8 +10,8 @@ const localeDataFilesContent = supportedLanguages
   .map(lang => require.resolve(`react-intl/locale-data/${lang}`))
   .map(path => readFileSync(path, 'utf8'))
 
-writeFileSync('static/locale-data.js', localeDataFilesContent.join('\n'))
-console.log("> Wrote locale-data to: ./static/locale-data.js")
+writeFileSync('./renderer/static/locale-data.js', localeDataFilesContent.join('\n'))
+console.log("> Wrote locale-data to: ./renderer/static/locale-data.js")
 
 const lang = csvParse(readFileSync('./data/lang-en.csv'), {from: 2})
   .reduce((messages, row) => {
@@ -35,5 +35,5 @@ const translationsMap = supportedLanguages
   }, {})
 
 const translationsContent = `window.OONITranslations = ${JSON.stringify(translationsMap)}`
-writeFileSync('./static/translations.js', translationsContent)
-console.log("> Wrote translations to: ./static/translations.js")
+writeFileSync('./renderer/static/translations.js', translationsContent)
+console.log("> Wrote translations to: ./renderer/static/translations.js")
