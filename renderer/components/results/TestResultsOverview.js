@@ -28,8 +28,6 @@ import MeasurementRow from './MeasurementRow'
 import BackButton from './BackButton'
 import { testGroups } from '../test-info'
 
-const debug = require('debug')('ooniprobe-desktop.renderer.pages.results')
-
 const TwoColumnTable = ({left, right}) => {
   return (
     <Flex align='center' pb={1}>
@@ -112,8 +110,6 @@ const mapOverviewProps = (measurements) => {
 }
 
 const TestResultsOverview = ({ measurements }) => {
-  debug('measurements', measurements)
-
   const overviewProps = mapOverviewProps(measurements)
   return (
     <TwoColumnHero

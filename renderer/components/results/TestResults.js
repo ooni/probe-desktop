@@ -131,7 +131,7 @@ const ResultsSection = ({month, rows}) => {
 
 const groupRowsByMonth = (rows) => {
   if (!rows) {
-    return {}
+    return []
   }
 
   // We assume the rows are sorted from newest to oldest

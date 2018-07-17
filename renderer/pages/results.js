@@ -43,9 +43,7 @@ class Results extends React.Component {
   loadMeasurements(resultID) {
     const remote = electron.remote
     const { listMeasurements } = remote.require('./database')
-    debug('loadMeasurements', resultID)
     return listMeasurements(resultID).then(measurementsList => {
-      debug('measurementsList', measurementsList)
       return this.setState({
         loading: false,
         measurementsList,

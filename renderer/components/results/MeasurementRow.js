@@ -17,11 +17,7 @@ import RightArrow from '../RightArrow'
 
 import MdCheck from 'react-icons/lib/md/check'
 import MdClear from 'react-icons/lib/md/clear'
-import MdChat from 'react-icons/lib/md/chat'
-import MdWeb from 'react-icons/lib/md/web'
 import MdComputer from 'react-icons/lib/md/computer'
-import MdUnarchive from 'react-icons/lib/md/unarchive'
-import IoSpeedometer from 'react-icons/lib/io/speedometer'
 
 const BorderedRow = styled(Flex)`
   width: 100%;
@@ -57,7 +53,6 @@ const MeasurementRow = ({measurement, router}) => {
 
   const summary = JSON.parse(measurement.summary)
   const query = {...router.query, measurementID: measurement.id}
-  console.log('query', query)
   return (
     <BorderedRow>
       <Box pr={2} pl={2} w={1/8}>
