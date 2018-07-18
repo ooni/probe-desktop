@@ -11,7 +11,7 @@ import {
 } from 'ooni-components'
 
 const addPlurality = (id, count) => {
-  if (count > 1) {
+  if (parseInt(count) > 1) {
     return `${id}.Plural`
   }
   return `${id}.Singular`
@@ -25,28 +25,33 @@ const WebsitesStats = ({summary}) => {
   let testedLabelID = addPlurality('TestResults.Summary.Websites.Hero.Tested', testedCount)
   let blockedLabelID = addPlurality('TestResults.Summary.Websites.Hero.Blocked', blockedCount)
   let accessibleLabelID = addPlurality('TestResults.Summary.Websites.Hero.Reachable', accessibleCount)
-  let sitesID = addPlurality('TestResults.Summary.Websites.Hero.Sites', testedCount)
+
+  let blockedSitesID = addPlurality('TestResults.Summary.Websites.Hero.Sites', blockedCount)
+  let accessibleSitesID = addPlurality('TestResults.Summary.Websites.Hero.Sites', accessibleCount)
+  let testedSitesID = addPlurality('TestResults.Summary.Websites.Hero.Sites', testedCount)
+
+  console.log('lbl', blockedLabelID)
 
   return (
     <Flex>
       <Box w={1/3}>
         <StatBox
           value={testedCount}
-          unit={<FormattedMessage id={sitesID} />}
+          unit={<FormattedMessage id={testedSitesID} />}
           label={<FormattedMessage id={testedLabelID} />} />
       </Box>
       <VerticalDivider />
       <Box w={1/3}>
         <StatBox
           value={blockedCount}
-          unit={<FormattedMessage id={sitesID} />}
+          unit={<FormattedMessage id={blockedSitesID} />}
           label={<FormattedMessage id={blockedLabelID} />} />
       </Box>
       <VerticalDivider />
       <Box w={1/3}>
         <StatBox
           value={accessibleCount}
-          unit={<FormattedMessage id={sitesID} />}
+          unit={<FormattedMessage id={accessibleSitesID} />}
           label={<FormattedMessage id={accessibleLabelID} />} />
       </Box>
     </Flex>
