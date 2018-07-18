@@ -2,20 +2,28 @@ import React from 'react'
 
 import styled from 'styled-components'
 
+import humanize from 'humanize'
 import moment from 'moment'
 
 import {
   theme,
   Box,
   Flex,
-  Text,
-  Divider
+  Text
 } from 'ooni-components'
 
 import Link from 'next/link'
 
+import MdWeb from 'react-icons/lib/md/web'
+import MdDone from 'react-icons/lib/md/done'
+import MdClear from 'react-icons/lib/md/clear'
+import MdArrowDownward from 'react-icons/lib/md/arrow-downward'
+import MdArrowUpward from 'react-icons/lib/md/arrow-upward'
+import MdVideoLibrary from 'react-icons/lib/md/video-library'
 import { testGroups } from '../test-info'
 import RightArrow from '../RightArrow'
+
+import formatBitrate from './formatBitrate'
 
 const ColorCode = styled.div`
   height: 80px;
@@ -39,6 +47,75 @@ const VerticalCenter = ({children}) => {
     </Flex>
   )
 }
+
+
+const WebsitesSummary = ({summary}) => {
+  return <Flex wrap>
+    <Box w={1}>
+      <Text color={theme.colors.red8}><MdClear /> {summary['Blocked']} blocked</Text>
+    </Box>
+    <Box w={1}>
+      <Text><MdWeb /> {summary['Tested']} tested</Text>
+    </Box>
+  </Flex>
+}
+
+const IMSummary = ({summary}) => {
+  return <Flex wrap>
+    <Box w={1}>
+      <Text color={theme.colors.red8}><MdClear /> {summary['Blocked']} blocked</Text>
+    </Box>
+    <Box w={1}>
+      <Text><MdDone /> {summary['Tested']} tested</Text>
+    </Box>
+  </Flex>
+}
+
+const formatSpeed = (speed) => {
+  if (speed < 1000) {
+    return `${speed} kbps`
+  }
+  if (speed < 1000*1000) {
+    return `${(speed / 1000).toFixed(1)} mbps`
+  }
+  return `${(speed / (1000*1000)).toFixed(1)} gbps`
+}
+
+const PerformanceSummary = ({summary}) => {
+  return <Flex wrap>
+    <Box w={1/2}>
+      <Text><MdArrowDownward /> {formatSpeed(summary['Download'])}</Text>
+    </Box>
+    <Box w={1/2}>
+      <Text><MdVideoLibrary /> {formatBitrate(summary['Bitrate'])}</Text>
+    </Box>
+    <Box w={1/2}>
+      <Text><MdArrowUpward /> {formatSpeed(summary['Upload'])}</Text>
+    </Box>
+  </Flex>
+}
+
+const TODOSummary = ({summary}) => {
+  return <Flex column>
+    {JSON.stringify(summary, null, 2)}
+  </Flex>
+}
+
+const SummaryError = () => {
+  return <Text>Error</Text>
+}
+
+const summaryMap = {
+  'websites': WebsitesSummary,
+  'im': IMSummary,
+  'middlebox': TODOSummary,
+  'performance': PerformanceSummary
+}
+
+const SummaryContainer = styled.div`
+  padding-left: 20px;
+  padding-top: 20px;
+`
 
 class ResultRow extends React.Component {
   constructor (props) {
@@ -104,13 +181,15 @@ class ResultRow extends React.Component {
       summary
     } = this.props
 
-    const group = testGroups[name]
-
     const summaryObj = JSON.parse(summary)
+    let SummaryElement = SummaryError
+    if (summaryObj != null) {
+      SummaryElement = summaryMap[name]
+    }
 
-    return <VerticalCenter>
-      {group.renderSummary(summaryObj)}
-    </VerticalCenter>
+    return <SummaryContainer>
+      <SummaryElement summary={summaryObj} />
+    </SummaryContainer>
   }
 
   render() {
@@ -128,7 +207,7 @@ class ResultRow extends React.Component {
         <Box pr={3/16}>
           {this.renderDate()}
         </Box>
-        <Box w={4/16}>
+        <Box w={4/16} >
           {this.renderSummary()}
         </Box>
         <Box w={1/16} style={{marginLeft: 'auto'}}>

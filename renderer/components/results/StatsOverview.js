@@ -30,8 +30,6 @@ const WebsitesStats = ({summary}) => {
   let accessibleSitesID = addPlurality('TestResults.Summary.Websites.Hero.Sites', accessibleCount)
   let testedSitesID = addPlurality('TestResults.Summary.Websites.Hero.Sites', testedCount)
 
-  console.log('lbl', blockedLabelID)
-
   return (
     <Flex>
       <Box w={1/3}>
