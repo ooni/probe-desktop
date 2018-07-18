@@ -16,6 +16,7 @@ import MdChat from 'react-icons/lib/md/chat'
 import MdWeb from 'react-icons/lib/md/web'
 import MdUnarchive from 'react-icons/lib/md/unarchive'
 import IoSpeedometer from 'react-icons/lib/io/speedometer'
+import FormattedMarkdownMessage from './FormattedMarkdownMessage'
 
 const iconSize = 200
 const iconColor = theme.colors.black
@@ -38,8 +39,8 @@ const renderWebsitesSummary = (summary) => {
 const LongDescription = ({name}) => {
   return (
     <div>
-      <FormattedMessage id={`Dashboard.${name}.Overview.Paragraph.1`} />
-      <FormattedMessage id={`Dashboard.${name}.Overview.Paragraph.2`} />
+      <FormattedMarkdownMessage id={`Dashboard.${name}.Overview.Paragraph.1`} />
+      <FormattedMarkdownMessage id={`Dashboard.${name}.Overview.Paragraph.2`} />
     </div>
   )
 }
@@ -48,7 +49,7 @@ export const testGroups = {
   'websites': {
     'color': theme.colors.indigo5,
     'name': <FormattedMessage id="Test.Websites.Fullname" />,
-    'description': <FormattedMessage id="Dashboard.Websites.Card.Description" />,
+    'description': <FormattedMarkdownMessage id="Dashboard.Websites.Card.Description" />,
     'longDescription': <LongDescription name='Websites' />,
     'icon': <MdWeb />,
     renderSummary: renderWebsitesSummary,
@@ -56,7 +57,7 @@ export const testGroups = {
   'im': {
     'color': theme.colors.cyan6,
     'name': <FormattedMessage id="Test.InstantMessaging.Fullname" />,
-    'description': <FormattedMessage id="Dashboard.InstantMessaging.Card.Description" />,
+    'description': <FormattedMarkdownMessage id="Dashboard.InstantMessaging.Card.Description" />,
     'longDescription': <LongDescription name='InstantMessaging' />,
     'icon': <MdChat />,
     renderSummary: renderWebsitesSummary,
@@ -64,7 +65,7 @@ export const testGroups = {
   'middlebox': {
     'color': theme.colors.violet8,
     'name': <FormattedMessage id="Test.Middleboxes.Fullname" />,
-    'description': <FormattedMessage id="Dashboard.Middleboxes.Card.Description" />,
+    'description': <FormattedMarkdownMessage id="Dashboard.Middleboxes.Card.Description" />,
     'longDescription': <LongDescription name='Middleboxes' />,
     'icon': <MdUnarchive />,
     renderSummary: renderWebsitesSummary,
@@ -72,7 +73,7 @@ export const testGroups = {
   'performance': {
     'color': theme.colors.fuschia6,
     'name': <FormattedMessage id="Test.Performance.Fullname" />,
-    'description': <FormattedMessage id="Dashboard.Performance.Card.Description" />,
+    'description': <FormattedMarkdownMessage id="Dashboard.Performance.Card.Description" />,
     'longDescription': <LongDescription name='Performance' />,
     'icon': <IoSpeedometer />,
     renderSummary: renderWebsitesSummary,
