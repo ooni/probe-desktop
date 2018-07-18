@@ -36,6 +36,58 @@ const VerticalCenter = ({children}) => {
   )
 }
 
+const URLRow =  ({measurement, query, summary}) => (
+  <BorderedRow>
+    <Box pr={2} pl={2} w={1/8}>
+      <MdComputer size={30}/>
+    </Box>
+    <Box w={6/8} h={1}>
+      {measurement.input}
+    </Box>
+    <Box w={1/8} h={1}>
+      <Status blocked={summary.Blocked} />
+    </Box>
+    <Box w={1/8} style={{marginLeft: 'auto'}}>
+      <Link href={{pathname: '/results', query}}>
+        <a>
+          <VerticalCenter>
+            <RightArrow />
+          </VerticalCenter>
+        </a>
+      </Link>
+    </Box>
+  </BorderedRow>
+)
+
+
+// XXX still need to show the summary in here
+const TestRow =  ({measurement, query, summary}) => (
+  <BorderedRow>
+    <Box pr={2} pl={2} w={1/8}>
+      <MdComputer size={30}/>
+    </Box>
+    <Box w={6/8}>
+      {measurement.measurement_name}
+    </Box>
+    <Box w={1/8} style={{marginLeft: 'auto'}}>
+      <Link href={{pathname: '/results', query}}>
+        <a>
+          <VerticalCenter>
+            <RightArrow />
+          </VerticalCenter>
+        </a>
+      </Link>
+    </Box>
+  </BorderedRow>
+)
+
+const rowMap = {
+  'websites': URLRow,
+  'im': TestRow,
+  'middlebox': TestRow,
+  'performance': TestRow
+}
+
 const Status = ({blocked}) => {
   if (blocked === false) {
     return <MdCheck size={30} color={theme.colors.green7} />
@@ -46,35 +98,16 @@ const Status = ({blocked}) => {
   return <Text color={theme.colors.red8}>Error ({blocked})</Text>
 }
 
-const MeasurementRow = ({measurement, router}) => {
-  if (measurement == null) {
+const MeasurementRow = ({groupName, measurement, router}) => {
+  if (measurement == null || groupName === 'default') {
     return <Text color={theme.colors.red8}>Error</Text>
   }
 
   const summary = JSON.parse(measurement.summary)
   const query = {...router.query, measurementID: measurement.id}
-  return (
-    <BorderedRow>
-      <Box pr={2} pl={2} w={1/8}>
-        <MdComputer size={30}/>
-      </Box>
-      <Box w={6/8} h={1}>
-        {measurement.input}
-      </Box>
-      <Box w={1/8} h={1}>
-        <Status blocked={summary.Blocked} />
-      </Box>
-      <Box w={1/8} style={{marginLeft: 'auto'}}>
-        <Link href={{pathname: '/results', query}}>
-          <a>
-            <VerticalCenter>
-              <RightArrow />
-            </VerticalCenter>
-          </a>
-        </Link>
-      </Box>
-    </BorderedRow>
-  )
+
+  const RowElement = rowMap[groupName]
+  return <RowElement measurement={measurement} query={query} summary={summary} />
 }
 
 export default withRouter(MeasurementRow)

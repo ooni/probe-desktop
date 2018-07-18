@@ -20,6 +20,7 @@ const MainContainer = styled.div`
   flex: 1;
   display: flex;
   position: relative;
+  width: 100%;
 `
 
 const TwoColumnHero = ({left, right, bg}) => {

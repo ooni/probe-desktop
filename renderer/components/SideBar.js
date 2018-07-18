@@ -118,7 +118,7 @@ const Content = styled.div`
   display: flex;
   overflow: auto;
   flex: 1;
-  width: 100%;
+  width: 924px;
 `
 
 const MainContainer = styled.div`
@@ -131,7 +131,6 @@ export const Sidebar = ({children, currentUrl}) => (
   <WindowContainer>
     <SidebarContainer>
       {Object.keys(navigationPaths).map((path, idx) => {
-        console.log(path, currentUrl)
         const info = navigationPaths[path]
         return (
           <NavItem

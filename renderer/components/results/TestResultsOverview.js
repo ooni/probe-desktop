@@ -73,7 +73,7 @@ const ResultOverview = ({groupName, resultSummary, startTime, dataUsageUp, dataU
 
         <TwoColumnTable
           left={<Text><MdTimer size={20} />Total runtime</Text>}
-          right={<Text>{moment.duration(runtime, 'seconds').humanize()}</Text>} />
+          right={<Text>{runtime.toFixed(2)} s</Text>} />
 
         <TwoColumnTable
           left={<Text><MdFlag size={20} />Country</Text>}
@@ -87,11 +87,11 @@ const ResultOverview = ({groupName, resultSummary, startTime, dataUsageUp, dataU
   )
 }
 
-const MeasurementList = ({group, measurements}) => {
+const MeasurementList = ({groupName, measurements}) => {
   return (
     <Flex wrap style={{width: '100%'}}>
       <Box w={1}>
-        {measurements.map(m => <MeasurementRow key={m.id} measurement={m} group={group}/>)}
+        {measurements.map(m => <MeasurementRow key={m.id} measurement={m} groupName={groupName} />)}
       </Box>
     </Flex>
   )
@@ -123,7 +123,7 @@ const TestResultsOverview = ({ measurements }) => {
     <TwoColumnHero
       bg={overviewProps.group.color}
       left={<ResultOverview {...overviewProps} />}
-      right={<MeasurementList group={overviewProps.group} measurements={measurements} />} />
+      right={<MeasurementList groupName={overviewProps.groupName} group={overviewProps.group} measurements={measurements} />} />
   )
 }
 

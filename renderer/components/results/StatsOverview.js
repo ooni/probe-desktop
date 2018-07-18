@@ -31,7 +31,7 @@ const WebsitesStats = ({summary}) => {
   let testedSitesID = addPlurality('TestResults.Summary.Websites.Hero.Sites', testedCount)
 
   return (
-    <Flex>
+    <Flex style={{width: '100%'}}>
       <Box w={1/3}>
         <StatBox
           value={testedCount}
@@ -59,32 +59,52 @@ const WebsitesStats = ({summary}) => {
 const TodoStats = ({summary}) => {
   return (
     <Flex>
+      {JSON.stringify(summary, null, 2)}
+    </Flex>
+  )
+}
+
+
+const IMStats = ({summary}) => {
+  const testedCount = summary.Tested
+  const blockedCount = summary.Blocked
+  const accessibleCount = testedCount - blockedCount
+
+  let testedLabelID = addPlurality('TestResults.Summary.InstantMessaging.Hero.Tested', testedCount)
+  let blockedLabelID = addPlurality('TestResults.Summary.InstantMessaging.Hero.Blocked', blockedCount)
+  let accessibleLabelID = addPlurality('TestResults.Summary.InstantMessaging.Hero.Reachable', accessibleCount)
+
+  let blockedAppsID = addPlurality('TestResults.Summary.InstantMessaging.Hero.Apps', blockedCount)
+  let accessibleAppsID = addPlurality('TestResults.Summary.InstantMessaging.Hero.Apps', accessibleCount)
+  let testedAppsID = addPlurality('TestResults.Summary.InstantMessaging.Hero.Apps', testedCount)
+
+  return (
+    <Flex style={{width: '100%'}}>
       <Box w={1/3}>
         <StatBox
-          value={25}
-          unit={<FormattedMessage id="TestResults.Summary.Websites.Hero.Sites.Singular" />}
-          label={<FormattedMessage id="TestResults.Summary.Websites.Hero.Tested.Singular" />} />
+          value={testedCount}
+          unit={<FormattedMessage id={testedAppsID} />}
+          label={<FormattedMessage id={testedLabelID} />} />
       </Box>
       <VerticalDivider />
       <Box w={1/3}>
         <StatBox
-          value={25}
-          unit={<FormattedMessage id="TestResults.Summary.Websites.Hero.Sites.Singular" />}
-          label={<FormattedMessage id="TestResults.Summary.Websites.Hero.Tested.Singular" />} />
+          value={blockedCount}
+          unit={<FormattedMessage id={blockedAppsID} />}
+          label={<FormattedMessage id={blockedLabelID} />} />
       </Box>
       <VerticalDivider />
       <Box w={1/3}>
         <StatBox
-          value={25}
-          unit={<FormattedMessage id="TestResults.Summary.Websites.Hero.Sites.Singular" />}
-          label={<FormattedMessage id="TestResults.Summary.Websites.Hero.Tested.Singular" />} />
+          value={accessibleCount}
+          unit={<FormattedMessage id={accessibleAppsID} />}
+          label={<FormattedMessage id={accessibleLabelID} />} />
       </Box>
     </Flex>
   )
 }
 
 const MiddleboxStats = TodoStats
-const IMStats = TodoStats
 const PerformanceStats = TodoStats
 
 const statsMap = {
