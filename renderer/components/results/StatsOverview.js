@@ -56,7 +56,7 @@ const WebsitesStats = ({summary}) => {
   )
 }
 
-const TodoStats = ({summary}) => {
+const TODOStats = ({summary}) => {
   return (
     <Flex>
       {JSON.stringify(summary, null, 2)}
@@ -104,8 +104,8 @@ const IMStats = ({summary}) => {
   )
 }
 
-const MiddleboxStats = TodoStats
-const PerformanceStats = TodoStats
+const MiddleboxStats = TODOStats
+const PerformanceStats = TODOStats
 
 const statsMap = {
   'websites': WebsitesStats,
