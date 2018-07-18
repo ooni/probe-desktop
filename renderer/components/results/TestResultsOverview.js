@@ -21,12 +21,15 @@ import {
   Text,
   Container,
   Flex,
-  Box
+  Box,
+  Divider
 } from 'ooni-components'
 
+import { testGroups } from '../test-info'
+
+import StatsOverview from './StatsOverview'
 import MeasurementRow from './MeasurementRow'
 import BackButton from './BackButton'
-import { testGroups } from '../test-info'
 
 const TwoColumnTable = ({left, right}) => {
   return (
@@ -48,7 +51,7 @@ const ResultOverviewContainer = styled.div`
 `
 
 // XXX groupName is also passed in
-const ResultOverview = ({startTime, dataUsageUp, dataUsageDown, runtime, networkName, country, asn}) => {
+const ResultOverview = ({groupName, resultSummary, startTime, dataUsageUp, dataUsageDown, runtime, networkName, country, asn}) => {
   return (
     <ResultOverviewContainer>
       <Flex justify='center' align='center'>
@@ -60,6 +63,10 @@ const ResultOverview = ({startTime, dataUsageUp, dataUsageDown, runtime, network
         </Box>
       </Flex>
       <Container>
+
+        <StatsOverview name={groupName} summary={resultSummary} />
+        <Divider mt={4} mb={4} />
+
         <TwoColumnTable
           left={<Text><MdSwapVert size={20} />Data Usage</Text>}
           right={<Text><IconUpload /> {dataUsageUp} <IconDownload />{dataUsageDown}</Text>} />
@@ -99,6 +106,7 @@ const mapOverviewProps = (measurements) => {
   return {
     groupName,
     group: testGroups[groupName],
+    resultSummary: msmt.result_summary && JSON.parse(msmt.result_summary) || {},
     startTime: msmt.start_time || null,
     dataUsageUp: msmt.data_usage_upi || 0,
     dataUsageDown: msmt.data_usage_down || 0,
