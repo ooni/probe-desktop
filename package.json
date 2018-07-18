@@ -112,6 +112,8 @@
     "react-animations": "^0.1.0",
     "react-icons": "^2.2.5",
     "react-intl": "^2.4.0",
+    "remark": "^9.0.0",
+    "remark-react": "^4.0.3",
     "split2": "^2.2.0",
     "sql.js": "^0.5.0",
     "styled-components": "2.4.1"
