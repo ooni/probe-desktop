@@ -1,8 +1,8 @@
 import React from 'react'
 
+import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
 
-import humanize from 'humanize'
 import moment from 'moment'
 
 import {
@@ -47,28 +47,31 @@ const VerticalCenter = ({children}) => {
     </Flex>
   )
 }
-
+const SummaryContainer = styled(Flex)`
+  padding-left: 20px;
+  padding-top: 20px;
+`
 
 const WebsitesSummary = ({summary}) => {
-  return <Flex wrap>
+  return <SummaryContainer wrap>
     <Box w={1}>
       <Text color={theme.colors.red8}><MdClear /> {summary['Blocked']} blocked</Text>
     </Box>
     <Box w={1}>
       <Text><MdWeb /> {summary['Tested']} tested</Text>
     </Box>
-  </Flex>
+  </SummaryContainer>
 }
 
 const IMSummary = ({summary}) => {
-  return <Flex wrap>
+  return <SummaryContainer wrap>
     <Box w={1}>
       <Text color={theme.colors.red8}><MdClear /> {summary['Blocked']} blocked</Text>
     </Box>
     <Box w={1}>
       <Text><MdDone /> {summary['Tested']} tested</Text>
     </Box>
-  </Flex>
+  </SummaryContainer>
 }
 
 const formatSpeed = (speed) => {
@@ -82,7 +85,7 @@ const formatSpeed = (speed) => {
 }
 
 const PerformanceSummary = ({summary}) => {
-  return <Flex wrap>
+  return <SummaryContainer wrap>
     <Box w={1/2}>
       <Text><MdArrowDownward /> {formatSpeed(summary['Download'])}</Text>
     </Box>
@@ -92,30 +95,36 @@ const PerformanceSummary = ({summary}) => {
     <Box w={1/2}>
       <Text><MdArrowUpward /> {formatSpeed(summary['Upload'])}</Text>
     </Box>
-  </Flex>
+  </SummaryContainer>
 }
 
-const TODOSummary = ({summary}) => {
-  return <Flex column>
-    {JSON.stringify(summary, null, 2)}
-  </Flex>
+const MiddelboxSummary = ({summary}) => {
+  let msgID = 'TestResults.Summary.Middleboxes.Hero.Failed'
+  if (summary.Detected === false) {
+    msgID = 'TestResults.Summary.Middleboxes.Hero.NotFound'
+  } else if (summary.Detected === true) {
+    msgID = 'TestResults.Summary.Middleboxes.Hero.Found'
+  }
+
+  return <VerticalCenter>
+    <FormattedMessage id={msgID} />
+  </VerticalCenter>
 }
 
 const SummaryError = () => {
-  return <Text>Error</Text>
+  return <VerticalCenter>
+    <Text color={theme.colors.red8}>Error</Text>
+  </VerticalCenter>
 }
 
 const summaryMap = {
   'websites': WebsitesSummary,
   'im': IMSummary,
-  'middlebox': TODOSummary,
+  'middlebox': MiddelboxSummary,
   'performance': PerformanceSummary
 }
 
-const SummaryContainer = styled.div`
-  padding-left: 20px;
-  padding-top: 20px;
-`
+
 
 class ResultRow extends React.Component {
   constructor (props) {
@@ -187,9 +196,7 @@ class ResultRow extends React.Component {
       SummaryElement = summaryMap[name]
     }
 
-    return <SummaryContainer>
-      <SummaryElement summary={summaryObj} />
-    </SummaryContainer>
+    return <SummaryElement summary={summaryObj} />
   }
 
   render() {
