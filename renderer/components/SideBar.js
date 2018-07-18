@@ -131,6 +131,7 @@ export const Sidebar = ({children, currentUrl}) => (
   <WindowContainer>
     <SidebarContainer>
       {Object.keys(navigationPaths).map((path, idx) => {
+        console.log(path, currentUrl)
         const info = navigationPaths[path]
         return (
           <NavItem

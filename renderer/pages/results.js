@@ -123,7 +123,7 @@ class Results extends React.Component {
     if (childPage === 'test-results-overview') {
       return (
         <Layout>
-          <Sidebar currentUrl={this.props.url}>
+          <Sidebar currentUrl={{pathname}}>
             <LoadingOverlay loading={loading} />
             <TestResultsOverview measurements={measurementsList} />
             {error && <ErrorView error={error} />}
@@ -135,7 +135,7 @@ class Results extends React.Component {
     if (childPage === 'test-results-details') {
       return (
         <Layout>
-          <Sidebar currentUrl={this.props.url}>
+          <Sidebar currentUrl={{pathname}}>
             <LoadingOverlay loading={loading} />
             <TestResultsDetails measurement={selectedMeasurement} />
             {error && <ErrorView error={error} />}
@@ -146,7 +146,7 @@ class Results extends React.Component {
 
     return (
       <Layout>
-        <Sidebar currentUrl={pathname}>
+        <Sidebar currentUrl={{pathname}}>
           <LoadingOverlay loading={loading} />
           {!loading && <TestResults results={resultsList} />}
           {error && <ErrorView error={error} />}
