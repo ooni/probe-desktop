@@ -4,50 +4,24 @@ import Moment from 'moment'
 import { extendMoment } from 'moment-range'
 const moment = extendMoment(Moment)
 
-import humanize from 'humanize'
+import MdArrowDownward from 'react-icons/lib/md/arrow-downward'
+import MdArrowUpward from 'react-icons/lib/md/arrow-upward'
 
+import humanize from 'humanize'
 import ResultRow from './ResultRow'
 
 import styled from 'styled-components'
 
 import {
+  Text,
   Box,
   Flex,
+  Container,
   Heading
 } from 'ooni-components'
 
-const Count = styled(Box)`
-text-align: center;
-font-size: 42px;
-font-weight: 300;
-`
-
-const Unit = styled(Box)`
-text-align: center;
-font-size: 16px;
-`
-
-const TestCount = ({testCount}) => {
-  return (
-    <Box pr={2} w={1/3}>
-      <Flex column>
-        <Count>{testCount}</Count>
-        <Unit>Tests</Unit>
-      </Flex>
-    </Box>
-  )
-}
-
-const NetworkCount = ({networkCount}) => {
-  return (
-    <Box pr={2} w={1/3}>
-      <Flex column>
-        <Count>{networkCount}</Count>
-        <Unit>Networks</Unit>
-      </Flex>
-    </Box>
-  )
-}
+import StatBox from '../to-migrate/StatBox'
+import VerticalDivider from '../to-migrate/VerticalDivider'
 
 const FileUnit = styled.span`
   font-size: 14px;
@@ -63,29 +37,40 @@ const StyledHumanFilesize = styled(Box)`
   text-align: center;
 `
 
-const HumanFilesize = ({size}) => {
+const HumanFilesize = ({icon, size}) => {
   const human = humanize.filesize(size)
   const [amount, unit] = human.split(' ')
   return (
     <StyledHumanFilesize>
+      {icon}
       <FileAmount>{amount}</FileAmount>
       <FileUnit>{unit}</FileUnit>
     </StyledHumanFilesize>
   )
 }
+
+const LabelBox= styled(Box)`
+  font-size: 12px;
+  text-align: center;
+`
+
 const DataUsage = ({dataUsage}) => {
   return (
-    <Box pr={2} w={1/3}>
-      <Flex column>
-        <Box>
-          <Flex column>
-            <HumanFilesize size={dataUsage.up} />
-            <HumanFilesize size={dataUsage.down} />
-          </Flex>
-        </Box>
-        <Unit>Data</Unit>
-      </Flex>
-    </Box>
+    <Flex column>
+      <LabelBox>
+      Data Usage
+      </LabelBox>
+      <Box>
+        <Flex>
+          <Box w={1/2}>
+            <HumanFilesize icon={<MdArrowUpward size={20}/>} size={dataUsage.up} />
+          </Box>
+          <Box w={1/2}>
+            <HumanFilesize icon={<MdArrowDownward size={20} />} size={dataUsage.down} />
+          </Box>
+        </Flex>
+      </Box>
+    </Flex>
   )
 }
 
@@ -100,15 +85,25 @@ const StyledResultsHeader = styled.div`
 const ResultsHeader = ({testCount, networkCount, dataUsage}) => {
   return (
     <StyledResultsHeader>
-      <Flex align='baseline' justify='space-around'>
-        <Box w={2/3}>
-          <Flex>
-            <TestCount testCount={testCount} />
-            <NetworkCount networkCount={networkCount} />
+      <Container width={700}>
+        <Flex>
+          <Box w={1/3}>
+            <StatBox
+              label='Tests'
+              value={testCount} />
+          </Box>
+          <VerticalDivider />
+          <Box w={1/3}>
+            <StatBox
+              label='Networks'
+              value={networkCount} />
+          </Box>
+          <VerticalDivider />
+          <Box w={1/3}>
             <DataUsage dataUsage={dataUsage} />
-          </Flex>
-        </Box>
-      </Flex>
+          </Box>
+        </Flex>
+      </Container>
     </StyledResultsHeader>
   )
 }
