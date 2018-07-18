@@ -68,7 +68,7 @@ const ConfigureButton = styled(Button)`
 
 const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, onConfigure}) => (
   <Box w={1/2} pr={3} pb={3}>
-    <Card bg={color} color='white' style={{position: 'relative', padding: '20px 32px'}}>
+    <Card bg={color} color='white' style={{position: 'relative', height: '200px'}}>
       <TopLeftFloatingButton>
         <MdHelp onClick={toggleCard} size={30} />
       </TopLeftFloatingButton>
@@ -79,7 +79,7 @@ const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, on
         </ConfigureButton>
         <Flex pt={5}>
           <Box w={3/4} pr={4}>
-            <Text>{description}</Text>
+            {description}
           </Box>
           <Box w={1/4} mr={2}>
             <Button inverted fontSize={1} onClick={onRun}>
@@ -97,13 +97,13 @@ const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, on
 
 const BackCardContent = ({name, longDescription, icon, color, toggleCard}) => (
   <Box w={1/2} pr={3} pb={3}>
-    <Card bg={chroma(color).darken(2).desaturate()} color='white' style={{position: 'relative'}}>
+    <Card bg={chroma(color).darken(2).desaturate()} color='white' style={{position: 'relative', height: '200px'}}>
       <TopLeftFloatingButton>
         <MdClear onClick={toggleCard} size={30} />
       </TopLeftFloatingButton>
       <CardContent>
         <Heading h={2}>{name}</Heading>
-        <Text>{longDescription}</Text>
+        {longDescription}
       </CardContent>
     </Card>
   </Box>

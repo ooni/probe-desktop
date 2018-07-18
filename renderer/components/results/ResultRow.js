@@ -119,7 +119,7 @@ class ResultRow extends React.Component {
     } = this.props
     return <BorderedRow>
       <Flex>
-        <Box pr={2} w={3/16}>
+        <Box pr={2} w={4/16}>
           {this.renderIcon()}
         </Box>
         <Box w={3/16} h={1}>
@@ -128,10 +128,10 @@ class ResultRow extends React.Component {
         <Box pr={3/16}>
           {this.renderDate()}
         </Box>
-        <Box w={5/16}>
+        <Box w={4/16}>
           {this.renderSummary()}
         </Box>
-        <Box w={1/6} style={{marginLeft: 'auto'}}>
+        <Box w={1/16} style={{marginLeft: 'auto'}}>
           <VerticalCenter>
             <Link href={{ pathname: '/results', query: {resultID} }} passHref>
               <a>
