@@ -9,12 +9,16 @@ import {
   Box
 } from 'ooni-components'
 
-// XXX this should be moved to the design-system
+import {
+  NettestGroupWebsites,
+  NettestGroupInstantMessaging,
+  NettestGroupMiddleBoxes,
+  NettestGroupPerformance,
+} from 'ooni-components/dist/icons'
 
+// XXX this should be moved to the design-system
 import MdClear from 'react-icons/lib/md/clear'
-import MdChat from 'react-icons/lib/md/chat'
 import MdWeb from 'react-icons/lib/md/web'
-import MdUnarchive from 'react-icons/lib/md/unarchive'
 import IoSpeedometer from 'react-icons/lib/io/speedometer'
 import FormattedMarkdownMessage from './FormattedMarkdownMessage'
 
@@ -51,7 +55,7 @@ export const testGroups = {
     'name': <FormattedMessage id="Test.Websites.Fullname" />,
     'description': <FormattedMarkdownMessage id="Dashboard.Websites.Card.Description" />,
     'longDescription': <LongDescription name='Websites' />,
-    'icon': <MdWeb />,
+    'icon': <NettestGroupWebsites />,
     renderSummary: renderWebsitesSummary,
   },
   'im': {
@@ -59,7 +63,7 @@ export const testGroups = {
     'name': <FormattedMessage id="Test.InstantMessaging.Fullname" />,
     'description': <FormattedMarkdownMessage id="Dashboard.InstantMessaging.Card.Description" />,
     'longDescription': <LongDescription name='InstantMessaging' />,
-    'icon': <MdChat />,
+    'icon': <NettestGroupInstantMessaging />,
     renderSummary: renderWebsitesSummary,
   },
   'middlebox': {
@@ -67,7 +71,7 @@ export const testGroups = {
     'name': <FormattedMessage id="Test.Middleboxes.Fullname" />,
     'description': <FormattedMarkdownMessage id="Dashboard.Middleboxes.Card.Description" />,
     'longDescription': <LongDescription name='Middleboxes' />,
-    'icon': <MdUnarchive />,
+    'icon': <NettestGroupMiddleBoxes />,
     renderSummary: renderWebsitesSummary,
   },
   'performance': {
@@ -75,7 +79,7 @@ export const testGroups = {
     'name': <FormattedMessage id="Test.Performance.Fullname" />,
     'description': <FormattedMarkdownMessage id="Dashboard.Performance.Card.Description" />,
     'longDescription': <LongDescription name='Performance' />,
-    'icon': <IoSpeedometer />,
+    'icon': <NettestGroupPerformance />,
     renderSummary: renderWebsitesSummary,
   },
   'default': {

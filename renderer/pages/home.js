@@ -97,12 +97,12 @@ const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, on
 
 const BackCardContent = ({name, longDescription, icon, color, toggleCard}) => (
   <Box w={1/2} pr={3} pb={3}>
-    <Card bg={chroma(color).darken(2).desaturate()} color='white' style={{position: 'relative', height: '200px'}}>
+    <Card bg={chroma(color).darken(2).desaturate()} color='white' style={{position: 'relative', height: '200px', padding: '20px'}}>
       <TopLeftFloatingButton>
         <MdClear onClick={toggleCard} size={30} />
       </TopLeftFloatingButton>
       <CardContent>
-        <Heading h={2}>{name}</Heading>
+        <Heading h={3}>{name}</Heading>
         {longDescription}
       </CardContent>
     </Card>

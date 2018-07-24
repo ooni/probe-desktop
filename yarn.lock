@@ -5696,14 +5696,15 @@ onetime@^2.0.0:
   dependencies:
     mimic-fn "^1.0.0"
 
-ooni-components@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/ooni-components/-/ooni-components-0.1.0.tgz#ceda3a95742bf97a592af2d6b36c7d3484b0256b"
+ooni-components@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/ooni-components/-/ooni-components-0.1.1.tgz#80a041f59f1e52f6c3d492f40b6104dabe09c468"
   dependencies:
     palx "^1.0.2"
     prop-types "^15.5.10"
     react "^16.0.0"
     react-dom "^16.4.0"
+    react-icon-base "^2.1.2"
     react-icons "^2.2.5"
     rebass "^1.0.4"
     styled-components "^2.4.0"
@@ -6387,6 +6388,10 @@ react-icon-base@2.0.7:
   resolved "https://registry.yarnpkg.com/react-icon-base/-/react-icon-base-2.0.7.tgz#0bd18736bd6ce79ca6d69ce8387a07fb8d4ceffe"
   dependencies:
     prop-types "15.5.8"
+
+react-icon-base@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/react-icon-base/-/react-icon-base-2.1.2.tgz#a17101dad9c1192652356096860a9ab43a0766c7"
 
 react-icons@^2.2.5:
   version "2.2.5"
