@@ -43,14 +43,6 @@ const renderWebsitesSummary = (summary) => {
 }
 
 const DescriptionContainer = styled.div`
-a {
-  color: ${props => props.theme.colors.blue5};
-  text-decoration: none;
-}
-
-a:hover {
-  color: ${props => props.theme.colors.blue3};
-}
 `
 
 const LongDescription = ({name}) => {
