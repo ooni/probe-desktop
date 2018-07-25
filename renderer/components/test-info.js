@@ -19,28 +19,11 @@ import {
 } from 'ooni-components/dist/icons'
 
 // XXX this should be moved to the design-system
-import MdClear from 'react-icons/lib/md/clear'
-import MdWeb from 'react-icons/lib/md/web'
 import IoSpeedometer from 'react-icons/lib/io/speedometer'
 import FormattedMarkdownMessage from './FormattedMarkdownMessage'
 
 const iconSize = 200
 const iconColor = theme.colors.black
-
-const renderWebsitesSummary = (summary) => {
-  if (summary == null) {
-    return <Text color={theme.colors.red8}>Error</Text>
-  }
-
-  return <Flex column>
-    <Box w={1}>
-      <Text color={theme.colors.red8}><MdClear /> {summary['Blocked']} blocked</Text>
-    </Box>
-    <Box w={1}>
-      <Text><MdWeb /> {summary['Tested']} tested</Text>
-    </Box>
-  </Flex>
-}
 
 const DescriptionContainer = styled.div`
 `
@@ -61,7 +44,6 @@ export const testGroups = {
     'description': <FormattedMarkdownMessage id="Dashboard.Websites.Card.Description" />,
     'longDescription': <LongDescription name='Websites' />,
     'icon': <NettestGroupWebsites />,
-    renderSummary: renderWebsitesSummary,
   },
   'im': {
     'color': theme.colors.cyan6,
@@ -69,7 +51,6 @@ export const testGroups = {
     'description': <FormattedMarkdownMessage id="Dashboard.InstantMessaging.Card.Description" />,
     'longDescription': <LongDescription name='InstantMessaging' />,
     'icon': <NettestGroupInstantMessaging />,
-    renderSummary: renderWebsitesSummary,
   },
   'middlebox': {
     'color': theme.colors.violet8,
@@ -77,7 +58,6 @@ export const testGroups = {
     'description': <FormattedMarkdownMessage id="Dashboard.Middleboxes.Card.Description" />,
     'longDescription': <LongDescription name='Middleboxes' />,
     'icon': <NettestGroupMiddleBoxes />,
-    renderSummary: renderWebsitesSummary,
   },
   'performance': {
     'color': theme.colors.fuschia6,
@@ -85,7 +65,6 @@ export const testGroups = {
     'description': <FormattedMarkdownMessage id="Dashboard.Performance.Card.Description" />,
     'longDescription': <LongDescription name='Performance' />,
     'icon': <NettestGroupPerformance />,
-    renderSummary: renderWebsitesSummary,
   },
   'default': {
     'color': theme.colors.blue5,
@@ -93,7 +72,6 @@ export const testGroups = {
     'longDescription': '',
     'name': 'Default',
     'icon': <IoSpeedometer />,
-    renderSummary: renderWebsitesSummary,
   }
 }
 
