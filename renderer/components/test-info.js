@@ -2,6 +2,8 @@ import React from 'react'
 
 import { FormattedMessage } from 'react-intl'
 
+import styled from 'styled-components'
+
 import {
   theme,
   Text,
@@ -40,12 +42,23 @@ const renderWebsitesSummary = (summary) => {
   </Flex>
 }
 
+const DescriptionContainer = styled.div`
+a {
+  color: ${props => props.theme.colors.blue5};
+  text-decoration: none;
+}
+
+a:hover {
+  color: ${props => props.theme.colors.blue3};
+}
+`
+
 const LongDescription = ({name}) => {
   return (
-    <div>
+    <DescriptionContainer>
       <FormattedMarkdownMessage id={`Dashboard.${name}.Overview.Paragraph.1`} />
       <FormattedMarkdownMessage id={`Dashboard.${name}.Overview.Paragraph.2`} />
-    </div>
+    </DescriptionContainer>
   )
 }
 

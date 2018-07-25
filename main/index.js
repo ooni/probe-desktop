@@ -1,9 +1,11 @@
+/* global require, process, global */
+
 // Native
 const { format } = require('url')
 const { spawn } = require('child_process')
 
 // Packages
-const { BrowserWindow, app, ipcMain } = require('electron')
+const { app } = require('electron')
 const prepareNext = require('electron-next')
 
 const fixPath = require('fix-path')

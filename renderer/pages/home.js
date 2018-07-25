@@ -95,7 +95,7 @@ const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, on
   </Box>
 )
 
-const BackCardContent = ({name, longDescription, icon, color, toggleCard}) => (
+const BackCardContent = ({name, longDescription, color, toggleCard}) => (
   <Box w={1/2} pr={3} pb={3}>
     <Card bg={chroma(color).darken(2).desaturate()} color='white' style={{position: 'relative', height: '200px', padding: '20px'}}>
       <TopLeftFloatingButton>
@@ -157,7 +157,6 @@ class Home extends React.Component {
 
   onRun(groupName) {
     return () => {
-      console.log('running', groupName)
       this.setState({runningTestGroup: groupName})
     }
   }
