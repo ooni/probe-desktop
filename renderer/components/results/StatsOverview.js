@@ -6,9 +6,16 @@ import VerticalDivider from '../to-migrate/VerticalDivider'
 import StatBox from '../to-migrate/StatBox'
 
 import {
+  NettestGroupMiddleBoxes,
+} from 'ooni-components/dist/icons'
+
+import {
   Flex,
   Box,
+  Text
 } from 'ooni-components'
+
+import formatBitrate from './formatBitrate'
 
 const addPlurality = (id, count) => {
   if (parseInt(count) > 1) {
@@ -104,8 +111,78 @@ const IMStats = ({summary}) => {
   )
 }
 
-const MiddleboxStats = TODOStats
-const PerformanceStats = TODOStats
+const MiddleboxStats = ({summary}) => {
+  const detected = summary.Detected
+  let msgID = 'TestResults.Summary.Middleboxes.Hero.NotFound'
+  if (detected === true) {
+    msgID = 'TestResults.Summary.Middleboxes.Hero.Found'
+  }
+
+  return (
+    <Flex style={{width: '100%'}}>
+      <Box w={1}>
+        <Flex justify='center' align='center'>
+          <Box>
+            <NettestGroupMiddleBoxes size={100} />
+          </Box>
+        </Flex>
+        <Text center><FormattedMessage id='Test.Middleboxes.Fullname' /> <FormattedMessage id={msgID} /></Text>
+      </Box>
+    </Flex>
+  )
+}
+
+const formatSpeed = (speed) => {
+  if (speed < 1000) {
+    return [speed, 'Kbps']
+  }
+  if (speed < 1000*1000) {
+    return [(speed / 1000).toFixed(1), 'Mbps']
+  }
+  return [(speed / (1000*1000)).toFixed(1), 'Gbps']
+}
+
+const PerformanceStats = ({summary}) => {
+  const upload = formatSpeed(summary.Upload)
+  const download = formatSpeed(summary.Download)
+  const ping = summary.Ping
+  const bitrate = summary.Bitrate
+
+  return (
+    <Flex style={{width: '100%'}}>
+      <Box w={1/4}>
+        <StatBox
+          value={formatBitrate(bitrate)}
+          unit={<FormattedMessage id='TestResults.Summary.Performance.Hero.Video.Quality' />}
+          label={<FormattedMessage id='TestResults.Summary.Performance.Hero.Video' />} />
+      </Box>
+      <VerticalDivider />
+      <Box w={1/4}>
+        <StatBox
+          value={download[0]}
+          unit={download[1]}
+          label={<FormattedMessage id='TestResults.Summary.Performance.Hero.Download' />} />
+      </Box>
+      <VerticalDivider />
+      <Box w={1/4}>
+        <StatBox
+          value={upload[0]}
+          unit={upload[1]}
+          label={<FormattedMessage id='TestResults.Summary.Performance.Hero.Upload' />} />
+      </Box>
+      <VerticalDivider />
+      <Box w={1/4}>
+        <StatBox
+          value={ping.toFixed(1)}
+          label={<FormattedMessage id='TestResults.Summary.Performance.Hero.Ping' />}
+          unit='ms'
+        />
+      </Box>
+    </Flex>
+  )
+}
+
+
 
 const statsMap = {
   'websites': WebsitesStats,

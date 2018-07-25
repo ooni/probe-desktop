@@ -6,9 +6,6 @@ import styled from 'styled-components'
 
 import {
   theme,
-  Text,
-  Flex,
-  Box
 } from 'ooni-components'
 
 import {
