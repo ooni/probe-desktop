@@ -17,13 +17,12 @@ import Link from 'next/link'
 import MdWeb from 'react-icons/lib/md/web'
 import MdDone from 'react-icons/lib/md/done'
 import MdClear from 'react-icons/lib/md/clear'
-import MdArrowDownward from 'react-icons/lib/md/arrow-downward'
-import MdArrowUpward from 'react-icons/lib/md/arrow-upward'
-import MdVideoLibrary from 'react-icons/lib/md/video-library'
 import { testGroups } from '../test-info'
 import RightArrow from '../RightArrow'
 
-import formatBitrate from './formatBitrate'
+import UploadSpeed from './UploadSpeed'
+import DownloadSpeed from './DownloadSpeed'
+import VideoQuality from './VideoQuality'
 
 const ColorCode = styled.div`
   height: 80px;
@@ -74,26 +73,16 @@ const IMSummary = ({summary}) => {
   </SummaryContainer>
 }
 
-const formatSpeed = (speed) => {
-  if (speed < 1000) {
-    return `${speed} kbps`
-  }
-  if (speed < 1000*1000) {
-    return `${(speed / 1000).toFixed(1)} mbps`
-  }
-  return `${(speed / (1000*1000)).toFixed(1)} gbps`
-}
-
 const PerformanceSummary = ({summary}) => {
   return <SummaryContainer wrap>
     <Box w={1/2}>
-      <Text><MdArrowDownward /> {formatSpeed(summary['Download'])}</Text>
+      <DownloadSpeed bits={summary['Download']} />
     </Box>
     <Box w={1/2}>
-      <Text><MdVideoLibrary /> {formatBitrate(summary['Bitrate'])}</Text>
+      <VideoQuality bitrate={summary['Bitrate']} />
     </Box>
     <Box w={1/2}>
-      <Text><MdArrowUpward /> {formatSpeed(summary['Upload'])}</Text>
+      <UploadSpeed bits={summary['Upload']} />
     </Box>
   </SummaryContainer>
 }

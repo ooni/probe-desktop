@@ -16,6 +16,7 @@ import {
 } from 'ooni-components'
 
 import formatBitrate from './formatBitrate'
+import formatSpeed from './formatSpeed'
 
 const addPlurality = (id, count) => {
   if (parseInt(count) > 1) {
@@ -132,15 +133,6 @@ const MiddleboxStats = ({summary}) => {
   )
 }
 
-const formatSpeed = (speed) => {
-  if (speed < 1000) {
-    return [speed, 'Kbps']
-  }
-  if (speed < 1000*1000) {
-    return [(speed / 1000).toFixed(1), 'Mbps']
-  }
-  return [(speed / (1000*1000)).toFixed(1), 'Gbps']
-}
 
 const PerformanceStats = ({summary}) => {
   const upload = formatSpeed(summary.Upload)
@@ -159,15 +151,15 @@ const PerformanceStats = ({summary}) => {
       <VerticalDivider />
       <Box w={1/4}>
         <StatBox
-          value={download[0]}
-          unit={download[1]}
+          value={download.value}
+          unit={download.unit}
           label={<FormattedMessage id='TestResults.Summary.Performance.Hero.Download' />} />
       </Box>
       <VerticalDivider />
       <Box w={1/4}>
         <StatBox
-          value={upload[0]}
-          unit={upload[1]}
+          value={upload.value}
+          unit={upload.unit}
           label={<FormattedMessage id='TestResults.Summary.Performance.Hero.Upload' />} />
       </Box>
       <VerticalDivider />
