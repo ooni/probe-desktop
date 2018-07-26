@@ -64,15 +64,6 @@ const WebsitesStats = ({summary}) => {
   )
 }
 
-const TODOStats = ({summary}) => {
-  return (
-    <Flex>
-      {JSON.stringify(summary, null, 2)}
-    </Flex>
-  )
-}
-
-
 const IMStats = ({summary}) => {
   const testedCount = summary.Tested
   const blockedCount = summary.Blocked

@@ -23,6 +23,10 @@ import {
 import styled from 'styled-components'
 import RightArrow from '../RightArrow'
 
+import UploadSpeed from './UploadSpeed'
+import DownloadSpeed from './DownloadSpeed'
+import VideoQuality from './VideoQuality'
+
 // XXX this should be moved to the design-system
 import MdPriorityHigh from 'react-icons/lib/md/priority-high'
 import MdTexture from 'react-icons/lib/md/texture'
@@ -116,11 +120,14 @@ const renderStatus = (measurementName, summary) => {
   }
 
   if (measurementName === 'Dash') {
-    return <Text>{JSON.stringify(summary, null, 2)}</Text>
+    return <VideoQuality bitrate={summary['Bitrate']} />
   }
 
   if (measurementName === 'Ndt') {
-    return <Text>{JSON.stringify(summary, null, 2)}</Text>
+    return <div>
+      <DownloadSpeed bits={summary['Download']} />
+      <UploadSpeed bits={summary['Upload']} />
+    </div>
   }
 
   return (
@@ -139,11 +146,11 @@ const TestRow =  ({measurement, query, summary}) => {
 
   return (
     <BorderedRow>
-      <Box w={6/8} pl={2}>
+      <Box w={5/8} pl={2}>
         {icon && <IconContainer>{icon}</IconContainer>}
         <FormattedMessage id={fullnameID} />
       </Box>
-      <Box w={1/8} h={1}>
+      <Box w={2/8} h={1}>
         {renderStatus(measurement.measurement_name, summary)}
       </Box>
       <Box w={1/8} style={{marginLeft: 'auto'}}>
