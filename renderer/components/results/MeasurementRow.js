@@ -36,13 +36,20 @@ const VerticalCenter = ({children}) => {
   )
 }
 
+const formatURL = (url) => {
+  if (url.length > 32) {
+    return url.substr(0, 31) + '…'
+  }
+  return url
+}
+
 const URLRow =  ({measurement, query, summary}) => (
   <BorderedRow>
     <Box pr={2} pl={2} w={1/8}>
       <MdComputer size={30}/>
     </Box>
     <Box w={6/8} h={1}>
-      {measurement.input}
+      {formatURL(measurement.input)}
     </Box>
     <Box w={1/8} h={1}>
       <Status blocked={summary.Blocked} />
