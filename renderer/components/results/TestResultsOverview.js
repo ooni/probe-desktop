@@ -1,4 +1,3 @@
-/* global require */
 import React from 'react'
 
 import moment from 'moment'
@@ -30,19 +29,7 @@ import { testGroups } from '../test-info'
 import StatsOverview from './StatsOverview'
 import MeasurementRow from './MeasurementRow'
 import BackButton from './BackButton'
-
-const TwoColumnTable = ({left, right}) => {
-  return (
-    <Flex align='center' pb={1}>
-      <Box>
-        {left}
-      </Box>
-      <Box ml='auto'>
-        {right}
-      </Box>
-    </Flex>
-  )
-}
+import TwoColumnTable from './TwoColumnTable'
 
 const ResultOverviewContainer = styled.div`
   position: relative;

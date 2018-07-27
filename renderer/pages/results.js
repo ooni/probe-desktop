@@ -32,7 +32,7 @@ class Results extends React.Component {
       loading: true,
       resultsList: {},
       measurementsList: [],
-      selectedMeasurement: null,
+      selectedMeasurement: {},
       error: null
     }
     this.loadResults = this.loadResults.bind(this)
