@@ -174,7 +174,7 @@ const rowMap = {
 }
 
 const MeasurementRow = ({groupName, measurement, router}) => {
-  if (measurement == null || groupName === 'default') {
+  if (measurement == null || groupName === 'default' || !measurement.summary) {
     return <Text color={theme.colors.red8}>Error</Text>
   }
 
