@@ -27,7 +27,7 @@ import Sidebar from '../components/SideBar'
 
 import Running from '../components/home/running'
 
-import { testList } from '../components/test-info'
+import { testList } from '../components/nettests'
 
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.dashboard')
 

@@ -24,7 +24,7 @@ import {
   Divider
 } from 'ooni-components'
 
-import { testGroups } from '../test-info'
+import { testGroups } from '../nettests'
 
 import StatsOverview from './StatsOverview'
 import MeasurementRow from './MeasurementRow'

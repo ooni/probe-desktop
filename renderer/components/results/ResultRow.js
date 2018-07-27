@@ -17,7 +17,7 @@ import Link from 'next/link'
 import MdWeb from 'react-icons/lib/md/web'
 import MdDone from 'react-icons/lib/md/done'
 import MdClear from 'react-icons/lib/md/clear'
-import { testGroups } from '../test-info'
+import { testGroups } from '../nettests'
 import RightArrow from '../RightArrow'
 
 import UploadSpeed from './UploadSpeed'

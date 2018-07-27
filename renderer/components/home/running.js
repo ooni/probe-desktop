@@ -13,7 +13,7 @@ import {
   Container
 } from 'ooni-components'
 
-import { testGroups } from '../test-info'
+import { testGroups } from '../nettests'
 
 const debug = require('debug')('ooniprobe-desktop.renderer.components.home.running')
 
