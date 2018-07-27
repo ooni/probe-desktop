@@ -91,6 +91,13 @@ app.on('ready', async () => {
 
   const { wasOpenedAtLogin } = app.getLoginItemSettings()
 
+  // XXX probably remove this when ready to deploy
+  if (isDev) {
+    windows.onboard.once('ready-to-show', () => {
+      toggleWindow(null, windows.onboard)
+    })
+  }
+
   // XXX Only allow one instance of OONI Probe running
   // at the same time
   if (config._informed_consent === false) {

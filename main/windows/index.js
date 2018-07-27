@@ -23,13 +23,19 @@ const windowURL = page => {
 }
 
 const onboardWindow = () => {
+  let windowHeight = 640
+
+  if (isWinOS) {
+    windowHeight -= 12
+  }
+
   const win = new electron.BrowserWindow({
-    width: 860,
-    height: 720,
+    width: 1024,
+    height: windowHeight,
     title: 'Welcome to OONI Probe',
-    //titleBarStyle: 'hidden-inset',
+    titleBarStyle: 'hidden-inset',
     show: false,
-    backgroundColor: '#fff',
+    backgroundColor: '#005A99',
     webPreferences: {}
   })
 
