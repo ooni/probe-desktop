@@ -15,7 +15,7 @@ class Ooniprobe extends EventEmitter {
     this._binaryPath = (props && props.binaryPath) || getBinaryPath()
   }
 
-  run({testGroupName, argv}) {
+  call(argv) {
     const self = this
     return new Promise((resolve, reject) => {
       const options = {
@@ -25,7 +25,7 @@ class Ooniprobe extends EventEmitter {
           'SSL_CERT_FILE': getSSLCertFilePath()
         }
       }
-      const argv = ['--batch', 'run', testGroupName]
+      argv = ['--batch'].concat(argv)
 
       debug('running', self._binaryPath, argv, options)
 

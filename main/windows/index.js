@@ -22,27 +22,6 @@ const windowURL = page => {
   return url
 }
 
-const onboardWindow = () => {
-  let windowHeight = 640
-
-  if (isWinOS) {
-    windowHeight -= 12
-  }
-
-  const win = new electron.BrowserWindow({
-    width: 1024,
-    height: windowHeight,
-    title: 'Welcome to OONI Probe',
-    titleBarStyle: 'hidden-inset',
-    show: false,
-    backgroundColor: '#005A99',
-    webPreferences: {}
-  })
-
-  win.loadURL(windowURL('onboard'))
-  return win
-}
-
 const aboutWindow = () => {
   const win = new electron.BrowserWindow({
     width: 360,
@@ -80,6 +59,6 @@ const mainWindow = () => {
 
 module.exports = {
   mainWindow,
-  onboardWindow,
-  aboutWindow
+  aboutWindow,
+  windowURL
 }

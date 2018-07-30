@@ -1,3 +1,4 @@
+/* global windows */
 const { Ooniprobe } = require('./ooniprobe')
 
 module.exports = async ({testGroupName, options}) => {
@@ -13,21 +14,21 @@ module.exports = async ({testGroupName, options}) => {
     }
 
     switch(data.fields.type) {
-      case 'progress':
-        windows.main.send('ooni', {
-          key: 'ooni.run.progress',
-          percentage: data.fields.percentage,
-          message: data.message,
-          testKey: data.fields.key,
-        })
-        break
-      default:
-        windows.main.send('ooni', {
-          key: 'log',
-          value: data.message
-        })
+    case 'progress':
+      windows.main.send('ooni', {
+        key: 'ooni.run.progress',
+        percentage: data.fields.percentage,
+        message: data.message,
+        testKey: data.fields.key,
+      })
+      break
+    default:
+      windows.main.send('ooni', {
+        key: 'log',
+        value: data.message
+      })
     }
   })
-  const argv = []
-  await ooni.run({testGroupName, argv})
+
+  await ooni.call(['run', testGroupName])
 }

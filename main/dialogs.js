@@ -2,7 +2,6 @@ const { dialog } = require('electron')
 const sudo = require('sudo-prompt')
 const resolvePath = require('app-root-path').resolve
 
-
 const runAsRoot = (command, why) => {
   const answer = dialog.showMessageBox({
     type: 'question',
@@ -28,6 +27,7 @@ const runAsRoot = (command, why) => {
     })
   })
 }
+
 module.exports = {
   runAsRoot
 }

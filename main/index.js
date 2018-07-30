@@ -21,8 +21,8 @@ const toggleWindow = require('./windows/toggle')
 
 const {
   mainWindow,
-  onboardWindow,
-  aboutWindow
+  aboutWindow,
+  windowURL
 } = require('./windows')
 
 const Sentry = require('@sentry/electron')
@@ -76,11 +76,14 @@ app.on('ready', async () => {
     config = {}
   }
 
+  if (config._is_beta === true) {
+    // XXX do something like delete all the measurements on a fresh launch.
+  }
+
   await prepareNext('./renderer')
 
   const windows = {
     main: mainWindow(),
-    onboard: onboardWindow(),
     about: aboutWindow()
   }
 
@@ -91,24 +94,14 @@ app.on('ready', async () => {
 
   const { wasOpenedAtLogin } = app.getLoginItemSettings()
 
-  // XXX probably remove this when ready to deploy
-  if (isDev) {
-    windows.onboard.once('ready-to-show', () => {
-      toggleWindow(null, windows.onboard)
-    })
-  }
-
   // XXX Only allow one instance of OONI Probe running
   // at the same time
-  if (config._informed_consent === false) {
-    windows.onboard.once('ready-to-show', () => {
-      toggleWindow(null, windows.onboard)
-    })
-  } else {
-    if (!wasOpenedAtLogin) {
-      windows.main.once('ready-to-show', () => {
-        toggleWindow(null, windows.main)
-      })
+  if (!wasOpenedAtLogin) {
+    if (config._informed_consent !== true) {
+      windows.main.loadURL(windowURL('onboard'))
     }
+    windows.main.once('ready-to-show', () => {
+      toggleWindow(null, windows.main)
+    })
   }
 })
