@@ -1,11 +1,8 @@
 /* global require */
 
-import electron from 'electron'
 import React from 'react'
 
 import * as chroma from 'chroma-js'
-
-import Link from 'next/link'
 
 import styled from 'styled-components'
 
@@ -17,9 +14,7 @@ import {
   Box,
   Flex,
   Heading,
-  Text,
-  Card,
-  colors
+  Card
 } from 'ooni-components'
 
 import Layout from '../components/Layout'
