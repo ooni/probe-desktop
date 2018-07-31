@@ -18,3 +18,11 @@ To do this you should follow the pattern outlined for `components/nettests/im/fa
 * Style the onboarding view based on the mockups
 
 * Style the Running test view based on the mockups
+
+* Go through the icons and ensure we are using the latest ones
+
+* Store and show the category code (with the relevant icon) for each tested website
+
+* Add support for re-uploading not uploaded tests
+
+* Add support for re-running failed tests
