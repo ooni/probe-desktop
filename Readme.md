@@ -46,14 +46,3 @@ Before doing this be sure you ran the script to build gooni:
 ```
 GOONI_DIR=/path/to/gooni ./scripts/build-binaries.sh
 ```
-
-### Troubleshooting
-
-You may encounter (particularly in the results page) errors related to the
-`sqlite3` module not being found. If that happens you will have to rebuild
-electron with your current sqlite3 version with:
-
-```
-npm run electron-rebuild
-```
-
