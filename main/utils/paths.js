@@ -19,7 +19,7 @@ const getResourcesDirectory = () => {
   const appPath = (electron.app || electron.remote.app).getPath('exe')
 
   if (is.macos) {
-    return path.join(appPath, '../../Resources');
+    return path.join(appPath, '../../Resources')
   }
   if (is.linux) {
     return path.join(path.dirname(appPath), './resources')
@@ -27,7 +27,7 @@ const getResourcesDirectory = () => {
   if (is.windows) {
     return path.join(path.dirname(appPath), './resources')
   }
-  
+
   // Other platforms we should just use relative paths and hope
   // for the best
   return './resources'
@@ -59,10 +59,19 @@ const getHomeDir = () => {
   return path.join(userDataPath, 'ooni_home')
 }
 
+const debugGetAllPaths = () => ({
+  'binaryPath': getBinaryPath(),
+  'binaryDirectory': getBinaryDirectory(),
+  'binarySuffix': getBinarySuffix(),
+  'SSLCertFilePath': getSSLCertFilePath(),
+  'homeDir': getHomeDir()
+})
+
 module.exports = {
   getBinaryPath,
   getBinaryDirectory,
   getBinarySuffix,
   getSSLCertFilePath,
   getHomeDir,
+  debugGetAllPaths
 }

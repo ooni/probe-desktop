@@ -21,6 +21,10 @@ const loadDB = (path) => {
 
 const mapRows = (res) => {
   // Funky js map reduce magic to map column names to rows
+  if (res.length === 0) {
+    return []
+  }
+
   return res[0].values.map(row => {
     return row.reduce((a, v, i) => {
       a[res[0].columns[i]] = v

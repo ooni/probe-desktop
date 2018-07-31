@@ -125,7 +125,7 @@ const ResultsSection = ({month, rows}) => {
 }
 
 const groupRowsByMonth = (rows) => {
-  if (!rows) {
+  if (!rows || rows.length === 0) {
     return []
   }
 

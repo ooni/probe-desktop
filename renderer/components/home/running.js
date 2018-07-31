@@ -173,6 +173,7 @@ class Running extends React.Component {
       this.setState({done: true})
       Router.push('/results')
     }).catch(error => {
+      debug('error', error)
       Raven.captureException(error, {extra: {scope: 'renderer.runTest'}})
       this.setState({error: error})
     })
