@@ -34,15 +34,23 @@ yarn install
 
 To build and run a development mode electron instance run:
 ```
-npm run start
+yarn run start
 ```
 
-To create a standalone packaged app run:
+To create a standalone packaged app:
+
+Be sure you have copied the binaries into the bin tree, by doing:
+
 ```
-npm run pack
+yarn run cp-bin
 ```
 
-Before doing this be sure you ran the script to build gooni:
+The above expects you to have in ../probe-cli a built version of all the
+binaries you need.
+
+Then run:
+
 ```
-GOONI_DIR=/path/to/gooni ./scripts/build-binaries.sh
+yarn run pack:mac
+yarn run pack:win
 ```
