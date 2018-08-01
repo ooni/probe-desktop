@@ -34,9 +34,14 @@ const getResourcesDirectory = () => {
 }
 
 const getBinaryDirectory = () => {
-  // XXX only macos development is currently supported
   if (is.development) {
-    return path.join(getResourcesDirectory(), 'bin/mac_x64')
+    if (is.macos) {
+      return path.join(getResourcesDirectory(), 'bin/mac_x64')
+    }
+    if (is.linux) {
+      return path.join(getResourcesDirectory(), 'bin/linux_x64')
+    }
+    throw Error("Only macos and linux development is currently supported')
   }
   return path.join(getResourcesDirectory(), 'bin')
 }
