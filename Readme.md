@@ -30,11 +30,11 @@ yarn install
 You will also need to have copied a compiled binary of `probe-cli` into the
 directory for the platform you plan to do development on.
 
-On macOS, you should copy `ooni` into `bin/mac_x64/ooni`.
+On macOS, you should copy `ooni` into `probe-desktop/bin/mac_x64/ooni`.
 
-On linux, you should copy `ooni` into `bin/linux_x64/ooni`.
+On linux, you should copy `ooni` into `probe-desktop/bin/linux_x64/ooni`.
 
-You should also put a working `cert.pem` file inside of `bin/cert.pem`.
+You should also put a working `cert.pem` file inside of `probe-desktop/cert.pem`.
 
 On macOS you can usually find one in `/etc/ssl/cert.pem`
 
