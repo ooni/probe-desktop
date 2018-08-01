@@ -22,13 +22,17 @@ app](https://ooni.torproject.org/post/writing-a-modern-cross-platform-desktop-ap
 In order to start hacking on this, we assume you have `node` and `yarn`
 installed.
 
-We also assume you have the `gooni` source code checked out and working
-compilers.
-
 Then you can run:
 ```
 yarn install
 ```
+
+You will also need to have copied a compiled binary of `probe-cli` into the
+directory for the platform you plan to do development on.
+
+On macOS, you should copy `ooni` into `bin/mac_x64/ooni`.
+
+On linux, you should copy `ooni` into `bin/linux_x64/ooni`.
 
 ## Usage
 
