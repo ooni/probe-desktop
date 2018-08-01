@@ -41,7 +41,7 @@ const getBinaryDirectory = () => {
     if (is.linux) {
       return path.join(getResourcesDirectory(), 'bin/linux_x64')
     }
-    throw Error("Only macos and linux development is currently supported')
+    throw Error('Only macos and linux development is currently supported')
   }
   return path.join(getResourcesDirectory(), 'bin')
 }
