@@ -34,6 +34,13 @@ On macOS, you should copy `ooni` into `bin/mac_x64/ooni`.
 
 On linux, you should copy `ooni` into `bin/linux_x64/ooni`.
 
+You should also put a working `cert.pem` file inside of `bin/cert.pem`.
+
+On macOS you can usually find one in `/etc/ssl/cert.pem`
+
+On linux you can find it in `/etc/ssl/certs/ca-certificates.crt` (be sure to
+rename it to `cert.pem`).
+
 ## Usage
 
 To build and run a development mode electron instance run:
