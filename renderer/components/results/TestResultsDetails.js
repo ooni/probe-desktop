@@ -66,7 +66,7 @@ const MeasurementOverview = ({title, startTime, runtime, networkName, country, a
 }
 
 const mapOverviewProps = (msmt) => {
-  const groupName = msmt.result_name || 'default'
+  const groupName = msmt.test_group_name || 'default'
   let props = {
     groupName,
     group: testGroups[groupName],
@@ -76,9 +76,9 @@ const mapOverviewProps = (msmt) => {
   }
   props = {
     ...props,
-    title: msmt.measurement_name,
+    title: msmt.test_name,
     startTime: msmt.start_time || null,
-    dataUsageUp: msmt.data_usage_upi || 0,
+    dataUsageUp: msmt.data_usage_up || 0,
     dataUsageDown: msmt.data_usage_down || 0,
     runtime: msmt.runtime || 0,
     networkName: msmt.network_name || '',
@@ -94,7 +94,7 @@ const TestResultsDetails = ({measurement}) => {
   return <TwoColumnHero
     bg={overviewProps.group.color}
     left={<MeasurementOverview {...overviewProps} onBack={() => this.onSelectMeasurement(null)} />}
-    right={renderDetails(measurement.measurement_name, measurement.summary)} />
+    right={renderDetails(measurement.test_name, measurement.is_anomaly, measurement.test_keys)} />
 }
 
 export default TestResultsDetails

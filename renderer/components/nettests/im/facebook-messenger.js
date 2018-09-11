@@ -47,21 +47,21 @@ const StatusBox = ({label, value, ok}) => (
   </Flex>
 )
 
-export const FacebookMessengerDetails = ({summary}) => {
+export const FacebookMessengerDetails = ({testKeys, isAnomaly}) => {
   // summary = { "DNSBlocking": false, "TCPBlocking": false, "Blocked": false }
-  let likelyBlocked = summary.Blocked
+  let likelyBlocked = isAnomaly
   let blockingReason = ''
   let tcpStatus = 'Okay'
   let dnsStatus = 'Okay'
 
-  if (summary.DNSBlocking === true && summary.TCPBlocking === true) {
+  if (testKeys['facebook_dns_blocking'] === true && testKeys['facebook_tcp_blocking'] === true) {
     blockingReason = 'DNSandTCPIP'
     tcpStatus = 'Failed'
     dnsStatus = 'Failed'
-  } else if (summary.DNSBlocking === true) {
+  } else if (testKeys['facebook_dns_blocking'] === true) {
     blockingReason = 'DNSOnly'
     dnsStatus = 'Failed'
-  } else if (summary.TCPBlocking === true) {
+  } else if (testKeys['facebook_tcp_blocking'] === true) {
     blockingReason = 'TCPIPOnly'
     tcpStatus = 'Failed'
   }

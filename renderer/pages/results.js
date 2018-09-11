@@ -92,7 +92,7 @@ class Results extends React.Component {
       // XXX this is a bit sketch
       return this.loadMeasurements(query.resultID).then(() => {
         this.setState({
-          selectedMeasurement: this.state.measurementsList.filter(m => m.id == query.measurementID)[0]
+          selectedMeasurement: this.state.measurementRows.filter(m => m.id == query.measurementID)[0]
         })
       })
     }

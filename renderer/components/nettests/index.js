@@ -13,25 +13,25 @@ import middlebox from './middleboxes'
 import performance from './performance'
 import websites from './websites'
 
-const TODODetails = ({summary}) => {
+const TODODetails = ({testKeys, isAnomaly}) => {
   return <div>
-    {JSON.stringify(summary, null, 2)}
+    {JSON.stringify(isAnomaly)} - {JSON.stringify(testKeys, null, 2)}
   </div>
 }
 
 const detailsMap = {
-  FacebookMessenger: FacebookMessengerDetails
+  facebook_messenger: FacebookMessengerDetails
 }
 
-export const renderDetails = (name, summary) => {
+export const renderDetails = (name, isAnomaly, testKeys) => {
   const Component = detailsMap[name]
-  if (summary) {
-    summary = JSON.parse(summary)
+  if (testKeys) {
+    testKeys = JSON.parse(testKeys)
   }
   if (!Component) {
-    return <TODODetails summary={summary} />
+    return <TODODetails isAnomaly={isAnomaly} testKeys={testKeys} />
   }
-  return <Component summary={summary} />
+  return <Component testKeys={testKeys} isAnomaly={isAnomaly} />
 }
 
 const iconSize = 200
