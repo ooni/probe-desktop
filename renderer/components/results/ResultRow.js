@@ -79,7 +79,7 @@ const PerformanceSummary = ({testKeys}) => {
       <DownloadSpeed bits={testKeys['download']} />
     </Box>
     <Box w={1/2}>
-      <VideoQuality bitrate={testKeys['avg_bitrate']} />
+      <VideoQuality bitrate={testKeys['median_bitrate']} />
     </Box>
     <Box w={1/2}>
       <UploadSpeed bits={testKeys['upload']} />

@@ -132,7 +132,7 @@ const StatusBox = ({testName, testKeys, isAnomaly}) => {
   }
 
   if (testName === 'dash') {
-    return <VideoQuality bitrate={testKeys['avg_bitrate']} />
+    return <VideoQuality bitrate={testKeys['median_bitrate']} />
   }
 
   if (testName === 'ndt') {

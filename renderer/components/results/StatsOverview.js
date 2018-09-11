@@ -129,7 +129,7 @@ const PerformanceStats = ({testKeys}) => {
   const upload = formatSpeed(testKeys['upload'])
   const download = formatSpeed(testKeys['download'])
   const ping = testKeys['ping']
-  const bitrate = testKeys['avg_bitrate']
+  const bitrate = testKeys['median_bitrate']
 
   return (
     <Flex style={{width: '100%'}}>
