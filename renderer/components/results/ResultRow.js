@@ -151,13 +151,13 @@ class ResultRow extends React.Component {
     const {
       asn,
       network,
-      country
+      network_country_code
     } = this.props
 
     return (
       <VerticalCenter>
         <Text>{network}</Text>
-        <Text>{asn} ({country})</Text>
+        <Text>AS{asn} ({network_country_code})</Text>
       </VerticalCenter>
     )
   }

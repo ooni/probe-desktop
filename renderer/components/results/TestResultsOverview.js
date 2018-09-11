@@ -38,7 +38,7 @@ const ResultOverviewContainer = styled.div`
 `
 
 // XXX groupName is also passed in
-const ResultOverview = ({groupName, testKeys, anomalyCount, totalCount, startTime, dataUsageUp, dataUsageDown, runtime, networkName, country, asn}) => {
+const ResultOverview = ({groupName, testKeys, anomalyCount, totalCount, startTime, dataUsageUp, dataUsageDown, runtime, networkName, countryCode, asn}) => {
   return (
     <ResultOverviewContainer>
       <Flex justify='center' align='center'>
@@ -64,7 +64,7 @@ const ResultOverview = ({groupName, testKeys, anomalyCount, totalCount, startTim
 
         <TwoColumnTable
           left={<Text><MdFlag size={20} />Country</Text>}
-          right={<Text>{country}</Text>} />
+          right={<Text>{countryCode}</Text>} />
 
         <TwoColumnTable
           left={<Text><MdPublic  size={20} />Network</Text>}
@@ -85,15 +85,23 @@ const MeasurementList = ({groupName, measurements}) => {
 }
 
 const mapOverviewProps = (rows, summary) => {
-  let msmt = {}
+  let msmt = {},
+    testKeys = {}
   if (rows.length > 0) {
     msmt = rows[0]
   }
   const groupName = msmt.test_group_name || 'default'
+  if (groupName === 'performance') {
+    rows.forEach(row => {
+      if (row.test_keys) {
+        testKeys = Object.assign({}, testKeys, JSON.parse(row.test_keys))
+      }
+    })
+  }
   return {
     groupName,
     group: testGroups[groupName],
-    testKeys: msmt.test_keys && JSON.parse(msmt.test_keys) || {},
+    testKeys: testKeys,
     startTime: msmt.start_time || null,
     dataUsageUp: summary.data_usage_up || 0,
     dataUsageDown: summary.data_usage_down || 0,
@@ -101,7 +109,7 @@ const mapOverviewProps = (rows, summary) => {
     totalCount: summary.total_count || 0,
     runtime: summary.total_runtime || 0,
     networkName: msmt.network_name || '',
-    country: msmt.country || '',
+    countryCode: msmt.network_country_code || '',
     asn: msmt.asn || '',
   }
 }
