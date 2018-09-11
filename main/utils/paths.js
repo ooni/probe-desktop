@@ -1,4 +1,5 @@
-const fs = require('fs-extra')
+/* global require, module, process, __dirname */
+
 const path = require('path')
 const { is } = require('electron-util')
 

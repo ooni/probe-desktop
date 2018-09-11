@@ -13,7 +13,6 @@ import ResultRow from './ResultRow'
 import styled from 'styled-components'
 
 import {
-  Text,
   Box,
   Flex,
   Container,
