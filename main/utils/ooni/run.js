@@ -1,4 +1,4 @@
-/* global windows */
+/* global windows, require, module */
 const { Ooniprobe } = require('./ooniprobe')
 
 module.exports = async ({testGroupName, options}) => {

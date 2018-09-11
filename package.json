@@ -9,6 +9,7 @@
   "repository": "ooni/probe-desktop",
   "scripts": {
     "start": "electron -r @babel/register .",
+    "dev": "npm run start",
     "build": "next build renderer && next export renderer",
     "pack": "npm run build && build -mw",
     "pack:win": "npm run build && build --win --x64",

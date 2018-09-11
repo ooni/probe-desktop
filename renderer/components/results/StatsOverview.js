@@ -25,9 +25,9 @@ const addPlurality = (id, count) => {
   return `${id}.Singular`
 }
 
-const WebsitesStats = ({summary}) => {
-  const testedCount = summary.Tested
-  const blockedCount = summary.Blocked
+const WebsitesStats = ({totalCount, anomalyCount}) => {
+  const testedCount = totalCount
+  const blockedCount = anomalyCount
   const accessibleCount = testedCount - blockedCount
 
   let testedLabelID = addPlurality('TestResults.Summary.Websites.Hero.Tested', testedCount)
@@ -64,9 +64,9 @@ const WebsitesStats = ({summary}) => {
   )
 }
 
-const IMStats = ({summary}) => {
-  const testedCount = summary.Tested
-  const blockedCount = summary.Blocked
+const IMStats = ({anomalyCount, totalCount}) => {
+  const testedCount = totalCount
+  const blockedCount = anomalyCount
   const accessibleCount = testedCount - blockedCount
 
   let testedLabelID = addPlurality('TestResults.Summary.InstantMessaging.Hero.Tested', testedCount)
@@ -103,8 +103,8 @@ const IMStats = ({summary}) => {
   )
 }
 
-const MiddleboxStats = ({summary}) => {
-  const detected = summary.Detected
+const MiddleboxStats = ({anomalyCount}) => {
+  const detected = anomalyCount > 0
   let msgID = 'TestResults.Summary.Middleboxes.Hero.NotFound'
   if (detected === true) {
     msgID = 'TestResults.Summary.Middleboxes.Hero.Found'
@@ -125,11 +125,11 @@ const MiddleboxStats = ({summary}) => {
 }
 
 
-const PerformanceStats = ({summary}) => {
-  const upload = formatSpeed(summary.Upload)
-  const download = formatSpeed(summary.Download)
-  const ping = summary.Ping
-  const bitrate = summary.Bitrate
+const PerformanceStats = ({testKeys}) => {
+  const upload = formatSpeed(testKeys['upload'])
+  const download = formatSpeed(testKeys['download'])
+  const ping = testKeys['ping']
+  const bitrate = testKeys['avg_bitrate']
 
   return (
     <Flex style={{width: '100%'}}>
@@ -174,13 +174,13 @@ const statsMap = {
   'performance': PerformanceStats
 }
 
-const StatsOverview = ({name, summary}) => {
+const StatsOverview = ({name, anomalyCount, totalCount, testKeys}) => {
   if (name === 'default') {
     return <div />
   }
 
   const Element = statsMap[name]
-  return <Element summary={summary} />
+  return <Element anomalyCount={anomalyCount} totalCount={totalCount} testKeys={testKeys} />
 }
 
 export default StatsOverview

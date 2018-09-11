@@ -31,7 +31,8 @@ class Results extends React.Component {
     this.state = {
       loading: true,
       resultsList: {},
-      measurementsList: [],
+      measurementRows: [],
+      measurementSummary: {},
       selectedMeasurement: {},
       error: null
     }
@@ -41,12 +42,18 @@ class Results extends React.Component {
   }
 
   loadMeasurements(resultID) {
+    debug('listing result_id ', resultID)
     const remote = electron.remote
-    const { listMeasurements } = remote.require('./database')
-    return listMeasurements(resultID).then(measurementsList => {
+    const { listMeasurements } = remote.require('./actions')
+    return listMeasurements(resultID).then(measurementList => {
+      const {
+        rows,
+        summary
+      } = measurementList
       return this.setState({
         loading: false,
-        measurementsList,
+        measurementSummary: summary,
+        measurementRows: rows
       })
     }).catch(err => {
       Raven.captureException(err, {extra: {scope: 'renderer.listMeasurements'}})
@@ -59,7 +66,7 @@ class Results extends React.Component {
 
   loadResults() {
     const remote = electron.remote
-    const { listResults } = remote.require('./database')
+    const { listResults } = remote.require('./actions')
 
     return listResults().then(results => {
       return this.setState({
@@ -106,7 +113,8 @@ class Results extends React.Component {
     const {
       loading,
       resultsList,
-      measurementsList,
+      measurementRows,
+      measurementSummary,
       selectedMeasurement,
       error
     } = this.state
@@ -125,7 +133,7 @@ class Results extends React.Component {
         <Layout>
           <Sidebar currentUrl={{pathname}}>
             <LoadingOverlay loading={loading} />
-            <TestResultsOverview measurements={measurementsList} />
+            <TestResultsOverview rows={measurementRows} summary={measurementSummary} />
             {error && <ErrorView error={error} />}
           </Sidebar>
         </Layout>

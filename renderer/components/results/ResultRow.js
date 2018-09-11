@@ -51,47 +51,47 @@ const SummaryContainer = styled(Flex)`
   padding-top: 20px;
 `
 
-const WebsitesSummary = ({summary}) => {
+const WebsitesSummary = ({anomalyCount, totalCount}) => {
   return <SummaryContainer wrap>
     <Box w={1}>
-      <Text color={theme.colors.red8}><MdClear /> {summary['Blocked']} blocked</Text>
+      <Text color={theme.colors.red8}><MdClear /> {anomalyCount} blocked</Text>
     </Box>
     <Box w={1}>
-      <Text><MdWeb /> {summary['Tested']} tested</Text>
+      <Text><MdWeb /> {totalCount} tested</Text>
     </Box>
   </SummaryContainer>
 }
 
-const IMSummary = ({summary}) => {
+const IMSummary = ({anomalyCount, totalCount}) => {
   return <SummaryContainer wrap>
     <Box w={1}>
-      <Text color={theme.colors.red8}><MdClear /> {summary['Blocked']} blocked</Text>
+      <Text color={theme.colors.red8}><MdClear /> {anomalyCount} blocked</Text>
     </Box>
     <Box w={1}>
-      <Text><MdDone /> {summary['Tested']} tested</Text>
+      <Text><MdDone /> {totalCount} tested</Text>
     </Box>
   </SummaryContainer>
 }
 
-const PerformanceSummary = ({summary}) => {
+const PerformanceSummary = ({testKeys}) => {
   return <SummaryContainer wrap>
     <Box w={1/2}>
-      <DownloadSpeed bits={summary['Download']} />
+      <DownloadSpeed bits={testKeys['download']} />
     </Box>
     <Box w={1/2}>
-      <VideoQuality bitrate={summary['Bitrate']} />
+      <VideoQuality bitrate={testKeys['avg_bitrate']} />
     </Box>
     <Box w={1/2}>
-      <UploadSpeed bits={summary['Upload']} />
+      <UploadSpeed bits={testKeys['upload']} />
     </Box>
   </SummaryContainer>
 }
 
-const MiddelboxSummary = ({summary}) => {
+const MiddelboxSummary = ({anomalyCount}) => {
   let msgID = 'TestResults.Summary.Middleboxes.Hero.Failed'
-  if (summary.Detected === false) {
+  if (anomalyCount == 0) {
     msgID = 'TestResults.Summary.Middleboxes.Hero.NotFound'
-  } else if (summary.Detected === true) {
+  } else if (anomalyCount > 0) {
     msgID = 'TestResults.Summary.Middleboxes.Hero.Found'
   }
 
@@ -157,7 +157,7 @@ class ResultRow extends React.Component {
     return (
       <VerticalCenter>
         <Text>{network}</Text>
-        <Text>AS{asn} ({country})</Text>
+        <Text>{asn} ({country})</Text>
       </VerticalCenter>
     )
   }
@@ -173,19 +173,24 @@ class ResultRow extends React.Component {
       </VerticalCenter>
     )
   }
-  renderSummary() {
+  renderTestKeys() {
     const {
       name,
-      summary
+      test_keys,
+      measurement_anomaly_count,
+      measurement_count
     } = this.props
 
-    const summaryObj = JSON.parse(summary)
+    const testKeys = JSON.parse(test_keys)
     let SummaryElement = SummaryError
-    if (summaryObj != null) {
+    if (testKeys != null) {
       SummaryElement = summaryMap[name]
     }
 
-    return <SummaryElement summary={summaryObj} />
+    return <SummaryElement
+      testKeys={testKeys}
+      anomalyCount={measurement_anomaly_count}
+      totalCount={measurement_count} />
   }
 
   render() {
@@ -204,7 +209,7 @@ class ResultRow extends React.Component {
           {this.renderDate()}
         </Box>
         <Box w={4/16} >
-          {this.renderSummary()}
+          {this.renderTestKeys()}
         </Box>
         <Box w={1/16} style={{marginLeft: 'auto'}}>
           <VerticalCenter>

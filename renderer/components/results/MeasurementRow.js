@@ -69,16 +69,16 @@ const Status = ({notok, warning}) => {
   return <Text color={theme.colors.red8}>Error ({notok})</Text>
 }
 
-const URLRow =  ({measurement, query, summary}) => (
+const URLRow =  ({measurement, query, isAnomaly}) => (
   <BorderedRow>
     <Box pr={2} pl={2} w={1/8}>
       <MdTexture  size={30}/>
     </Box>
     <Box w={6/8} h={1}>
-      {formatURL(measurement.input)}
+      {formatURL(measurement.url)}
     </Box>
     <Box w={1/8} h={1}>
-      <Status notok={summary.Blocked} />
+      <Status notok={isAnomaly} />
     </Box>
     <Box w={1/8} style={{marginLeft: 'auto'}}>
       <Link href={{pathname: '/results', query}}>
@@ -174,15 +174,15 @@ const rowMap = {
 }
 
 const MeasurementRow = ({groupName, measurement, router}) => {
-  if (measurement == null || groupName === 'default' || !measurement.summary) {
+  if (measurement == null || groupName === 'default' || !measurement['test_keys']) {
     return <Text color={theme.colors.red8}>Error</Text>
   }
 
-  const summary = JSON.parse(measurement.summary)
+  const testKeys = JSON.parse(measurement['test_keys'])
   const query = {...router.query, measurementID: measurement.id}
 
   const RowElement = rowMap[groupName]
-  return <RowElement measurement={measurement} query={query} summary={summary} />
+  return <RowElement measurement={measurement} query={query} testKeys={testKeys} isAnomaly={measurement['is_anomaly']} />
 }
 
 export default withRouter(MeasurementRow)
