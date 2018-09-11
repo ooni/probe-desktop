@@ -29,7 +29,8 @@ import VideoQuality from './VideoQuality'
 
 // XXX this should be moved to the design-system
 import MdPriorityHigh from 'react-icons/lib/md/priority-high'
-import MdTexture from 'react-icons/lib/md/texture'
+
+import * as OOIcons from 'ooni-components/dist/icons'
 
 const BorderedRow = styled(Flex)`
   width: 100%;
@@ -69,10 +70,21 @@ const Status = ({notok, warning}) => {
   return <Text color={theme.colors.red8}>Error ({notok})</Text>
 }
 
+const CategoryCode = ({code}) => {
+  let iconName = `CategoryCode${code}`
+  if (OOIcons[iconName] === undefined) {
+    iconName = 'CategoryCodeMISC'
+  }
+  return React.cloneElement(
+    OOIcons[iconName](),
+    {size: 30}
+  )
+}
+
 const URLRow =  ({measurement, query, isAnomaly}) => (
   <BorderedRow>
     <Box pr={2} pl={2} w={1/8}>
-      <MdTexture  size={30}/>
+      <CategoryCode code={measurement['url_category_code']} />
     </Box>
     <Box w={6/8} h={1}>
       {formatURL(measurement.url)}
