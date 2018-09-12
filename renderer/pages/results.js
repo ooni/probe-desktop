@@ -6,7 +6,7 @@ import Raven from 'raven-js'
 import { withRouter } from 'next/router'
 
 import Layout from '../components/Layout'
-import Sidebar from '../components/SideBar'
+import Sidebar from '../components/Sidebar'
 import TestResults from '../components/results/TestResults'
 import TestResultsOverview from '../components/results/TestResultsOverview'
 import TestResultsDetails from '../components/results/TestResultsDetails'

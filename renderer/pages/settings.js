@@ -1,18 +1,11 @@
 import electron from 'electron'
 import React from 'react'
 
-import Link from 'next/link'
 
 import Layout from '../components/Layout'
-import Sidebar from '../components/SideBar'
-
-import styled from 'styled-components'
+import Sidebar from '../components/Sidebar'
 
 import {
-  Button,
-  Container,
-  Box,
-  Flex,
   Heading,
   Text
 } from 'ooni-components'

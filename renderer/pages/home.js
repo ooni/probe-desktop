@@ -18,7 +18,7 @@ import {
 } from 'ooni-components'
 
 import Layout from '../components/Layout'
-import Sidebar from '../components/SideBar'
+import Sidebar from '../components/Sidebar'
 
 import Running from '../components/home/running'
 
