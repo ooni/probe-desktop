@@ -129,11 +129,11 @@ const groupRowsByMonth = (rows) => {
   }
 
   // We assume the rows are sorted from newest to oldest
-  const start = moment(rows[rows.length - 1].start_time)
+  const start = moment(rows[0].start_time)
   const end = moment()
   let range = moment.range(start, end).snapTo('month')
   let byMonth = {}
-  Array.from(range.by('month', { excludeEnd: false})).map(m => {
+  Array.from(range.reverseBy('month', { excludeEnd: false})).map(m => {
     byMonth[m.format('YYYY-MM-01')] = []
   })
   rows.map(row => {
