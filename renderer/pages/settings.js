@@ -44,10 +44,10 @@ class Settings extends React.Component {
 
     return (
       <Layout>
-        <Sidebar currentUrl={this.props.url}>
+        <Sidebar>
           <Heading h={3}>Config dump</Heading>
           <Text>
-          {JSON.stringify(config, null, ' ')}
+            {JSON.stringify(config, null, ' ')}
           </Text>
         </Sidebar>
       </Layout>
