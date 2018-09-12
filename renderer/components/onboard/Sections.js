@@ -2,6 +2,7 @@ import React from 'react'
 
 import styled from 'styled-components'
 
+import MdKeyboardArrowLeft from 'react-icons/lib/md/keyboard-arrow-left'
 /*
  * XXX This component is a bit written a bit hasily. State is stored and encapsulated in the following way:
  *
@@ -271,6 +272,16 @@ const SectionDefaultSettings = ({onGo, onChange}) => (
   </div>
 )
 
+const BackButtonContainer = styled.div`
+position: absolute;
+left: 10px;
+top: 40px;
+cursor: pointer;
+&:hover {
+  color: ${props => props.theme.colors.gray4};
+}
+`
+
 const numSteps = 3
 class Sections extends React.Component {
   constructor(props) {
@@ -355,9 +366,12 @@ class Sections extends React.Component {
           onChange={onChange}
         />}
 
-        <Button inverted onClick={this.prevStep}>
-        Back
-        </Button>
+        {activeIdx !== 0 && <BackButtonContainer onClick={this.prevStep}>
+          <Flex>
+            <Box><MdKeyboardArrowLeft size={20} /></Box>
+            <Box>Go Back</Box>
+          </Flex>
+        </BackButtonContainer>}
       </div>
     )
   }
