@@ -7,8 +7,8 @@ const moment = extendMoment(Moment)
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward'
 import MdArrowUpward from 'react-icons/lib/md/arrow-upward'
 
-import humanize from 'humanize'
 import ResultRow from './ResultRow'
+import HumanFilesize from './HumanFilesize'
 
 import styled from 'styled-components'
 
@@ -21,32 +21,6 @@ import {
 
 import StatBox from '../to-migrate/StatBox'
 import VerticalDivider from '../to-migrate/VerticalDivider'
-
-const FileUnit = styled.span`
-  font-size: 14px;
-`
-
-const FileAmount = styled.span`
-  font-size: 24px;
-  font-weight: 300;
-`
-
-const StyledHumanFilesize = styled(Box)`
-  padding: 0px;
-  text-align: center;
-`
-
-const HumanFilesize = ({icon, size}) => {
-  const human = humanize.filesize(size)
-  const [amount, unit] = human.split(' ')
-  return (
-    <StyledHumanFilesize>
-      {icon}
-      <FileAmount>{amount}</FileAmount>
-      <FileUnit>{unit}</FileUnit>
-    </StyledHumanFilesize>
-  )
-}
 
 const LabelBox= styled(Box)`
   font-size: 12px;
@@ -62,10 +36,10 @@ const DataUsage = ({dataUsage}) => {
       <Box>
         <Flex>
           <Box w={1/2}>
-            <HumanFilesize icon={<MdArrowUpward size={20}/>} size={dataUsage.up} />
+            <HumanFilesize icon={<MdArrowUpward size={20}/>} size={dataUsage.up*1024} />
           </Box>
           <Box w={1/2}>
-            <HumanFilesize icon={<MdArrowDownward size={20} />} size={dataUsage.down} />
+            <HumanFilesize icon={<MdArrowDownward size={20} />} size={dataUsage.down*1024} />
           </Box>
         </Flex>
       </Box>
@@ -136,6 +110,8 @@ const groupRowsByMonth = (rows) => {
   Array.from(range.by('month', { excludeEnd: false})).map(m => {
     byMonth[m.format('YYYY-MM-01')] = []
   })
+  // XXX I think there is a better way to do this without so many list
+  // reversals.
   rows.reverse().map(row => {
     const month = moment(row.start_time).format('YYYY-MM-01')
     byMonth[month].push(row)

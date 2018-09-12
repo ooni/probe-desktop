@@ -7,8 +7,10 @@ import styled from 'styled-components'
 import TwoColumnHero from './TwoColumnHero'
 
 // XXX replace this with the correct icon
-import IconUpload from 'react-icons/lib/md/file-upload'
-import IconDownload from 'react-icons/lib/md/file-download'
+import MdArrowUpward from 'react-icons/lib/md/arrow-upward'
+import MdArrowDownward from 'react-icons/lib/md/arrow-downward'
+import HumanFilesize from './HumanFilesize'
+
 
 import MdFlag from 'react-icons/lib/md/flag'
 import MdTimer from 'react-icons/lib/md/timer'
@@ -56,7 +58,10 @@ const ResultOverview = ({groupName, testKeys, anomalyCount, totalCount, startTim
 
         <TwoColumnTable
           left={<Text><MdSwapVert size={20} />Data Usage</Text>}
-          right={<Text><IconUpload /> {dataUsageUp} <IconDownload />{dataUsageDown}</Text>} />
+          right={<Flex>
+            <HumanFilesize icon={<MdArrowUpward size={20}/>} size={dataUsageUp*1024} fontSize={20} />
+            <HumanFilesize icon={<MdArrowDownward size={20}/>} size={dataUsageDown*1024} fontSize={20} />
+          </Flex>} />
 
         <TwoColumnTable
           left={<Text><MdTimer size={20} />Total runtime</Text>}
