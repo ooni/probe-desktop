@@ -133,10 +133,10 @@ const groupRowsByMonth = (rows) => {
   const end = moment()
   let range = moment.range(start, end).snapTo('month')
   let byMonth = {}
-  Array.from(range.reverseBy('month', { excludeEnd: false})).map(m => {
+  Array.from(range.by('month', { excludeEnd: false})).map(m => {
     byMonth[m.format('YYYY-MM-01')] = []
   })
-  rows.map(row => {
+  rows.reverse().map(row => {
     const month = moment(row.start_time).format('YYYY-MM-01')
     byMonth[month].push(row)
   })
