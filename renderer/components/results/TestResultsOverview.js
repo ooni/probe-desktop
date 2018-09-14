@@ -30,7 +30,7 @@ import { testGroups } from '../nettests'
 
 import StatsOverview from './StatsOverview'
 import MeasurementRow from './MeasurementRow'
-import BackButton from './BackButton'
+import BackButton from '../BackButton'
 import TwoColumnTable from './TwoColumnTable'
 
 const ResultOverviewContainer = styled.div`

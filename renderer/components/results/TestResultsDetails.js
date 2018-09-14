@@ -23,7 +23,7 @@ import MdPublic from 'react-icons/lib/md/public'
 import { renderDetails, testGroups } from '../nettests'
 import TwoColumnHero from './TwoColumnHero'
 import TwoColumnTable from './TwoColumnTable'
-import BackButton from './BackButton'
+import BackButton from '../BackButton'
 
 const MeasurementOverviewContainer = styled.div`
   position: relative;
