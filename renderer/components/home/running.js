@@ -9,8 +9,7 @@ import styled from 'styled-components'
 import {
   Heading,
   Text,
-  Button,
-  Container
+  Button
 } from 'ooni-components'
 
 import { testGroups } from '../nettests'
@@ -23,9 +22,11 @@ const StyledRunningTest = styled.div`
 
 const CodeLogContainer = styled.div`
   margin: 0 auto;
-  width: 80%;
+  width: 100%;
   height: 300px;
   overflow-y: auto;
+  overflow-x: hidden;
+  overflow-wrap: break-word;
   background-color: black;
 `
 
@@ -84,6 +85,11 @@ class RunningTestLog extends React.Component {
     default:
       break
     }
+  }
+
+  componentWillUnmount() {
+    const { ipcRenderer } = require('electron')
+    ipcRenderer.removeListener('ooni', this.onMessage)
   }
 
   componentDidMount() {
