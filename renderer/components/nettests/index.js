@@ -1,6 +1,7 @@
 import React from 'react'
 import {
   theme,
+  Text
 } from 'ooni-components'
 
 import { FacebookMessengerDetails } from './im/facebook-messenger'
@@ -13,9 +14,11 @@ import middlebox from './middleboxes'
 import performance from './performance'
 import websites from './websites'
 
-const TODODetails = ({testKeys, isAnomaly}) => {
+const TODODetails = ({testKeys, isAnomaly, url, urlCategoryCode}) => {
   return <div>
-    {JSON.stringify(isAnomaly)} - {JSON.stringify(testKeys, null, 2)}
+    <Text>{url} ({urlCategoryCode})</Text>
+    <Text>isAnomaly: {JSON.stringify(isAnomaly)}</Text>
+    <Text>testKeys: {JSON.stringify(testKeys, null, 2)}</Text>
   </div>
 }
 
@@ -23,15 +26,28 @@ const detailsMap = {
   facebook_messenger: FacebookMessengerDetails
 }
 
-export const renderDetails = (name, isAnomaly, testKeys) => {
+export const renderDetails = (measurement) => {
+  let testKeys
   const Component = detailsMap[name]
-  if (testKeys) {
-    testKeys = JSON.parse(testKeys)
+  if (measurement.test_keys) {
+    testKeys = JSON.parse(measurement.test_keys)
   }
   if (!Component) {
-    return <TODODetails isAnomaly={isAnomaly} testKeys={testKeys} />
+    return (
+      <TODODetails
+        url={measurement.url}
+        urlCategoryCode={measurement.url_category_code}
+        isAnomaly={measurement.is_anomaly}
+        testKeys={testKeys} />
+    )
   }
-  return <Component testKeys={testKeys} isAnomaly={isAnomaly} />
+  return (
+    <Component
+      url={measurement.url}
+      urlCategoryCode={measurement.url_category_code}
+      testKeys={testKeys}
+      isAnomaly={measurement.is_anomaly} />
+  )
 }
 
 const iconSize = 200

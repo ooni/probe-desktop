@@ -59,7 +59,7 @@ const MeasurementOverview = ({title, startTime, runtime, networkName, country, a
 
         <TwoColumnTable
           left={<Text><MdPublic  size={20} />Network</Text>}
-          right={<Text>{networkName} ({asn})</Text>} />
+          right={<Text>{networkName} (AS{asn})</Text>} />
       </Container>
     </MeasurementOverviewContainer>
   )
@@ -82,7 +82,7 @@ const mapOverviewProps = (msmt) => {
     dataUsageDown: msmt.data_usage_down || 0,
     runtime: msmt.runtime || 0,
     networkName: msmt.network_name || '',
-    country: msmt.country || '',
+    country: msmt.network_country_code || '',
     asn: msmt.asn || '',
   }
   return props
@@ -94,7 +94,7 @@ const TestResultsDetails = ({measurement}) => {
   return <TwoColumnHero
     bg={overviewProps.group.color}
     left={<MeasurementOverview {...overviewProps} onBack={() => this.onSelectMeasurement(null)} />}
-    right={renderDetails(measurement.test_name, measurement.is_anomaly, measurement.test_keys)} />
+    right={renderDetails(measurement)} />
 }
 
 export default TestResultsDetails
