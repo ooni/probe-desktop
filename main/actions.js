@@ -3,6 +3,11 @@ const { Ooniprobe } = require('./utils/ooni/ooniprobe')
 
 const debug = require('debug')('ooniprobe-desktop.main.actions')
 
+const hardReset = () => {
+  const ooni = new Ooniprobe()
+  return ooni.call(['reset', '--force'])
+}
+
 const listMeasurements = (resultID) => {
   const ooni = new Ooniprobe()
   let rows = [],
@@ -78,5 +83,6 @@ const listResults = () => {
 
 module.exports = {
   listResults,
-  listMeasurements
+  listMeasurements,
+  hardReset
 }

@@ -4,6 +4,7 @@ import React from 'react'
 import Layout from '../components/Layout'
 
 import {
+  Button,
   Heading,
   Text,
   Code
@@ -15,8 +16,19 @@ class About extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      debugPaths: {}
+      debugPaths: {},
+      msg: ''
     }
+    this.onReset = this.onReset.bind(this)
+  }
+
+  onReset() {
+    const { hardReset } = remote.require('./actions')
+    hardReset().then(() => {
+      this.setState({
+        msg: 'Successfully reset OONI Probe. Please close and re-open the application.'
+      })
+    })
   }
 
   componentDidMount() {
@@ -28,17 +40,22 @@ class About extends React.Component {
 
   render() {
     const {
-      debugPaths
+      debugPaths,
+      msg
     } = this.state
 
     return (
       <Layout>
         <div>
+          {msg && <Heading h={4} color='red5'>{msg}</Heading>}
+
           <Heading h={3}>This is a BETA version of OONI Probe</Heading>
           <Text>We may, before the final release, ask you as a beta app user to
           delete your OONI_HOME directory or may delete it automatically once
           you install the next stable release, so do not store sensitive data in
           here</Text>
+
+          <Button onClick={this.onReset}>Hard reset</Button>
 
           <Heading h={4}>Debug information</Heading>
           <div>
