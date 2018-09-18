@@ -1,5 +1,7 @@
 /* global require, module, process, __dirname */
 
+// Useful issue on non-ascii path problems on windows:
+// https://github.com/nodejs/node/issues/17586
 const path = require('path')
 const { is } = require('electron-util')
 
