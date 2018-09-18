@@ -3,12 +3,13 @@
   "description": "OONI Probe Desktop app",
   "author": "Open Observatory of Network Interference (OONI) <contact@openobservatory.org>",
   "productName": "OONI Probe",
-  "version": "3.0.0-alpha",
+  "version": "3.0.0-alpha.1",
   "main": "main/index.js",
   "license": "MIT",
   "repository": "ooni/probe-desktop",
   "scripts": {
     "start": "electron -r @babel/register .",
+    "dev": "npm run start",
     "build": "next build renderer && next export renderer",
     "pack": "npm run build && build -mw",
     "pack:win": "npm run build && build --win --x64",
@@ -17,7 +18,7 @@
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
     "lint": "eslint --ignore-path .gitignore .",
     "postinstall": "install-app-deps",
-    "cp-bin": "cp ../probe-cli/dist/ooni.exe bin/win_x64 && cp ../probe-cli/dist/ooni bin/mac_x64"
+    "cp-bin": "cp ../probe-cli/dist/ooni.exe bin/win_x64 && cp ../probe-cli/dist/ooni bin/mac_x64 && cp /etc/ssl/cert.pem bin/cert.pem"
   },
   "build": {
     "appId": "io.ooni.ooniprobe-desktop",
@@ -107,7 +108,8 @@
     "ms": "^2.0.0",
     "npm": "^6.1.0",
     "nuka-carousel": "^2.3.0",
-    "ooni-components": "0.1.3",
+    "ooni-components": "0.1.4",
+    "prop-types": "^15.6.2",
     "raven-js": "^3.25.2",
     "react-animations": "^0.1.0",
     "react-icons": "^2.2.5",
@@ -115,7 +117,6 @@
     "remark": "^9.0.0",
     "remark-react": "^4.0.3",
     "split2": "^2.2.0",
-    "sql.js": "^0.5.0",
     "styled-components": "2.4.1"
   },
   "resolutions": {

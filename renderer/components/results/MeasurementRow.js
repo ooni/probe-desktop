@@ -29,7 +29,8 @@ import VideoQuality from './VideoQuality'
 
 // XXX this should be moved to the design-system
 import MdPriorityHigh from 'react-icons/lib/md/priority-high'
-import MdTexture from 'react-icons/lib/md/texture'
+
+import * as OOIcons from 'ooni-components/dist/icons'
 
 const BorderedRow = styled(Flex)`
   width: 100%;
@@ -69,16 +70,27 @@ const Status = ({notok, warning}) => {
   return <Text color={theme.colors.red8}>Error ({notok})</Text>
 }
 
-const URLRow =  ({measurement, query, summary}) => (
+const CategoryCode = ({code}) => {
+  let iconName = `CategoryCode${code}`
+  if (OOIcons[iconName] === undefined) {
+    iconName = 'CategoryCodeMISC'
+  }
+  return React.cloneElement(
+    OOIcons[iconName](),
+    {size: 30}
+  )
+}
+
+const URLRow =  ({measurement, query, isAnomaly}) => (
   <BorderedRow>
     <Box pr={2} pl={2} w={1/8}>
-      <MdTexture  size={30}/>
+      <CategoryCode code={measurement['url_category_code']} />
     </Box>
     <Box w={6/8} h={1}>
-      {formatURL(measurement.input)}
+      {formatURL(measurement.url)}
     </Box>
     <Box w={1/8} h={1}>
-      <Status notok={summary.Blocked} />
+      <Status notok={isAnomaly} />
     </Box>
     <Box w={1/8} style={{marginLeft: 'auto'}}>
       <Link href={{pathname: '/results', query}}>
@@ -93,14 +105,14 @@ const URLRow =  ({measurement, query, summary}) => (
 )
 
 const fullnameMap = {
-  WebConnectivity: 'Test.WebConnectivity.Fullname',
-  Dash: 'Test.Dash.Fullname',
-  Ndt: 'Test.NDT.Fullname',
-  FacebookMessenger: 'Test.FacebookMessenger.Fullname',
-  Telegram: 'Test.Telegram.Fullname',
-  Whatsapp: 'Test.WhatsApp.Fullname',
-  HttpInvalidRequestLine: 'Test.HTTPInvalidRequestLine.Fullname',
-  HttpHeaderFieldManipulation: 'Test.HTTPHeaderFieldManipulation.Fullname'
+  web_connectivity: 'Test.WebConnectivity.Fullname',
+  dash: 'Test.Dash.Fullname',
+  ndt: 'Test.NDT.Fullname',
+  facebook_messenger: 'Test.FacebookMessenger.Fullname',
+  telegram: 'Test.Telegram.Fullname',
+  whatsapp: 'Test.WhatsApp.Fullname',
+  http_invalid_request_line: 'Test.HTTPInvalidRequestLine.Fullname',
+  http_header_field_manipulation: 'Test.HTTPHeaderFieldManipulation.Fullname'
 }
 
 const IconContainer = styled.div`
@@ -109,37 +121,37 @@ const IconContainer = styled.div`
 `
 
 const iconMap = {
-  FacebookMessenger: <NettestFacebookMessenger size={40} />,
-  Telegram: <NettestTelegram size={40} />,
-  Whatsapp: <NettestWhatsApp size={40} />
+  facebook_messenger: <NettestFacebookMessenger size={40} />,
+  telegram: <NettestTelegram size={40} />,
+  whatsapp: <NettestWhatsApp size={40} />
 }
 
-const renderStatus = (measurementName, summary) => {
-  if (measurementName === 'HttpInvalidRequestLine' || measurementName === 'HttpHeaderFieldManipulation') {
-    return <Status notok={summary.Tampering} warning />
+const StatusBox = ({testName, testKeys, isAnomaly}) => {
+  if (testName === 'http_invalid_request_line' || testName === 'http_header_field_manipulation') {
+    return <Status notok={isAnomaly} warning />
   }
 
-  if (measurementName === 'Dash') {
-    return <VideoQuality bitrate={summary['Bitrate']} />
+  if (testName === 'dash') {
+    return <VideoQuality bitrate={testKeys['median_bitrate']} />
   }
 
-  if (measurementName === 'Ndt') {
+  if (testName === 'ndt') {
     return <div>
-      <DownloadSpeed bits={summary['Download']} />
-      <UploadSpeed bits={summary['Upload']} />
+      <DownloadSpeed bits={testKeys['download']} />
+      <UploadSpeed bits={testKeys['upload']} />
     </div>
   }
 
   return (
-    <Status notok={summary.Blocked} />
+    <Status notok={isAnomaly} />
   )
 }
 
 // XXX still need to show the summary in here
-const TestRow =  ({measurement, query, summary}) => {
+const TestRow =  ({measurement, query, testKeys, isAnomaly}) => {
 
-  const icon = iconMap[measurement.measurement_name]
-  let fullnameID = fullnameMap[measurement.measurement_name]
+  const icon = iconMap[measurement.test_name]
+  let fullnameID = fullnameMap[measurement.test_name]
   if (!fullnameID) {
     fullnameID = 'Test.MISSING.Fullname'
   }
@@ -151,7 +163,7 @@ const TestRow =  ({measurement, query, summary}) => {
         <FormattedMessage id={fullnameID} />
       </Box>
       <Box w={2/8} h={1}>
-        {renderStatus(measurement.measurement_name, summary)}
+        <StatusBox testName={measurement.test_name} isAnomaly={isAnomaly} testKeys={testKeys} />
       </Box>
       <Box w={1/8} style={{marginLeft: 'auto'}}>
         <Link href={{pathname: '/results', query}}>
@@ -174,15 +186,15 @@ const rowMap = {
 }
 
 const MeasurementRow = ({groupName, measurement, router}) => {
-  if (measurement == null || groupName === 'default' || !measurement.summary) {
+  if (measurement == null || groupName === 'default' || !measurement['test_keys']) {
     return <Text color={theme.colors.red8}>Error</Text>
   }
 
-  const summary = JSON.parse(measurement.summary)
+  const testKeys = JSON.parse(measurement['test_keys'])
   const query = {...router.query, measurementID: measurement.id}
 
   const RowElement = rowMap[groupName]
-  return <RowElement measurement={measurement} query={query} summary={summary} />
+  return <RowElement measurement={measurement} query={query} testKeys={testKeys} isAnomaly={measurement['is_anomaly']} />
 }
 
 export default withRouter(MeasurementRow)

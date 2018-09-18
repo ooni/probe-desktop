@@ -18,7 +18,7 @@ import {
 } from 'ooni-components'
 
 import Layout from '../components/Layout'
-import Sidebar from '../components/SideBar'
+import Sidebar from '../components/Sidebar'
 
 import Running from '../components/home/running'
 
@@ -172,7 +172,7 @@ class Home extends React.Component {
 
     return (
       <Layout>
-        <Sidebar currentUrl={this.props.url}>
+        <Sidebar>
           <Flex wrap p={3} style={{overflow: 'auto'}}>
             {testList.map((t, idx) =>
               <RunTestCard

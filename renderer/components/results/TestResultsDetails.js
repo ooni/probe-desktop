@@ -23,7 +23,7 @@ import MdPublic from 'react-icons/lib/md/public'
 import { renderDetails, testGroups } from '../nettests'
 import TwoColumnHero from './TwoColumnHero'
 import TwoColumnTable from './TwoColumnTable'
-import BackButton from './BackButton'
+import BackButton from '../BackButton'
 
 const MeasurementOverviewContainer = styled.div`
   position: relative;
@@ -59,14 +59,14 @@ const MeasurementOverview = ({title, startTime, runtime, networkName, country, a
 
         <TwoColumnTable
           left={<Text><MdPublic  size={20} />Network</Text>}
-          right={<Text>{networkName} ({asn})</Text>} />
+          right={<Text>{networkName} (AS{asn})</Text>} />
       </Container>
     </MeasurementOverviewContainer>
   )
 }
 
 const mapOverviewProps = (msmt) => {
-  const groupName = msmt.result_name || 'default'
+  const groupName = msmt.test_group_name || 'default'
   let props = {
     groupName,
     group: testGroups[groupName],
@@ -76,13 +76,13 @@ const mapOverviewProps = (msmt) => {
   }
   props = {
     ...props,
-    title: msmt.measurement_name,
+    title: msmt.test_name,
     startTime: msmt.start_time || null,
-    dataUsageUp: msmt.data_usage_upi || 0,
+    dataUsageUp: msmt.data_usage_up || 0,
     dataUsageDown: msmt.data_usage_down || 0,
     runtime: msmt.runtime || 0,
     networkName: msmt.network_name || '',
-    country: msmt.country || '',
+    country: msmt.network_country_code || '',
     asn: msmt.asn || '',
   }
   return props
@@ -94,7 +94,7 @@ const TestResultsDetails = ({measurement}) => {
   return <TwoColumnHero
     bg={overviewProps.group.color}
     left={<MeasurementOverview {...overviewProps} onBack={() => this.onSelectMeasurement(null)} />}
-    right={renderDetails(measurement.measurement_name, measurement.summary)} />
+    right={renderDetails(measurement)} />
 }
 
 export default TestResultsDetails

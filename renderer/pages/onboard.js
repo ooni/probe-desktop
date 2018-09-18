@@ -10,7 +10,7 @@ import Sections from '../components/onboard/Sections'
 
 const TopBar = styled.div`
   height: 50px;
-  background-color: ${props => props.theme.colors.gray6};
+  background-color: ${props => props.theme.colors.blue6};
   color: ${props => props.theme.colors.white};
   /* This makes it possible to drag the window around from the side bar */
   -webkit-app-region: drag;

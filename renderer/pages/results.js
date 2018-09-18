@@ -6,7 +6,7 @@ import Raven from 'raven-js'
 import { withRouter } from 'next/router'
 
 import Layout from '../components/Layout'
-import Sidebar from '../components/SideBar'
+import Sidebar from '../components/Sidebar'
 import TestResults from '../components/results/TestResults'
 import TestResultsOverview from '../components/results/TestResultsOverview'
 import TestResultsDetails from '../components/results/TestResultsDetails'
@@ -31,7 +31,8 @@ class Results extends React.Component {
     this.state = {
       loading: true,
       resultsList: {},
-      measurementsList: [],
+      measurementRows: [],
+      measurementSummary: {},
       selectedMeasurement: {},
       error: null
     }
@@ -41,12 +42,18 @@ class Results extends React.Component {
   }
 
   loadMeasurements(resultID) {
+    debug('listing result_id ', resultID)
     const remote = electron.remote
-    const { listMeasurements } = remote.require('./database')
-    return listMeasurements(resultID).then(measurementsList => {
+    const { listMeasurements } = remote.require('./actions')
+    return listMeasurements(resultID).then(measurementList => {
+      const {
+        rows,
+        summary
+      } = measurementList
       return this.setState({
         loading: false,
-        measurementsList,
+        measurementSummary: summary,
+        measurementRows: rows
       })
     }).catch(err => {
       Raven.captureException(err, {extra: {scope: 'renderer.listMeasurements'}})
@@ -59,7 +66,7 @@ class Results extends React.Component {
 
   loadResults() {
     const remote = electron.remote
-    const { listResults } = remote.require('./database')
+    const { listResults } = remote.require('./actions')
 
     return listResults().then(results => {
       return this.setState({
@@ -85,7 +92,7 @@ class Results extends React.Component {
       // XXX this is a bit sketch
       return this.loadMeasurements(query.resultID).then(() => {
         this.setState({
-          selectedMeasurement: this.state.measurementsList.filter(m => m.id == query.measurementID)[0]
+          selectedMeasurement: this.state.measurementRows.filter(m => m.id == query.measurementID)[0]
         })
       })
     }
@@ -106,26 +113,26 @@ class Results extends React.Component {
     const {
       loading,
       resultsList,
-      measurementsList,
+      measurementRows,
+      measurementSummary,
       selectedMeasurement,
       error
     } = this.state
 
     const {
-      pathname,
       query
     } = this.props.router
 
 
     const childPage = getChildPageName(query)
-    debug('loading', pathname, query, childPage)
+    debug('loading', query, childPage)
 
     if (childPage === 'test-results-overview') {
       return (
         <Layout>
-          <Sidebar currentUrl={{pathname}}>
+          <Sidebar>
             <LoadingOverlay loading={loading} />
-            <TestResultsOverview measurements={measurementsList} />
+            <TestResultsOverview rows={measurementRows} summary={measurementSummary} />
             {error && <ErrorView error={error} />}
           </Sidebar>
         </Layout>
@@ -135,7 +142,7 @@ class Results extends React.Component {
     if (childPage === 'test-results-details') {
       return (
         <Layout>
-          <Sidebar currentUrl={{pathname}}>
+          <Sidebar>
             <LoadingOverlay loading={loading} />
             <TestResultsDetails measurement={selectedMeasurement} />
             {error && <ErrorView error={error} />}
@@ -146,7 +153,7 @@ class Results extends React.Component {
 
     return (
       <Layout>
-        <Sidebar currentUrl={{pathname}}>
+        <Sidebar>
           <LoadingOverlay loading={loading} />
           {!loading && <TestResults results={resultsList} />}
           {error && <ErrorView error={error} />}

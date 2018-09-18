@@ -7,8 +7,10 @@ import styled from 'styled-components'
 import TwoColumnHero from './TwoColumnHero'
 
 // XXX replace this with the correct icon
-import IconUpload from 'react-icons/lib/md/file-upload'
-import IconDownload from 'react-icons/lib/md/file-download'
+import MdArrowUpward from 'react-icons/lib/md/arrow-upward'
+import MdArrowDownward from 'react-icons/lib/md/arrow-downward'
+import HumanFilesize from './HumanFilesize'
+
 
 import MdFlag from 'react-icons/lib/md/flag'
 import MdTimer from 'react-icons/lib/md/timer'
@@ -28,7 +30,7 @@ import { testGroups } from '../nettests'
 
 import StatsOverview from './StatsOverview'
 import MeasurementRow from './MeasurementRow'
-import BackButton from './BackButton'
+import BackButton from '../BackButton'
 import TwoColumnTable from './TwoColumnTable'
 
 const ResultOverviewContainer = styled.div`
@@ -38,7 +40,7 @@ const ResultOverviewContainer = styled.div`
 `
 
 // XXX groupName is also passed in
-const ResultOverview = ({groupName, resultSummary, startTime, dataUsageUp, dataUsageDown, runtime, networkName, country, asn}) => {
+const ResultOverview = ({groupName, testKeys, anomalyCount, totalCount, startTime, dataUsageUp, dataUsageDown, runtime, networkName, countryCode, asn}) => {
   return (
     <ResultOverviewContainer>
       <Flex justify='center' align='center'>
@@ -51,12 +53,15 @@ const ResultOverview = ({groupName, resultSummary, startTime, dataUsageUp, dataU
       </Flex>
       <Container>
 
-        <StatsOverview name={groupName} summary={resultSummary} />
+        <StatsOverview name={groupName} testKeys={testKeys} anomalyCount={anomalyCount} totalCount={totalCount} />
         <Divider mt={4} mb={4} />
 
         <TwoColumnTable
           left={<Text><MdSwapVert size={20} />Data Usage</Text>}
-          right={<Text><IconUpload /> {dataUsageUp} <IconDownload />{dataUsageDown}</Text>} />
+          right={<Flex>
+            <HumanFilesize icon={<MdArrowUpward size={20}/>} size={dataUsageUp*1024} fontSize={20} />
+            <HumanFilesize icon={<MdArrowDownward size={20}/>} size={dataUsageDown*1024} fontSize={20} />
+          </Flex>} />
 
         <TwoColumnTable
           left={<Text><MdTimer size={20} />Total runtime</Text>}
@@ -64,7 +69,7 @@ const ResultOverview = ({groupName, resultSummary, startTime, dataUsageUp, dataU
 
         <TwoColumnTable
           left={<Text><MdFlag size={20} />Country</Text>}
-          right={<Text>{country}</Text>} />
+          right={<Text>{countryCode}</Text>} />
 
         <TwoColumnTable
           left={<Text><MdPublic  size={20} />Network</Text>}
@@ -84,33 +89,43 @@ const MeasurementList = ({groupName, measurements}) => {
   )
 }
 
-const mapOverviewProps = (measurements) => {
-  let msmt = {}
-  if (measurements.length > 0) {
-    msmt = measurements[0]
+const mapOverviewProps = (rows, summary) => {
+  let msmt = {},
+    testKeys = {}
+  if (rows.length > 0) {
+    msmt = rows[0]
   }
-  const groupName = msmt.result_name || 'default'
+  const groupName = msmt.test_group_name || 'default'
+  if (groupName === 'performance') {
+    rows.forEach(row => {
+      if (row.test_keys) {
+        testKeys = Object.assign({}, testKeys, JSON.parse(row.test_keys))
+      }
+    })
+  }
   return {
     groupName,
     group: testGroups[groupName],
-    resultSummary: msmt.result_summary && JSON.parse(msmt.result_summary) || {},
+    testKeys: testKeys,
     startTime: msmt.start_time || null,
-    dataUsageUp: msmt.data_usage_upi || 0,
-    dataUsageDown: msmt.data_usage_down || 0,
-    runtime: msmt.runtime || 0,
+    dataUsageUp: summary.data_usage_up || 0,
+    dataUsageDown: summary.data_usage_down || 0,
+    anomalyCount: summary.anomaly_count || 0,
+    totalCount: summary.total_count || 0,
+    runtime: summary.total_runtime || 0,
     networkName: msmt.network_name || '',
-    country: msmt.country || '',
+    countryCode: msmt.network_country_code || '',
     asn: msmt.asn || '',
   }
 }
 
-const TestResultsOverview = ({ measurements }) => {
-  const overviewProps = mapOverviewProps(measurements)
+const TestResultsOverview = ({ rows, summary }) => {
+  const overviewProps = mapOverviewProps(rows, summary)
   return (
     <TwoColumnHero
       bg={overviewProps.group.color}
       left={<ResultOverview {...overviewProps} />}
-      right={<MeasurementList groupName={overviewProps.groupName} group={overviewProps.group} measurements={measurements} />} />
+      right={<MeasurementList groupName={overviewProps.groupName} group={overviewProps.group} measurements={rows} />} />
   )
 }
 

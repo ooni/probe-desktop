@@ -30,7 +30,7 @@ module.exports = withSourceMaps({
     // in the production version of your app
     return {
       '/home': { page: '/home' },
-      '/results': { page: '/results' },
+      '/results': { page: '/results' , query: { resultID: null } },
       '/settings': { page: '/settings' },
       '/onboard': { page: '/onboard' }
     }

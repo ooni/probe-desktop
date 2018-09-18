@@ -2,18 +2,11 @@
 // or maybe WithNavigation
 import React from 'react'
 import styled from 'styled-components'
-import Router from 'next/router'
+import { withRouter } from 'next/router'
 
 import {
-  Heading,
-  Container,
-  Input,
-  Button,
   Flex,
-  Box,
-  Row,
-  Column,
-  colors
+  Box
 } from 'ooni-components'
 
 import Link from 'next/link'
@@ -127,7 +120,7 @@ const MainContainer = styled.div`
   flex-direction: column;
 `
 
-export const Sidebar = ({children, currentUrl}) => (
+export const Sidebar = ({children, router}) => (
   <WindowContainer>
     <SidebarContainer>
       {Object.keys(navigationPaths).map((path, idx) => {
@@ -135,7 +128,7 @@ export const Sidebar = ({children, currentUrl}) => (
         return (
           <NavItem
             key={idx}
-            currentUrl={currentUrl}
+            currentUrl={router}
             href={path}
             icon={info.icon}
             label={info.name} />
@@ -156,4 +149,4 @@ export const Sidebar = ({children, currentUrl}) => (
 
   </WindowContainer>
 )
-export default Sidebar
+export default withRouter(Sidebar)

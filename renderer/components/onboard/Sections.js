@@ -2,6 +2,9 @@ import React from 'react'
 
 import styled from 'styled-components'
 
+import { FormattedMessage } from 'react-intl'
+
+import MdKeyboardArrowLeft from 'react-icons/lib/md/keyboard-arrow-left'
 /*
  * XXX This component is a bit written a bit hasily. State is stored and encapsulated in the following way:
  *
@@ -26,6 +29,8 @@ import {
   Flex,
   Heading,
   Fixed,
+  Container,
+  Divider,
   theme
 } from 'ooni-components'
 
@@ -77,25 +82,51 @@ const BackButton = styled(QuizButton)`
   }
 `
 
+const ChangeLink = styled.a`
+  color: ${props => props.theme.colors.white};
+  cursor: pointer;
+  &:hover {
+    color: ${props => props.theme.colors.gray7};
+  }
+`
+
 const QuizActually = ({text, onBack, onContinue}) => (
   <QuizModal width={400} bg={theme.colors.gray7}>
-    <Heading center h={3}>Actually...</Heading>
+    <Heading center h={3}>
+      <FormattedMessage id='Onboarding.PopQuiz.1.Wrong.Title' />
+    </Heading>
     <Text p={4}>{text}</Text>
     <Flex>
-      <BackButton w={1/2} onClick={onBack}>Go Back</BackButton>
-      <ContinueButton w={1/2} onClick={onContinue}>Continue</ContinueButton>
+      <BackButton w={1/2} onClick={onBack}>
+        <FormattedMessage id='Onboarding.PopQuiz.Wrong.Button.Back' />
+      </BackButton>
+      <ContinueButton w={1/2} onClick={onContinue}>
+        <FormattedMessage id='Onboarding.PopQuiz.Wrong.Button.Continue' />
+      </ContinueButton>
     </Flex>
   </QuizModal>
 )
 
-const QuizQuestion = ({title, qNum, qTotal, question, onTrue, onFalse}) => (
+const QuizQuestion = ({qNum, question, onTrue, onFalse}) => (
   <QuizModal width={400}>
     <div>
-      <Heading center h={3}>Question {qNum}/{qTotal}</Heading>
-      <Text p={4}>{question}</Text>
+      <Heading center h={3}>
+        <FormattedMessage id='Onboarding.PopQuiz.Title' />
+      </Heading>
+      <Divider />
+      <Heading center h={4}>
+        <FormattedMessage id={`Onboarding.PopQuiz.${qNum}.Title`} />
+      </Heading>
+      <Container pb={3}>
+        <Text>{question}</Text>
+      </Container>
       <Flex>
-        <TrueButton w={1/2} onClick={onTrue}>True</TrueButton>
-        <FalseButton w={1/2} onClick={onFalse}>False</FalseButton>
+        <TrueButton w={1/2} onClick={onTrue}>
+          <FormattedMessage id='Onboarding.PopQuiz.True' />
+        </TrueButton>
+        <FalseButton w={1/2} onClick={onFalse}>
+          <FormattedMessage id='Onboarding.PopQuiz.False' />
+        </FalseButton>
       </Flex>
     </div>
   </QuizModal>
@@ -142,8 +173,7 @@ class QuizSteps extends React.Component {
       activeIdx
     } = this.state
 
-    const qTotal = questionList.length,
-      qNum = activeIdx + 1,
+    const qNum = activeIdx + 1,
       questionText = questionList[activeIdx],
       actuallyText = actuallyList[activeIdx]
 
@@ -153,7 +183,6 @@ class QuizSteps extends React.Component {
         {!actuallyActive ?
           <QuizQuestion
             qNum={qNum}
-            qTotal={qTotal}
             question={questionText}
             actually={actuallyText}
             onTrue={this.nextStep}
@@ -177,35 +206,34 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
       onClose={toggleQuiz}
       onDone={onQuizComplete}
       questionList={[
-        'Network Interference UDP Tor censorship TLS handshake?',
-        'Observatory of Network Interference, traffic manipulation?'
+        <FormattedMessage key='Onboarding.PopQuiz.1.Question' id='Onboarding.PopQuiz.1.Question' />,
+        <FormattedMessage key='Onboarding.PopQuiz.2.Question' id='Onboarding.PopQuiz.2.Question' />
       ]}
       actuallyList={[
-        'internet network interference consequat ullamco',
-        'censorship traffic manipulation middlebox consectetur'
+        <FormattedMessage key='Onboarding.PopQuiz.1.Wrong.Paragraph' id='Onboarding.PopQuiz.1.Wrong.Paragraph' />,
+        <FormattedMessage key='Onboarding.PopQuiz.2.Wrong.Paragraph' id='Onboarding.PopQuiz.2.Wrong.Paragraph' />
       ]}
     />}
 
     <Flex wrap>
       <Box w={1} p={2}>
-        <Heading center h={1}>Things to Know</Heading>
+        <Heading center h={1}>
+          <FormattedMessage id="Onboarding.ThingsToKnow.Title" />
+        </Heading>
       </Box>
       <Box w={1} p={4}>
-        <Text>Pariatur Open Observatory of Network Interference, incididunt, TCP
-      internet network interference consequat ullamco tempor cupidatat ipsum
-      network interference ex. Non in UDP surveillance, eiusmod aliquip TLS
-      handshake network interference traffic manipulation Open Observatory of
-      Network Interference UDP Tor censorship TLS handshake. Occaecat Open
-      Observatory of Network Interference, traffic manipulation qui sint
-      censorship DNS tampering DNS tampering connection reset UDP. In velit do
-      cillum internet TCP, occaecat consectetur ullamco middlebox network
-      interference tempor UDP voluptate surveillance. Esse, deserunt sed
-      censorship traffic manipulation middlebox consectetur.
-        </Text>
+        <Container width={700}>
+          <ul>
+            <li><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.1" /></li>
+            <li><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.2" /></li>
+            <li><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.3" /></li>
+            <li><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.4" /></li>
+          </ul>
+        </Container>
       </Box>
       <Box style={{'margin': '0 auto'}}>
         <Button inverted onClick={quizComplete ? onNext : toggleQuiz}>
-      I understand
+          <FormattedMessage id="Onboarding.ThingsToKnow.Button" />
         </Button>
       </Box>
     </Flex>
@@ -216,24 +244,23 @@ const SectionWhatIsOONI = ({onNext}) => (
   <div>
     <Flex wrap>
       <Box w={1} p={2}>
-        <Heading center h={1}>What is OONI?</Heading>
+        <Heading center h={1}>
+          <FormattedMessage id="Onboarding.WhatIsOONIProbe.Title" />
+        </Heading>
       </Box>
       <Box w={1} p={4}>
-        <Text>Pariatur Open Observatory of Network Interference, incididunt, TCP
-      internet network interference consequat ullamco tempor cupidatat ipsum
-      network interference ex. Non in UDP surveillance, eiusmod aliquip TLS
-      handshake network interference traffic manipulation Open Observatory of
-      Network Interference UDP Tor censorship TLS handshake. Occaecat Open
-      Observatory of Network Interference, traffic manipulation qui sint
-      censorship DNS tampering DNS tampering connection reset UDP. In velit do
-      cillum internet TCP, occaecat consectetur ullamco middlebox network
-      interference tempor UDP voluptate surveillance. Esse, deserunt sed
-      censorship traffic manipulation middlebox consectetur.
-        </Text>
+        <Container width={700}>
+          <Text>
+            <FormattedMessage id="Onboarding.WhatIsOONIProbe.Paragraph.1" />
+          </Text>
+          <Text>
+            <FormattedMessage id="Onboarding.WhatIsOONIProbe.Paragraph.2" />
+          </Text>
+        </Container>
       </Box>
       <Box style={{'margin': '0 auto'}}>
         <Button inverted onClick={onNext}>
-      Continue
+      Continue {/* FIXME add this to the strings */}
         </Button>
       </Box>
     </Flex>
@@ -244,32 +271,67 @@ const SectionDefaultSettings = ({onGo, onChange}) => (
   <div>
     <Flex wrap>
       <Box w={1} p={2}>
-        <Heading center h={1}>Default settings</Heading>
+        <Heading center h={1}>
+          <FormattedMessage id='Onboarding.DefaultSettings.Title' />
+        </Heading>
       </Box>
       <Box w={1} p={4}>
-        <Text>Pariatur Open Observatory of Network Interference, incididunt, TCP
-      internet network interference consequat ullamco tempor cupidatat ipsum
-      network interference ex. Non in UDP surveillance, eiusmod aliquip TLS
-      handshake network interference traffic manipulation Open Observatory of
-      Network Interference UDP Tor censorship TLS handshake. Occaecat Open
-      Observatory of Network Interference, traffic manipulation qui sint
-      censorship DNS tampering DNS tampering connection reset UDP. In velit do
-      cillum internet TCP, occaecat consectetur ullamco middlebox network
-      interference tempor UDP voluptate surveillance. Esse, deserunt sed
-      censorship traffic manipulation middlebox consectetur.
-        </Text>
+        <Flex>
+          <Box w={1/2}>
+            <Heading h={4}>
+              <FormattedMessage id='Onboarding.DefaultSettings.Header.1' />
+            </Heading>
+            <ul>
+              <li>
+                <FormattedMessage id='Onboarding.DefaultSettings.Bullet.1' />
+              </li>
+              <li>
+                <FormattedMessage id='Onboarding.DefaultSettings.Bullet.2' />
+              </li>
+              <li>
+                <FormattedMessage id='Onboarding.DefaultSettings.Bullet.3' />
+              </li>
+            </ul>
+          </Box>
+          <Box w={1/2}>
+            <Heading h={4}>
+              <FormattedMessage id='Onboarding.DefaultSettings.Header.2' />
+            </Heading>
+            <ul>
+              <li>
+                <FormattedMessage id='Onboarding.DefaultSettings.Bullet.4' />
+              </li>
+            </ul>
+          </Box>
+        </Flex>
       </Box>
       <Box style={{'margin': '0 auto'}}>
-        <Button inverted onClick={onChange}>
-      Change
-        </Button>
-        <Button inverted onClick={onGo}>
-      Continue
-        </Button>
+        <Flex wrap>
+          <Box w={1}>
+            <Button inverted onClick={onGo}>
+              <FormattedMessage id='Onboarding.DefaultSettings.Button.Go' />
+            </Button>
+          </Box>
+          <Box w={1} style={{textAlign: 'center', paddingTop: '5px'}}>
+            <ChangeLink onClick={onChange}>
+              <FormattedMessage id='Onboarding.DefaultSettings.Button.Change' />
+            </ChangeLink>
+          </Box>
+        </Flex>
       </Box>
     </Flex>
   </div>
 )
+
+const BackButtonContainer = styled.div`
+position: absolute;
+left: 10px;
+top: 40px;
+cursor: pointer;
+&:hover {
+  color: ${props => props.theme.colors.gray4};
+}
+`
 
 const numSteps = 3
 class Sections extends React.Component {
@@ -355,9 +417,12 @@ class Sections extends React.Component {
           onChange={onChange}
         />}
 
-        <Button inverted onClick={this.prevStep}>
-        Back
-        </Button>
+        {activeIdx !== 0 && <BackButtonContainer onClick={this.prevStep}>
+          <Flex>
+            <Box><MdKeyboardArrowLeft size={20} /></Box>
+            <Box>Go Back</Box>
+          </Flex>
+        </BackButtonContainer>}
       </div>
     )
   }
