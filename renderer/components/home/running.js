@@ -1,8 +1,5 @@
 /* global require */
 import React from 'react'
-import Router from 'next/router'
-
-import Raven from 'raven-js'
 
 import styled from 'styled-components'
 
@@ -45,88 +42,15 @@ const CodeLog = ({lines}) => {
   )
 }
 
-class RunningTestLog extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      progressLine: '',
-      logLines: [],
-      percent: 0,
-      runningTest: null,
-      error: null
-    }
-    this.onMessage = this.onMessage.bind(this)
-  }
-
-  onMessage(event, data) {
-    switch (data.key) {
-    case 'ooni.run.progress':
-      this.setState({
-        percent: data.percentage,
-        progressLine: data.message,
-        runningTest: {
-          name: data.testKey
-        }
-      })
-      break
-    case 'error':
-      debug('error received', data)
-      this.setState({
-        error: data.message,
-        runningTest: null,
-      })
-      break
-    case 'log':
-      debug('log received', data)
-      this.setState({
-        logLines: this.state.logLines.concat(data.value)
-      })
-      break
-    default:
-      break
-    }
-  }
-
-  componentWillUnmount() {
-    const { ipcRenderer } = require('electron')
-    ipcRenderer.removeListener('ooni', this.onMessage)
-  }
-
-  componentDidMount() {
-    const { ipcRenderer } = require('electron')
-    ipcRenderer.on('ooni', this.onMessage)
-  }
-
-  render() {
-    const {
-      progressLine,
-      percent,
-      runningTest,
-      logLines,
-      error
-    } = this.state
-
-    const {
-      logOpen
-    } = this.props
-
-    return (
-      <div>
-        <Heading h={3}>Running {runningTest && runningTest.name}</Heading>
-        <div>{progressLine}</div>
-        <div>{percent*100}%</div>
-        {logOpen && <CodeLog lines={logLines} />}
-        {error && <p>{error}</p>}
-      </div>
-    )
-  }
-}
-
 //name, icon, color, description, longDescription, onClickClose, active
-const RunningTest = ({testGroup, logOpen, onToggleLog}) => {
+const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, logLines, runningTest, error}) => {
   return <StyledRunningTest>
     <Heading h={2}>{testGroup.name}</Heading>
-    <RunningTestLog logOpen={logOpen} />
+    <Heading h={3}>Running {runningTest && runningTest.name}</Heading>
+    <div>{progressLine}</div>
+    <div>{percent*100}%</div>
+    {logOpen && <CodeLog lines={logLines} />}
+    {error && <p>{error}</p>}
     {logOpen
       ? <Button inverted hollow onClick={onToggleLog}>Hide log</Button>
       : <Button inverted hollow onClick={onToggleLog}>Show log</Button>}
@@ -169,25 +93,14 @@ class Running extends React.Component {
     })
   }
 
-  componentDidMount() {
-    const {
-      testGroupName
-    } = this.props
-    const { remote } = require('electron')
-
-    remote.require('./utils/ooni/run')({testGroupName}).then(() => {
-      this.setState({done: true})
-      Router.push('/results')
-    }).catch(error => {
-      debug('error', error)
-      Raven.captureException(error, {extra: {scope: 'renderer.runTest'}})
-      this.setState({error: error})
-    })
-  }
-
   render() {
     const {
-      testGroupName
+      testGroupName,
+      progressLine,
+      percent,
+      runningTest,
+      logLines,
+      error
     } = this.props
 
     const {
@@ -198,7 +111,16 @@ class Running extends React.Component {
 
     return <WindowContainer bg={testGroup.color}>
       <ContentContainer color={testGroup.color}>
-        <RunningTest testGroup={testGroup} logOpen={logOpen} onToggleLog={this.onToggleLog}/>
+        <RunningTest
+          progressLine={progressLine}
+          percent={percent}
+          runningTest={runningTest}
+          logLines={logLines}
+          error={error}
+          testGroup={testGroup}
+          logOpen={logOpen}
+          onToggleLog={this.onToggleLog}
+        />
       </ContentContainer>
     </WindowContainer>
   }

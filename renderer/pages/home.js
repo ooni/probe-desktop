@@ -2,6 +2,10 @@
 
 import React from 'react'
 
+import Router from 'next/router'
+
+import Raven from 'raven-js'
+
 import * as chroma from 'chroma-js'
 
 import styled from 'styled-components'
@@ -135,10 +139,57 @@ class Home extends React.Component {
     super(props)
     this.state = {
       error: null,
-      runningTestGroup: null
+
+      runningTestName: null,
+      runTestGroupName: null,
+      runProgressLine: '',
+      runError: null,
+      runLogLines: [],
+      runPercent: 0,
+      runDone: true
     }
     this.onConfigure = this.onConfigure.bind(this)
     this.onRun = this.onRun.bind(this)
+    this.onMessage = this.onMessage.bind(this)
+  }
+
+  componentWillUnmount() {
+    const { ipcRenderer } = require('electron')
+    ipcRenderer.removeListener('ooni', this.onMessage)
+  }
+
+  componentDidMount() {
+    const { ipcRenderer } = require('electron')
+    ipcRenderer.on('ooni', this.onMessage)
+  }
+
+  onMessage(event, data) {
+    switch (data.key) {
+    case 'ooni.run.progress':
+      this.setState({
+        runPercent: data.percentage,
+        runProgressLine: data.message,
+        runningTestName: {
+          name: data.testKey
+        }
+      })
+      break
+    case 'error':
+      debug('error received', data)
+      this.setState({
+        runError: data.message,
+        runningTestName: null,
+      })
+      break
+    case 'log':
+      debug('log received', data)
+      this.setState({
+        runLogLines: this.state.runLogLines.concat(data.value)
+      })
+      break
+    default:
+      break
+    }
   }
 
   onConfigure(groupName) {
@@ -147,22 +198,46 @@ class Home extends React.Component {
     }
   }
 
-  onRun(groupName) {
+  onRun(testGroupName) {
+    const { remote } = require('electron')
     return () => {
-      this.setState({runningTestGroup: groupName})
+      debug('running', testGroupName)
+      this.setState({
+        runningTestGroupName: testGroupName
+      })
+      remote.require('./utils/ooni/run')({testGroupName}).then(() => {
+        this.setState({done: true})
+        Router.push('/results')
+      }).catch(error => {
+        debug('error', error)
+        Raven.captureException(error, {extra: {scope: 'renderer.runTest'}})
+        this.setState({error: error})
+      })
     }
   }
 
   render() {
     const {
       error,
-      runningTestGroup
+      runningTestGroupName,
+      runningTestName,
+      runProgressLine,
+      runPercent,
+      runLogLines,
+      runError
     } = this.state
 
-    if (runningTestGroup) {
+    if (runningTestGroupName) {
       return (
         <Layout>
-          <Running testGroupName={runningTestGroup} />
+          <Running
+            progressLine={runProgressLine}
+            percent={runPercent}
+            runningTest={runningTestName}
+            logLines={runLogLines}
+            error={runError}
+            testGroupName={runningTestGroupName}
+          />
         </Layout>
       )
     }
