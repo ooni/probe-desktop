@@ -19,6 +19,8 @@ import { testGroups } from '../nettests'
 import MdKeyboardArrowUp from 'react-icons/lib/md/keyboard-arrow-up'
 import MdKeyboardArrowDown from 'react-icons/lib/md/keyboard-arrow-down'
 
+import Lottie from 'react-lottie'
+
 const debug = require('debug')('ooniprobe-desktop.renderer.components.home.running')
 
 const StyledRunningTest = styled.div`
@@ -98,19 +100,32 @@ const Log = ({lines, onToggleLog, open}) => {
   </LogContainer>
 }
 
+
 //name, icon, color, description, longDescription, onClickClose, active
 const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, logLines, runningTest, error, totalRuntime}) => {
   let eta = totalRuntime
   if (percent > 0) {
     eta = totalRuntime - totalRuntime / (percent * totalRuntime)
   }
+  const lottieOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: testGroup.animation,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice'
+    }
+  }
   return <StyledRunningTest>
     <Container>
       <Heading h={2}>{testGroup.name}</Heading>
       <Heading h={3}>Running {runningTest && runningTest.name}</Heading>
-      <Text>{progressLine}</Text>
+      {!logOpen
+      && <Lottie
+        width={300}
+        height={300}
+        options={lottieOptions}
+      />}
       <LineProgress
-        style={{paddingTop: '20px'}}
         percent={percent*100}
         strokeColor={theme.colors.white}
         strokeWidth='2'
@@ -118,6 +133,7 @@ const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, lo
         trailWidth='2'
       />
       <Text>Estimated time left: {eta}s</Text>
+      <Text>{progressLine}</Text>
     </Container>
 
     <Log lines={logLines} onToggleLog={onToggleLog} open={logOpen} />

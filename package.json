@@ -121,6 +121,7 @@
     "react-animations": "^0.1.0",
     "react-icons": "^2.2.5",
     "react-intl": "^2.4.0",
+    "react-lottie": "^1.2.3",
     "remark": "^9.0.0",
     "remark-react": "^4.0.3",
     "split2": "^2.2.0",

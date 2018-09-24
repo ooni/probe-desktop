@@ -8,6 +8,7 @@ import { FormattedMessage } from 'react-intl'
 
 import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
 
+import { default as animation } from 'ooni-components/components/animations/RunningInstantMessaging.json'
 import { NettestGroupInstantMessaging } from 'ooni-components/dist/icons'
 
 const color = theme.colors.cyan6
@@ -25,5 +26,6 @@ export default {
   name,
   icon,
   description,
-  longDescription
+  longDescription,
+  animation
 }
