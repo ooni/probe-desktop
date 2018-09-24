@@ -105,7 +105,7 @@ const Log = ({lines, onToggleLog, open}) => {
 const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, logLines, runningTest, error, totalRuntime}) => {
   let eta = totalRuntime
   if (percent > 0) {
-    eta = totalRuntime - totalRuntime / (percent * totalRuntime)
+    eta = Math.round(totalRuntime - totalRuntime / (percent * totalRuntime))
   }
   const lottieOptions = {
     loop: true,
