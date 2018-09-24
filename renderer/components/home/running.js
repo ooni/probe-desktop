@@ -4,12 +4,17 @@ import React from 'react'
 import styled from 'styled-components'
 
 import {
+  Flex,
+  Box,
   Heading,
   Text,
   Button
 } from 'ooni-components'
 
 import { testGroups } from '../nettests'
+
+import MdKeyboardArrowUp from 'react-icons/lib/md/keyboard-arrow-up'
+import MdKeyboardArrowDown from 'react-icons/lib/md/keyboard-arrow-down'
 
 const debug = require('debug')('ooniprobe-desktop.renderer.components.home.running')
 
@@ -34,6 +39,37 @@ const Lines = styled(Text)`
   text-align: left;
 `
 
+const ToggleButtonContainer = styled(Flex)`
+  align-items: center;
+  justify-content: center;
+  color: ${props => props.theme.colors.white};
+  cursor: pointer;
+  &:hover {
+    color: ${props => props.theme.colors.gray4};
+  }
+`
+
+const ToggleLogButton = ({open, onClick}) => {
+  if (open) {
+    return <ToggleButtonContainer onClick={onClick}>
+      <Box>
+        <MdKeyboardArrowDown />
+      </Box>
+      <Box>
+    Close log
+      </Box>
+    </ToggleButtonContainer>
+  }
+  return <ToggleButtonContainer onClick={onClick}>
+    <Box>
+      <MdKeyboardArrowUp />
+    </Box>
+    <Box>
+  Open log
+    </Box>
+  </ToggleButtonContainer>
+}
+
 const CodeLog = ({lines}) => {
   return (
     <CodeLogContainer>
@@ -49,11 +85,10 @@ const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, lo
     <Heading h={3}>Running {runningTest && runningTest.name}</Heading>
     <div>{progressLine}</div>
     <div>{percent*100}%</div>
+
+    <ToggleLogButton onClick={onToggleLog} open={logOpen} />
     {logOpen && <CodeLog lines={logLines} />}
     {error && <p>{error}</p>}
-    {logOpen
-      ? <Button inverted hollow onClick={onToggleLog}>Hide log</Button>
-      : <Button inverted hollow onClick={onToggleLog}>Show log</Button>}
   </StyledRunningTest>
 }
 

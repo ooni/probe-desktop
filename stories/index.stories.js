@@ -10,6 +10,12 @@ import Layout from '../renderer/components/Layout'
 storiesOf('Components/home/running', module)
   .add('Default', () =>
     <Layout>
-      <Running testGroupName='websites' />
+      <Running
+        testGroupName='websites'
+        progressLine='progress something'
+        percent={0.1}
+        runningTest='some test name'
+        logLines={['line 1', 'line 2']}
+      />
     </Layout>
   )
