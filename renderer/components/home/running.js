@@ -124,7 +124,12 @@ class Running extends React.Component {
       </ContentContainer>
     </WindowContainer>
   }
-
 }
 
+Running.defaultProps = {
+  progressLine: '',
+  percent: 0,
+  logLines: [],
+  error: null
+}
 export default Running
