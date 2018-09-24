@@ -59,6 +59,9 @@ class About extends React.Component {
           <Text>When you install the final release please be sure to do a hard
           reset by clicking on the button below.</Text>
           <Text bold>Do not rely on this version keeping your data</Text>
+          <Text>If you encounter any bugs with it please report them via email
+          to contact@openobservatory.org or (even better) on
+          github.com/ooni/probe-desktop</Text>
 
           <Flex justify='center' align='center' pt={2}>
             <Box>
