@@ -3,10 +3,13 @@ import React from 'react'
 
 import Layout from '../components/Layout'
 
+import OONIVerticalColor from 'ooni-components/components/svgs/logos/OONI-VerticalColor.svg'
 import {
   Button,
   Heading,
   Text,
+  Flex,
+  Box,
   Code
 } from 'ooni-components'
 
@@ -46,16 +49,22 @@ class About extends React.Component {
 
     return (
       <Layout>
-        <div>
+        <div style={{padding: '20px'}}>
+          <Flex justify='center' align='center'>
+            <Box><OONIVerticalColor width='100px' /></Box>
+          </Flex>
           {msg && <Heading h={4} color='red5'>{msg}</Heading>}
 
-          <Heading h={3}>This is a BETA version of OONI Probe</Heading>
-          <Text>We may, before the final release, ask you as a beta app user to
-          delete your OONI_HOME directory or may delete it automatically once
-          you install the next stable release, so do not store sensitive data in
-          here</Text>
+          <Heading h={3} center>This is a BETA!</Heading>
+          <Text>When you install the final release please be sure to do a hard
+          reset by clicking on the button below.</Text>
+          <Text bold>Do not rely on this version keeping your data</Text>
 
-          <Button onClick={this.onReset}>Hard reset</Button>
+          <Flex justify='center' align='center' pt={2}>
+            <Box>
+              <Button onClick={this.onReset}>Hard reset</Button>
+            </Box>
+          </Flex>
 
           <Heading h={4}>Debug information</Heading>
           <div>
