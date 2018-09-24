@@ -105,7 +105,7 @@ const Log = ({lines, onToggleLog, open}) => {
 const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, logLines, runningTest, error, totalRuntime}) => {
   let eta = totalRuntime
   if (percent > 0) {
-    eta = Math.round(totalRuntime - totalRuntime / (percent * totalRuntime))
+    eta = Math.round(totalRuntime - percent * totalRuntime)
   }
   const lottieOptions = {
     loop: true,
@@ -147,14 +147,18 @@ const WindowContainer = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  display: flex;
   background-color: ${props => props.bg};
+`
+
+const WindowDraggable = styled.div`
+  background-color: ${props => props.bg};
+  height: 50px;
+  width: 100%;
   /* This makes it possible to drag the window around from the side bar */
   -webkit-app-region: drag;
 `
 
 const ContentContainer = styled.div`
-  padding-top: 100px;
   width: 100%;
   z-index: 10;
 `
@@ -195,6 +199,7 @@ class Running extends React.Component {
     const testGroup = testGroups[testGroupName]
 
     return <WindowContainer bg={testGroup.color}>
+      <WindowDraggable bg={testGroup.color} />
       <ContentContainer color={testGroup.color}>
         <RunningTest
           progressLine={progressLine}
