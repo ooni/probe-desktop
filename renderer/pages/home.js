@@ -69,9 +69,6 @@ const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, on
       </TopLeftFloatingButton>
       <CardContent>
         <Heading h={2}>{name}</Heading>
-        <ConfigureButton hollow inverted fontSize={1} onClick={onConfigure}>
-      Configure
-        </ConfigureButton>
         <Flex pt={5}>
           <Box w={3/4} pr={4}>
             {description}
