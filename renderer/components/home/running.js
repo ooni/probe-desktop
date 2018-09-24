@@ -8,8 +8,11 @@ import {
   Box,
   Heading,
   Text,
-  Button
+  Container,
+  theme
 } from 'ooni-components'
+
+import { Line as LineProgress } from 'rc-progress'
 
 import { testGroups } from '../nettests'
 
@@ -20,6 +23,7 @@ const debug = require('debug')('ooniprobe-desktop.renderer.components.home.runni
 
 const StyledRunningTest = styled.div`
   text-align: center;
+  color: white;
 `
 
 const CodeLogContainer = styled.div`
@@ -33,6 +37,8 @@ const CodeLogContainer = styled.div`
 `
 
 const Lines = styled(Text)`
+  padding-top: 20px;
+  padding-left: 20px;
   color: white;
   font-family: monospace;
   white-space: pre;
@@ -53,19 +59,19 @@ const ToggleLogButton = ({open, onClick}) => {
   if (open) {
     return <ToggleButtonContainer onClick={onClick}>
       <Box>
-        <MdKeyboardArrowDown />
+    Close log
       </Box>
       <Box>
-    Close log
+        <MdKeyboardArrowDown size={30} />
       </Box>
     </ToggleButtonContainer>
   }
   return <ToggleButtonContainer onClick={onClick}>
     <Box>
-      <MdKeyboardArrowUp />
+  Show log
     </Box>
     <Box>
-  Open log
+      <MdKeyboardArrowUp size={30} />
     </Box>
   </ToggleButtonContainer>
 }
@@ -78,16 +84,43 @@ const CodeLog = ({lines}) => {
   )
 }
 
-//name, icon, color, description, longDescription, onClickClose, active
-const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, logLines, runningTest, error}) => {
-  return <StyledRunningTest>
-    <Heading h={2}>{testGroup.name}</Heading>
-    <Heading h={3}>Running {runningTest && runningTest.name}</Heading>
-    <div>{progressLine}</div>
-    <div>{percent*100}%</div>
+const LogContainer = styled.div`
+position: absolute;
+bottom: 0;
+left: 0;
+width: 100%;
+`
 
-    <ToggleLogButton onClick={onToggleLog} open={logOpen} />
-    {logOpen && <CodeLog lines={logLines} />}
+const Log = ({lines, onToggleLog, open}) => {
+  return <LogContainer>
+    <ToggleLogButton onClick={onToggleLog} open={open} />
+    {open && <CodeLog lines={lines} />}
+  </LogContainer>
+}
+
+//name, icon, color, description, longDescription, onClickClose, active
+const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, logLines, runningTest, error, totalRuntime}) => {
+  let eta = totalRuntime
+  if (percent > 0) {
+    eta = totalRuntime - totalRuntime / (percent * totalRuntime)
+  }
+  return <StyledRunningTest>
+    <Container>
+      <Heading h={2}>{testGroup.name}</Heading>
+      <Heading h={3}>Running {runningTest && runningTest.name}</Heading>
+      <Text>{progressLine}</Text>
+      <LineProgress
+        style={{paddingTop: '20px'}}
+        percent={percent*100}
+        strokeColor={theme.colors.white}
+        strokeWidth='2'
+        trailColor='rgba(255,255,255,0.4)'
+        trailWidth='2'
+      />
+      <Text>Estimated time left: {eta}s</Text>
+    </Container>
+
+    <Log lines={logLines} onToggleLog={onToggleLog} open={logOpen} />
     {error && <p>{error}</p>}
   </StyledRunningTest>
 }
@@ -135,6 +168,7 @@ class Running extends React.Component {
       percent,
       runningTest,
       logLines,
+      totalRuntime,
       error
     } = this.props
 
@@ -155,6 +189,7 @@ class Running extends React.Component {
           testGroup={testGroup}
           logOpen={logOpen}
           onToggleLog={this.onToggleLog}
+          totalRuntime={totalRuntime}
         />
       </ContentContainer>
     </WindowContainer>
@@ -164,6 +199,7 @@ class Running extends React.Component {
 Running.defaultProps = {
   progressLine: '',
   percent: 0,
+  totalRuntime: 60,
   logLines: [],
   error: null
 }

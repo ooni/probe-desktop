@@ -117,6 +117,7 @@
     "ooni-components": "0.1.4",
     "prop-types": "^15.6.2",
     "raven-js": "^3.25.2",
+    "rc-progress": "^2.2.5",
     "react-animations": "^0.1.0",
     "react-icons": "^2.2.5",
     "react-intl": "^2.4.0",
