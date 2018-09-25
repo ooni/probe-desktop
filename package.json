@@ -84,11 +84,7 @@
     "eslint-plugin-react": "^7.10.0",
     "fsevents": "^1.2.4",
     "icon-gen": "^1.2.1",
-    "next": "7.0.0",
     "next-progressbar": "^1.0.0",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "sudo-prompt": "^7.1.1",
     "webpack": "4.19.0"
   },
   "dependencies": {
@@ -112,12 +108,15 @@
     "moment-range": "^4.0.1",
     "mri": "^1.1.0",
     "ms": "^2.0.0",
+    "next": "7.0.0",
     "npm": "^6.1.0",
     "nuka-carousel": "^2.3.0",
     "ooni-components": "0.1.4",
     "prop-types": "^15.6.2",
     "raven-js": "^3.25.2",
     "rc-progress": "^2.2.5",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "react-animations": "^0.1.0",
     "react-icons": "^2.2.5",
     "react-intl": "^2.4.0",
@@ -125,7 +124,8 @@
     "remark": "^9.0.0",
     "remark-react": "^4.0.3",
     "split2": "^2.2.0",
-    "styled-components": "2.4.1"
+    "styled-components": "2.4.1",
+    "sudo-prompt": "^7.1.1"
   },
   "resolutions": {
     "grid-styled": "2.0.0-11",
