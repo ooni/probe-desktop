@@ -1,5 +1,7 @@
 import React from 'react'
 import {
+  Flex,
+  Box,
   theme,
   Text
 } from 'ooni-components'
@@ -14,12 +16,32 @@ import middlebox from './middleboxes'
 import performance from './performance'
 import websites from './websites'
 
+import {
+  Cross,
+  Tick
+} from 'ooni-components/dist/icons'
+
 const TODODetails = ({testKeys, isAnomaly, url, urlCategoryCode}) => {
-  return <div>
-    <Text>{url} ({urlCategoryCode})</Text>
-    <Text>isAnomaly: {JSON.stringify(isAnomaly)}</Text>
-    <Text>testKeys: {JSON.stringify(testKeys, null, 2)}</Text>
-  </div>
+  return <Flex wrap align='flex-start' p={3}>
+    {url
+    && <Box width={1}>
+      <Text center fontSize={3}>{url} ({urlCategoryCode})</Text>
+    </Box>}
+    {isAnomaly
+    && <Box width={1}>
+      <Text center fontSize={3} color={theme.colors.red5}><Cross />An anomaly is present</Text>
+    </Box>}
+    {isAnomaly === false
+    && <Box width={1}>
+      <Text color={theme.colors.green6} center fontSize={3}><Tick />Everything is OK</Text>
+    </Box>}
+    {Object.keys(testKeys).map(key =>
+      <Box key={key} width={1/2}>
+        <Text bold>{key}</Text><Text>{JSON.stringify(testKeys[key])}</Text>
+      </Box>
+    )}
+    <Box width={1}><Text bold>Attention this is a beta, as such, things are subject to change</Text></Box>
+  </Flex>
 }
 
 const detailsMap = {
@@ -27,7 +49,7 @@ const detailsMap = {
 }
 
 export const renderDetails = (measurement) => {
-  let testKeys
+  let testKeys = {}
   const Component = detailsMap[name]
   if (measurement.test_keys) {
     testKeys = JSON.parse(measurement.test_keys)

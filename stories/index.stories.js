@@ -5,6 +5,7 @@ import { action } from '@storybook/addon-actions'
 import { linkTo } from '@storybook/addon-links'
 
 import Running from '../renderer/components/home/running'
+import Sections from '../renderer/components/onboard/Sections'
 import Layout from '../renderer/components/Layout'
 
 storiesOf('Components/home/running', module)
@@ -17,5 +18,12 @@ storiesOf('Components/home/running', module)
         runningTest='some test name'
         logLines={['line 1', 'line 2']}
       />
+    </Layout>
+  )
+
+storiesOf('Components/onboard/Sections', module)
+  .add('Default', () =>
+    <Layout>
+      <Sections />
     </Layout>
   )
