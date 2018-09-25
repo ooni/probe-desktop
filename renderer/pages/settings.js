@@ -18,6 +18,8 @@ import {
   Text
 } from 'ooni-components'
 
+import { default as pkgJson } from '../../package.json'
+
 const TopBar = styled.div`
   background-color: ${props => props.theme.colors.blue5};
   color: ${props => props.theme.colors.white};
@@ -145,7 +147,7 @@ class Settings extends React.Component {
                 label='Include my IP address'
                 optionKey='sharing.include_ip'
                 config={config} />
-
+              <Text pt={3}>OONI Probe Desktop v{pkgJson.version}</Text>
             </Container>
           </Box>
         </Sidebar>
