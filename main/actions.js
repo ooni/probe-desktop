@@ -11,12 +11,15 @@ const hardReset = () => {
 const listMeasurements = (resultID) => {
   const ooni = new Ooniprobe()
   let rows = [],
+    errors = [],
     summary = {}
 
   return new Promise((resolve, reject) => {
     ooni.on('data', (data) => {
       if (data.level == 'error') {
-        reject(data.message)
+        errors.push(data.message)
+        debug('error in row', data.message)
+        return
       }
       switch(data.fields.type) {
       case 'measurement_item':
@@ -37,7 +40,8 @@ const listMeasurements = (resultID) => {
         debug('returning list', resultID, rows, summary)
         resolve({
           rows,
-          summary
+          summary,
+          errors
         })
       })
       .catch(err => reject(err))
