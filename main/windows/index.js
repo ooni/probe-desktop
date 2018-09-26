@@ -1,41 +1,12 @@
-const path = require('path')
-
-const { format } = require('url')
+/* global require, module, process */
 
 const electron = require('electron')
-const isDev = require('electron-is-dev')
-const { resolve } = require('app-root-path')
 
 const isWinOS = process.platform === 'win32'
 
-const windowURL = page => {
-  if (page.indexOf('/') !== -1 || page.indexOf('\\') !== -1) {
-    throw Error('You pesky hax0r!')
-  }
-  const devPath = `http://localhost:8000/${page}`
-  let prodPath = format({
-    pathname: resolve(`renderer/out/${page}/index.html`),
-    protocol: 'file:',
-    slashes: true
-  })
-  const url = isDev ? devPath : prodPath
-  return url
-}
+const windowURL = require('./windowURL')
 
-const aboutWindow = () => {
-  const win = new electron.BrowserWindow({
-    width: 360,
-    height: 408,
-    title: 'About OONI',
-    //titleBarStyle: 'hidden-inset',
-    show: false,
-    backgroundColor: '#fff',
-    webPreferences: {}
-  })
-
-  win.loadURL(windowURL('about'))
-  return win
-}
+const openAboutWindow = require('./aboutWindow')
 
 const mainWindow = () => {
   let windowHeight = 640
@@ -48,7 +19,7 @@ const mainWindow = () => {
     width: 1024,
     height: windowHeight,
     title: 'OONI Probe',
-    titleBarStyle: 'hidden-inset',
+    titleBarStyle: 'hiddenInset',
     show: false,
     webPreferences: {}
   })
@@ -59,6 +30,6 @@ const mainWindow = () => {
 
 module.exports = {
   mainWindow,
-  aboutWindow,
+  openAboutWindow,
   windowURL
 }

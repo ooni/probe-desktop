@@ -1,18 +1,11 @@
 /* global require, process, global */
 
-// Native
-const { format } = require('url')
-const { spawn } = require('child_process')
-
 // Packages
-const { app } = require('electron')
+const { app, Menu } = require('electron')
 const prepareNext = require('electron-next')
+const { is } = require('electron-util')
 
 const fixPath = require('fix-path')
-const firstRun = require('first-run')
-const isDev = require('electron-is-dev')
-const { resolve } = require('app-root-path')
-
 const { getConfig } = require('./utils/config')
 const { getSentryConfig } = require('./utils/sentry')
 const { startAutoUpdater } = require('./update')
@@ -21,7 +14,7 @@ const toggleWindow = require('./windows/toggle')
 
 const {
   mainWindow,
-  aboutWindow,
+  openAboutWindow,
   windowURL
 } = require('./windows')
 
@@ -37,9 +30,9 @@ require('electron-debug')({
   enabled: parseInt(process.env.FORCE_ELECTRON_DEBUG, 10) === 1 ? true : null
 })
 
-// <cargo-cult>Apparently this is needed to prevent garbage collection of the
-// tray icon</cargo-cult>
-let tray = null
+
+// To prevent garbage collection of the windows
+let windows = null
 
 // Set the application name
 app.setName('OONI Probe')
@@ -48,14 +41,44 @@ process.on('uncaughtException', error => {
   Sentry.captureException(error)
 })
 
+// XXX currently disable starting at login. It's a bit annoying while developing.
 /*
-XXX currently disable starting at login. It's a bit annoying while developing.
+const firstRun = require('first-run')
+const isDev = require('electron-is-dev')
+const { resolve } = require('app-root-path')
+
 if (!isDev && firstRun()) {
  app.setLoginItemSettings({
     openAtLogin: true
   })
 }
 */
+
+
+let menuTemplate = [
+  {
+    label: 'BETA',
+    submenu: [
+      { label: 'About OONI Probe', click: () => openAboutWindow() },
+    ]
+  }
+]
+if (is.macos) {
+  menuTemplate = [
+    {
+      label: app.getName(),
+      submenu: [
+        { label: 'About OONI Probe', click: () => openAboutWindow() },
+        { type: 'separator' },
+        { role: 'hide' },
+        { role: 'hideothers' },
+        { role: 'unhide' },
+        { type: 'separator' },
+        { role: 'quit' }
+      ]
+    }
+  ]
+}
 
 // This set $PATH properly based on .zsrch/.bashrc/etc.
 fixPath()
@@ -82,10 +105,11 @@ app.on('ready', async () => {
 
   await prepareNext('./renderer')
 
-  const windows = {
-    main: mainWindow(),
-    about: aboutWindow()
+  windows = {
+    main: mainWindow()
   }
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate))
 
   startAutoUpdater(windows.main)
 
@@ -101,7 +125,7 @@ app.on('ready', async () => {
       windows.main.loadURL(windowURL('onboard'))
     }
     if (config._is_beta === true) {
-      toggleWindow(null, windows.about)
+      toggleWindow(null, openAboutWindow())
     }
     windows.main.once('ready-to-show', () => {
       toggleWindow(null, windows.main)
