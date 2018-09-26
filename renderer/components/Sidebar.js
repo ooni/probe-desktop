@@ -79,24 +79,13 @@ const navigationPaths = {
   }
 }
 
-const TopBar = styled(Box)`
-  height: 50px;
-  background-color: ${props => props.theme.colors.gray5};
-  color: ${props => props.theme.colors.white};
-  /* This makes it possible to drag the window around from the side bar */
-  -webkit-app-region: drag;
-`
-
-const sidebarWidth = '100px'
-
 const SidebarContainer = styled.div`
   padding-top: 50px;
   background-color: ${props => props.theme.colors.gray1};
-  width: ${sidebarWidth};
+  width: ${1/10*100}%;
   /* This makes it possible to drag the window around from the side bar */
   -webkit-app-region: drag;
 `
-
 
 const WindowContainer = styled.div`
   position: absolute;
@@ -111,13 +100,21 @@ const Content = styled.div`
   display: flex;
   overflow: auto;
   flex: 1;
-  width: 924px;
 `
 
 const MainContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  width: ${9/10*100}%;
+`
+
+const TopBar = styled(Box)`
+  height: 50px;
+  background-color: ${props => props.theme.colors.gray5};
+  color: ${props => props.theme.colors.white};
+  /* This makes it possible to drag the window around from the side bar */
+  -webkit-app-region: drag;
 `
 
 export const Sidebar = ({children, router}) => (

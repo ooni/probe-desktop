@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import BarLoader from './BarLoader'
 
 const StyledLoading = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
