@@ -17,8 +17,7 @@ const TopBar = styled.div`
 `
 
 const SectionContainer = styled.div`
-  min-height: 100%;
-  width: 100%;
+  min-height: 100vh;
   background-color: ${props => props.theme.colors.blue6};
   color: ${props => props.theme.colors.white};
 `

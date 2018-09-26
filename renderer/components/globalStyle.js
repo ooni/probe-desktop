@@ -20,7 +20,7 @@ injectGlobal`
   }
 
   main, main > div {
-    height: 100%;
+    min-height: 100vh;
   }
 
   @font-face {
