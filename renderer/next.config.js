@@ -29,6 +29,7 @@ module.exports = withSourceMaps({
     // when it's exporting the static bundle for the use
     // in the production version of your app
     return {
+      '/about': { page: '/about' },
       '/home': { page: '/home' },
       '/results': { page: '/results' , query: { resultID: null } },
       '/settings': { page: '/settings' },
