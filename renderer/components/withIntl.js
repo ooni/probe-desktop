@@ -2,7 +2,7 @@
 import React, {Component} from 'react'
 import { IntlProvider, addLocaleData, injectIntl } from 'react-intl'
 
-let messages = {
+let supportedMessages = {
   en: require('../../lang/en.json')
 }
 
@@ -21,7 +21,7 @@ if (typeof window !== 'undefined' && window.ReactIntlLocaleData) {
 }
 
 if (typeof window !== 'undefined' && window.OONITranslations) {
-  messages = window.OONITranslations
+  supportedMessages = window.OONITranslations
 }
 
 const withIntl = (Page) => {
@@ -32,8 +32,13 @@ const withIntl = (Page) => {
       const locale = getLocale()
       const now = Date.now()
 
+      let messages = supportedMessages['en']
+      if (supportedMessages[locale] !== null) {
+        messages = supportedMessages[locale]
+      }
+
       return (
-        <IntlProvider locale={locale} messages={messages[locale]} initialNow={now}>
+        <IntlProvider locale={locale} messages={messages} initialNow={now}>
           <IntlPage {...this.props} />
         </IntlProvider>
       )
