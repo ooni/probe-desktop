@@ -39,10 +39,10 @@ const getResourcesDirectory = () => {
 const getBinaryDirectory = () => {
   if (is.development) {
     if (is.macos) {
-      return path.join(getResourcesDirectory(), 'bin/mac_x64')
+      return path.join(getResourcesDirectory(), 'bin/darwin_amd64')
     }
     if (is.linux) {
-      return path.join(getResourcesDirectory(), 'bin/linux_x64')
+      return path.join(getResourcesDirectory(), 'bin/linux_amd64')
     }
     throw Error('Only macos and linux development is currently supported')
   }
@@ -56,7 +56,7 @@ const getBinaryPath = () => {
 }
 
 const getSSLCertFilePath = () => {
-  return path.join(getResourcesDirectory(), 'cert.pem')
+  return path.join(getResourcesDirectory(), 'bin', 'cert.pem')
 }
 
 const getHomeDir = () => {

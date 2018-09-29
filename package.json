@@ -4,6 +4,7 @@
   "author": "Open Observatory of Network Interference (OONI) <contact@openobservatory.org>",
   "productName": "OONI Probe",
   "version": "3.0.0-alpha.5",
+  "probeVersion": "3.0.0-beta.1",
   "main": "main/index.js",
   "license": "MIT",
   "repository": "ooni/probe-desktop",
@@ -11,15 +12,15 @@
     "start": "electron -r @babel/register .",
     "dev": "npm run start",
     "build": "next build renderer && next export renderer",
+    "dist": "npm run build && build --dir -mw",
+    "download-bin": "node scripts/download-bin.js",
     "pack": "npm run build && build -mw",
     "pack:win": "npm run build && build --win --x64",
     "pack:mac": "npm run build && build --mac",
-    "dist": "npm run build && build --dir -mw",
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
     "lint": "eslint --ignore-path .gitignore .",
     "postinstall": "electron-builder install-app-deps",
-    "storybook": "start-storybook -p 6006",
-    "cp-bin": "cp ../probe-cli/dist/ooni.exe bin/win_x64 && cp ../probe-cli/dist/ooni bin/mac_x64 && cp /etc/ssl/cert.pem bin/cert.pem"
+    "storybook": "start-storybook -p 6006"
   },
   "build": {
     "appId": "io.ooni.ooniprobe-desktop",
@@ -37,7 +38,7 @@
       "icon": "main/static/icons/app.ico",
       "extraFiles": [
         {
-          "from": "./bin/win_x64/ooni.exe",
+          "from": "./bin/windows_amd64/ooni.exe",
           "to": "./resources/bin/ooni.exe"
         },
         {
@@ -51,7 +52,7 @@
       "icon": "main/static/icons/app.icns",
       "extraFiles": [
         {
-          "from": "./bin/mac_x64/ooni",
+          "from": "./bin/windows_amd64/ooni",
           "to": "./Resources/bin/ooni"
         },
         {
@@ -77,8 +78,8 @@
     "babel-plugin-inline-react-svg": "^0.5.2",
     "babel-plugin-react-intl": "^2.4.0",
     "babel-plugin-styled-components": "^1.5.1",
-    "csv-parse": "^2.5.0",
     "chroma-js": "^1.3.7",
+    "csv-parse": "^2.5.0",
     "electron": "3.0.1",
     "electron-builder": "19.22.1",
     "eslint": "^4.19.1",

@@ -30,16 +30,10 @@ yarn install
 You will also need to have copied a compiled binary of `probe-cli` into the
 directory for the platform you plan to do development on.
 
-On macOS, you should copy `ooni` into `probe-desktop/bin/mac_x64/ooni`.
-
-On linux, you should copy `ooni` into `probe-desktop/bin/linux_x64/ooni`.
-
-You should also put a working `cert.pem` file inside of `probe-desktop/cert.pem`.
-
-On macOS you can usually find one in `/etc/ssl/cert.pem`
-
-On linux you can find it in `/etc/ssl/certs/ca-certificates.crt` (be sure to
-rename it to `cert.pem`).
+You can download them by running:
+```
+yarn run download-bin
+```
 
 ## Usage
 
@@ -53,7 +47,7 @@ To create a standalone packaged app:
 Be sure you have copied the binaries into the bin tree, by doing:
 
 ```
-yarn run cp-bin
+yarn run download-bin
 ```
 
 The above expects you to have in ../probe-cli a built version of all the
