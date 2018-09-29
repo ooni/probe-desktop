@@ -6,8 +6,6 @@ import styled from 'styled-components'
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
 
-import BackButton from '../components/BackButton'
-
 import {
   Flex,
   Box,
@@ -114,10 +112,7 @@ class Settings extends React.Component {
           <Box w={1}>
             <TopBar>
               <Flex align='center'>
-                <Box>
-                  <BackButton />
-                </Box>
-                <Box>
+                <Box pl={3}>
                   <Heading h={3}>Settings</Heading>
                 </Box>
               </Flex>
