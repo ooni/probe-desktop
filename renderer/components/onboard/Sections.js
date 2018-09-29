@@ -85,6 +85,9 @@ const BackButton = styled(QuizButton)`
 const ChangeLink = styled.a`
   color: ${props => props.theme.colors.white};
   cursor: pointer;
+  display: block;
+  text-align: center;
+  padding-top: 10px;
   &:hover {
     color: ${props => props.theme.colors.gray7};
   }
@@ -306,23 +309,41 @@ const SectionDefaultSettings = ({onGo, onChange}) => (
         </Flex>
       </Box>
       <Box style={{'margin': '0 auto'}}>
-        <Flex wrap>
-          <Box w={1}>
-            <Button inverted onClick={onGo}>
-              <FormattedMessage id='Onboarding.DefaultSettings.Button.Go' />
-            </Button>
-          </Box>
-          <Box w={1} style={{textAlign: 'center', paddingTop: '5px'}}>
-            <ChangeLink onClick={onChange}>
-              <FormattedMessage id='Onboarding.DefaultSettings.Button.Change' />
-            </ChangeLink>
-          </Box>
-        </Flex>
+        <Button inverted onClick={onGo}>
+          <FormattedMessage id='Onboarding.DefaultSettings.Button.Go' />
+        </Button>
+        <ChangeLink onClick={onChange}>
+          <FormattedMessage id='Onboarding.DefaultSettings.Button.Change' />
+        </ChangeLink>
       </Box>
     </Flex>
   </div>
 )
 
+const StepperCircle = styled(Box)`
+  background-color: ${props => props.active ? props.theme.colors.white : props.theme.colors.blue5};
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+`
+
+const StepperLine = styled(Box)`
+  background-color: ${props => props.active ? props.theme.colors.white : props.theme.colors.blue5};
+  width: 50px;
+  height: 3px;
+`
+
+const Stepper = ({activeIdx}) => {
+  return (
+    <Flex justify='center' align='center'>
+      <StepperCircle active={true} />
+      <StepperLine active={activeIdx > 0} />
+      <StepperCircle active={activeIdx > 0} />
+      <StepperLine active={activeIdx > 1} />
+      <StepperCircle active={activeIdx > 1} />
+    </Flex>
+  )
+}
 const BackButtonContainer = styled.div`
 position: absolute;
 left: 10px;
@@ -394,13 +415,14 @@ class Sections extends React.Component {
     } = this.props
 
     return (
-      <div>
-        {activeIdx === 0
+      <Flex wrap justify='center' align='center'>
+        <Box width={1}>
+          {activeIdx === 0
         && <SectionWhatIsOONI
           onNext={this.nextStep}
         />}
 
-        {activeIdx === 1
+          {activeIdx === 1
         && <SectionThingsToKnow
           onQuizComplete={this.onQuizComplete}
           quizComplete={quizComplete}
@@ -411,19 +433,26 @@ class Sections extends React.Component {
           onNext={this.nextStep}
         />}
 
-        {activeIdx === 2
+          {activeIdx === 2
         && <SectionDefaultSettings
           onGo={onGo}
           onChange={onChange}
         />}
+        </Box>
 
-        {activeIdx !== 0 && <BackButtonContainer onClick={this.prevStep}>
-          <Flex>
-            <Box><MdKeyboardArrowLeft size={20} /></Box>
-            <Box>Go Back</Box>
-          </Flex>
-        </BackButtonContainer>}
-      </div>
+        <Box width={1}>
+          {activeIdx !== 0 && <BackButtonContainer onClick={this.prevStep}>
+            <Flex>
+              <Box><MdKeyboardArrowLeft size={20} /></Box>
+              <Box>Go Back</Box>
+            </Flex>
+          </BackButtonContainer>}
+        </Box>
+
+        <Box width={1} pt={4}>
+          <Stepper activeIdx={activeIdx} />
+        </Box>
+      </Flex>
     )
   }
 }
