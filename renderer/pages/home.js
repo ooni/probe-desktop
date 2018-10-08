@@ -140,7 +140,7 @@ class Home extends React.Component {
     this.state = {
       error: null,
 
-      runningTestName: null,
+      runningTestName: '',
       runTestGroupName: null,
       runProgressLine: '',
       runError: null,
@@ -169,16 +169,14 @@ class Home extends React.Component {
       this.setState({
         runPercent: data.percentage,
         runProgressLine: data.message,
-        runningTestName: {
-          name: data.testKey
-        }
+        runningTestName: data.testKey
       })
       break
     case 'error':
       debug('error received', data)
       this.setState({
         runError: data.message,
-        runningTestName: null,
+        runningTestName: '',
       })
       break
     case 'log':
@@ -233,7 +231,7 @@ class Home extends React.Component {
           <Running
             progressLine={runProgressLine}
             percent={runPercent}
-            runningTest={runningTestName}
+            runningTestName={runningTestName}
             logLines={runLogLines}
             error={runError}
             testGroupName={runningTestGroupName}
