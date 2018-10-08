@@ -52,7 +52,7 @@
       "icon": "main/static/icons/app.icns",
       "extraFiles": [
         {
-          "from": "./bin/windows_amd64/ooni",
+          "from": "./bin/darwin_amd64/ooni",
           "to": "./Resources/bin/ooni"
         },
         {
