@@ -37,6 +37,16 @@ const BorderedRow = styled(Flex)`
   padding-top: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid ${props => props.theme.colors.gray3};
+  &:hover {
+    background-color: ${props => props.theme.colors.white};
+    cursor: pointer;
+  }
+`
+
+const RightArrowStyled = styled(RightArrow)`
+  ${BorderedRow}:hover & {
+    color: ${props => props.theme.colors.gray6};
+  }
 `
 
 const VerticalCenter = ({children}) => {
@@ -82,26 +92,24 @@ const CategoryCode = ({code}) => {
 }
 
 const URLRow =  ({measurement, query, isAnomaly}) => (
-  <BorderedRow>
-    <Box pr={2} pl={2} w={1/8}>
-      <CategoryCode code={measurement['url_category_code']} />
-    </Box>
-    <Box w={6/8} h={1}>
-      {formatURL(measurement.url)}
-    </Box>
-    <Box w={1/8} h={1}>
-      <Status notok={isAnomaly} />
-    </Box>
-    <Box w={1/8} style={{marginLeft: 'auto'}}>
-      <Link href={{pathname: '/results', query}}>
-        <a>
-          <VerticalCenter>
-            <RightArrow />
-          </VerticalCenter>
-        </a>
-      </Link>
-    </Box>
-  </BorderedRow>
+  <Link href={{pathname: '/results', query}}>
+    <BorderedRow>
+      <Box pr={2} pl={2} w={1/8}>
+        <CategoryCode code={measurement['url_category_code']} />
+      </Box>
+      <Box w={6/8} h={1}>
+        {formatURL(measurement.url)}
+      </Box>
+      <Box w={1/8} h={1}>
+        <Status notok={isAnomaly} />
+      </Box>
+      <Box w={1/8} style={{marginLeft: 'auto'}}>
+        <VerticalCenter>
+          <RightArrowStyled />
+        </VerticalCenter>
+      </Box>
+    </BorderedRow>
+  </Link>
 )
 
 const fullnameMap = {
@@ -157,24 +165,22 @@ const TestRow =  ({measurement, query, testKeys, isAnomaly}) => {
   }
 
   return (
-    <BorderedRow>
-      <Box w={5/8} pl={2}>
-        {icon && <IconContainer>{icon}</IconContainer>}
-        <FormattedMessage id={fullnameID} />
-      </Box>
-      <Box w={2/8} h={1}>
-        <StatusBox testName={measurement.test_name} isAnomaly={isAnomaly} testKeys={testKeys} />
-      </Box>
-      <Box w={1/8} style={{marginLeft: 'auto'}}>
-        <Link href={{pathname: '/results', query}}>
-          <a>
-            <VerticalCenter>
-              <RightArrow />
-            </VerticalCenter>
-          </a>
-        </Link>
-      </Box>
-    </BorderedRow>
+    <Link href={{pathname: '/results', query}}>
+      <BorderedRow>
+        <Box w={5/8} pl={2}>
+          {icon && <IconContainer>{icon}</IconContainer>}
+          <FormattedMessage id={fullnameID} />
+        </Box>
+        <Box w={2/8} h={1}>
+          <StatusBox testName={measurement.test_name} isAnomaly={isAnomaly} testKeys={testKeys} />
+        </Box>
+        <Box w={1/8} style={{marginLeft: 'auto'}}>
+          <VerticalCenter>
+            <RightArrowStyled />
+          </VerticalCenter>
+        </Box>
+      </BorderedRow>
+    </Link>
   )
 }
 

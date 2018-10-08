@@ -35,6 +35,16 @@ const ColorCode = styled.div`
 
 const BorderedRow = styled.div`
   border-bottom: 1px solid ${props => props.theme.colors.gray3};
+  &:hover {
+    background-color: ${props => props.theme.colors.white};
+    cursor: pointer;
+  }
+`
+
+const RightArrowStyled = styled(RightArrow)`
+  ${BorderedRow}:hover & {
+    color: ${props => props.theme.colors.gray6};
+  }
 `
 
 const VerticalCenter = ({children}) => {
@@ -54,7 +64,7 @@ const SummaryContainer = styled(Flex)`
 const WebsitesSummary = ({anomalyCount, totalCount}) => {
   return <SummaryContainer wrap>
     <Box w={1}>
-      <Text color={theme.colors.red8}><MdClear /> {anomalyCount} blocked</Text>
+      <Text color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black}><MdClear /> {anomalyCount} blocked</Text>
     </Box>
     <Box w={1}>
       <Text><MdWeb /> {totalCount} tested</Text>
@@ -65,7 +75,7 @@ const WebsitesSummary = ({anomalyCount, totalCount}) => {
 const IMSummary = ({anomalyCount, totalCount}) => {
   return <SummaryContainer wrap>
     <Box w={1}>
-      <Text color={theme.colors.red8}><MdClear /> {anomalyCount} blocked</Text>
+      <Text color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black}><MdClear /> {anomalyCount} blocked</Text>
     </Box>
     <Box w={1}>
       <Text><MdDone /> {totalCount} tested</Text>
@@ -198,29 +208,27 @@ class ResultRow extends React.Component {
       resultID
     } = this.props
     return <BorderedRow>
-      <Flex>
-        <Box pr={2} w={4/16}>
-          {this.renderIcon()}
-        </Box>
-        <Box w={3/16} h={1}>
-          {this.renderNetwork()}
-        </Box>
-        <Box pr={3/16}>
-          {this.renderDate()}
-        </Box>
-        <Box w={4/16} >
-          {this.renderTestKeys()}
-        </Box>
-        <Box w={1/16} style={{marginLeft: 'auto'}}>
-          <VerticalCenter>
-            <Link href={{ pathname: '/results', query: {resultID} }} passHref>
-              <a>
-                <RightArrow />
-              </a>
-            </Link>
-          </VerticalCenter>
-        </Box>
-      </Flex>
+      <Link href={{ pathname: '/results', query: {resultID} }} passHref>
+        <Flex>
+          <Box pr={2} w={4/16}>
+            {this.renderIcon()}
+          </Box>
+          <Box w={3/16} h={1}>
+            {this.renderNetwork()}
+          </Box>
+          <Box pr={3/16}>
+            {this.renderDate()}
+          </Box>
+          <Box w={4/16} >
+            {this.renderTestKeys()}
+          </Box>
+          <Box w={1/16} style={{marginLeft: 'auto'}}>
+            <VerticalCenter>
+              <RightArrowStyled />
+            </VerticalCenter>
+          </Box>
+        </Flex>
+      </Link>
     </BorderedRow>
   }
 }

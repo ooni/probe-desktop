@@ -96,14 +96,14 @@ TestResults.Summary.Hero.Runtime,Total Runtime,18
 TestResults.Summary.Hero.WiFi,WiFi,
 TestResults.Summary.Hero.Mobile,Mobile Data,
 TestResults.Summary.Hero.NoInternet,No Internet,
-TestResults.Summary.Websites.Hero.Tested.Singular,{{Count}} Tested,12
-TestResults.Summary.Websites.Hero.Tested.Plural,{{Count}} Tested,12
-TestResults.Summary.Websites.Hero.Blocked.Singular,{{Count}} Blocked,12
-TestResults.Summary.Websites.Hero.Blocked.Plural,{{Count}} Blocked,12
-TestResults.Summary.Websites.Hero.Sites.Singular,{{Count}} Website,12
-TestResults.Summary.Websites.Hero.Sites.Plural,{{Count}} Websites,12
-TestResults.Summary.Websites.Hero.Reachable.Singular,{{Count}} Accessible,
-TestResults.Summary.Websites.Hero.Reachable.Plural,{{Count}} Accessible,
+TestResults.Summary.Websites.Hero.Tested.Singular,Tested,12
+TestResults.Summary.Websites.Hero.Tested.Plural,Tested,12
+TestResults.Summary.Websites.Hero.Blocked.Singular,Blocked,12
+TestResults.Summary.Websites.Hero.Blocked.Plural,Blocked,12
+TestResults.Summary.Websites.Hero.Sites.Singular,Website,12
+TestResults.Summary.Websites.Hero.Sites.Plural,Websites,12
+TestResults.Summary.Websites.Hero.Reachable.Singular,Accessible,
+TestResults.Summary.Websites.Hero.Reachable.Plural,Accessible,
 TestResults.Summary.Performance.Hero.Video,Video,12
 TestResults.Summary.Performance.Hero.Video.Quality,Quality,12
 TestResults.Summary.Performance.Hero.Upload,Upload,12
@@ -112,14 +112,14 @@ TestResults.Summary.Performance.Hero.Ping,Ping,12
 TestResults.Summary.Middleboxes.Hero.Found,Detected,12
 TestResults.Summary.Middleboxes.Hero.NotFound,Not detected,12
 TestResults.Summary.Middleboxes.Hero.Failed,Failed,
-TestResults.Summary.InstantMessaging.Hero.Tested.Singular,{{Count}} Tested,12
-TestResults.Summary.InstantMessaging.Hero.Tested.Plural,{{Count}} Tested,12
-TestResults.Summary.InstantMessaging.Hero.Blocked.Singular,{{Count}} Blocked,12
-TestResults.Summary.InstantMessaging.Hero.Blocked.Plural,{{Count}} Blocked,12
-TestResults.Summary.InstantMessaging.Hero.Reachable.Singular,{{Count}} Accessible,12
-TestResults.Summary.InstantMessaging.Hero.Reachable.Plural,{{Count}} Accessible,12
-TestResults.Summary.InstantMessaging.Hero.Apps.Singular,{{Count}} App,12
-TestResults.Summary.InstantMessaging.Hero.Apps.Plural,{{Count}} Apps,12
+TestResults.Summary.InstantMessaging.Hero.Tested.Singular,Tested,12
+TestResults.Summary.InstantMessaging.Hero.Tested.Plural,Tested,12
+TestResults.Summary.InstantMessaging.Hero.Blocked.Singular,Blocked,12
+TestResults.Summary.InstantMessaging.Hero.Blocked.Plural,Blocked,12
+TestResults.Summary.InstantMessaging.Hero.Reachable.Singular,Accessible,12
+TestResults.Summary.InstantMessaging.Hero.Reachable.Plural,Accessible,12
+TestResults.Summary.InstantMessaging.Hero.Apps.Singular,App,12
+TestResults.Summary.InstantMessaging.Hero.Apps.Plural,Apps,12
 TestResults.Details.Hero.Runtime,Runtime,
 TestResults.Details.ViewLog,View log,
 TestResults.Details.RawData,Data,
