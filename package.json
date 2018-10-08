@@ -49,7 +49,7 @@
       ]
     },
     "dmg": {
-      "background": "static/DMGBackground.png"
+      "background": "build/background.png"
     },
     "mac": {
       "category": "public.app-category.tools",
