@@ -116,7 +116,11 @@ const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, lo
       preserveAspectRatio: 'xMidYMid slice'
     }
   }
-  const runningTestNameKey = runningTestName ? `Test.${runningTestName.split('.')[1]}.Fullname` : ''
+  let TestName = <span />
+  if (runningTestName) {
+    TestName = <FormattedMessage id={`Test.${runningTestName.split('.')[1]}.Fullname`} />
+  }
+
   return <StyledRunningTest>
     <Container>
       <Heading h={2}>{testGroup.name}</Heading>
@@ -124,7 +128,7 @@ const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, lo
         <FormattedMessage
           id='Dashboard.Running.Running'
           values={{
-            TestName: <FormattedMessage id={runningTestNameKey} />
+            TestName
           }}
         />
       </Heading>
