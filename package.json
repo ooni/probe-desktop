@@ -17,6 +17,7 @@
     "pack": "npm run build && build -mw",
     "pack:win": "npm run build && build --win --x64",
     "pack:mac": "npm run build && build --mac",
+    "pack:linux": "npm run build && build --linux",
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
     "lint": "eslint --ignore-path .gitignore .",
     "postinstall": "electron-builder install-app-deps",
@@ -31,6 +32,10 @@
       "!renderer",
       "renderer/out"
     ],
+    "linux": {
+      "target": [ "deb" ],
+      "category": "Network"
+    },
     "win": {
       "target": [
         "nsis"
