@@ -1,3 +1,5 @@
+/* global require */
+
 const { execSync } = require('child_process')
 const { readFileSync } = require('fs')
 const pkgJson = require('../package.json')
@@ -8,9 +10,9 @@ const download = () => {
   let checksums = {}
 
   const dists = [
-    "windows_amd64",
-    "linux_amd64",
-    "darwin_amd64"
+    'windows_amd64',
+    'linux_amd64',
+    'darwin_amd64'
   ]
   execSync(`curl -L -o ./bin/ooniprobe_checksums.txt ${baseURL}/ooniprobe_checksums.txt`)
   const checksumsData = readFileSync('./bin/ooniprobe_checksums.txt')
