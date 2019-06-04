@@ -88,7 +88,7 @@
     "electron-builder": "20.28.4",
     "eslint": "^4.19.1",
     "eslint-plugin-react": "^7.10.0",
-    "fsevents": "^1.2.4",
+    "fsevents": "1.2.9",
     "humanize": "^0.0.9",
     "icon-gen": "^1.2.1",
     "moment": "^2.20.1",
