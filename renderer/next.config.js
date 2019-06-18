@@ -1,7 +1,8 @@
 //const withProgressBar = require('next-progressbar')
 const withSourceMaps = require('@zeit/next-source-maps')
+const withCSS = require('@zeit/next-css')
 
-module.exports = withSourceMaps({
+module.exports = withSourceMaps(withCSS({
   webpack: (config) => {
     config.target = 'electron-renderer'
 
@@ -36,4 +37,4 @@ module.exports = withSourceMaps({
       '/onboard': { page: '/onboard' }
     }
   }
-})
+}))
