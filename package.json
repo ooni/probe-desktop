@@ -126,7 +126,7 @@
     "fs-extra": "^4.0.2",
     "ms": "^2.0.0",
     "npm": "^6.1.0",
-    "react-sticky-header": "^0.2.0",
+    "react-sticky": "^6.0.3",
     "split2": "^2.2.0",
     "sudo-prompt": "^7.1.1"
   },
