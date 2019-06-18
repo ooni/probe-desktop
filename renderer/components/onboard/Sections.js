@@ -100,10 +100,10 @@ const QuizActually = ({text, onBack, onContinue}) => (
     </Heading>
     <Text p={4}>{text}</Text>
     <Flex>
-      <BackButton w={1/2} onClick={onBack}>
+      <BackButton width={1/2} onClick={onBack}>
         <FormattedMessage id='Onboarding.PopQuiz.Wrong.Button.Back' />
       </BackButton>
-      <ContinueButton w={1/2} onClick={onContinue}>
+      <ContinueButton width={1/2} onClick={onContinue}>
         <FormattedMessage id='Onboarding.PopQuiz.Wrong.Button.Continue' />
       </ContinueButton>
     </Flex>
@@ -124,10 +124,10 @@ const QuizQuestion = ({qNum, question, onTrue, onFalse}) => (
         <Text>{question}</Text>
       </Container>
       <Flex>
-        <TrueButton w={1/2} onClick={onTrue}>
+        <TrueButton width={1/2} onClick={onTrue}>
           <FormattedMessage id='Onboarding.PopQuiz.True' />
         </TrueButton>
-        <FalseButton w={1/2} onClick={onFalse}>
+        <FalseButton width={1/2} onClick={onFalse}>
           <FormattedMessage id='Onboarding.PopQuiz.False' />
         </FalseButton>
       </Flex>
@@ -219,12 +219,12 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
     />}
 
     <Flex wrap>
-      <Box w={1} p={2}>
+      <Box width={1} p={2}>
         <Heading center h={1}>
           <FormattedMessage id="Onboarding.ThingsToKnow.Title" />
         </Heading>
       </Box>
-      <Box w={1} p={4}>
+      <Box width={1} p={4}>
         <Container width={700}>
           <ul>
             <li><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.1" /></li>
@@ -246,12 +246,12 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
 const SectionWhatIsOONI = ({onNext}) => (
   <div>
     <Flex wrap>
-      <Box w={1} p={2}>
+      <Box width={1} p={2}>
         <Heading center h={1}>
           <FormattedMessage id="Onboarding.WhatIsOONIProbe.Title" />
         </Heading>
       </Box>
-      <Box w={1} p={4}>
+      <Box width={1} p={4}>
         <Container width={700}>
           <Text>
             <FormattedMessage id="Onboarding.WhatIsOONIProbe.Paragraph.1" />
@@ -273,14 +273,14 @@ const SectionWhatIsOONI = ({onNext}) => (
 const SectionDefaultSettings = ({onGo, onChange}) => (
   <div>
     <Flex wrap>
-      <Box w={1} p={2}>
+      <Box width={1} p={2}>
         <Heading center h={1}>
           <FormattedMessage id='Onboarding.DefaultSettings.Title' />
         </Heading>
       </Box>
-      <Box w={1} p={4}>
+      <Box width={1} p={4}>
         <Flex>
-          <Box w={1/2}>
+          <Box width={1/2}>
             <Heading h={4}>
               <FormattedMessage id='Onboarding.DefaultSettings.Header.1' />
             </Heading>
@@ -296,7 +296,7 @@ const SectionDefaultSettings = ({onGo, onChange}) => (
               </li>
             </ul>
           </Box>
-          <Box w={1/2}>
+          <Box width={1/2}>
             <Heading h={4}>
               <FormattedMessage id='Onboarding.DefaultSettings.Header.2' />
             </Heading>

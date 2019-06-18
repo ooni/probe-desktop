@@ -47,7 +47,7 @@ const ResultOverview = ({groupName, testKeys, anomalyCount, totalCount, startTim
         <Box>
           <BackButton />
         </Box>
-        <Box w={1}>
+        <Box width={1}>
           <Heading center h={3}>{startTime && moment(startTime).format('lll')}</Heading>
         </Box>
       </Flex>
@@ -82,7 +82,7 @@ const ResultOverview = ({groupName, testKeys, anomalyCount, totalCount, startTim
 const MeasurementList = ({groupName, measurements}) => {
   return (
     <Flex wrap style={{width: '100%'}}>
-      <Box w={1}>
+      <Box width={1}>
         {measurements.map(m => <MeasurementRow key={m.id} measurement={m} groupName={groupName} />)}
       </Box>
     </Flex>

@@ -39,7 +39,7 @@ const MeasurementOverview = ({title, startTime, runtime, networkName, country, a
         <Box>
           <BackButton />
         </Box>
-        <Box w={1}>
+        <Box width={1}>
           <Heading center h={3}>{title}</Heading>
         </Box>
       </Flex>

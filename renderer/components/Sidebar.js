@@ -15,6 +15,8 @@ import MdWeb from 'react-icons/lib/md/web'
 import MdHistory from 'react-icons/lib/md/history'
 import MdCog from 'react-icons/lib/fa/cog'
 
+import StickyDraggableHeader from './StickyDraggableHeader'
+
 const StyledNavItem = styled.div`
   position: relative;
   color: ${props => props.isActive ? props.theme.colors.blue5 : props.theme.colors.gray4};
@@ -110,8 +112,8 @@ const MainContainer = styled.div`
 `
 
 const TopBar = styled(Box)`
-  height: 50px;
-  background-color: ${props => props.theme.colors.gray5};
+  height: 20px;
+  background-color: red;
   color: ${props => props.theme.colors.white};
   /* This makes it possible to drag the window around from the side bar */
   -webkit-app-region: drag;
@@ -135,13 +137,11 @@ export const Sidebar = ({children, router}) => (
 
     <MainContainer>
 
-      <TopBar w={1}>
-      </TopBar>
-
-      <Content>
-        {children}
-      </Content>
-
+      <StickyDraggableHeader>
+        <Content>
+          {children}
+        </Content>
+      </StickyDraggableHeader>
     </MainContainer>
 
   </WindowContainer>

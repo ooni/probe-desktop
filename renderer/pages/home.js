@@ -66,7 +66,7 @@ const ConfigureButton = styled(Button)`
 `
 
 const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, onConfigure}) => (
-  <Box w={1/2} pr={3} pb={3}>
+  <Box width={1/2} pr={3} pb={3}>
     <Card bg={color} color='white' style={{position: 'relative', height: '200px'}}>
       <TopLeftFloatingButton>
         <MdHelp onClick={toggleCard} size={30} />
@@ -74,10 +74,10 @@ const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, on
       <CardContent>
         <Heading h={2}>{name}</Heading>
         <Flex pt={5}>
-          <Box w={3/4} pr={4}>
+          <Box width={3/4} pr={4}>
             {description}
           </Box>
-          <Box w={1/4} mr={2}>
+          <Box width={1/4} mr={2}>
             <Button inverted fontSize={1} onClick={onRun}>
         Run
             </Button>
@@ -92,7 +92,7 @@ const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, on
 )
 
 const BackCardContent = ({name, longDescription, color, toggleCard}) => (
-  <Box w={1/2} pr={3} pb={3}>
+  <Box width={1/2} pr={3} pb={3}>
     <Card bg={chroma(color).darken(2).desaturate()} color='white' style={{position: 'relative', height: '200px', padding: '20px'}}>
       <TopLeftFloatingButton>
         <MdClear onClick={toggleCard} size={30} />

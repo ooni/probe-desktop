@@ -35,10 +35,10 @@ const DataUsage = ({dataUsage}) => {
       </LabelBox>
       <Box>
         <Flex>
-          <Box w={1/2}>
+          <Box width={1/2}>
             <HumanFilesize icon={<MdArrowUpward size={20}/>} size={dataUsage.up*1024} />
           </Box>
-          <Box w={1/2}>
+          <Box width={1/2}>
             <HumanFilesize icon={<MdArrowDownward size={20} />} size={dataUsage.down*1024} />
           </Box>
         </Flex>
@@ -60,19 +60,19 @@ const ResultsHeader = ({testCount, networkCount, dataUsage}) => {
     <StyledResultsHeader>
       <Container width={700}>
         <Flex>
-          <Box w={1/3}>
+          <Box width={1/3}>
             <StatBox
               label='Tests'
               value={testCount} />
           </Box>
           <VerticalDivider />
-          <Box w={1/3}>
+          <Box width={1/3}>
             <StatBox
               label='Networks'
               value={networkCount} />
           </Box>
           <VerticalDivider />
-          <Box w={1/3}>
+          <Box width={1/3}>
             <DataUsage dataUsage={dataUsage} />
           </Box>
         </Flex>

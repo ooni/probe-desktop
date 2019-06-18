@@ -38,10 +38,10 @@ const StatusNotOKString = ({stringID}) => (
 
 const StatusBox = ({label, value, ok}) => (
   <Flex wrap>
-    <Box w={1}>
+    <Box width={1}>
       <Text fontSize={1}>{label}</Text>
     </Box>
-    <Box w={1}>
+    <Box width={1}>
       <Text fontSize={3} color={ok ? theme.colors.blue5 : theme.colors.red6}>{value}</Text>
     </Box>
   </Flex>
@@ -79,7 +79,7 @@ export const FacebookMessengerDetails = ({testKeys, isAnomaly}) => {
     }
 
     <Flex justify='center' align='center' pt={4}>
-      <Box w={1/3}>
+      <Box width={1/3}>
         <StatusBox
           label={<FormattedMessage id='TestResults.Details.InstantMessaging.FacebookMessenger.TCP.Label.Title' />}
           value={<FormattedMessage id={`TestResults.Details.InstantMessaging.FacebookMessenger.TCP.Label.${tcpStatus}`} />}
@@ -87,7 +87,7 @@ export const FacebookMessengerDetails = ({testKeys, isAnomaly}) => {
         />
       </Box>
 
-      <Box w={1/3}>
+      <Box width={1/3}>
         <StatusBox
           label={<FormattedMessage id='TestResults.Details.InstantMessaging.FacebookMessenger.DNS.Label.Title' />}
           value={<FormattedMessage id={`TestResults.Details.InstantMessaging.FacebookMessenger.DNS.Label.${dnsStatus}`} />}

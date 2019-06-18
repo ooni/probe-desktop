@@ -109,7 +109,7 @@ class Settings extends React.Component {
     return (
       <Layout>
         <Sidebar>
-          <Box w={1}>
+          <Box width={1}>
             <TopBar>
               <Flex align='center'>
                 <Box pl={3}>
