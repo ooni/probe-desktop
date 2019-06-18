@@ -35,7 +35,7 @@ const MeasurementOverviewContainer = styled.div`
 const MeasurementOverview = ({title, startTime, runtime, networkName, country, asn}) => {
   return (
     <MeasurementOverviewContainer>
-      <Flex justify='center' align='center'>
+      <Flex justifyContent='center' alignItems='center'>
         <Box>
           <BackButton />
         </Box>

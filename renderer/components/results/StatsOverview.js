@@ -113,7 +113,7 @@ const MiddleboxStats = ({anomalyCount}) => {
   return (
     <Flex style={{width: '100%'}}>
       <Box width={1}>
-        <Flex justify='center' align='center'>
+        <Flex justifyContent='center' alignItems='center'>
           <Box>
             <NettestGroupMiddleBoxes size={100} />
           </Box>

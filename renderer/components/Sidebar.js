@@ -52,7 +52,7 @@ const NavItem = ({href, icon, label, currentUrl}) => {
   return (
     <StyledNavItem isActive={isActive}>
       <Link href={href} prefetch>
-        <Flex column align='center'>
+        <Flex flexDirection='column' alignItems='center'>
           <Box>
             {icon}
           </Box>

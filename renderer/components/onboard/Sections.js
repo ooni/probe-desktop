@@ -335,7 +335,7 @@ const StepperLine = styled(Box)`
 
 const Stepper = ({activeIdx}) => {
   return (
-    <Flex justify='center' align='center'>
+    <Flex justifyContent='center' alignItems='center'>
       <StepperCircle active={true} />
       <StepperLine active={activeIdx > 0} />
       <StepperCircle active={activeIdx > 0} />
@@ -415,7 +415,7 @@ class Sections extends React.Component {
     } = this.props
 
     return (
-      <Flex flexWrap='wrap' justify='center' align='center'>
+      <Flex flexWrap='wrap' justifyContent='center' alignItems='center'>
         <Box width={1}>
           {activeIdx === 0
         && <SectionWhatIsOONI

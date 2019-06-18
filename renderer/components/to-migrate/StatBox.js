@@ -19,7 +19,7 @@ const ValueBox = styled(Box)`
 `
 
 const StatBox = ({value, label, unit}) => (
-  <Flex column>
+  <Flex flexDirection='column'>
     {label && <LabelBox>
       {label}
     </LabelBox>}

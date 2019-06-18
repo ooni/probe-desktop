@@ -7,7 +7,7 @@ import {
 
 const TwoColumnTable = ({left, right}) => {
   return (
-    <Flex align='center' pb={1}>
+    <Flex alignItems='center' pb={1}>
       <Box>
         {left}
       </Box>

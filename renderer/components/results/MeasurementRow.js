@@ -51,7 +51,7 @@ const RightArrowStyled = styled(RightArrow)`
 
 const VerticalCenter = ({children}) => {
   return (
-    <Flex justify='center' align='center' style={{height: '100%'}}>
+    <Flex justifyContent='center' alignItems='center' style={{height: '100%'}}>
       <Box>
         {children}
       </Box>

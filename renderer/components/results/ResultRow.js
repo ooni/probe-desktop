@@ -49,7 +49,7 @@ const RightArrowStyled = styled(RightArrow)`
 
 const VerticalCenter = ({children}) => {
   return (
-    <Flex justify='center' align='center' style={{height: '100%'}}>
+    <Flex justifyContent='center' alignItems='center' style={{height: '100%'}}>
       <Box>
         {children}
       </Box>
@@ -136,7 +136,7 @@ class ResultRow extends React.Component {
     const group = testGroups[name]
 
     return (
-      <Flex justify='center' align='center'>
+      <Flex justifyContent='center' alignItems='center'>
         <Box width={1/8}>
           <ColorCode color={group.color} />
         </Box>

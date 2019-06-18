@@ -29,7 +29,7 @@ const LabelBox= styled(Box)`
 
 const DataUsage = ({dataUsage}) => {
   return (
-    <Flex column>
+    <Flex flexDirection='column'>
       <LabelBox>
       Data Usage
       </LabelBox>
