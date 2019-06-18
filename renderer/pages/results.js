@@ -132,7 +132,7 @@ class Results extends React.Component {
         <Layout>
           <Sidebar>
             <LoadingOverlay loading={loading} />
-            <TestResultsOverview rows={measurementRows} summary={measurementSummary} />
+            {!loading && <TestResultsOverview rows={measurementRows} summary={measurementSummary} />}
             {error && <ErrorView error={error} />}
           </Sidebar>
         </Layout>
@@ -144,7 +144,7 @@ class Results extends React.Component {
         <Layout>
           <Sidebar>
             <LoadingOverlay loading={loading} />
-            <TestResultsDetails measurement={selectedMeasurement} />
+            {!loading && <TestResultsDetails measurement={selectedMeasurement} />}
             {error && <ErrorView error={error} />}
           </Sidebar>
         </Layout>

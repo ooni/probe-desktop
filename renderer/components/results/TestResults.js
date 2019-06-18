@@ -1,5 +1,10 @@
 import React from 'react'
 
+import {
+  theme
+} from 'ooni-components'
+
+import StickyDraggableHeader from '../StickyDraggableHeader'
 import Moment from 'moment'
 import { extendMoment } from 'moment-range'
 const moment = extendMoment(Moment)
@@ -58,7 +63,7 @@ const StyledResultsHeader = styled.div`
 const ResultsHeader = ({testCount, networkCount, dataUsage}) => {
   return (
     <StyledResultsHeader>
-      <Container width={700}>
+      <Container>
         <Flex>
           <Box width={1/3}>
             <StatBox
@@ -135,11 +140,19 @@ const TestResults = ({results}) => {
 
   return (
     <FullWidth>
-      <ResultsHeader
-        testCount={testCount}
-        networkCount={networkCount}
-        dataUsage={{up: dataUsageUp, down: dataUsageDown}} />
-      {byMonth.map(kv => <ResultsSection key={kv[0]} month={kv[0]} rows={kv[1]} />)}
+      <StickyDraggableHeader
+        color={theme.colors.blue5}
+        colorSticky={theme.colors.blue5}
+        height='auto'
+        header={
+          <ResultsHeader
+            testCount={testCount}
+            networkCount={networkCount}
+            dataUsage={{up: dataUsageUp, down: dataUsageDown}} />
+        }
+      >
+        {byMonth.map(kv => <ResultsSection key={kv[0]} month={kv[0]} rows={kv[1]} />)}
+      </StickyDraggableHeader>
     </FullWidth>
   )
 }

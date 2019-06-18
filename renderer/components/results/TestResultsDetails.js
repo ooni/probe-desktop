@@ -14,16 +14,15 @@ import styled from 'styled-components'
 
 import IconUpload from 'react-icons/lib/md/file-upload'
 import IconDownload from 'react-icons/lib/md/file-download'
-
 import MdFlag from 'react-icons/lib/md/flag'
 import MdTimer from 'react-icons/lib/md/timer'
 import MdSwapVert from 'react-icons/lib/md/swap-vert'
 import MdPublic from 'react-icons/lib/md/public'
 
 import { renderDetails, testGroups } from '../nettests'
-import TwoColumnHero from './TwoColumnHero'
 import TwoColumnTable from './TwoColumnTable'
 import BackButton from '../BackButton'
+import StickyDraggableHeader from '../StickyDraggableHeader'
 
 const MeasurementOverviewContainer = styled.div`
   position: relative;
@@ -34,17 +33,8 @@ const MeasurementOverviewContainer = styled.div`
 // XXX There is a lot of duplication with ./TestResultDetails.ResultOverview
 const MeasurementOverview = ({title, startTime, runtime, networkName, country, asn}) => {
   return (
-    <MeasurementOverviewContainer>
-      <Flex justifyContent='center' alignItems='center'>
-        <Box>
-          <BackButton />
-        </Box>
-        <Box width={1}>
-          <Heading center h={3}>{title}</Heading>
-        </Box>
-      </Flex>
+    <MeasurementOverviewContainer style={{padding: '0 60px'}}>
       <Container>
-
         <TwoColumnTable
           left={<Text><MdSwapVert size={20} />Date</Text>}
           right={<Text>{startTime && moment(startTime).format('lll')}</Text>} />
@@ -61,6 +51,7 @@ const MeasurementOverview = ({title, startTime, runtime, networkName, country, a
           left={<Text><MdPublic  size={20} />Network</Text>}
           right={<Text>{networkName} (AS{asn})</Text>} />
       </Container>
+
     </MeasurementOverviewContainer>
   )
 }
@@ -91,10 +82,27 @@ const mapOverviewProps = (msmt) => {
 const TestResultsDetails = ({measurement}) => {
   const overviewProps = mapOverviewProps(measurement)
 
-  return <TwoColumnHero
-    bg={overviewProps.group.color}
-    left={<MeasurementOverview {...overviewProps} onBack={() => this.onSelectMeasurement(null)} />}
-    right={renderDetails(measurement)} />
+  return (
+    <StickyDraggableHeader
+      color={overviewProps.group.color}
+      colorSticky={overviewProps.group.color}
+      height='auto'
+      header={
+        <div>
+          <Flex justifyContent='center' alignItems='center'>
+            <Box>
+              <BackButton />
+            </Box>
+            <Box width={1}>
+              <Heading center h={3}>{overviewProps.title}</Heading>
+            </Box>
+          </Flex>
+          <MeasurementOverview {...overviewProps} onBack={() => this.onSelectMeasurement(null)} />
+        </div>
+      } >
+      {renderDetails(measurement)}
+    </StickyDraggableHeader>
+  )
 }
 
 export default TestResultsDetails

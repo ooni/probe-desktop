@@ -18,7 +18,7 @@ const HeaderContent = styled(Box)`
 
 const StickyDraggableHeader = (props) => (
   <StickyContainer>
-    <Sticky topOffset={90}>
+    <Sticky topOffset={props.topOffset}>
       {({
         style,
         isSticky
@@ -31,7 +31,7 @@ const StickyDraggableHeader = (props) => (
           <HeaderContent
             bg={bg}
             height={props.height}
-            style={style} />
+            style={style}>{props.header}</HeaderContent>
         )
       }}
     </Sticky>
@@ -42,10 +42,12 @@ const StickyDraggableHeader = (props) => (
 StickyDraggableHeader.defaultProps = {
   color: 'transparent',
   stickyColor: 'transparent',
-  height: '40px'
+  height: '40px',
+  topOffset: 0
 }
 
 StickyDraggableHeader.propTypes = {
+  topOffset: PropTypes.number,
   color: PropTypes.string,
   stickyColor: PropTypes.string,
   height: PropTypes.string,

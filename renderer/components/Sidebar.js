@@ -15,8 +15,6 @@ import MdWeb from 'react-icons/lib/md/web'
 import MdHistory from 'react-icons/lib/md/history'
 import MdCog from 'react-icons/lib/fa/cog'
 
-import StickyDraggableHeader from './StickyDraggableHeader'
-
 const StyledNavItem = styled.div`
   position: relative;
   color: ${props => props.isActive ? props.theme.colors.blue5 : props.theme.colors.gray4};

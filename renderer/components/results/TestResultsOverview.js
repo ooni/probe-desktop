@@ -32,6 +32,7 @@ import StatsOverview from './StatsOverview'
 import MeasurementRow from './MeasurementRow'
 import BackButton from '../BackButton'
 import TwoColumnTable from './TwoColumnTable'
+import StickyDraggableHeader from '../StickyDraggableHeader'
 
 const ResultOverviewContainer = styled.div`
   position: relative;
@@ -51,7 +52,7 @@ const ResultOverview = ({groupName, testKeys, anomalyCount, totalCount, startTim
           <Heading center h={3}>{startTime && moment(startTime).format('lll')}</Heading>
         </Box>
       </Flex>
-      <Container>
+      <Container style={{padding: '20px 60px'}}>
 
         <StatsOverview name={groupName} testKeys={testKeys} anomalyCount={anomalyCount} totalCount={totalCount} />
         <Divider mt={4} mb={4} />
@@ -121,11 +122,15 @@ const mapOverviewProps = (rows, summary) => {
 
 const TestResultsOverview = ({ rows, summary }) => {
   const overviewProps = mapOverviewProps(rows, summary)
+
   return (
-    <TwoColumnHero
-      bg={overviewProps.group.color}
-      left={<ResultOverview {...overviewProps} />}
-      right={<MeasurementList groupName={overviewProps.groupName} group={overviewProps.group} measurements={rows} />} />
+    <StickyDraggableHeader
+      color={overviewProps.group.color}
+      colorSticky={overviewProps.group.color}
+      height='auto'
+      header={<ResultOverview {...overviewProps} />} >
+      <MeasurementList groupName={overviewProps.groupName} group={overviewProps.group} measurements={rows} />
+    </StickyDraggableHeader>
   )
 }
 
