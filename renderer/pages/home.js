@@ -27,12 +27,13 @@ import Sidebar from '../components/Sidebar'
 import Running from '../components/home/running'
 
 import { testList } from '../components/nettests'
+import StickyDraggableHeader from '../components/StickyDraggableHeader'
 
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.dashboard')
 
 const CardContent = styled.div`
   position: relative;
-  z-index: 10;
+  z-index: 80;
   /* Disable text selection */
   user-select: none;
 `
@@ -41,7 +42,7 @@ const BgIcon = styled.div`
   position: absolute;
   right: ${props => props.active ? '0' : '-30px'};
   top: ${props => props.active ? '0' : '-30px'};
-  z-index: -100;
+  z-index: -900;
   opacity: 0.5;
 `
 
@@ -67,25 +68,26 @@ const ConfigureButton = styled(Button)`
 
 const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, onConfigure}) => (
   <Box width={1/2} pr={3} pb={3}>
-    <Card bg={color} color='white' style={{position: 'relative', height: '200px'}}>
+    <Card bg={color} color='white' style={{position: 'relative', height: '250px'}}>
       <TopLeftFloatingButton>
         <MdHelp onClick={toggleCard} size={30} />
       </TopLeftFloatingButton>
       <CardContent>
         <Heading h={2}>{name}</Heading>
+        <BgIcon>
+          {icon}
+        </BgIcon>
         <Flex pt={5}>
           <Box width={3/4} pr={4}>
             {description}
           </Box>
           <Box width={1/4} mr={2}>
-            <Button inverted fontSize={1} onClick={onRun}>
-        Run
-            </Button>
+            <Button
+              inverted
+              fontSize={1}
+              onClick={onRun}>Run</Button>
           </Box>
         </Flex>
-        <BgIcon>
-          {icon}
-        </BgIcon>
       </CardContent>
     </Card>
   </Box>
@@ -93,7 +95,7 @@ const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, on
 
 const BackCardContent = ({name, longDescription, color, toggleCard}) => (
   <Box width={1/2} pr={3} pb={3}>
-    <Card bg={chroma(color).darken(2).desaturate()} color='white' style={{position: 'relative', height: '200px', padding: '20px'}}>
+    <Card bg={chroma(color).darken(2).desaturate()} color='white' style={{position: 'relative', height: '250px', padding: '20px'}}>
       <TopLeftFloatingButton>
         <MdClear onClick={toggleCard} size={30} />
       </TopLeftFloatingButton>
@@ -243,7 +245,8 @@ class Home extends React.Component {
     return (
       <Layout>
         <Sidebar>
-          <Flex flexWrap='wrap' pt={3} pl={3} style={{overflow: 'auto'}}>
+          <StickyDraggableHeader height='20px' />
+          <Flex flexWrap='wrap' pt={3} pl={3}>
             {testList.map((t, idx) =>
               <RunTestCard
                 onRun={this.onRun(t.key)}
