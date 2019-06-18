@@ -37,7 +37,7 @@ const StatusNotOKString = ({stringID}) => (
 )
 
 const StatusBox = ({label, value, ok}) => (
-  <Flex wrap>
+  <Flex flexWrap='wrap'>
     <Box width={1}>
       <Text fontSize={1}>{label}</Text>
     </Box>

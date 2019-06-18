@@ -22,7 +22,7 @@ import {
 } from 'ooni-components/dist/icons'
 
 const TODODetails = ({testKeys, isAnomaly, url, urlCategoryCode}) => {
-  return <Flex wrap align='flex-start' p={3}>
+  return <Flex flexWrap='wrap' align='flex-start' p={3}>
     {url
     && <Box width={1}>
       <Text center fontSize={3}>{url} ({urlCategoryCode})</Text>

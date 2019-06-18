@@ -62,7 +62,7 @@ const SummaryContainer = styled(Flex)`
 `
 
 const WebsitesSummary = ({anomalyCount, totalCount}) => {
-  return <SummaryContainer wrap>
+  return <SummaryContainer flexWrap='wrap'>
     <Box width={1}>
       <Text color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black}><MdClear /> {anomalyCount} blocked</Text>
     </Box>
@@ -73,7 +73,7 @@ const WebsitesSummary = ({anomalyCount, totalCount}) => {
 }
 
 const IMSummary = ({anomalyCount, totalCount}) => {
-  return <SummaryContainer wrap>
+  return <SummaryContainer flexWrap='wrap'>
     <Box width={1}>
       <Text color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black}><MdClear /> {anomalyCount} blocked</Text>
     </Box>
@@ -84,7 +84,7 @@ const IMSummary = ({anomalyCount, totalCount}) => {
 }
 
 const PerformanceSummary = ({testKeys}) => {
-  return <SummaryContainer wrap>
+  return <SummaryContainer flexWrap='wrap'>
     <Box width={1/2}>
       <DownloadSpeed bits={testKeys['download']} />
     </Box>

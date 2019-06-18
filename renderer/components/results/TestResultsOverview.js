@@ -81,7 +81,7 @@ const ResultOverview = ({groupName, testKeys, anomalyCount, totalCount, startTim
 
 const MeasurementList = ({groupName, measurements}) => {
   return (
-    <Flex wrap style={{width: '100%'}}>
+    <Flex flexWrap='wrap' style={{width: '100%'}}>
       <Box width={1}>
         {measurements.map(m => <MeasurementRow key={m.id} measurement={m} groupName={groupName} />)}
       </Box>

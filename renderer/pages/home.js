@@ -243,7 +243,7 @@ class Home extends React.Component {
     return (
       <Layout>
         <Sidebar>
-          <Flex wrap pt={3} pl={3} style={{overflow: 'auto'}}>
+          <Flex flexWrap='wrap' pt={3} pl={3} style={{overflow: 'auto'}}>
             {testList.map((t, idx) =>
               <RunTestCard
                 onRun={this.onRun(t.key)}

@@ -218,7 +218,7 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
       ]}
     />}
 
-    <Flex wrap>
+    <Flex flexWrap='wrap'>
       <Box width={1} p={2}>
         <Heading center h={1}>
           <FormattedMessage id="Onboarding.ThingsToKnow.Title" />
@@ -245,7 +245,7 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
 
 const SectionWhatIsOONI = ({onNext}) => (
   <div>
-    <Flex wrap>
+    <Flex flexWrap='wrap'>
       <Box width={1} p={2}>
         <Heading center h={1}>
           <FormattedMessage id="Onboarding.WhatIsOONIProbe.Title" />
@@ -272,7 +272,7 @@ const SectionWhatIsOONI = ({onNext}) => (
 
 const SectionDefaultSettings = ({onGo, onChange}) => (
   <div>
-    <Flex wrap>
+    <Flex flexWrap='wrap'>
       <Box width={1} p={2}>
         <Heading center h={1}>
           <FormattedMessage id='Onboarding.DefaultSettings.Title' />
@@ -415,7 +415,7 @@ class Sections extends React.Component {
     } = this.props
 
     return (
-      <Flex wrap justify='center' align='center'>
+      <Flex flexWrap='wrap' justify='center' align='center'>
         <Box width={1}>
           {activeIdx === 0
         && <SectionWhatIsOONI
