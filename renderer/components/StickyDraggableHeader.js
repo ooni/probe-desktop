@@ -1,6 +1,5 @@
 import React from 'react'
 
-import 'react-sticky-header/styles.css'
 import { StickyContainer, Sticky } from 'react-sticky'
 import PropTypes from 'prop-types'
 
@@ -31,6 +30,7 @@ const StickyDraggableHeader = (props) => (
         if (isSticky) {
           bg = props.stickyColor
         }
+        console.log('bg', bg)
         return (
           <HeaderContent
             bg={bg}

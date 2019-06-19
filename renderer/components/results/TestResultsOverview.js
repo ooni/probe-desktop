@@ -1,5 +1,6 @@
 import React from 'react'
 
+import PropTypes from 'prop-types'
 import moment from 'moment'
 
 import styled from 'styled-components'
@@ -30,7 +31,7 @@ import StatsOverview from './StatsOverview'
 import MeasurementRow from './MeasurementRow'
 import BackButton from '../BackButton'
 import TwoColumnTable from './TwoColumnTable'
-import StickyDraggableHeader from '../StickyDraggableHeader'
+import { StickyContainer, Sticky } from 'react-sticky'
 
 const ResultOverviewContainer = styled.div`
   position: relative;
@@ -38,8 +39,63 @@ const ResultOverviewContainer = styled.div`
   color: ${props => props.theme.colors.white};
 `
 
+const overviewShape = PropTypes.shape({
+  countryCode: PropTypes.string.isRequired,
+  networkName: PropTypes.string.isRequired,
+  asn: PropTypes.string.isRequired,
+  anomalyCount: PropTypes.number.isRequired,
+  totalCount: PropTypes.number.isRequired,
+  dataUsageUp: PropTypes.number.isRequired,
+  dataUsageDown: PropTypes.number.isRequired,
+  runtime: PropTypes.number.isRequired,
+  startTime: PropTypes.object
+})
+
 // XXX groupName is also passed in
-const ResultOverview = ({groupName, testKeys, anomalyCount, totalCount, startTime, dataUsageUp, dataUsageDown, runtime, networkName, countryCode, asn}) => {
+const ResultOverview = ({
+  groupName,
+  testKeys,
+  overview,
+  isSticky
+}) => {
+  const {
+    anomalyCount,
+    totalCount,
+    startTime,
+    dataUsageUp,
+    dataUsageDown,
+    runtime,
+    networkName,
+    countryCode,
+    asn
+  } = overview
+
+  if (isSticky) {
+    return (
+      <ResultOverviewContainer>
+        <Flex justifyContent='center' alignItems='center'>
+          <Box>
+            <BackButton />
+          </Box>
+          <Box>
+            <Heading center h={4}>{startTime && moment(startTime).format('lll')}</Heading>
+          </Box>
+          <Box ml='auto' mr={2}>
+            <Flex>
+              <Box>
+              </Box>
+              <Box>
+                <Text><MdPublic  size={20} /> {networkName} (AS{asn})</Text>
+              </Box>
+              <Box>
+                <Text><MdFlag size={20} /> {countryCode}</Text>
+              </Box>
+            </Flex>
+          </Box>
+        </Flex>
+      </ResultOverviewContainer>
+    )
+  }
   return (
     <ResultOverviewContainer>
       <Flex justifyContent='center' alignItems='center'>
@@ -52,7 +108,12 @@ const ResultOverview = ({groupName, testKeys, anomalyCount, totalCount, startTim
       </Flex>
       <Container style={{padding: '20px 60px'}}>
 
-        <StatsOverview name={groupName} testKeys={testKeys} anomalyCount={anomalyCount} totalCount={totalCount} />
+        <StatsOverview
+          name={groupName}
+          testKeys={testKeys}
+          anomalyCount={anomalyCount}
+          totalCount={totalCount}
+        />
         <Divider mt={4} mb={4} />
 
         <TwoColumnTable
@@ -76,6 +137,13 @@ const ResultOverview = ({groupName, testKeys, anomalyCount, totalCount, startTim
       </Container>
     </ResultOverviewContainer>
   )
+}
+
+ResultOverview.propTypes = {
+  overview: overviewShape,
+  testKeys: PropTypes.object,
+  groupName: PropTypes.string,
+  isSticky: PropTypes.bool
 }
 
 const MeasurementList = ({groupName, measurements}) => {
@@ -106,29 +174,50 @@ const mapOverviewProps = (rows, summary) => {
     groupName,
     group: testGroups[groupName],
     testKeys: testKeys,
-    startTime: msmt.start_time || null,
-    dataUsageUp: summary.data_usage_up || 0,
-    dataUsageDown: summary.data_usage_down || 0,
-    anomalyCount: summary.anomaly_count || 0,
-    totalCount: summary.total_count || 0,
-    runtime: summary.total_runtime || 0,
-    networkName: msmt.network_name || '',
-    countryCode: msmt.network_country_code || '',
-    asn: msmt.asn || '',
+    overview: {
+      startTime: msmt.start_time || null,
+      dataUsageUp: summary.data_usage_up || 0,
+      dataUsageDown: summary.data_usage_down || 0,
+      anomalyCount: summary.anomaly_count || 0,
+      totalCount: summary.total_count || 0,
+      runtime: summary.total_runtime || 0,
+      networkName: msmt.network_name || '',
+      countryCode: msmt.network_country_code || '',
+      asn: msmt.asn || '',
+    }
   }
 }
 
+const HeaderContent = styled(Box)`
+  background-color: ${props => props.bg};
+  color: ${props => props.theme.colors.white};
+  /* This makes it possible to drag the window around from the side bar */
+  -webkit-app-region: drag;
+`
+
 const TestResultsOverview = ({ rows, summary }) => {
   const overviewProps = mapOverviewProps(rows, summary)
-
   return (
-    <StickyDraggableHeader
-      color={overviewProps.group.color}
-      colorSticky={overviewProps.group.color}
-      height='auto'
-      header={<ResultOverview {...overviewProps} />} >
+    <StickyContainer>
+      <Sticky topOffset={100}>
+        {({
+          style,
+          isSticky
+        }) => {
+          return (
+            <HeaderContent
+              bg={overviewProps.group.color}
+              style={style}>
+              <ResultOverview
+                isSticky={isSticky}
+                {...overviewProps}
+              />
+            </HeaderContent>
+          )
+        }}
+      </Sticky>
       <MeasurementList groupName={overviewProps.groupName} group={overviewProps.group} measurements={rows} />
-    </StickyDraggableHeader>
+    </StickyContainer>
   )
 }
 
