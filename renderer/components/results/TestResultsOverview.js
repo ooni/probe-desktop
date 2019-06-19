@@ -4,8 +4,6 @@ import moment from 'moment'
 
 import styled from 'styled-components'
 
-import TwoColumnHero from './TwoColumnHero'
-
 // XXX replace this with the correct icon
 import MdArrowUpward from 'react-icons/lib/md/arrow-upward'
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward'
