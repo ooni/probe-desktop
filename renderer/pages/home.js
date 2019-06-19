@@ -245,8 +245,8 @@ class Home extends React.Component {
     return (
       <Layout>
         <Sidebar>
-          <StickyDraggableHeader height='20px' />
-          <Flex flexWrap='wrap' pt={3} pl={3}>
+          <StickyDraggableHeader height='40px' />
+          <Flex flexWrap='wrap' pl={3}>
             {testList.map((t, idx) =>
               <RunTestCard
                 onRun={this.onRun(t.key)}

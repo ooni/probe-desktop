@@ -14,6 +14,10 @@ const HeaderContent = styled(Box)`
   color: ${props => props.theme.colors.white};
   /* This makes it possible to drag the window around from the side bar */
   -webkit-app-region: drag;
+  &:hover {
+    background-color: ${props => props.theme.colors.gray3};
+    border-bottom: ${props => props.theme.colors.gray6}
+  }
 `
 
 const StickyDraggableHeader = (props) => (
