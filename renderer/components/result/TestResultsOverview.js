@@ -8,7 +8,7 @@ import styled from 'styled-components'
 // XXX replace this with the correct icon
 import MdArrowUpward from 'react-icons/lib/md/arrow-upward'
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward'
-import HumanFilesize from './HumanFilesize'
+import HumanFilesize from '../HumanFilesize'
 
 
 import MdFlag from 'react-icons/lib/md/flag'
@@ -30,7 +30,7 @@ import { testGroups } from '../nettests'
 import StatsOverview from './StatsOverview'
 import MeasurementRow from './MeasurementRow'
 import BackButton from '../BackButton'
-import TwoColumnTable from './TwoColumnTable'
+import TwoColumnTable from '../TwoColumnTable'
 import { StickyContainer, Sticky } from 'react-sticky'
 
 const ResultOverviewContainer = styled.div`

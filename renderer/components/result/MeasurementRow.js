@@ -23,9 +23,9 @@ import {
 import styled from 'styled-components'
 import RightArrow from '../RightArrow'
 
-import UploadSpeed from './UploadSpeed'
-import DownloadSpeed from './DownloadSpeed'
-import VideoQuality from './VideoQuality'
+import UploadSpeed from '../UploadSpeed'
+import DownloadSpeed from '../DownloadSpeed'
+import VideoQuality from '../VideoQuality'
 
 // XXX this should be moved to the design-system
 import MdPriorityHigh from 'react-icons/lib/md/priority-high'
@@ -92,7 +92,7 @@ const CategoryCode = ({code}) => {
 }
 
 const URLRow =  ({measurement, query, isAnomaly}) => (
-  <Link href={{pathname: '/results', query}}>
+  <Link href={{pathname: '/measurement', query}}>
     <BorderedRow>
       <Box pr={2} pl={2} width={1/8}>
         <CategoryCode code={measurement['url_category_code']} />
@@ -165,7 +165,7 @@ const TestRow =  ({measurement, query, testKeys, isAnomaly}) => {
   }
 
   return (
-    <Link href={{pathname: '/results', query}}>
+    <Link href={{pathname: '/measurement', query}}>
       <BorderedRow>
         <Box width={5/8} pl={2}>
           {icon && <IconContainer>{icon}</IconContainer>}

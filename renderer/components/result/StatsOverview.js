@@ -15,8 +15,8 @@ import {
   Text
 } from 'ooni-components'
 
-import formatBitrate from './formatBitrate'
-import formatSpeed from './formatSpeed'
+import formatBitrate from '../formatBitrate'
+import formatSpeed from '../formatSpeed'
 
 const addPlurality = (id, count) => {
   if (parseInt(count) > 1) {

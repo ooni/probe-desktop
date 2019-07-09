@@ -20,7 +20,7 @@ import MdSwapVert from 'react-icons/lib/md/swap-vert'
 import MdPublic from 'react-icons/lib/md/public'
 
 import { renderDetails, testGroups } from '../nettests'
-import TwoColumnTable from './TwoColumnTable'
+import TwoColumnTable from '../TwoColumnTable'
 import BackButton from '../BackButton'
 import StickyDraggableHeader from '../StickyDraggableHeader'
 
@@ -79,7 +79,7 @@ const mapOverviewProps = (msmt) => {
   return props
 }
 
-const TestResultsDetails = ({measurement}) => {
+const MeasurementContainer = ({measurement}) => {
   const overviewProps = mapOverviewProps(measurement)
 
   return (
@@ -105,4 +105,4 @@ const TestResultsDetails = ({measurement}) => {
   )
 }
 
-export default TestResultsDetails
+export default MeasurementContainer

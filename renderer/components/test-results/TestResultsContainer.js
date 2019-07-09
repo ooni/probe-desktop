@@ -13,7 +13,7 @@ import MdArrowDownward from 'react-icons/lib/md/arrow-downward'
 import MdArrowUpward from 'react-icons/lib/md/arrow-upward'
 
 import ResultRow from './ResultRow'
-import HumanFilesize from './HumanFilesize'
+import HumanFilesize from '../HumanFilesize'
 
 import styled from 'styled-components'
 
@@ -128,7 +128,7 @@ const FullWidth = styled.div`
   width: 100%;
 `
 
-const TestResults = ({results}) => {
+const TestResultsContainer = ({results}) => {
   const {
     testCount,
     networkCount,
@@ -157,4 +157,4 @@ const TestResults = ({results}) => {
   )
 }
 
-export default TestResults
+export default TestResultsContainer
