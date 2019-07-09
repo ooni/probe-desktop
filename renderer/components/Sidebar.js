@@ -50,11 +50,11 @@ const NavItem = ({href, icon, label, currentUrl}) => {
   return (
     <StyledNavItem isActive={isActive}>
       <Link href={href} prefetch>
-        <Flex flexDirection='column' alignItems='center'>
+        <Flex alignItems='center'>
           <Box>
             {icon}
           </Box>
-          <Box>
+          <Box pl={2}>
             {label}
           </Box>
         </Flex>
@@ -84,7 +84,8 @@ const WindowContainer = styled.div``
 const SidebarContainer = styled.div`
   padding-top: 50px;
   background-color: ${props => props.theme.colors.gray1};
-  width: 160px;
+  border-right: 1px solid ${props => props.theme.colors.gray3};
+  width: 220px;
   height: 100%;
   position: fixed;
   z-index: 70;
@@ -95,7 +96,7 @@ const SidebarContainer = styled.div`
 `
 
 const MainContainer = styled.div`
-  margin-left: 160px;
+  margin-left: 220px;
 `
 
 export const Sidebar = ({children, router}) => (
