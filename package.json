@@ -124,11 +124,15 @@
     "first-run": "^1.2.0",
     "fix-path": "^2.1.0",
     "fs-extra": "^4.0.2",
+    "fstream": "^1.0.12",
+    "js-yaml": "^3.13.1",
+    "lodash": "^4.17.15",
     "ms": "^2.0.0",
     "npm": "^6.1.0",
     "react-sticky": "^6.0.3",
     "split2": "^2.2.0",
-    "sudo-prompt": "^7.1.1"
+    "sudo-prompt": "^7.1.1",
+    "webpack-bundle-analyzer": "^3.4.1"
   },
   "resolutions": {
     "rebass": "2.3.3",
