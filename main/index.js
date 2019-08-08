@@ -4,11 +4,14 @@
 const { app, Menu } = require('electron')
 const prepareNext = require('electron-next')
 const { is } = require('electron-util')
+const { autoUpdater } = require('electron-updater')
 
 const fixPath = require('fix-path')
 const { getConfig } = require('./utils/config')
 const { getSentryConfig } = require('./utils/sentry')
 const { startAutoUpdater } = require('./update')
+
+const log = require('electron-log')
 
 const toggleWindow = require('./windows/toggle')
 
@@ -30,6 +33,9 @@ require('electron-debug')({
   enabled: parseInt(process.env.FORCE_ELECTRON_DEBUG, 10) === 1 ? true : null
 })
 
+autoUpdater.logger = log
+autoUpdater.logger.transports.file.level = 'info'
+log.info('App starting...')
 
 // To prevent garbage collection of the windows
 let windows = null
@@ -90,8 +96,38 @@ app.on('window-all-closed', () => {
   }
 })
 
+function sendStatusToWindow(text) {
+  log.info(text)
+}
+
+autoUpdater.on('checking-for-update', () => {
+  sendStatusToWindow('Checking for update...')
+})
+autoUpdater.on('update-available', () => {
+  sendStatusToWindow('Update available.')
+})
+autoUpdater.on('update-not-available', () => {
+  sendStatusToWindow('Update not available.')
+})
+autoUpdater.on('error', (err) => {
+  sendStatusToWindow('Error in auto-updater. ' + err)
+})
+autoUpdater.on('download-progress', (progressObj) => {
+  let log_message = 'Download speed: ' + progressObj.bytesPerSecond
+  log_message = log_message + ' - Downloaded ' + progressObj.percent + '%'
+  log_message = log_message + ' (' + progressObj.transferred + '/' + progressObj.total + ')'
+  sendStatusToWindow(log_message)
+})
+autoUpdater.on('update-downloaded', () => {
+  sendStatusToWindow('Update downloaded')
+  // This can be called to quit the application and install the update
+  // autoUpdater.quitAndInstall()
+})
+
 // Prepare the renderer once the app is ready
 app.on('ready', async () => {
+  autoUpdater.checkForUpdatesAndNotify()
+
   let config
   try {
     config = await getConfig()
