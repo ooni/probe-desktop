@@ -7,9 +7,10 @@ import styled from 'styled-components'
 import MdKeyboardArrowLeft from 'react-icons/lib/md/keyboard-arrow-left'
 
 const StyledBackLink = styled.a`
-  cursor: pointer;
   color: ${props => props.theme.colors.white};
+  cursor: pointer;
   &:hover {
+    cursor: pointer;
     color: ${props => props.theme.colors.gray4};
   }
 `
