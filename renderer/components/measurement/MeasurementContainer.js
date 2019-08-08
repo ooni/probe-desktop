@@ -22,7 +22,7 @@ import MdPublic from 'react-icons/lib/md/public'
 import { renderDetails, testGroups } from '../nettests'
 import TwoColumnTable from '../TwoColumnTable'
 import BackButton from '../BackButton'
-import StickyDraggableHeader from '../StickyDraggableHeader'
+import { StickyContainer, Sticky } from 'react-sticky'
 
 const MeasurementOverviewContainer = styled.div`
   position: relative;
@@ -31,10 +31,19 @@ const MeasurementOverviewContainer = styled.div`
 `
 
 // XXX There is a lot of duplication with ./TestResultDetails.ResultOverview
-const MeasurementOverview = ({title, startTime, runtime, networkName, country, asn}) => {
+const MeasurementOverview = ({title, startTime, runtime, networkName, country, asn, isSticky}) => {
   return (
-    <MeasurementOverviewContainer style={{padding: '0 60px'}}>
-      <Container>
+    <MeasurementOverviewContainer>
+      <Flex justifyContent='center' alignItems='center'>
+        <Box>
+          <BackButton />
+        </Box>
+        <Box width={1}>
+          <Heading center h={3}>{startTime && moment(startTime).format('lll')}</Heading>
+        </Box>
+      </Flex>
+      <Container style={{padding: '20px 60px'}}>
+
         <TwoColumnTable
           left={<Text><MdSwapVert size={20} />Date</Text>}
           right={<Text>{startTime && moment(startTime).format('lll')}</Text>} />
@@ -51,7 +60,6 @@ const MeasurementOverview = ({title, startTime, runtime, networkName, country, a
           left={<Text><MdPublic  size={20} />Network</Text>}
           right={<Text>{networkName} (AS{asn})</Text>} />
       </Container>
-
     </MeasurementOverviewContainer>
   )
 }
@@ -79,30 +87,39 @@ const mapOverviewProps = (msmt) => {
   return props
 }
 
+const HeaderContent = styled(Box)`
+  background-color: ${props => props.bg};
+  color: ${props => props.theme.colors.white};
+  /* This makes it possible to drag the window around from the side bar */
+  -webkit-app-region: drag;
+`
+
 const MeasurementContainer = ({measurement}) => {
   const overviewProps = mapOverviewProps(measurement)
 
   return (
-    <StickyDraggableHeader
-      color={overviewProps.group.color}
-      colorSticky={overviewProps.group.color}
-      height='auto'
-      header={
-        <div>
-          <Flex justifyContent='center' alignItems='center'>
-            <Box>
-              <BackButton />
-            </Box>
-            <Box width={1}>
-              <Heading center h={3}>{overviewProps.title}</Heading>
-            </Box>
-          </Flex>
-          <MeasurementOverview {...overviewProps} onBack={() => this.onSelectMeasurement(null)} />
-        </div>
-      } >
+    <StickyContainer>
+      <Sticky topOffset={100}>
+        {({
+          style,
+          isSticky
+        }) => {
+          return (
+            <HeaderContent
+              bg={overviewProps.group.color}
+              style={style}>
+              <MeasurementOverview
+                isSticky={isSticky}
+                {...overviewProps}
+              />
+            </HeaderContent>
+          )
+        }}
+      </Sticky>
       {renderDetails(measurement)}
-    </StickyDraggableHeader>
+    </StickyContainer>
   )
+
 }
 
 export default MeasurementContainer

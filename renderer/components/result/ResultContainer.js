@@ -195,7 +195,7 @@ const HeaderContent = styled(Box)`
   -webkit-app-region: drag;
 `
 
-const TestResultsOverview = ({ rows, summary }) => {
+const ResultContainer = ({ rows, summary }) => {
   const overviewProps = mapOverviewProps(rows, summary)
   return (
     <StickyContainer>
@@ -221,4 +221,4 @@ const TestResultsOverview = ({ rows, summary }) => {
   )
 }
 
-export default TestResultsOverview
+export default ResultContainer

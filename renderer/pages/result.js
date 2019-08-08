@@ -7,7 +7,7 @@ import { withRouter } from 'next/router'
 
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
-import TestResultsOverview from '../components/result/TestResultsOverview'
+import ResultContainer from '../components/result/ResultContainer'
 import ErrorView from '../components/ErrorView'
 import LoadingOverlay from '../components/LoadingOverlay'
 
@@ -85,7 +85,7 @@ class Result extends React.Component {
       <Layout>
         <Sidebar>
           <LoadingOverlay loading={loading} />
-          {!loading && <TestResultsOverview rows={measurementRows} summary={measurementSummary} />}
+          {!loading && <ResultContainer rows={measurementRows} summary={measurementSummary} />}
           {error && <ErrorView error={error} />}
         </Sidebar>
       </Layout>
