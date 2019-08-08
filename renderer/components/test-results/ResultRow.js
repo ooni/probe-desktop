@@ -20,9 +20,9 @@ import MdClear from 'react-icons/lib/md/clear'
 import { testGroups } from '../nettests'
 import RightArrow from '../RightArrow'
 
-import UploadSpeed from './UploadSpeed'
-import DownloadSpeed from './DownloadSpeed'
-import VideoQuality from './VideoQuality'
+import UploadSpeed from '../UploadSpeed'
+import DownloadSpeed from '../DownloadSpeed'
+import VideoQuality from '../VideoQuality'
 
 const ColorCode = styled.div`
   height: 80px;
@@ -49,7 +49,7 @@ const RightArrowStyled = styled(RightArrow)`
 
 const VerticalCenter = ({children}) => {
   return (
-    <Flex justify='center' align='center' style={{height: '100%'}}>
+    <Flex justifyContent='center' alignItems='center' style={{height: '100%'}}>
       <Box>
         {children}
       </Box>
@@ -62,36 +62,36 @@ const SummaryContainer = styled(Flex)`
 `
 
 const WebsitesSummary = ({anomalyCount, totalCount}) => {
-  return <SummaryContainer wrap>
-    <Box w={1}>
+  return <SummaryContainer flexWrap='wrap'>
+    <Box width={1}>
       <Text color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black}><MdClear /> {anomalyCount} blocked</Text>
     </Box>
-    <Box w={1}>
+    <Box width={1}>
       <Text><MdWeb /> {totalCount} tested</Text>
     </Box>
   </SummaryContainer>
 }
 
 const IMSummary = ({anomalyCount, totalCount}) => {
-  return <SummaryContainer wrap>
-    <Box w={1}>
+  return <SummaryContainer flexWrap='wrap'>
+    <Box width={1}>
       <Text color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black}><MdClear /> {anomalyCount} blocked</Text>
     </Box>
-    <Box w={1}>
+    <Box width={1}>
       <Text><MdDone /> {totalCount} tested</Text>
     </Box>
   </SummaryContainer>
 }
 
 const PerformanceSummary = ({testKeys}) => {
-  return <SummaryContainer wrap>
-    <Box w={1/2}>
+  return <SummaryContainer flexWrap='wrap'>
+    <Box width={1/2}>
       <DownloadSpeed bits={testKeys['download']} />
     </Box>
-    <Box w={1/2}>
+    <Box width={1/2}>
       <VideoQuality bitrate={testKeys['median_bitrate']} />
     </Box>
-    <Box w={1/2}>
+    <Box width={1/2}>
       <UploadSpeed bits={testKeys['upload']} />
     </Box>
   </SummaryContainer>
@@ -136,11 +136,11 @@ class ResultRow extends React.Component {
     const group = testGroups[name]
 
     return (
-      <Flex justify='center' align='center'>
-        <Box w={1/8}>
+      <Flex justifyContent='center' alignItems='center'>
+        <Box width={1/8}>
           <ColorCode color={group.color} />
         </Box>
-        <Box w={7/8}>
+        <Box width={7/8}>
           <Flex>
             <Box pr={2}>
               {React.cloneElement(
@@ -208,21 +208,21 @@ class ResultRow extends React.Component {
       resultID
     } = this.props
     return <BorderedRow>
-      <Link href={{ pathname: '/results', query: {resultID} }} passHref>
+      <Link href={{ pathname: '/result', query: {resultID} }} passHref>
         <Flex>
-          <Box pr={2} w={4/16}>
+          <Box pr={2} width={4/16}>
             {this.renderIcon()}
           </Box>
-          <Box w={3/16} h={1}>
+          <Box width={3/16} h={1}>
             {this.renderNetwork()}
           </Box>
           <Box pr={3/16}>
             {this.renderDate()}
           </Box>
-          <Box w={4/16} >
+          <Box width={4/16} >
             {this.renderTestKeys()}
           </Box>
-          <Box w={1/16} style={{marginLeft: 'auto'}}>
+          <Box width={1/16} style={{marginLeft: 'auto'}}>
             <VerticalCenter>
               <RightArrowStyled />
             </VerticalCenter>

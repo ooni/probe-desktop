@@ -1,5 +1,10 @@
 import React from 'react'
 
+import {
+  theme
+} from 'ooni-components'
+
+import StickyDraggableHeader from '../StickyDraggableHeader'
 import Moment from 'moment'
 import { extendMoment } from 'moment-range'
 const moment = extendMoment(Moment)
@@ -8,7 +13,7 @@ import MdArrowDownward from 'react-icons/lib/md/arrow-downward'
 import MdArrowUpward from 'react-icons/lib/md/arrow-upward'
 
 import ResultRow from './ResultRow'
-import HumanFilesize from './HumanFilesize'
+import HumanFilesize from '../HumanFilesize'
 
 import styled from 'styled-components'
 
@@ -29,16 +34,16 @@ const LabelBox= styled(Box)`
 
 const DataUsage = ({dataUsage}) => {
   return (
-    <Flex column>
+    <Flex flexDirection='column'>
       <LabelBox>
       Data Usage
       </LabelBox>
       <Box>
         <Flex>
-          <Box w={1/2}>
+          <Box width={1/2}>
             <HumanFilesize icon={<MdArrowUpward size={20}/>} size={dataUsage.up*1024} />
           </Box>
-          <Box w={1/2}>
+          <Box width={1/2}>
             <HumanFilesize icon={<MdArrowDownward size={20} />} size={dataUsage.down*1024} />
           </Box>
         </Flex>
@@ -58,21 +63,21 @@ const StyledResultsHeader = styled.div`
 const ResultsHeader = ({testCount, networkCount, dataUsage}) => {
   return (
     <StyledResultsHeader>
-      <Container width={700}>
+      <Container>
         <Flex>
-          <Box w={1/3}>
+          <Box width={1/3}>
             <StatBox
               label='Tests'
               value={testCount} />
           </Box>
           <VerticalDivider />
-          <Box w={1/3}>
+          <Box width={1/3}>
             <StatBox
               label='Networks'
               value={networkCount} />
           </Box>
           <VerticalDivider />
-          <Box w={1/3}>
+          <Box width={1/3}>
             <DataUsage dataUsage={dataUsage} />
           </Box>
         </Flex>
@@ -123,7 +128,7 @@ const FullWidth = styled.div`
   width: 100%;
 `
 
-const TestResults = ({results}) => {
+const TestResultsContainer = ({results}) => {
   const {
     testCount,
     networkCount,
@@ -135,13 +140,21 @@ const TestResults = ({results}) => {
 
   return (
     <FullWidth>
-      <ResultsHeader
-        testCount={testCount}
-        networkCount={networkCount}
-        dataUsage={{up: dataUsageUp, down: dataUsageDown}} />
-      {byMonth.map(kv => <ResultsSection key={kv[0]} month={kv[0]} rows={kv[1]} />)}
+      <StickyDraggableHeader
+        color={theme.colors.blue5}
+        colorSticky={theme.colors.blue5}
+        height='auto'
+        header={
+          <ResultsHeader
+            testCount={testCount}
+            networkCount={networkCount}
+            dataUsage={{up: dataUsageUp, down: dataUsageDown}} />
+        }
+      >
+        {byMonth.map(kv => <ResultsSection key={kv[0]} month={kv[0]} rows={kv[1]} />)}
+      </StickyDraggableHeader>
     </FullWidth>
   )
 }
 
-export default TestResults
+export default TestResultsContainer

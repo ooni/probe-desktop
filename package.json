@@ -67,9 +67,9 @@
     }
   },
   "devDependencies": {
-    "@babel/cli": "7.0.0",
-    "@babel/core": "7.0.0",
-    "@babel/register": "7.0.0",
+    "@babel/cli": "7.4.4",
+    "@babel/core": "7.4.4",
+    "@babel/register": "7.4.4",
     "@storybook/addon-actions": "4.0.0-alpha.22",
     "@storybook/addon-links": "4.0.0-alpha.22",
     "@storybook/addon-storysource": "4.0.0-alpha.22",
@@ -79,9 +79,9 @@
     "@zeit/next-source-maps": "^0.0.3",
     "aws-sdk": "^2.244.1",
     "babel-loader": "^8.0.2",
-    "babel-plugin-inline-react-svg": "^0.5.2",
+    "babel-plugin-inline-react-svg": "1.1.0",
     "babel-plugin-react-intl": "^2.4.0",
-    "babel-plugin-styled-components": "^1.5.1",
+    "babel-plugin-styled-components": "1.10.0",
     "chroma-js": "^1.3.7",
     "csv-parse": "^2.5.0",
     "electron": "3.0.1",
@@ -93,25 +93,26 @@
     "icon-gen": "^1.2.1",
     "moment": "^2.20.1",
     "moment-range": "^4.0.1",
-    "next": "6.1.2",
+    "next": "8.1.0",
     "next-progressbar": "^1.0.0",
-    "ooni-components": "0.1.4",
-    "prop-types": "^15.6.2",
+    "ooni-components": "^0.2.7",
+    "prop-types": "15.7.2",
     "raven-js": "^3.25.2",
     "rc-progress": "^2.2.5",
-    "react": "^16.0.0",
+    "react": "16.8.6",
     "react-animations": "^0.1.0",
-    "react-dom": "^16.0.0",
-    "react-icons": "^2.2.5",
+    "react-dom": "16.8.6",
+    "react-icons": "2.2.7",
     "react-intl": "^2.4.0",
     "react-lottie": "^1.2.3",
     "remark": "^9.0.0",
     "remark-react": "^4.0.3",
-    "styled-components": "2.4.1",
-    "webpack": "3.10.0"
+    "styled-components": "3.4.10",
+    "webpack": "4.29.0"
   },
   "dependencies": {
     "@sentry/electron": "^0.5.4",
+    "@zeit/next-css": "^1.0.1",
     "app-root-path": "2.0.1",
     "debug": "^3.1.0",
     "debug-to-file": "^1.0.9",
@@ -125,13 +126,14 @@
     "fs-extra": "^4.0.2",
     "ms": "^2.0.0",
     "npm": "^6.1.0",
+    "react-sticky": "^6.0.3",
     "split2": "^2.2.0",
     "sudo-prompt": "^7.1.1"
   },
   "resolutions": {
-    "grid-styled": "2.0.0-11",
-    "rebass": "1.0.4",
-    "styled-components": "2.4.1",
-    "styled-system": "1.1.0"
+    "rebass": "2.3.3",
+    "styled-components": "3.4.10",
+    "styled-system": "3.1.6",
+    "react-icons": "2.2.7"
   }
 }

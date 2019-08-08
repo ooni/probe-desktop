@@ -50,7 +50,7 @@ class About extends React.Component {
     return (
       <Layout>
         <div style={{padding: '20px'}}>
-          <Flex justify='center' align='center'>
+          <Flex justifyContent='center' alignItems='center'>
             <Box><OONIVerticalColor width='100px' /></Box>
           </Flex>
           {msg && <Heading h={4} color='red5'>{msg}</Heading>}
@@ -63,7 +63,7 @@ class About extends React.Component {
           to contact@openobservatory.org or (even better) on
           github.com/ooni/probe-desktop</Text>
 
-          <Flex justify='center' align='center' pt={2}>
+          <Flex justifyContent='center' alignItems='center' pt={2}>
             <Box>
               <Button onClick={this.onReset}>Hard reset</Button>
             </Box>

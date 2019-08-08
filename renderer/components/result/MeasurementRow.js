@@ -23,9 +23,9 @@ import {
 import styled from 'styled-components'
 import RightArrow from '../RightArrow'
 
-import UploadSpeed from './UploadSpeed'
-import DownloadSpeed from './DownloadSpeed'
-import VideoQuality from './VideoQuality'
+import UploadSpeed from '../UploadSpeed'
+import DownloadSpeed from '../DownloadSpeed'
+import VideoQuality from '../VideoQuality'
 
 // XXX this should be moved to the design-system
 import MdPriorityHigh from 'react-icons/lib/md/priority-high'
@@ -51,7 +51,7 @@ const RightArrowStyled = styled(RightArrow)`
 
 const VerticalCenter = ({children}) => {
   return (
-    <Flex justify='center' align='center' style={{height: '100%'}}>
+    <Flex justifyContent='center' alignItems='center' style={{height: '100%'}}>
       <Box>
         {children}
       </Box>
@@ -92,18 +92,18 @@ const CategoryCode = ({code}) => {
 }
 
 const URLRow =  ({measurement, query, isAnomaly}) => (
-  <Link href={{pathname: '/results', query}}>
+  <Link href={{pathname: '/measurement', query}}>
     <BorderedRow>
-      <Box pr={2} pl={2} w={1/8}>
+      <Box pr={2} pl={2} width={1/8}>
         <CategoryCode code={measurement['url_category_code']} />
       </Box>
-      <Box w={6/8} h={1}>
+      <Box width={6/8} h={1}>
         {formatURL(measurement.url)}
       </Box>
-      <Box w={1/8} h={1}>
+      <Box width={1/8} h={1}>
         <Status notok={isAnomaly} />
       </Box>
-      <Box w={1/8} style={{marginLeft: 'auto'}}>
+      <Box width={1/8} style={{marginLeft: 'auto'}}>
         <VerticalCenter>
           <RightArrowStyled />
         </VerticalCenter>
@@ -165,16 +165,16 @@ const TestRow =  ({measurement, query, testKeys, isAnomaly}) => {
   }
 
   return (
-    <Link href={{pathname: '/results', query}}>
+    <Link href={{pathname: '/measurement', query}}>
       <BorderedRow>
-        <Box w={5/8} pl={2}>
+        <Box width={5/8} pl={2}>
           {icon && <IconContainer>{icon}</IconContainer>}
           <FormattedMessage id={fullnameID} />
         </Box>
-        <Box w={2/8} h={1}>
+        <Box width={2/8} h={1}>
           <StatusBox testName={measurement.test_name} isAnomaly={isAnomaly} testKeys={testKeys} />
         </Box>
-        <Box w={1/8} style={{marginLeft: 'auto'}}>
+        <Box width={1/8} style={{marginLeft: 'auto'}}>
           <VerticalCenter>
             <RightArrowStyled />
           </VerticalCenter>
