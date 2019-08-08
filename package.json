@@ -132,6 +132,7 @@
     "react-sticky": "^6.0.3",
     "split2": "^2.2.0",
     "sudo-prompt": "^7.1.1",
+    "svgo": "^1.3.0",
     "webpack-bundle-analyzer": "^3.4.1"
   },
   "resolutions": {
