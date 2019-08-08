@@ -136,6 +136,7 @@
     "webpack-bundle-analyzer": "^3.4.1"
   },
   "resolutions": {
+    "js-yaml": "3.13.1",
     "rebass": "2.3.3",
     "styled-components": "3.4.10",
     "styled-system": "3.1.6",
