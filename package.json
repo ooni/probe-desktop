@@ -17,6 +17,7 @@
     "pack": "npm run build && build -mw",
     "pack:win": "npm run build && build --win --x64",
     "pack:mac": "npm run build && build --mac",
+    "publish": "npm run build && build -mw -p always",
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
     "lint": "eslint --ignore-path .gitignore .",
     "postinstall": "electron-builder install-app-deps",
