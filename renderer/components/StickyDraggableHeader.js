@@ -30,7 +30,6 @@ const StickyDraggableHeader = (props) => (
         if (isSticky) {
           bg = props.stickyColor
         }
-        console.log('bg', bg)
         return (
           <HeaderContent
             bg={bg}

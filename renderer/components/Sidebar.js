@@ -69,7 +69,7 @@ const navigationPaths = {
     name: 'Home',
     icon: <MdWeb size={40} />
   },
-  '/results': {
+  '/test-results': {
     name: 'Test Results',
     icon: <MdHistory size={40} />
   },

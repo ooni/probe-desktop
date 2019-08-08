@@ -207,7 +207,7 @@ class Home extends React.Component {
       })
       remote.require('./utils/ooni/run')({testGroupName}).then(() => {
         this.setState({done: true})
-        Router.push('/results')
+        Router.push('/test-results')
       }).catch(error => {
         debug('error', error)
         Raven.captureException(error, {extra: {scope: 'renderer.runTest'}})

@@ -20,9 +20,9 @@ import MdClear from 'react-icons/lib/md/clear'
 import { testGroups } from '../nettests'
 import RightArrow from '../RightArrow'
 
-import UploadSpeed from './UploadSpeed'
-import DownloadSpeed from './DownloadSpeed'
-import VideoQuality from './VideoQuality'
+import UploadSpeed from '../UploadSpeed'
+import DownloadSpeed from '../DownloadSpeed'
+import VideoQuality from '../VideoQuality'
 
 const ColorCode = styled.div`
   height: 80px;
@@ -208,7 +208,7 @@ class ResultRow extends React.Component {
       resultID
     } = this.props
     return <BorderedRow>
-      <Link href={{ pathname: '/results', query: {resultID} }} passHref>
+      <Link href={{ pathname: '/result', query: {resultID} }} passHref>
         <Flex>
           <Box pr={2} width={4/16}>
             {this.renderIcon()}

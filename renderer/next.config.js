@@ -29,7 +29,9 @@ module.exports = withSourceMaps(withCSS({
     return {
       '/about': { page: '/about' },
       '/home': { page: '/home' },
-      '/results': { page: '/results' , query: { resultID: null } },
+      '/test-results': { page: '/test-results' },
+      '/result': { page: '/result', query: { resultID: null } },
+      '/measurement': { page: '/measurement', query: { resultID: null, measurementID: null } },
       '/settings': { page: '/settings' },
       '/onboard': { page: '/onboard' }
     }
