@@ -1,7 +1,7 @@
 /* global require */
 
 const { execSync } = require('child_process')
-const { readFileSync } = require('fs')
+const { readFileSync, existsSync } = require('fs')
 const pkgJson = require('../package.json')
 
 const probeVersion = pkgJson['probeVersion']
@@ -33,7 +33,10 @@ const download = () => {
     }
     execSync(`rm ./bin/${tarPath}`)
   })
-  execSync('cp /etc/ssl/cert.pem ./bin/cert.pem')
+
+  if (!existsSync('./bin/cert.pem')) {
+    execSync('cp /etc/ssl/cert.pem ./bin/cert.pem')
+  }
 }
 
 download()
