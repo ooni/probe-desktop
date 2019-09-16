@@ -25,7 +25,6 @@ class CustomDocument extends Document {
     return (
       <html>
         <Head>
-          <title>OONI Probe</title>
           {this.props.styleTags}
         </Head>
         <body>
