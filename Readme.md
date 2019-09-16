@@ -1,9 +1,5 @@
 # OONI Probe Desktop
 
-**Attention** This is under heavy development and should only be run and used
-by OONI developers. Use at your own risk and if you do use it, you may have to
-do some cleanup when we release the first public release of OONI Probe.
-
 This is the desktop implementation of OONI Probe.
 
 Our two primary target platforms are:

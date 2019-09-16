@@ -27,12 +27,13 @@ import Sidebar from '../components/Sidebar'
 import Running from '../components/home/running'
 
 import { testList } from '../components/nettests'
+import StickyDraggableHeader from '../components/StickyDraggableHeader'
 
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.dashboard')
 
 const CardContent = styled.div`
   position: relative;
-  z-index: 10;
+  z-index: 80;
   /* Disable text selection */
   user-select: none;
 `
@@ -41,7 +42,7 @@ const BgIcon = styled.div`
   position: absolute;
   right: ${props => props.active ? '0' : '-30px'};
   top: ${props => props.active ? '0' : '-30px'};
-  z-index: -100;
+  z-index: -900;
   opacity: 0.5;
 `
 
@@ -66,34 +67,35 @@ const ConfigureButton = styled(Button)`
 `
 
 const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, onConfigure}) => (
-  <Box w={1/2} pr={3} pb={3}>
-    <Card bg={color} color='white' style={{position: 'relative', height: '200px'}}>
+  <Box width={1/2} pr={3} pb={3}>
+    <Card bg={color} color='white' style={{position: 'relative', height: '250px'}}>
       <TopLeftFloatingButton>
         <MdHelp onClick={toggleCard} size={30} />
       </TopLeftFloatingButton>
       <CardContent>
         <Heading h={2}>{name}</Heading>
-        <Flex pt={5}>
-          <Box w={3/4} pr={4}>
-            {description}
-          </Box>
-          <Box w={1/4} mr={2}>
-            <Button inverted fontSize={1} onClick={onRun}>
-        Run
-            </Button>
-          </Box>
-        </Flex>
         <BgIcon>
           {icon}
         </BgIcon>
+        <Flex pt={5}>
+          <Box width={3/4} pr={4}>
+            {description}
+          </Box>
+          <Box width={1/4} mr={2}>
+            <Button
+              inverted
+              fontSize={1}
+              onClick={onRun}>Run</Button>
+          </Box>
+        </Flex>
       </CardContent>
     </Card>
   </Box>
 )
 
 const BackCardContent = ({name, longDescription, color, toggleCard}) => (
-  <Box w={1/2} pr={3} pb={3}>
-    <Card bg={chroma(color).darken(2).desaturate()} color='white' style={{position: 'relative', height: '200px', padding: '20px'}}>
+  <Box width={1/2} pr={3} pb={3}>
+    <Card bg={chroma(color).darken(2).desaturate()} color='white' style={{position: 'relative', height: '250px', padding: '20px'}}>
       <TopLeftFloatingButton>
         <MdClear onClick={toggleCard} size={30} />
       </TopLeftFloatingButton>
@@ -140,7 +142,7 @@ class Home extends React.Component {
     this.state = {
       error: null,
 
-      runningTestName: null,
+      runningTestName: '',
       runTestGroupName: null,
       runProgressLine: '',
       runError: null,
@@ -169,16 +171,14 @@ class Home extends React.Component {
       this.setState({
         runPercent: data.percentage,
         runProgressLine: data.message,
-        runningTestName: {
-          name: data.testKey
-        }
+        runningTestName: data.testKey
       })
       break
     case 'error':
       debug('error received', data)
       this.setState({
         runError: data.message,
-        runningTestName: null,
+        runningTestName: '',
       })
       break
     case 'log':
@@ -207,7 +207,7 @@ class Home extends React.Component {
       })
       remote.require('./utils/ooni/run')({testGroupName}).then(() => {
         this.setState({done: true})
-        Router.push('/results')
+        Router.push('/test-results')
       }).catch(error => {
         debug('error', error)
         Raven.captureException(error, {extra: {scope: 'renderer.runTest'}})
@@ -233,7 +233,7 @@ class Home extends React.Component {
           <Running
             progressLine={runProgressLine}
             percent={runPercent}
-            runningTest={runningTestName}
+            runningTestName={runningTestName}
             logLines={runLogLines}
             error={runError}
             testGroupName={runningTestGroupName}
@@ -245,7 +245,8 @@ class Home extends React.Component {
     return (
       <Layout>
         <Sidebar>
-          <Flex wrap pt={3} pl={3} style={{overflow: 'auto'}}>
+          <StickyDraggableHeader height='40px' />
+          <Flex flexWrap='wrap' pl={3}>
             {testList.map((t, idx) =>
               <RunTestCard
                 onRun={this.onRun(t.key)}

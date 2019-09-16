@@ -50,11 +50,11 @@ const NavItem = ({href, icon, label, currentUrl}) => {
   return (
     <StyledNavItem isActive={isActive}>
       <Link href={href} prefetch>
-        <Flex column align='center'>
+        <Flex alignItems='center'>
           <Box>
             {icon}
           </Box>
-          <Box>
+          <Box pl={2}>
             {label}
           </Box>
         </Flex>
@@ -69,7 +69,7 @@ const navigationPaths = {
     name: 'Home',
     icon: <MdWeb size={40} />
   },
-  '/results': {
+  '/test-results': {
     name: 'Test Results',
     icon: <MdHistory size={40} />
   },
@@ -79,42 +79,24 @@ const navigationPaths = {
   }
 }
 
+const WindowContainer = styled.div``
+
 const SidebarContainer = styled.div`
   padding-top: 50px;
   background-color: ${props => props.theme.colors.gray1};
-  width: ${1/10*100}%;
+  border-right: 1px solid ${props => props.theme.colors.gray3};
+  width: 220px;
+  height: 100%;
+  position: fixed;
+  z-index: 70;
+  top: 0;
+  left: 0;
   /* This makes it possible to drag the window around from the side bar */
   -webkit-app-region: drag;
-`
-
-const WindowContainer = styled.div`
-  position: absolute;
-  top: 0px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-`
-
-const Content = styled.div`
-  display: flex;
-  overflow: auto;
-  flex: 1;
 `
 
 const MainContainer = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  width: ${9/10*100}%;
-`
-
-const TopBar = styled(Box)`
-  height: 50px;
-  background-color: ${props => props.theme.colors.gray5};
-  color: ${props => props.theme.colors.white};
-  /* This makes it possible to drag the window around from the side bar */
-  -webkit-app-region: drag;
+  margin-left: 220px;
 `
 
 export const Sidebar = ({children, router}) => (
@@ -134,14 +116,7 @@ export const Sidebar = ({children, router}) => (
     </SidebarContainer>
 
     <MainContainer>
-
-      <TopBar w={1}>
-      </TopBar>
-
-      <Content>
-        {children}
-      </Content>
-
+      {children}
     </MainContainer>
 
   </WindowContainer>

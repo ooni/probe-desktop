@@ -4,7 +4,7 @@ import MdChevronRight from 'react-icons/lib/md/chevron-right'
 
 import styled from 'styled-components'
 
-const StyledRightArrow = styled.div`
+const RightArrow = styled(MdChevronRight)`
   cursor: pointer;
   color: ${props => props.theme.colors.gray4};
   &:hover {
@@ -15,10 +15,8 @@ const StyledRightArrow = styled.div`
   }
 `
 
-const RightArrow = () => (
-  <StyledRightArrow>
-    <MdChevronRight size={30} />
-  </StyledRightArrow>
-)
+RightArrow.defaultProps = {
+  size: 30
+}
 
 export default RightArrow

@@ -56,7 +56,10 @@ const getBinaryPath = () => {
 }
 
 const getSSLCertFilePath = () => {
-  return path.join(getResourcesDirectory(), 'bin', 'cert.pem')
+  if (is.development) {
+    return path.join(getResourcesDirectory(), 'bin', 'cert.pem')
+  }
+  return path.join(getResourcesDirectory(), 'cert.pem')
 }
 
 const getHomeDir = () => {

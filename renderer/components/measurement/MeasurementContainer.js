@@ -14,16 +14,15 @@ import styled from 'styled-components'
 
 import IconUpload from 'react-icons/lib/md/file-upload'
 import IconDownload from 'react-icons/lib/md/file-download'
-
 import MdFlag from 'react-icons/lib/md/flag'
 import MdTimer from 'react-icons/lib/md/timer'
 import MdSwapVert from 'react-icons/lib/md/swap-vert'
 import MdPublic from 'react-icons/lib/md/public'
 
 import { renderDetails, testGroups } from '../nettests'
-import TwoColumnHero from './TwoColumnHero'
-import TwoColumnTable from './TwoColumnTable'
+import TwoColumnTable from '../TwoColumnTable'
 import BackButton from '../BackButton'
+import { StickyContainer, Sticky } from 'react-sticky'
 
 const MeasurementOverviewContainer = styled.div`
   position: relative;
@@ -32,18 +31,18 @@ const MeasurementOverviewContainer = styled.div`
 `
 
 // XXX There is a lot of duplication with ./TestResultDetails.ResultOverview
-const MeasurementOverview = ({title, startTime, runtime, networkName, country, asn}) => {
+const MeasurementOverview = ({title, startTime, runtime, networkName, country, asn, isSticky}) => {
   return (
     <MeasurementOverviewContainer>
-      <Flex justify='center' align='center'>
+      <Flex justifyContent='center' alignItems='center'>
         <Box>
           <BackButton />
         </Box>
-        <Box w={1}>
-          <Heading center h={3}>{title}</Heading>
+        <Box width={1}>
+          <Heading center h={3}>{startTime && moment(startTime).format('lll')}</Heading>
         </Box>
       </Flex>
-      <Container>
+      <Container style={{padding: '20px 60px'}}>
 
         <TwoColumnTable
           left={<Text><MdSwapVert size={20} />Date</Text>}
@@ -88,13 +87,39 @@ const mapOverviewProps = (msmt) => {
   return props
 }
 
-const TestResultsDetails = ({measurement}) => {
+const HeaderContent = styled(Box)`
+  background-color: ${props => props.bg};
+  color: ${props => props.theme.colors.white};
+  /* This makes it possible to drag the window around from the side bar */
+  -webkit-app-region: drag;
+`
+
+const MeasurementContainer = ({measurement}) => {
   const overviewProps = mapOverviewProps(measurement)
 
-  return <TwoColumnHero
-    bg={overviewProps.group.color}
-    left={<MeasurementOverview {...overviewProps} onBack={() => this.onSelectMeasurement(null)} />}
-    right={renderDetails(measurement)} />
+  return (
+    <StickyContainer>
+      <Sticky topOffset={100}>
+        {({
+          style,
+          isSticky
+        }) => {
+          return (
+            <HeaderContent
+              bg={overviewProps.group.color}
+              style={style}>
+              <MeasurementOverview
+                isSticky={isSticky}
+                {...overviewProps}
+              />
+            </HeaderContent>
+          )
+        }}
+      </Sticky>
+      {renderDetails(measurement)}
+    </StickyContainer>
+  )
+
 }
 
-export default TestResultsDetails
+export default MeasurementContainer

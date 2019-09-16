@@ -13,6 +13,7 @@ import {
 } from 'ooni-components'
 
 import { Line as LineProgress } from 'rc-progress'
+import { FormattedMessage } from 'react-intl'
 
 import { testGroups } from '../nettests'
 
@@ -102,7 +103,7 @@ const Log = ({lines, onToggleLog, open}) => {
 
 
 //name, icon, color, description, longDescription, onClickClose, active
-const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, logLines, runningTest, error, totalRuntime}) => {
+const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, logLines, runningTestName, error, totalRuntime}) => {
   let eta = totalRuntime
   if (percent > 0) {
     eta = Math.round(totalRuntime - percent * totalRuntime)
@@ -115,10 +116,22 @@ const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, lo
       preserveAspectRatio: 'xMidYMid slice'
     }
   }
+  let TestName = <span />
+  if (runningTestName) {
+    TestName = <FormattedMessage id={`Test.${runningTestName.split('.')[1]}.Fullname`} />
+  }
+
   return <StyledRunningTest>
     <Container>
       <Heading h={2}>{testGroup.name}</Heading>
-      <Heading h={3}>Running {runningTest && runningTest.name}</Heading>
+      <Heading h={3}>
+        <FormattedMessage
+          id='Dashboard.Running.Running'
+          values={{
+            TestName
+          }}
+        />
+      </Heading>
       {!logOpen
       && <Lottie
         width={300}
@@ -186,7 +199,7 @@ class Running extends React.Component {
       testGroupName,
       progressLine,
       percent,
-      runningTest,
+      runningTestName,
       logLines,
       totalRuntime,
       error
@@ -204,7 +217,7 @@ class Running extends React.Component {
         <RunningTest
           progressLine={progressLine}
           percent={percent}
-          runningTest={runningTest}
+          runningTestName={runningTestName}
           logLines={logLines}
           error={error}
           testGroup={testGroup}
@@ -222,6 +235,7 @@ Running.defaultProps = {
   percent: 0,
   totalRuntime: 60,
   logLines: [],
-  error: null
+  error: null,
+  runningTestName: ''
 }
 export default Running

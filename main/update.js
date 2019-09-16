@@ -1,5 +1,4 @@
-const { homedir } = require('os')
-
+/* global require, process */
 const ms = require('ms')
 const { getConfig } = require('./utils/config')
 const { app, autoUpdater } = require('electron')
@@ -11,7 +10,7 @@ const updateBinary = async () => {
 
 const checkForUpdates = async () => {
   // XXX
-  console.log("checking for updates")
+  console.log('checking for updates')
 }
 
 // This is used to update the ooniprobe-cli
@@ -40,7 +39,7 @@ const startAppUpdates = async mainWindow => {
   }
 
   const updatedFrom = config.desktop && config.desktop.updatedFrom
-  const appVersion = isDev ? version : app.getVersion()
+  const appVersion = app.getVersion()
 
   autoUpdater.on('error', error => {
     console.log('Failed to update')
@@ -77,10 +76,14 @@ const startAutoUpdater = mainWindow => {
     return
   }
 
+  // XXX autoupdating is currently disabled
+  // and we should update this code to use: https://www.electron.build/auto-update
+  /*
   startBinaryUpdates()
   if (!isDev) {
     startAppUpdates(mainWindow)
   }
+  */
 }
 
 module.exports = {
