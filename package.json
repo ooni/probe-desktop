@@ -93,7 +93,7 @@
     "icon-gen": "^1.2.1",
     "moment": "^2.24.0",
     "moment-range": "^4.0.2",
-    "next": "8.1.0",
+    "next": "9.0.5",
     "next-progressbar": "^1.0.0",
     "ooni-components": "^0.2.8",
     "prop-types": "15.7.2",
