@@ -17,7 +17,7 @@
     "pack": "npm run build && build -mw",
     "pack:win": "npm run build && build --win --x64",
     "pack:mac": "npm run build && build --mac",
-    "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
+    "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r --ico --icns",
     "lint": "eslint --ignore-path .gitignore .",
     "postinstall": "electron-builder install-app-deps",
     "storybook": "start-storybook -p 6006"
@@ -90,7 +90,7 @@
     "eslint-plugin-react": "^7.14.3",
     "fsevents": "1.2.9",
     "humanize": "^0.0.9",
-    "icon-gen": "^1.2.1",
+    "icon-gen": "^2.0.0",
     "moment": "^2.24.0",
     "moment-range": "^4.0.2",
     "next": "9.0.5",
