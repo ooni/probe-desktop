@@ -10,8 +10,7 @@ import * as chroma from 'chroma-js'
 
 import styled from 'styled-components'
 
-import MdHelp from 'react-icons/lib/md/help'
-import MdClear from 'react-icons/lib/md/clear'
+import { MdHelp, MdClear } from 'react-icons/md'
 
 import {
   Button,

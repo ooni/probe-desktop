@@ -12,12 +12,15 @@ import {
 
 import styled from 'styled-components'
 
-import IconUpload from 'react-icons/lib/md/file-upload'
-import IconDownload from 'react-icons/lib/md/file-download'
-import MdFlag from 'react-icons/lib/md/flag'
-import MdTimer from 'react-icons/lib/md/timer'
-import MdSwapVert from 'react-icons/lib/md/swap-vert'
-import MdPublic from 'react-icons/lib/md/public'
+
+import {
+  IconUpload,
+  IconDownload,
+  MdFlag,
+  MdTimer,
+  MdSwapVert,
+  MdPublic
+} from 'react-icons/md'
 
 import { renderDetails, testGroups } from '../nettests'
 import TwoColumnTable from '../TwoColumnTable'

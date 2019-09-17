@@ -6,15 +6,16 @@ import moment from 'moment'
 import styled from 'styled-components'
 
 // XXX replace this with the correct icon
-import MdArrowUpward from 'react-icons/lib/md/arrow-upward'
-import MdArrowDownward from 'react-icons/lib/md/arrow-downward'
 import HumanFilesize from '../HumanFilesize'
 
-
-import MdFlag from 'react-icons/lib/md/flag'
-import MdTimer from 'react-icons/lib/md/timer'
-import MdSwapVert from 'react-icons/lib/md/swap-vert'
-import MdPublic from 'react-icons/lib/md/public'
+import {
+  MdArrowUpward,
+  MdArrowDownward,
+  MdFlag,
+  MdTimer,
+  MdSwapVert,
+  MdPublic
+} from 'react-icons/md'
 
 import {
   Heading,

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { FormattedMessage } from 'react-intl'
 
-import MdKeyboardArrowLeft from 'react-icons/lib/md/keyboard-arrow-left'
+import { MdKeyboardArrowLeft } from 'react-icons/md'
 /*
  * XXX This component is a bit written a bit hasily. State is stored and encapsulated in the following way:
  *

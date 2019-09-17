@@ -1,6 +1,6 @@
 import React from 'react'
 
-import MdChevronRight from 'react-icons/lib/md/chevron-right'
+import { MdChevronRight } from 'react-icons/md'
 
 import styled from 'styled-components'
 
