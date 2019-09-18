@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from 'ooni-components'
 
-import MdVideoLibrary from 'react-icons/lib/md/video-library'
+import { MdVideoLibrary } from 'react-icons/md'
 import formatBitrate from './formatBitrate'
 
 const VideoQuality = ({bitrate}) => {

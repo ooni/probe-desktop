@@ -4,7 +4,7 @@ import { withRouter } from 'next/router'
 
 import styled from 'styled-components'
 
-import MdKeyboardArrowLeft from 'react-icons/lib/md/keyboard-arrow-left'
+import { MdKeyboardArrowLeft } from 'react-icons/md'
 
 const StyledBackLink = styled.a`
   cursor: pointer;

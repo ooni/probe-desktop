@@ -14,9 +14,7 @@ import {
 
 import Link from 'next/link'
 
-import MdWeb from 'react-icons/lib/md/web'
-import MdDone from 'react-icons/lib/md/done'
-import MdClear from 'react-icons/lib/md/clear'
+import { MdWeb, MdDone, MdClear } from 'react-icons/md'
 import { testGroups } from '../nettests'
 import RightArrow from '../RightArrow'
 
@@ -64,10 +62,14 @@ const SummaryContainer = styled(Flex)`
 const WebsitesSummary = ({anomalyCount, totalCount}) => {
   return <SummaryContainer flexWrap='wrap'>
     <Box width={1}>
-      <Text color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black}><MdClear /> {anomalyCount} blocked</Text>
+      <Text color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black}>
+        <MdClear /><FormattedMessage id='TestResults.Overview.Websites.Blocked.Plural' values={{ Count: anomalyCount }}/>
+      </Text>
     </Box>
     <Box width={1}>
-      <Text><MdWeb /> {totalCount} tested</Text>
+      <Text>
+        <MdWeb /><FormattedMessage id='TestResults.Overview.Websites.Tested.Plural' values={{ Count: totalCount }} />
+      </Text>
     </Box>
   </SummaryContainer>
 }
@@ -75,10 +77,14 @@ const WebsitesSummary = ({anomalyCount, totalCount}) => {
 const IMSummary = ({anomalyCount, totalCount}) => {
   return <SummaryContainer flexWrap='wrap'>
     <Box width={1}>
-      <Text color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black}><MdClear /> {anomalyCount} blocked</Text>
+      <Text color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black}>
+        <MdClear /><FormattedMessage id='TestResults.Overview.InstantMessaging.Blocked.Plural' values={{ Count: anomalyCount }}/>
+      </Text>
     </Box>
     <Box width={1}>
-      <Text><MdDone /> {totalCount} tested</Text>
+      <Text>
+        <MdDone /> <FormattedMessage id='TestResults.Overview.InstantMessaging.Available.Plural' values={{ Count: totalCount }} />
+      </Text>
     </Box>
   </SummaryContainer>
 }
