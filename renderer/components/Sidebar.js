@@ -49,7 +49,7 @@ const NavItem = ({href, icon, label, currentUrl}) => {
   const isActive = currentUrl.pathname === href
   return (
     <StyledNavItem isActive={isActive}>
-      <Link href={href} prefetch>
+      <Link href={href}>
         <Flex alignItems='center'>
           <Box>
             {icon}
