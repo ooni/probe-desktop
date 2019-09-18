@@ -14,9 +14,7 @@ import {
 
 import Link from 'next/link'
 
-import MdWeb from 'react-icons/lib/md/web'
-import MdDone from 'react-icons/lib/md/done'
-import MdClear from 'react-icons/lib/md/clear'
+import { MdWeb, MdDone, MdClear } from 'react-icons/md'
 import { testGroups } from '../nettests'
 import RightArrow from '../RightArrow'
 

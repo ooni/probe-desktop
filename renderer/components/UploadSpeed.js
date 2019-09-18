@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from 'ooni-components'
 
-import MdArrowUpward from 'react-icons/lib/md/arrow-upward'
+import { MdArrowUpward } from 'react-icons/md'
 import formatSpeed from './formatSpeed'
 
 const UploadSpeed = ({bits}) => {

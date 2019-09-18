@@ -28,7 +28,7 @@ import DownloadSpeed from '../DownloadSpeed'
 import VideoQuality from '../VideoQuality'
 
 // XXX this should be moved to the design-system
-import MdPriorityHigh from 'react-icons/lib/md/priority-high'
+import { MdPriorityHigh } from 'react-icons/md'
 
 import * as OOIcons from 'ooni-components/dist/icons'
 

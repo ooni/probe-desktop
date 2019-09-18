@@ -17,8 +17,7 @@ import { FormattedMessage } from 'react-intl'
 
 import { testGroups } from '../nettests'
 
-import MdKeyboardArrowUp from 'react-icons/lib/md/keyboard-arrow-up'
-import MdKeyboardArrowDown from 'react-icons/lib/md/keyboard-arrow-down'
+import { MdKeyboardArrowUp, MdKeyboardArrowDown} from 'react-icons/md'
 
 import Lottie from 'react-lottie'
 

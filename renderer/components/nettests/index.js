@@ -9,7 +9,7 @@ import {
 import { FacebookMessengerDetails } from './im/facebook-messenger'
 
 // XXX this should be moved to the design-system
-import IoSpeedometer from 'react-icons/lib/io/speedometer'
+import { IoMdSpeedometer } from 'react-icons/io'
 
 import im from './im'
 import middlebox from './middleboxes'
@@ -85,7 +85,7 @@ export const testGroups = {
     'description': '',
     'longDescription': '',
     'name': 'Default',
-    'icon': <IoSpeedometer />,
+    'icon': <IoMdSpeedometer />,
   }
 }
 

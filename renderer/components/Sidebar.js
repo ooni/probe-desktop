@@ -12,9 +12,8 @@ import {
 import Link from 'next/link'
 import { FormattedMessage } from 'react-intl'
 
-import MdWeb from 'react-icons/lib/md/web'
-import MdHistory from 'react-icons/lib/md/history'
-import MdCog from 'react-icons/lib/fa/cog'
+import { MdWeb, MdHistory } from 'react-icons/md'
+import { FaCog } from 'react-icons/fa'
 
 const StyledNavItem = styled.div`
   position: relative;
@@ -76,7 +75,7 @@ const navigationPaths = {
   },
   '/settings': {
     name: <FormattedMessage id='Settings.Title' />,
-    icon: <MdCog size={40} />
+    icon: <FaCog size={40} />
   }
 }
 

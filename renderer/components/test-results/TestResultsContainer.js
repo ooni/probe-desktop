@@ -9,8 +9,7 @@ import Moment from 'moment'
 import { extendMoment } from 'moment-range'
 const moment = extendMoment(Moment)
 
-import MdArrowDownward from 'react-icons/lib/md/arrow-downward'
-import MdArrowUpward from 'react-icons/lib/md/arrow-upward'
+import { MdArrowUpward, MdArrowDownward } from 'react-icons/md'
 
 import ResultRow from './ResultRow'
 import HumanFilesize from '../HumanFilesize'
