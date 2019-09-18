@@ -1,6 +1,6 @@
 import electron from 'electron'
 import React from 'react'
-
+import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
 
 import Layout from '../components/Layout'
@@ -113,33 +113,33 @@ class Settings extends React.Component {
             <TopBar>
               <Flex alignItems='center'>
                 <Box pl={3}>
-                  <Heading h={3}>Settings</Heading>
+                  <Heading h={3}><FormattedMessage id='Settings.Title' /></Heading>
                 </Box>
               </Flex>
             </TopBar>
             <Container pt={3}>
-              <Heading h={4}>Sharing</Heading>
+              <Heading h={4}><FormattedMessage id='Settings.Sharing.Label' /></Heading>
               <BooleanOption
                 onConfigSet={this.reloadConfig}
-                label='Publish results'
+                label={<FormattedMessage id='Settings.Sharing.UploadResults' />}
                 optionKey='sharing.upload_results'
                 config={config} />
 
               <BooleanOption
                 onConfigSet={this.reloadConfig}
-                label='Include network information'
+                label={<FormattedMessage id='Settings.Sharing.IncludeNetwork' />}
                 optionKey='sharing.include_asn'
                 config={config} />
 
               <BooleanOption
                 onConfigSet={this.reloadConfig}
-                label='Include country information'
+                label={<FormattedMessage id='Settings.Sharing.IncludeCountryCode' />}
                 optionKey='sharing.include_country'
                 config={config} />
 
               <BooleanOption
                 onConfigSet={this.reloadConfig}
-                label='Include my IP address'
+                label={<FormattedMessage id='Settings.Sharing.IncludeIP' />}
                 optionKey='sharing.include_ip'
                 config={config} />
               <Text pt={3}>OONI Probe Desktop v{pkgJson.version}</Text>

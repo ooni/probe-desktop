@@ -9,7 +9,7 @@ import {
   Box,
   Heading
 } from 'ooni-components'
-
+import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
 
 import IconUpload from 'react-icons/lib/md/file-upload'
@@ -45,19 +45,19 @@ const MeasurementOverview = ({title, startTime, runtime, networkName, country, a
       <Container style={{padding: '20px 60px'}}>
 
         <TwoColumnTable
-          left={<Text><MdSwapVert size={20} />Date</Text>}
+          left={<Text><MdSwapVert size={20} /><FormattedMessage id='TestResults.Summary.Hero.DateAndTime' /></Text>}
           right={<Text>{startTime && moment(startTime).format('lll')}</Text>} />
 
         <TwoColumnTable
-          left={<Text><MdTimer size={20} />Total runtime</Text>}
+          left={<Text><MdTimer size={20} /><FormattedMessage id='TestResults.Summary.Hero.Runtime' /></Text>}
           right={<Text>{runtime.toFixed(2)} s</Text>} />
 
         <TwoColumnTable
-          left={<Text><MdFlag size={20} />Country</Text>}
+          left={<Text><MdFlag size={20} /><FormattedMessage id='TestResults.Summary.Hero.Country' /></Text>}
           right={<Text>{country}</Text>} />
 
         <TwoColumnTable
-          left={<Text><MdPublic  size={20} />Network</Text>}
+          left={<Text><MdPublic  size={20} /><FormattedMessage id='TestResults.Summary.Hero.Network' /></Text>}
           right={<Text>{networkName} (AS{asn})</Text>} />
       </Container>
     </MeasurementOverviewContainer>
