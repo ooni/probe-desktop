@@ -10,6 +10,7 @@ import {
 } from 'ooni-components'
 
 import Link from 'next/link'
+import { FormattedMessage } from 'react-intl'
 
 import { MdWeb, MdHistory } from 'react-icons/md'
 import { FaCog } from 'react-icons/fa'
@@ -65,15 +66,15 @@ const NavItem = ({href, icon, label, currentUrl}) => {
 
 const navigationPaths = {
   '/home': {
-    name: 'Home',
+    name: <FormattedMessage id='Dashboard.Tab.Label' />,
     icon: <MdWeb size={40} />
   },
   '/test-results': {
-    name: 'Test Results',
+    name: <FormattedMessage id='TestResults.Overview.Tab.Label' />,
     icon: <MdHistory size={40} />
   },
   '/settings': {
-    name: 'Settings',
+    name: <FormattedMessage id='Settings.Title' />,
     icon: <FaCog size={40} />
   }
 }

@@ -22,6 +22,7 @@ import {
   Container,
   Heading
 } from 'ooni-components'
+import { FormattedMessage } from 'react-intl'
 
 import StatBox from '../to-migrate/StatBox'
 import VerticalDivider from '../to-migrate/VerticalDivider'
@@ -35,7 +36,7 @@ const DataUsage = ({dataUsage}) => {
   return (
     <Flex flexDirection='column'>
       <LabelBox>
-      Data Usage
+        <FormattedMessage id='TestResults.Overview.Hero.DataUsage' />
       </LabelBox>
       <Box>
         <Flex>
@@ -66,13 +67,13 @@ const ResultsHeader = ({testCount, networkCount, dataUsage}) => {
         <Flex>
           <Box width={1/3}>
             <StatBox
-              label='Tests'
+              label={<FormattedMessage id='TestResults.Overview.Hero.Tests' />}
               value={testCount} />
           </Box>
           <VerticalDivider />
           <Box width={1/3}>
             <StatBox
-              label='Networks'
+              label={<FormattedMessage id='TestResults.Overview.Hero.Networks' />}
               value={networkCount} />
           </Box>
           <VerticalDivider />
