@@ -16,6 +16,8 @@ import middlebox from './middleboxes'
 import performance from './performance'
 import websites from './websites'
 
+import web_connectivity from './websites/WebConnectivity'
+
 import {
   Cross,
   Tick
@@ -80,6 +82,24 @@ export const testGroups = {
   im,
   middlebox,
   performance,
+  'default': {
+    'color': theme.colors.blue5,
+    'description': '',
+    'longDescription': '',
+    'name': 'Default',
+    'icon': <IoMdSpeedometer />,
+  }
+}
+
+export const tests = {
+  web_connectivity,
+  http_header_field_manipulation: web_connectivity,
+  http_invalid_request_line: web_connectivity,
+  telegram: web_connectivity,
+  whatsapp: web_connectivity,
+  ndt: web_connectivity,
+  dash: web_connectivity,
+  vanilla_tor: web_connectivity,
   'default': {
     'color': theme.colors.blue5,
     'description': '',

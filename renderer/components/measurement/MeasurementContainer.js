@@ -22,10 +22,13 @@ import {
   MdPublic
 } from 'react-icons/md'
 
-import { renderDetails, testGroups } from '../nettests'
+import { renderDetails, testGroups, tests } from '../nettests'
 import TwoColumnTable from '../TwoColumnTable'
 import BackButton from '../BackButton'
 import { StickyContainer, Sticky } from 'react-sticky'
+
+import { FacebookMessengerDetails } from '../nettests/im/facebook-messenger'
+import { WebConnectivity } from '../nettests/websites/WebConnectivity'
 
 const MeasurementOverviewContainer = styled.div`
   position: relative;
@@ -97,30 +100,76 @@ const HeaderContent = styled(Box)`
   -webkit-app-region: drag;
 `
 
+const detailsMap = {
+  web_connectivity: WebConnectivity,
+  facebook_messenger: FacebookMessengerDetails
+}
+
+const Placeholder = ({ id }) => <Box px={5} py={3} bg='gray3'>{id}</Box>
+
+const StickyHero = ({isSticky, hero, collapsedHero}) => {
+  if (isSticky) {
+    return (
+      <React.Fragment>
+        {collapsedHero}
+      </React.Fragment>
+    )
+  } else {
+    return (
+      <div>{hero}</div>
+    )
+  }
+}
+
+const MeasurementDetailContainer = ({ measurement, ...props }) => {
+  const TestDetails = detailsMap[measurement.test_name]
+  return (
+    <TestDetails measurement={measurement} {...props} />
+  )
+}
+
 const MeasurementContainer = ({measurement}) => {
   const overviewProps = mapOverviewProps(measurement)
 
   return (
-    <StickyContainer>
-      <Sticky topOffset={100}>
-        {({
-          style,
-          isSticky
-        }) => {
-          return (
-            <HeaderContent
-              bg={overviewProps.group.color}
-              style={style}>
-              <MeasurementOverview
-                isSticky={isSticky}
-                {...overviewProps}
-              />
-            </HeaderContent>
-          )
-        }}
-      </Sticky>
-      {renderDetails(measurement)}
-    </StickyContainer>
+    <MeasurementDetailContainer
+      measurement={measurement}
+      render={({
+        hero,
+        collapsedHero,
+        details
+      }) => (
+        <StickyContainer>
+          <Sticky topOffset={100}>
+            {({
+              style,
+              isSticky
+            }) => {
+              // TODO: Insert <BackButton /> somewhere on the top
+              return (
+                <Box style={style}>
+                  <StickyHero
+                    isSticky={isSticky}
+                    hero={hero}
+                    collapsedHero={collapsedHero}
+                  />
+                </Box>
+              )
+            }}
+          </Sticky>
+          <Flex my={3} justifyContent='space-around'>
+            <Placeholder id='Methodology' />
+            <Placeholder id='Runtime: 2s' />
+          </Flex>
+          {details}
+          <Flex my={3} justifyContent='space-around'>
+            <Placeholder id='Raw Data' />
+            <Placeholder id='Explorer URL' />
+            <Placeholder id='View Log' />
+          </Flex>
+        </StickyContainer>
+      )}
+    />
   )
 
 }
