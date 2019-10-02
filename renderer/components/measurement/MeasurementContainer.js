@@ -1,15 +1,14 @@
 import React from 'react'
-
+import PropTypes from 'prop-types'
 import moment from 'moment'
-
+import { Text } from 'rebass'
 import {
-  Text,
   Container,
   Flex,
   Box,
   Heading
 } from 'ooni-components'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, FormattedDate } from 'react-intl'
 import styled from 'styled-components'
 
 
@@ -107,16 +106,65 @@ const detailsMap = {
 
 const Placeholder = ({ id }) => <Box px={5} py={3} bg='gray3'>{id}</Box>
 
-const StickyHero = ({isSticky, hero, collapsedHero}) => {
+const HeroItemBox = ({ label, content, ...props }) => (
+  <Box p={3} {...props}>
+    <Text fontSize={24} fontWeight={300}>{content}</Text>
+    <Text fontSize={16} fontWeight={600}>{label}</Text>
+  </Box>
+)
+
+HeroItemBox.propTypes = {
+  label: PropTypes.node,
+  content: PropTypes.node
+}
+
+const StickyHero = ({
+  isSticky,
+  bg,
+  testName,
+  startTime,
+  networkName,
+  asn
+}) => {
+  const testFullName = tests[testName].name
   if (isSticky) {
     return (
-      <React.Fragment>
-        {collapsedHero}
-      </React.Fragment>
+      <Flex bg={bg} color='white' alignItems='center'>
+        <Box><BackButton /></Box>
+        <Box><Heading textAlign='center' h={4}>{testFullName}</Heading></Box>
+      </Flex>
     )
   } else {
     return (
-      <div>{hero}</div>
+      <Flex flexWrap='wrap' bg={bg} color='white'>
+        <Box width={1}>
+          <Flex>
+            <Box>
+              <BackButton />
+            </Box>
+            <Box>
+              <Heading textAlign='center' h={4}>{testFullName}</Heading>
+            </Box>
+          </Flex>
+        </Box>
+        <Box width={1} my={4}>
+
+        </Box>
+        <Box width={1}>
+          <Flex flexWrap='wrap'>
+            <HeroItemBox
+              width={1/2}
+              label={<FormattedMessage id='TestResults.Summary.Hero.DateAndTime' />}
+              content={moment.utc(new Date(startTime)).format('lll')}
+            />
+            <HeroItemBox
+              width={1/2}
+              label={<FormattedMessage id='TestResults.Summary.Hero.Network' />}
+              content={`${networkName} (AS${asn})`}
+            />
+          </Flex>
+        </Box>
+      </Flex>
     )
   }
 }
@@ -128,13 +176,22 @@ const MeasurementDetailContainer = ({ measurement, ...props }) => {
   )
 }
 
+MeasurementDetailContainer.propTypes = {
+  measurement: PropTypes.object
+}
+
 const MeasurementContainer = ({measurement}) => {
   const overviewProps = mapOverviewProps(measurement)
+  const testName = measurement.test_name
+  const startTime = measurement.start_time
+  const networkName = measurement.network_name
+  const asn = measurement.asn
 
   return (
     <MeasurementDetailContainer
       measurement={measurement}
       render={({
+        heroBG,
         hero,
         collapsedHero,
         details
@@ -145,11 +202,15 @@ const MeasurementContainer = ({measurement}) => {
               style,
               isSticky
             }) => {
-              // TODO: Insert <BackButton /> somewhere on the top
               return (
                 <Box style={style}>
                   <StickyHero
                     isSticky={isSticky}
+                    bg={heroBG}
+                    testName={testName}
+                    startTime={startTime}
+                    networkName={networkName}
+                    asn={asn}
                     hero={hero}
                     collapsedHero={collapsedHero}
                   />
@@ -172,6 +233,10 @@ const MeasurementContainer = ({measurement}) => {
     />
   )
 
+}
+
+MeasurementContainer.propTypes = {
+  measurement: PropTypes.object
 }
 
 export default MeasurementContainer
