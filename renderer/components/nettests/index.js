@@ -91,7 +91,12 @@ export const testGroups = {
   }
 }
 
+// Metadata for tests
+// Contains: {
+//  name: Full descriptive name of the test, translated with <FormattedMessage>
+//}
 export const tests = {
+  // TODO: (sarathms) Replace each one with their own implementations when ready
   web_connectivity,
   http_header_field_manipulation: web_connectivity,
   http_invalid_request_line: web_connectivity,
@@ -101,11 +106,7 @@ export const tests = {
   dash: web_connectivity,
   vanilla_tor: web_connectivity,
   'default': {
-    'color': theme.colors.blue5,
-    'description': '',
-    'longDescription': '',
     'name': 'Default',
-    'icon': <IoMdSpeedometer />,
   }
 }
 

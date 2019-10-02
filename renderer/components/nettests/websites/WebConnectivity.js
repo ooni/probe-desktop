@@ -30,7 +30,7 @@ const WebConnectivity = ({measurement, render}) => {
   return (
     <div>
       {render({
-        heroBG: 'green8', // TODO: Determine color based on presence of anomaly
+        heroBG: 'green8', // TODO: (sarathms) Determine color based on presence of anomaly
         details: <WebDetails />
       })}
     </div>
