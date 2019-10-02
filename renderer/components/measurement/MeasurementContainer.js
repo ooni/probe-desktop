@@ -99,6 +99,7 @@ const HeaderContent = styled(Box)`
   -webkit-app-region: drag;
 `
 
+// TODO: (sarathms) Add rest of the implementations when ready
 const detailsMap = {
   web_connectivity: WebConnectivity,
   facebook_messenger: FacebookMessengerDetails
