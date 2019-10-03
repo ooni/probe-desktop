@@ -1,7 +1,7 @@
 /* global require */
 
 const { execSync } = require('child_process')
-const { readFileSync, existsSync } = require('fs')
+const { readFileSync } = require('fs')
 const pkgJson = require('../package.json')
 
 const probeVersion = pkgJson['probeVersion']
@@ -9,10 +9,12 @@ const baseURL = `https://github.com/ooni/probe-cli/releases/download/v${probeVer
 const download = () => {
   let checksums = {}
 
+  execSync('mkdir -p bin/')
+
   execSync(`curl -#f -L -o ./bin/ooniprobe_checksums.txt ${baseURL}/ooniprobe_checksums.txt`)
   const checksumsData = readFileSync('./bin/ooniprobe_checksums.txt')
   checksumsData.toString().split('\n').forEach(line => {
-    if (line === "") {
+    if (line === '') {
       return
     }
     const [sum, tarPath] = line.split('  ')
