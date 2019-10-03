@@ -9,23 +9,24 @@ const baseURL = `https://github.com/ooni/probe-cli/releases/download/v${probeVer
 const download = () => {
   let checksums = {}
 
-  const dists = [
-    'windows_amd64',
-    'linux_amd64',
-    'darwin_amd64'
-  ]
-  execSync(`curl -L -o ./bin/ooniprobe_checksums.txt ${baseURL}/ooniprobe_checksums.txt`)
+  execSync(`curl -#f -L -o ./bin/ooniprobe_checksums.txt ${baseURL}/ooniprobe_checksums.txt`)
   const checksumsData = readFileSync('./bin/ooniprobe_checksums.txt')
   checksumsData.toString().split('\n').forEach(line => {
-    const [sum, pkg] = line.split('  ')
-    checksums[pkg] = sum
-  })
-  dists.forEach(d => {
-    const tarPath = `ooniprobe_${probeVersion}_${d}.tar.gz`
+    if (line === "") {
+      return
+    }
+    const [sum, tarPath] = line.split('  ')
+    checksums[tarPath] = sum
+    const re = /^ooniprobe_v[0-9.a-z-]+_((darwin|linux|windows)_amd64).tar.gz$/
+    const result = tarPath.match(re)
+    if (!result) {
+      throw Error(`The path '${tarPath}' does not match our expectations`)
+    }
+    const d = result[1]
     const downloadURL = `${baseURL}/${tarPath}`
     console.log(`Downloading ${downloadURL}`)
     execSync(`mkdir -p bin/${d}`)
-    execSync(`curl -L -o ./bin/${tarPath} ${downloadURL}`)
+    execSync(`curl -#f -L -o ./bin/${tarPath} ${downloadURL}`)
     execSync(`cd ./bin/${d} && tar xzf ../${tarPath}`)
     const shasum = execSync(`shasum -a 256 ./bin/${tarPath}`).toString().split(' ')[0]
     if (shasum !== checksums[tarPath]) {
@@ -33,10 +34,6 @@ const download = () => {
     }
     execSync(`rm ./bin/${tarPath}`)
   })
-
-  if (!existsSync('./bin/cert.pem')) {
-    execSync('cp /etc/ssl/cert.pem ./bin/cert.pem')
-  }
 }
 
 download()
