@@ -4,7 +4,7 @@
   "author": "Open Observatory of Network Interference (OONI) <contact@openobservatory.org>",
   "productName": "OONI Probe",
   "version": "3.0.0-beta.4",
-  "probeVersion": "3.0.0-beta.3",
+  "probeVersion": "3.0.0-beta.4",
   "main": "main/index.js",
   "license": "MIT",
   "repository": "ooni/probe-desktop",
