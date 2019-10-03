@@ -52,7 +52,7 @@ const getBinaryDirectory = () => {
 const getBinaryPath = () => {
   const directoryPath = getBinaryDirectory()
   const suffix = getBinarySuffix()
-  return path.join(directoryPath, 'ooni' + suffix)
+  return path.join(directoryPath, 'ooniprobe' + suffix)
 }
 
 const getSSLCertFilePath = () => {
