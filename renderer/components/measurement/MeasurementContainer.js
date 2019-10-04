@@ -181,7 +181,7 @@ MeasurementDetailContainer.propTypes = {
   measurement: PropTypes.object
 }
 
-const MeasurementContainer = ({measurement}) => {
+const MeasurementContainer = ({measurement, isAnomaly}) => {
   const overviewProps = mapOverviewProps(measurement)
   const testName = measurement.test_name
   const startTime = measurement.start_time
@@ -190,6 +190,7 @@ const MeasurementContainer = ({measurement}) => {
 
   return (
     <MeasurementDetailContainer
+      isAnomaly={isAnomaly}
       measurement={measurement}
       render={({
         heroBG,

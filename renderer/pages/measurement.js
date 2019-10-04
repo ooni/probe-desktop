@@ -73,12 +73,16 @@ class Measurement extends React.Component {
       measurement,
       error
     } = this.state
-    console.log('msmt', measurement)
+
+    const {
+      isAnomaly // comes from <MeasurementRow> in the results list
+    } = this.props.router.query
+
     return (
       <Layout>
         <Sidebar>
           <LoadingOverlay loading={loading} />
-          {!loading && <MeasurementContainer measurement={measurement} />}
+          {!loading && <MeasurementContainer measurement={measurement} isAnomaly={isAnomaly}/>}
           {error && <ErrorView error={error} />}
         </Sidebar>
       </Layout>
