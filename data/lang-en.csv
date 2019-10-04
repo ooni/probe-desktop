@@ -381,3 +381,7 @@ CategoryCode.COMM.Description,Sites of commercial services and products.,
 CategoryCode.CTRL.Description,Benign or innocuous content used as a control.,
 CategoryCode.IGO.Description,"Sites of intergovernmental organizations, such as the United Nations.",
 CategoryCode.MISC.Description,Sites that haven't been categorized yet.,
+TestResults.Details.Websites.LikelyBlocked.Content.Paragraph,"{{WebsiteURL}} is likely blocked by means of {{BlockingReason}}.
+
+Note: False positives can occur. Learn more [here](https://ooni.io/nettest/web-connectivity/).",
+TestResults.Details.Websites.Reachable.Content.Paragraph,"{{WebsiteURL}} is accessible.",

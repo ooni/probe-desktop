@@ -1,27 +1,36 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
+import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
 import { Flex, Box, Text } from 'ooni-components'
 
-const WebConnectivity = ({measurement, render}) => {
+const WebConnectivity = ({measurement, isAnomaly, render}) => {
+
+  const { url } = measurement
 
   const WebDetails = () => (
-    <Flex justifyContent='center'>
+    <Flex>
       <Box>
-        <Flex my={6}>
-          <Box> Web Details </Box>
-          <Box>  </Box>
-        </Flex>
-        <Flex my={6}>
-          <Box> More Details </Box>
-          <Box>  </Box>
-        </Flex>
-        <Flex my={6}>
-          <Box> More Details </Box>
-          <Box>  </Box>
-        </Flex>
-        <Flex my={6}>
-          <Box> More Details </Box>
-          <Box>  </Box>
+        <Flex my={3} flexDirection='column'>
+          {isAnomaly ? (
+            <Box>
+              <FormattedMessage
+                id='TestResults.Details.Websites.Reachable.Content.Paragraph'
+                values={{
+                  WebsiteURL: url
+                }}
+              />
+            </Box>
+          ) : (
+            <Box>
+              <FormattedMarkdownMessage
+                id='TestResults.Details.Websites.LikelyBlocked.Content.Paragraph'
+                values={{
+                  WebsiteURL: url,
+                  BlockingReason: 'DNS'
+                }}
+              />
+            </Box>
+          )}
         </Flex>
       </Box>
     </Flex>
