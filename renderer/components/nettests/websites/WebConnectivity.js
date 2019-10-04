@@ -1,14 +1,16 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
 import { Flex, Box, Text } from 'ooni-components'
+
+import FullHeightFlex from '../../FullHeightFlex'
+import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
 
 const WebConnectivity = ({measurement, isAnomaly, render}) => {
 
   const { url } = measurement
 
   const WebDetails = () => (
-    <Flex>
+    <FullHeightFlex>
       <Box>
         <Flex my={3} flexDirection='column'>
           {isAnomaly ? (
@@ -33,7 +35,7 @@ const WebConnectivity = ({measurement, isAnomaly, render}) => {
           )}
         </Flex>
       </Box>
-    </Flex>
+    </FullHeightFlex>
   )
 
   return (
