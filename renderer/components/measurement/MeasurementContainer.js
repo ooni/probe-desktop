@@ -220,16 +220,18 @@ const MeasurementContainer = ({measurement, isAnomaly}) => {
               )
             }}
           </Sticky>
-          <Flex my={3} justifyContent='space-around'>
-            <Placeholder id='Methodology' />
-            <Placeholder id='Runtime: 2s' />
-          </Flex>
-          {details}
-          <Flex my={3} justifyContent='space-around'>
-            <Placeholder id='Raw Data' />
-            <Placeholder id='Explorer URL' />
-            <Placeholder id='View Log' />
-          </Flex>
+          <Container>
+            <Flex my={3} justifyContent='space-around'>
+              <Placeholder id='Methodology' />
+              <Placeholder id='Runtime: 2s' />
+            </Flex>
+            {details}
+            <Flex my={3} justifyContent='space-around'>
+              <Placeholder id='Raw Data' />
+              <Placeholder id='Explorer URL' />
+              <Placeholder id='View Log' />
+            </Flex>
+          </Container>
         </StickyContainer>
       )}
     />
