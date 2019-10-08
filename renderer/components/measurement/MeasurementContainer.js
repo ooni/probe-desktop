@@ -9,97 +9,17 @@ import {
   Heading,
   theme
 } from 'ooni-components'
-import { FormattedMessage, FormattedDate } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
 import { Tick } from 'ooni-components/dist/icons'
 import { MdPriorityHigh } from 'react-icons/md'
 
-import {
-  IconUpload,
-  IconDownload,
-  MdFlag,
-  MdTimer,
-  MdSwapVert,
-  MdPublic
-} from 'react-icons/md'
-
-import { renderDetails, testGroups, tests } from '../nettests'
-import TwoColumnTable from '../TwoColumnTable'
+import { tests } from '../nettests'
 import BackButton from '../BackButton'
 import { StickyContainer, Sticky } from 'react-sticky'
 
 import { FacebookMessengerDetails } from '../nettests/im/facebook-messenger'
 import { WebConnectivity } from '../nettests/websites/WebConnectivity'
-
-const MeasurementOverviewContainer = styled.div`
-  position: relative;
-  width: 100%;
-  color: ${props => props.theme.colors.white};
-`
-
-// XXX There is a lot of duplication with ./TestResultDetails.ResultOverview
-const MeasurementOverview = ({title, startTime, runtime, networkName, country, asn, isSticky}) => {
-  return (
-    <MeasurementOverviewContainer>
-      <Flex justifyContent='center' alignItems='center'>
-        <Box>
-          <BackButton />
-        </Box>
-        <Box width={1}>
-          <Heading center h={3}>{startTime && moment(startTime).format('lll')}</Heading>
-        </Box>
-      </Flex>
-      <Container style={{padding: '20px 60px'}}>
-
-        <TwoColumnTable
-          left={<Text><MdSwapVert size={20} /><FormattedMessage id='TestResults.Summary.Hero.DateAndTime' /></Text>}
-          right={<Text>{startTime && moment(startTime).format('lll')}</Text>} />
-
-        <TwoColumnTable
-          left={<Text><MdTimer size={20} /><FormattedMessage id='TestResults.Summary.Hero.Runtime' /></Text>}
-          right={<Text>{runtime.toFixed(2)} s</Text>} />
-
-        <TwoColumnTable
-          left={<Text><MdFlag size={20} /><FormattedMessage id='TestResults.Summary.Hero.Country' /></Text>}
-          right={<Text>{country}</Text>} />
-
-        <TwoColumnTable
-          left={<Text><MdPublic  size={20} /><FormattedMessage id='TestResults.Summary.Hero.Network' /></Text>}
-          right={<Text>{networkName} (AS{asn})</Text>} />
-      </Container>
-    </MeasurementOverviewContainer>
-  )
-}
-
-const mapOverviewProps = (msmt) => {
-  const groupName = msmt.test_group_name || 'default'
-  let props = {
-    groupName,
-    group: testGroups[groupName],
-  }
-  if (!msmt) {
-    return props
-  }
-  props = {
-    ...props,
-    title: msmt.test_name,
-    startTime: msmt.start_time || null,
-    dataUsageUp: msmt.data_usage_up || 0,
-    dataUsageDown: msmt.data_usage_down || 0,
-    runtime: msmt.runtime || 0,
-    networkName: msmt.network_name || '',
-    country: msmt.network_country_code || '',
-    asn: msmt.asn || '',
-  }
-  return props
-}
-
-const HeaderContent = styled(Box)`
-  background-color: ${props => props.bg};
-  color: ${props => props.theme.colors.white};
-  /* This makes it possible to drag the window around from the side bar */
-  -webkit-app-region: drag;
-`
 
 // TODO: (sarathms) Add rest of the implementations when ready
 const detailsMap = {
@@ -226,7 +146,6 @@ MeasurementDetailContainer.propTypes = {
 }
 
 const MeasurementContainer = ({measurement, isAnomaly}) => {
-  const overviewProps = mapOverviewProps(measurement)
   const testName = measurement.test_name
   const startTime = measurement.start_time
   const networkName = measurement.network_name
