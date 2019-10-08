@@ -74,9 +74,9 @@ class Measurement extends React.Component {
       error
     } = this.state
 
-    const {
-      isAnomaly // comes from <MeasurementRow> in the results list
-    } = this.props.router.query
+    // comes from <MeasurementRow> in the results list
+    // converts the boolean in query string to true boolean
+    const isAnomaly = this.props.router.query.isAnomaly === 'true'
 
     return (
       <Layout>

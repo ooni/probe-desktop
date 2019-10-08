@@ -6,11 +6,13 @@ import {
   Container,
   Flex,
   Box,
-  Heading
+  Heading,
+  theme
 } from 'ooni-components'
 import { FormattedMessage, FormattedDate } from 'react-intl'
 import styled from 'styled-components'
-
+import { Tick } from 'ooni-components/dist/icons'
+import { MdPriorityHigh } from 'react-icons/md'
 
 import {
   IconUpload,
@@ -105,6 +107,12 @@ const detailsMap = {
   facebook_messenger: FacebookMessengerDetails
 }
 
+export const colorMap = {
+  anomaly: theme.colors.yellow9,
+  reachable: theme.colors.green8,
+  error: theme.colors.gray6
+}
+
 const Placeholder = ({ id }) => <Box px={5} py={3} bg='gray3'>{id}</Box>
 
 const HeroItemBox = ({ label, content, ...props }) => (
@@ -119,37 +127,73 @@ HeroItemBox.propTypes = {
   content: PropTypes.node
 }
 
+const HeroLineItem = ({ size, fontWeight, children }) => (
+  <Flex justifyContent='center' my={3}>
+    <Text fontSize={size} fontWeight={fontWeight}>
+      {children}
+    </Text>
+  </Flex>
+)
+
+HeroLineItem.propTypes = {
+  size: PropTypes.number,
+  children: PropTypes.node
+}
+
 const StickyHero = ({
   isSticky,
+  isAnomaly,
   bg,
   testName,
   startTime,
   networkName,
-  asn
+  asn,
+  hero,
+  heroIcon,
+  heroTitle,
+  heroSubtitle
 }) => {
   const testFullName = tests[testName].name
+
+  let backgroundColor = bg
+  // If there is no bg override, determine color based on anomaly-ness
+  if (!backgroundColor) {
+    backgroundColor = isAnomaly ? colorMap.anomaly : colorMap.reachable
+  }
+
+  if (!heroIcon) {
+    heroIcon = isAnomaly ? <MdPriorityHigh /> : <Tick />
+  }
+
   if (isSticky) {
     return (
-      <Flex bg={bg} color='white' alignItems='center'>
+      <Flex bg={backgroundColor} color='white' alignItems='center'>
         <Box><BackButton /></Box>
         <Box><Heading textAlign='center' h={4}>{testFullName}</Heading></Box>
       </Flex>
     )
   } else {
+    // If a test wants to show a custom Hero, let it take over
+    if (hero) {
+      return hero
+    }
+
     return (
-      <Flex flexWrap='wrap' bg={bg} color='white'>
+      <Flex flexDirection='column' bg={backgroundColor} color='white'>
         <Box width={1}>
           <Flex>
             <Box>
               <BackButton />
             </Box>
-            <Box>
+            <Box width={7/8}>
               <Heading textAlign='center' h={4}>{testFullName}</Heading>
             </Box>
           </Flex>
         </Box>
-        <Box width={1} my={4}>
-
+        <Box width={1}>
+          <HeroLineItem size={60}>{heroIcon}</HeroLineItem>
+          <HeroLineItem size={24} fontWeight={900}>{heroTitle}</HeroLineItem>
+          <HeroLineItem size={16}>{heroSubtitle}</HeroLineItem>
         </Box>
         <Box width={1}>
           <Flex flexWrap='wrap'>
@@ -193,8 +237,11 @@ const MeasurementContainer = ({measurement, isAnomaly}) => {
       isAnomaly={isAnomaly}
       measurement={measurement}
       render={({
-        heroBG,
         hero,
+        heroBG,
+        heroIcon,
+        heroTitle,
+        heroSubtitle,
         collapsedHero,
         details
       }) => (
@@ -208,12 +255,16 @@ const MeasurementContainer = ({measurement, isAnomaly}) => {
                 <Box style={style}>
                   <StickyHero
                     isSticky={isSticky}
+                    isAnomaly={isAnomaly}
                     bg={heroBG}
                     testName={testName}
                     startTime={startTime}
                     networkName={networkName}
                     asn={asn}
                     hero={hero}
+                    heroIcon={heroIcon}
+                    heroTitle={heroTitle}
+                    heroSubtitle={heroSubtitle}
                     collapsedHero={collapsedHero}
                   />
                 </Box>
@@ -221,7 +272,7 @@ const MeasurementContainer = ({measurement, isAnomaly}) => {
             }}
           </Sticky>
           <Container>
-            <Flex flexDirection='column' style={{ 'minHeight': '66vh' }}>
+            <Flex flexDirection='column' style={{ 'minHeight': '60vh' }}>
               <Flex my={3} justifyContent='space-around'>
                 <Placeholder id='Methodology' />
                 <Placeholder id='Runtime: 2s' />
@@ -242,7 +293,8 @@ const MeasurementContainer = ({measurement, isAnomaly}) => {
 }
 
 MeasurementContainer.propTypes = {
-  measurement: PropTypes.object
+  measurement: PropTypes.object,
+  isAnomaly: PropTypes.bool
 }
 
 export default MeasurementContainer
