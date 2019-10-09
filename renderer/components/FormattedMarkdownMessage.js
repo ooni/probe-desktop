@@ -39,8 +39,8 @@ class FormattedMarkdownMessage extends React.Component {
   render() {
     const { formatMessage } = this.context.intl
     const { id, defaultMessage, values, description } = this.props
-    const messageDescriptor = { id, defaultMessage, values, description }
-    const message = formatMessage(messageDescriptor)
+    const messageDescriptor = { id, defaultMessage, description }
+    const message = formatMessage(messageDescriptor, values)
     // When the message is the ID means it's not defined and we just emit not
     // element
     if (message === id) {

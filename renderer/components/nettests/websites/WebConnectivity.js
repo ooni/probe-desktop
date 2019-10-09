@@ -1,40 +1,82 @@
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
+import PropTypes from 'prop-types'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import { Flex, Box, Text } from 'ooni-components'
 
-const WebConnectivity = ({measurement, render}) => {
+import FullHeightFlex from '../../FullHeightFlex'
+import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
+
+const WebConnectivity = injectIntl(({measurement, isAnomaly, render, intl}) => {
+
+  const { url, test_keys } = measurement
+  const testKeys = JSON.parse(test_keys)
+
+  let blockingReason = '' // TODO: a reasonable default for "...by means of ___"
+  switch (testKeys.blocking) {
+  case 'tcp_ip':
+    blockingReason = intl.formatMessage({ id: 'TestResults.Details.Websites.LikelyBlocked.BlockingReason.TCPIP' })
+    break
+  case 'dns':
+    blockingReason = intl.formatMessage({ id: 'TestResults.Details.Websites.LikelyBlocked.BlockingReason.DNS' })
+    break
+  case 'http-diff':
+    blockingReason = intl.formatMessage({ id: 'TestResults.Details.Websites.LikelyBlocked.BlockingReason.HTTPDiff' })
+    break
+  case 'http-failure':
+    blockingReason = intl.formatMessage({ id: 'TestResults.Details.Websites.LikelyBlocked.BlockingReason.HTTPFailure' })
+    break
+  }
 
   const WebDetails = () => (
-    <Flex justifyContent='center'>
+    <FullHeightFlex>
       <Box>
-        <Flex my={6}>
-          <Box> Web Details </Box>
-          <Box>  </Box>
-        </Flex>
-        <Flex my={6}>
-          <Box> More Details </Box>
-          <Box>  </Box>
-        </Flex>
-        <Flex my={6}>
-          <Box> More Details </Box>
-          <Box>  </Box>
-        </Flex>
-        <Flex my={6}>
-          <Box> More Details </Box>
-          <Box>  </Box>
+        <Flex my={3} flexDirection='column'>
+          {isAnomaly ? (
+            <Box>
+              <FormattedMarkdownMessage
+                id='TestResults.Details.Websites.LikelyBlocked.Content.Paragraph'
+                values={{
+                  WebsiteURL: url,
+                  BlockingReason: blockingReason
+                }}
+              />
+            </Box>
+          ) : (
+            <Box>
+              <FormattedMessage
+                id='TestResults.Details.Websites.Reachable.Content.Paragraph'
+                values={{
+                  WebsiteURL: url
+                }}
+              />
+            </Box>
+          )}
         </Flex>
       </Box>
-    </Flex>
+    </FullHeightFlex>
+  )
+
+  const heroSubtitle = isAnomaly ? (
+    <FormattedMessage id='TestResults.Details.Websites.LikelyBlocked.Hero.Title' />
+  ) : (
+    <FormattedMessage id='TestResults.Details.Websites.Reachable.Hero.Title' />
   )
 
   return (
     <div>
       {render({
-        heroBG: 'green8', // TODO: (sarathms) Determine color based on presence of anomaly
-        details: <WebDetails />
+        heroTitle: url,
+        heroSubtitle: heroSubtitle,
+        details: <WebDetails isAnomaly={isAnomaly} />
       })}
     </div>
   )
+})
+
+WebConnectivity.propTypes = {
+  measurement: PropTypes.object,
+  isAnomaly: PropTypes.bool,
+  render: PropTypes.func
 }
 
 export { WebConnectivity }

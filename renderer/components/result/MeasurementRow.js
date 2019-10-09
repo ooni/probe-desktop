@@ -197,7 +197,8 @@ const MeasurementRow = ({groupName, measurement, router}) => {
   }
 
   const testKeys = JSON.parse(measurement['test_keys'])
-  const query = {...router.query, measurementID: measurement.id}
+  // We pass in `is_anomaly` here to use in the `/measurement` page
+  const query = {...router.query, measurementID: measurement.id, isAnomaly: measurement.is_anomaly}
 
   const RowElement = rowMap[groupName]
   return <RowElement measurement={measurement} query={query} testKeys={testKeys} isAnomaly={measurement['is_anomaly']} />
