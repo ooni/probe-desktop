@@ -1,6 +1,6 @@
 /* global require */
 import React, {Component} from 'react'
-import { IntlProvider, injectIntl } from 'react-intl'
+import { IntlProvider } from 'react-intl'
 
 let supportedMessages = {
   en: require('../../lang/en.json')
