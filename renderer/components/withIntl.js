@@ -16,7 +16,7 @@ const getLocale = () => {
 
 if (typeof window !== 'undefined' && window.ReactIntlLocaleData) {
   Object.keys(window.ReactIntlLocaleData).forEach((lang) => {
-    addLocaleData(window.ReactIntlLocaleData[lang])
+    // addLocaleData(window.ReactIntlLocaleData[lang])
   })
 }
 

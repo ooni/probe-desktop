@@ -2,7 +2,7 @@
 import React from 'react'
 
 import PropTypes from 'prop-types'
-
+import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 import remark from 'remark'
 import reactRenderer from 'remark-react'
@@ -35,23 +35,16 @@ const remarkReactComponents = {
   a: OpenLinkInBrowser
 }
 
-class FormattedMarkdownMessage extends React.Component {
-  render() {
-    const { formatMessage } = this.context.intl
-    const { id, defaultMessage, values, description } = this.props
-    const messageDescriptor = { id, defaultMessage, description }
-    const message = formatMessage(messageDescriptor, values)
-    // When the message is the ID means it's not defined and we just emit not
-    // element
-    if (message === id) {
-      return null
-    }
-    return remark().use(reactRenderer, {remarkReactComponents}).processSync(message).contents
+const FormattedMarkdownMessage = ({ id, defaultMessage, values, description }) => {
+  const { formatMessage } = useIntl()
+  const messageDescriptor = { id, defaultMessage, description }
+  const message = formatMessage(messageDescriptor, values)
+  // When the message is the ID means it's not defined and we just emit not
+  // element
+  if (message === id) {
+    return null
   }
-}
-
-FormattedMarkdownMessage.contextTypes = {
-  intl: PropTypes.object.isRequired
+  return remark().use(reactRenderer, {remarkReactComponents}).processSync(message).contents
 }
 
 export default FormattedMarkdownMessage

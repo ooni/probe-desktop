@@ -1,13 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { FormattedMessage, injectIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { Flex, Box, Text } from 'ooni-components'
 
 import FullHeightFlex from '../../FullHeightFlex'
 import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
 
-const WebConnectivity = injectIntl(({measurement, isAnomaly, render, intl}) => {
+const WebConnectivity = ({measurement, isAnomaly, render}) => {
 
+  const intl = useIntl()
   const { url, test_keys } = measurement
   const testKeys = JSON.parse(test_keys)
 
@@ -71,7 +72,7 @@ const WebConnectivity = injectIntl(({measurement, isAnomaly, render, intl}) => {
       })}
     </div>
   )
-})
+}
 
 WebConnectivity.propTypes = {
   measurement: PropTypes.object,
