@@ -1,6 +1,6 @@
 /* global require */
 import React, {Component} from 'react'
-import { IntlProvider, addLocaleData, injectIntl } from 'react-intl'
+import { IntlProvider, injectIntl } from 'react-intl'
 
 let supportedMessages = {
   en: require('../../lang/en.json')
@@ -12,12 +12,6 @@ const getLocale = () => {
     navigatorLang = window.navigator.userLanguage || window.navigator.language
   }
   return navigatorLang.split('-')[0]
-}
-
-if (typeof window !== 'undefined' && window.ReactIntlLocaleData) {
-  Object.keys(window.ReactIntlLocaleData).forEach((lang) => {
-    // addLocaleData(window.ReactIntlLocaleData[lang])
-  })
 }
 
 if (typeof window !== 'undefined' && window.OONITranslations) {
