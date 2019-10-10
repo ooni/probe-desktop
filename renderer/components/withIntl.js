@@ -19,8 +19,6 @@ if (typeof window !== 'undefined' && window.OONITranslations) {
 }
 
 const withIntl = (Page) => {
-  const IntlPage = injectIntl(Page)
-
   return class PageWithIntl extends Component {
     render () {
       const locale = getLocale()
@@ -33,7 +31,7 @@ const withIntl = (Page) => {
 
       return (
         <IntlProvider locale={locale} messages={messages} initialNow={now}>
-          <IntlPage {...this.props} />
+          <Page {...this.props} />
         </IntlProvider>
       )
     }
