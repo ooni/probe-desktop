@@ -31,7 +31,6 @@ class CustomDocument extends Document {
           <div className='root'>
             <Main />
           </div>
-          <script src='/static/locale-data.js' />
           <script src='/static/translations.js' />
           <NextScript />
         </body>

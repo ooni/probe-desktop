@@ -1,17 +1,11 @@
-const webpack = require('webpack')
+/* eslint-disable no-console */
+/* global require */
 const glob = require('glob')
-const { basename, resolve } = require('path')
-const csvParse = require('csv-parse/lib/sync');
+const { basename } = require('path')
+const csvParse = require('csv-parse/lib/sync')
 const { readFileSync, writeFileSync } = require('fs')
 
 const supportedLanguages = glob.sync('./lang/*.json').map((f) => basename(f, '.json'))
-
-const localeDataFilesContent = supportedLanguages
-  .map(lang => require.resolve(`react-intl/locale-data/${lang}`))
-  .map(path => readFileSync(path, 'utf8'))
-
-writeFileSync('./renderer/static/locale-data.js', localeDataFilesContent.join('\n'))
-console.log("> Wrote locale-data to: ./renderer/static/locale-data.js")
 
 const lang = csvParse(readFileSync('./data/lang-en.csv'), {from: 2})
   .reduce((messages, row) => {
@@ -26,7 +20,7 @@ const lang = csvParse(readFileSync('./data/lang-en.csv'), {from: 2})
   }, {})
 
 writeFileSync('./lang/en.json', JSON.stringify(lang, null, 2))
-console.log("> Wrote messages to: ./lang/en.json")
+console.log('> Wrote messages to: ./lang/en.json')
 
 const translationsMap = supportedLanguages
   .reduce((t, lang) => {
@@ -36,4 +30,4 @@ const translationsMap = supportedLanguages
 
 const translationsContent = `window.OONITranslations = ${JSON.stringify(translationsMap)}`
 writeFileSync('./renderer/static/translations.js', translationsContent)
-console.log("> Wrote translations to: ./renderer/static/translations.js")
+console.log('> Wrote translations to: ./renderer/static/translations.js')
