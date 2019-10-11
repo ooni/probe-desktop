@@ -20,6 +20,7 @@ import { StickyContainer, Sticky } from 'react-sticky'
 
 import { FacebookMessengerDetails } from '../nettests/im/facebook-messenger'
 import { WebConnectivity } from '../nettests/websites/WebConnectivity'
+import FullHeightFlex from '../FullHeightFlex'
 
 // TODO: (sarathms) Add rest of the implementations when ready
 const detailsMap = {
@@ -196,7 +197,9 @@ const MeasurementContainer = ({measurement, isAnomaly}) => {
                 <Placeholder id='Methodology' />
                 <Placeholder id='Runtime: 2s' />
               </Flex>
-              {details}
+              <FullHeightFlex>
+                {details}
+              </FullHeightFlex>
               <Flex my={3} justifyContent='space-around'>
                 <Placeholder id='Raw Data' />
                 <Placeholder id='Explorer URL' />
