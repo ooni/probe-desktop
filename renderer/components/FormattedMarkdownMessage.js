@@ -39,11 +39,7 @@ const FormattedMarkdownMessage = ({ id, defaultMessage, values, description }) =
   const { formatMessage } = useIntl()
   const messageDescriptor = { id, defaultMessage, description }
   const message = formatMessage(messageDescriptor, values)
-  // When the message is the ID means it's not defined and we just emit not
-  // element
-  if (message === id) {
-    return null
-  }
+
   return remark().use(reactRenderer, {remarkReactComponents}).processSync(message).contents
 }
 
