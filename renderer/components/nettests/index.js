@@ -18,6 +18,7 @@ import websites from './websites'
 
 import web_connectivity from './websites/WebConnectivity'
 import http_header_field_manipulation from './middleboxes/HttpHeaderFieldManipulation'
+import http_invalid_request_line from './middleboxes/HttpInvalidRequestLine'
 
 import {
   Cross,
@@ -100,7 +101,7 @@ export const tests = {
   // TODO: (sarathms) Replace each one with their own implementations when ready
   web_connectivity,
   http_header_field_manipulation,
-  http_invalid_request_line: web_connectivity,
+  http_invalid_request_line: http_invalid_request_line,
   telegram: web_connectivity,
   whatsapp: web_connectivity,
   ndt: web_connectivity,

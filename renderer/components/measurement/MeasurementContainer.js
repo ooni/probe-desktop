@@ -21,17 +21,18 @@ import { StickyContainer, Sticky } from 'react-sticky'
 import { FacebookMessengerDetails } from '../nettests/im/facebook-messenger'
 import { WebConnectivity } from '../nettests/websites/WebConnectivity'
 import { HttpHeaderFieldManipulation } from '../nettests/middleboxes/HttpHeaderFieldManipulation'
+import { HttpInvalidRequestLine } from '../nettests/middleboxes/HttpInvalidRequestLine'
 import FullHeightFlex from '../FullHeightFlex'
 
 // TODO: (sarathms) Add rest of the implementations when ready
 const detailsMap = {
   web_connectivity: WebConnectivity,
   http_header_field_manipulation: HttpHeaderFieldManipulation,
+  http_invalid_request_line: HttpInvalidRequestLine,
   // dash: DashDetails,
   // ndt: NdtDetails,
   // whatsapp: WhatsAppDetails,
   // telegram: TelegramDetails,
-  // http_invalid_request_line: HttpInvalidRequestLine,
   // vanilla_tor: VanillaTorDetails,
   facebook_messenger: FacebookMessengerDetails
 }
