@@ -5,6 +5,7 @@ const { app, Menu } = require('electron')
 const prepareNext = require('electron-next')
 const { is } = require('electron-util')
 const { autoUpdater } = require('electron-updater')
+const isDev = require('electron-is-dev')
 
 const fixPath = require('fix-path')
 const { getConfig } = require('./utils/config')
@@ -133,6 +134,16 @@ app.on('ready', async () => {
     config = await getConfig()
   } catch(err) {
     config = {}
+  }
+
+  if (isDev) {
+    const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
+
+    installExtension(REACT_DEVELOPER_TOOLS)
+      /* eslint-disable no-console */
+      .then((name) => console.log(`Added Extension:  ${name}`))
+      .catch((err) => console.log('An error occurred: ', err))
+      /* eslint-enable no-console */
   }
 
   if (config._is_beta === true) {

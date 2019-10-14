@@ -9,8 +9,7 @@ import Moment from 'moment'
 import { extendMoment } from 'moment-range'
 const moment = extendMoment(Moment)
 
-import MdArrowDownward from 'react-icons/lib/md/arrow-downward'
-import MdArrowUpward from 'react-icons/lib/md/arrow-upward'
+import { MdArrowUpward, MdArrowDownward } from 'react-icons/md'
 
 import ResultRow from './ResultRow'
 import HumanFilesize from '../HumanFilesize'
@@ -23,6 +22,7 @@ import {
   Container,
   Heading
 } from 'ooni-components'
+import { FormattedMessage } from 'react-intl'
 
 import StatBox from '../to-migrate/StatBox'
 import VerticalDivider from '../to-migrate/VerticalDivider'
@@ -36,7 +36,7 @@ const DataUsage = ({dataUsage}) => {
   return (
     <Flex flexDirection='column'>
       <LabelBox>
-      Data Usage
+        <FormattedMessage id='TestResults.Overview.Hero.DataUsage' />
       </LabelBox>
       <Box>
         <Flex>
@@ -67,13 +67,13 @@ const ResultsHeader = ({testCount, networkCount, dataUsage}) => {
         <Flex>
           <Box width={1/3}>
             <StatBox
-              label='Tests'
+              label={<FormattedMessage id='TestResults.Overview.Hero.Tests' />}
               value={testCount} />
           </Box>
           <VerticalDivider />
           <Box width={1/3}>
             <StatBox
-              label='Networks'
+              label={<FormattedMessage id='TestResults.Overview.Hero.Networks' />}
               value={networkCount} />
           </Box>
           <VerticalDivider />

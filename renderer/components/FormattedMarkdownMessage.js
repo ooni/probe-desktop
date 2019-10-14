@@ -1,20 +1,18 @@
 /* global require */
 import React from 'react'
-
 import PropTypes from 'prop-types'
-
+import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 import remark from 'remark'
 import reactRenderer from 'remark-react'
 
 const StyledLink = styled.a`
+  color: ${props => props.theme.colors.blue5};
+  text-decoration: none;
 
-color: ${props => props.theme.colors.blue5};
-text-decoration: none;
-
-&:hover {
-  color: ${props => props.theme.colors.blue3};
-}
+  &:hover {
+    color: ${props => props.theme.colors.blue3};
+  }
 `
 
 const openInBrowser = (url, event) => {
@@ -31,27 +29,21 @@ const OpenLinkInBrowser = ({href, children}) => {
   )
 }
 
+OpenLinkInBrowser.propTypes = {
+  href: PropTypes.string.isRequired,
+  children: PropTypes.node
+}
+
 const remarkReactComponents = {
   a: OpenLinkInBrowser
 }
 
-class FormattedMarkdownMessage extends React.Component {
-  render() {
-    const { formatMessage } = this.context.intl
-    const { id, defaultMessage, values, description } = this.props
-    const messageDescriptor = { id, defaultMessage, values, description }
-    const message = formatMessage(messageDescriptor)
-    // When the message is the ID means it's not defined and we just emit not
-    // element
-    if (message === id) {
-      return null
-    }
-    return remark().use(reactRenderer, {remarkReactComponents}).processSync(message).contents
-  }
-}
+const FormattedMarkdownMessage = ({ id, defaultMessage, values, description }) => {
+  const { formatMessage } = useIntl()
+  const messageDescriptor = { id, defaultMessage, description }
+  const message = formatMessage(messageDescriptor, values)
 
-FormattedMarkdownMessage.contextTypes = {
-  intl: PropTypes.object.isRequired
+  return remark().use(reactRenderer, {remarkReactComponents}).processSync(message).contents
 }
 
 export default FormattedMarkdownMessage

@@ -28,7 +28,7 @@ import DownloadSpeed from '../DownloadSpeed'
 import VideoQuality from '../VideoQuality'
 
 // XXX this should be moved to the design-system
-import MdPriorityHigh from 'react-icons/lib/md/priority-high'
+import { MdPriorityHigh } from 'react-icons/md'
 
 import * as OOIcons from 'ooni-components/dist/icons'
 
@@ -197,7 +197,8 @@ const MeasurementRow = ({groupName, measurement, router}) => {
   }
 
   const testKeys = JSON.parse(measurement['test_keys'])
-  const query = {...router.query, measurementID: measurement.id}
+  // We pass in `is_anomaly` here to use in the `/measurement` page
+  const query = {...router.query, measurementID: measurement.id, isAnomaly: measurement.is_anomaly}
 
   const RowElement = rowMap[groupName]
   return <RowElement measurement={measurement} query={query} testKeys={testKeys} isAnomaly={measurement['is_anomaly']} />

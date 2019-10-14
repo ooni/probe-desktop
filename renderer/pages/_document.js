@@ -25,14 +25,12 @@ class CustomDocument extends Document {
     return (
       <html>
         <Head>
-          <title>OONI Probe</title>
           {this.props.styleTags}
         </Head>
         <body>
           <div className='root'>
             <Main />
           </div>
-          <script src='/static/locale-data.js' />
           <script src='/static/translations.js' />
           <NextScript />
         </body>

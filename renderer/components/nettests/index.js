@@ -9,12 +9,14 @@ import {
 import { FacebookMessengerDetails } from './im/facebook-messenger'
 
 // XXX this should be moved to the design-system
-import IoSpeedometer from 'react-icons/lib/io/speedometer'
+import { IoMdSpeedometer } from 'react-icons/io'
 
 import im from './im'
 import middlebox from './middleboxes'
 import performance from './performance'
 import websites from './websites'
+
+import web_connectivity from './websites/WebConnectivity'
 
 import {
   Cross,
@@ -85,7 +87,26 @@ export const testGroups = {
     'description': '',
     'longDescription': '',
     'name': 'Default',
-    'icon': <IoSpeedometer />,
+    'icon': <IoMdSpeedometer />,
+  }
+}
+
+// Metadata for tests
+// Contains: {
+//  name: Full descriptive name of the test, translated with <FormattedMessage>
+//}
+export const tests = {
+  // TODO: (sarathms) Replace each one with their own implementations when ready
+  web_connectivity,
+  http_header_field_manipulation: web_connectivity,
+  http_invalid_request_line: web_connectivity,
+  telegram: web_connectivity,
+  whatsapp: web_connectivity,
+  ndt: web_connectivity,
+  dash: web_connectivity,
+  vanilla_tor: web_connectivity,
+  'default': {
+    'name': 'Default',
   }
 }
 

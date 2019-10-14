@@ -17,8 +17,7 @@ import { FormattedMessage } from 'react-intl'
 
 import { testGroups } from '../nettests'
 
-import MdKeyboardArrowUp from 'react-icons/lib/md/keyboard-arrow-up'
-import MdKeyboardArrowDown from 'react-icons/lib/md/keyboard-arrow-down'
+import { MdKeyboardArrowUp, MdKeyboardArrowDown} from 'react-icons/md'
 
 import Lottie from 'react-lottie'
 
@@ -62,7 +61,7 @@ const ToggleLogButton = ({open, onClick}) => {
   if (open) {
     return <ToggleButtonContainer onClick={onClick}>
       <Box>
-    Close log
+        <FormattedMessage id='Dashboard.Running.CloseLog' />
       </Box>
       <Box>
         <MdKeyboardArrowDown size={30} />
@@ -71,7 +70,7 @@ const ToggleLogButton = ({open, onClick}) => {
   }
   return <ToggleButtonContainer onClick={onClick}>
     <Box>
-  Show log
+      <FormattedMessage id='Dashboard.Running.ShowLog' />
     </Box>
     <Box>
       <MdKeyboardArrowUp size={30} />
@@ -133,11 +132,11 @@ const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, lo
         />
       </Heading>
       {!logOpen
-      && <Lottie
-        width={300}
-        height={300}
-        options={lottieOptions}
-      />}
+        && <Lottie
+          width={300}
+          height={300}
+          options={lottieOptions}
+           />}
       <LineProgress
         percent={percent*100}
         strokeColor={theme.colors.white}
@@ -145,7 +144,10 @@ const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, lo
         trailColor='rgba(255,255,255,0.4)'
         trailWidth='2'
       />
-      <Text>Estimated time left: {eta}s</Text>
+      <Text>
+        <FormattedMessage id='Dashboard.Running.EstimatedTimeLeft' />
+        <FormattedMessage id='Dashboard.Running.Seconds' values={{ seconds: eta }}/>
+      </Text>
       <Text>{progressLine}</Text>
     </Container>
 

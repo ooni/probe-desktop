@@ -6,15 +6,16 @@ import moment from 'moment'
 import styled from 'styled-components'
 
 // XXX replace this with the correct icon
-import MdArrowUpward from 'react-icons/lib/md/arrow-upward'
-import MdArrowDownward from 'react-icons/lib/md/arrow-downward'
 import HumanFilesize from '../HumanFilesize'
 
-
-import MdFlag from 'react-icons/lib/md/flag'
-import MdTimer from 'react-icons/lib/md/timer'
-import MdSwapVert from 'react-icons/lib/md/swap-vert'
-import MdPublic from 'react-icons/lib/md/public'
+import {
+  MdArrowUpward,
+  MdArrowDownward,
+  MdFlag,
+  MdTimer,
+  MdSwapVert,
+  MdPublic
+} from 'react-icons/md'
 
 import {
   Heading,
@@ -24,6 +25,7 @@ import {
   Box,
   Divider
 } from 'ooni-components'
+import { FormattedMessage } from 'react-intl'
 
 import { testGroups } from '../nettests'
 
@@ -117,22 +119,22 @@ const ResultOverview = ({
         <Divider mt={4} mb={4} />
 
         <TwoColumnTable
-          left={<Text><MdSwapVert size={20} />Data Usage</Text>}
+          left={<Text><MdSwapVert size={20} /><FormattedMessage id='TestResults.Summary.Hero.DataUsage' /></Text>}
           right={<Flex>
             <HumanFilesize icon={<MdArrowUpward size={20}/>} size={dataUsageUp*1024} fontSize={20} />
             <HumanFilesize icon={<MdArrowDownward size={20}/>} size={dataUsageDown*1024} fontSize={20} />
           </Flex>} />
 
         <TwoColumnTable
-          left={<Text><MdTimer size={20} />Total runtime</Text>}
+          left={<Text><MdTimer size={20} /><FormattedMessage id='TestResults.Summary.Hero.Runtime' /></Text>}
           right={<Text>{runtime.toFixed(2)} s</Text>} />
 
         <TwoColumnTable
-          left={<Text><MdFlag size={20} />Country</Text>}
+          left={<Text><MdFlag size={20} /><FormattedMessage id='TestResults.Summary.Hero.Country' /></Text>}
           right={<Text>{countryCode}</Text>} />
 
         <TwoColumnTable
-          left={<Text><MdPublic  size={20} />Network</Text>}
+          left={<Text><MdPublic  size={20} /><FormattedMessage id='TestResults.Summary.Hero.Network' /></Text>}
           right={<Text>{networkName} ({asn})</Text>} />
       </Container>
     </ResultOverviewContainer>

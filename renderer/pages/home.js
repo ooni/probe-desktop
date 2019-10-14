@@ -10,8 +10,7 @@ import * as chroma from 'chroma-js'
 
 import styled from 'styled-components'
 
-import MdHelp from 'react-icons/lib/md/help'
-import MdClear from 'react-icons/lib/md/clear'
+import { MdHelp, MdClear } from 'react-icons/md'
 
 import {
   Button,
@@ -20,6 +19,7 @@ import {
   Heading,
   Card
 } from 'ooni-components'
+import { FormattedMessage } from 'react-intl'
 
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
@@ -85,7 +85,7 @@ const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, on
             <Button
               inverted
               fontSize={1}
-              onClick={onRun}>Run</Button>
+              onClick={onRun}><FormattedMessage id='Dashboard.Card.Run' /></Button>
           </Box>
         </Flex>
       </CardContent>
