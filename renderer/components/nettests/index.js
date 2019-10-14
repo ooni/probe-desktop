@@ -101,7 +101,8 @@ export const tests = {
   // TODO: (sarathms) Replace each one with their own implementations when ready
   web_connectivity,
   http_header_field_manipulation,
-  http_invalid_request_line: http_invalid_request_line,
+  http_invalid_request_line,
+  facebook_messenger: web_connectivity,
   telegram: web_connectivity,
   whatsapp: web_connectivity,
   ndt: web_connectivity,
