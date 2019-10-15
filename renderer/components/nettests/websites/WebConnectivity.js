@@ -29,32 +29,30 @@ const WebConnectivity = ({measurement, isAnomaly, render}) => {
   }
 
   const WebDetails = () => (
-    <FullHeightFlex>
-      <Box>
-        <Flex my={3} flexDirection='column'>
-          {isAnomaly ? (
-            <Box>
-              <FormattedMarkdownMessage
-                id='TestResults.Details.Websites.LikelyBlocked.Content.Paragraph'
-                values={{
-                  WebsiteURL: url,
-                  BlockingReason: blockingReason
-                }}
-              />
-            </Box>
-          ) : (
-            <Box>
-              <FormattedMessage
-                id='TestResults.Details.Websites.Reachable.Content.Paragraph'
-                values={{
-                  WebsiteURL: url
-                }}
-              />
-            </Box>
-          )}
-        </Flex>
-      </Box>
-    </FullHeightFlex>
+    <Box>
+      <Flex my={3} flexDirection='column'>
+        {isAnomaly ? (
+          <Box>
+            <FormattedMarkdownMessage
+              id='TestResults.Details.Websites.LikelyBlocked.Content.Paragraph'
+              values={{
+                WebsiteURL: url,
+                BlockingReason: blockingReason
+              }}
+            />
+          </Box>
+        ) : (
+          <Box>
+            <FormattedMessage
+              id='TestResults.Details.Websites.Reachable.Content.Paragraph'
+              values={{
+                WebsiteURL: url
+              }}
+            />
+          </Box>
+        )}
+      </Flex>
+    </Box>
   )
 
   const heroSubtitle = isAnomaly ? (
