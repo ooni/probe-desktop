@@ -22,6 +22,8 @@ import { WebConnectivity } from '../nettests/websites/WebConnectivity'
 import { HttpHeaderFieldManipulation } from '../nettests/middleboxes/HttpHeaderFieldManipulation'
 import { HttpInvalidRequestLine } from '../nettests/middleboxes/HttpInvalidRequestLine'
 import { FacebookMessenger } from '../nettests/im/FacebookMessenger'
+import { Telegram } from '../nettests/im/Telegram'
+
 import FullHeightFlex from '../FullHeightFlex'
 
 // TODO: (sarathms) Add rest of the implementations when ready
@@ -30,10 +32,10 @@ const detailsMap = {
   http_header_field_manipulation: HttpHeaderFieldManipulation,
   http_invalid_request_line: HttpInvalidRequestLine,
   facebook_messenger: FacebookMessenger,
+  telegram: Telegram,
   // dash: DashDetails,
   // ndt: NdtDetails,
   // whatsapp: WhatsAppDetails,
-  // telegram: TelegramDetails,
   // vanilla_tor: VanillaTorDetails,
 }
 
