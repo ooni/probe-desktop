@@ -11,20 +11,13 @@ import StatusBox from '../../measurement/StatusBox'
 
 const FacebookMessenger = ({measurement, isAnomaly, render}) => {
   const testKeys = JSON.parse(measurement.test_keys)
-  // summary = { "DNSBlocking": false, "TCPBlocking": false, "Blocked": false }
-  let blockingReason = ''
   let tcpStatus = 'Okay'
   let dnsStatus = 'Okay'
 
-  if (testKeys['facebook_dns_blocking'] === true && testKeys['facebook_tcp_blocking'] === true) {
-    blockingReason = 'DNSandTCPIP'
-    tcpStatus = 'Failed'
+  if (testKeys['facebook_dns_blocking'] === true) {
     dnsStatus = 'Failed'
-  } else if (testKeys['facebook_dns_blocking'] === true) {
-    blockingReason = 'DNSOnly'
-    dnsStatus = 'Failed'
-  } else if (testKeys['facebook_tcp_blocking'] === true) {
-    blockingReason = 'TCPIPOnly'
+  }
+  if (testKeys['facebook_tcp_blocking'] === true) {
     tcpStatus = 'Failed'
   }
 
