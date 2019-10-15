@@ -27,7 +27,7 @@ StatusBox.propTypes = {
 }
 
 const FacebookMessenger = ({measurement, isAnomaly, render}) => {
-  const testKeys = measurement.test_keys
+  const testKeys = JSON.parse(measurement.test_keys)
   // summary = { "DNSBlocking": false, "TCPBlocking": false, "Blocked": false }
   let blockingReason = ''
   let tcpStatus = 'Okay'
