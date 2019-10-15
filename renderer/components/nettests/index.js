@@ -19,6 +19,7 @@ import http_header_field_manipulation from './middleboxes/HttpHeaderFieldManipul
 import http_invalid_request_line from './middleboxes/HttpInvalidRequestLine'
 import facebook_messenger from './im/FacebookMessenger'
 import telegram from './im/Telegram'
+import whatsapp from './im/WhatsApp'
 
 const iconSize = 200
 const iconColor = theme.colors.black
@@ -48,7 +49,7 @@ export const tests = {
   http_invalid_request_line,
   facebook_messenger,
   telegram,
-  whatsapp: web_connectivity,
+  whatsapp,
   ndt: web_connectivity,
   dash: web_connectivity,
   vanilla_tor: web_connectivity,

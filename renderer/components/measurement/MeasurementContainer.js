@@ -23,6 +23,7 @@ import { HttpHeaderFieldManipulation } from '../nettests/middleboxes/HttpHeaderF
 import { HttpInvalidRequestLine } from '../nettests/middleboxes/HttpInvalidRequestLine'
 import { FacebookMessenger } from '../nettests/im/FacebookMessenger'
 import { Telegram } from '../nettests/im/Telegram'
+import { WhatsApp } from '../nettests/im/WhatsApp'
 
 import FullHeightFlex from '../FullHeightFlex'
 
@@ -33,9 +34,9 @@ const detailsMap = {
   http_invalid_request_line: HttpInvalidRequestLine,
   facebook_messenger: FacebookMessenger,
   telegram: Telegram,
+  whatsapp: WhatsApp,
   // dash: DashDetails,
   // ndt: NdtDetails,
-  // whatsapp: WhatsAppDetails,
   // vanilla_tor: VanillaTorDetails,
 }
 
