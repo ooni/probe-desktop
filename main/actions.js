@@ -91,8 +91,10 @@ const showMeasurement = (msmtID) => {
 
   return new Promise((resolve, reject) => {
     ooni.on('data', (data) => {
-      if (data.level == 'error') {
+      if (data.level === 'error') {
+        debug('error: ', data.message)
         reject(data.message)
+        return
       }
 
       switch(data.fields.type) {
