@@ -7,24 +7,7 @@ import {
 } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 
-import { colorMap } from '../../measurement/MeasurementContainer'
-
-const StatusBox = ({label, value, ok}) => (
-  <Flex flexWrap='wrap'>
-    <Box width={1}>
-      <Text fontSize={1}>{label}</Text>
-    </Box>
-    <Box width={1}>
-      <Text fontSize={3} fontWeight={300} color={ok ? 'unset' : colorMap.anomaly}>{value}</Text>
-    </Box>
-  </Flex>
-)
-
-StatusBox.propTypes = {
-  label: PropTypes.node.isRequired,
-  value: PropTypes.node.isRequired,
-  ok: PropTypes.bool.isRequired
-}
+import StatusBox from '../../measurement/StatusBox'
 
 const Telegram = ({measurement, isAnomaly, render}) => {
   const testKeys = JSON.parse(measurement.test_keys)
