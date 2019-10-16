@@ -32,7 +32,7 @@ const WhatsApp = ({measurement, isAnomaly, render}) => {
     <FormattedMessage id='TestResults.Details.InstantMessaging.WhatsApp.Reachable.Hero.Title' />
   )
 
-  const TelegramDetails = () => (
+  const WhatsAppDetails = () => (
     <Box width={1}>
       <Flex my={4}>
         {isAnomaly ? (
@@ -71,8 +71,7 @@ const WhatsApp = ({measurement, isAnomaly, render}) => {
     <div>
       {render({
         heroTitle: heroTitle,
-        details: <TelegramDetails />
-
+        details: <WhatsAppDetails />
       })}
     </div>
   )
