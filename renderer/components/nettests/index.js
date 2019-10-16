@@ -20,6 +20,7 @@ import http_invalid_request_line from './middleboxes/HttpInvalidRequestLine'
 import facebook_messenger from './im/FacebookMessenger'
 import telegram from './im/Telegram'
 import whatsapp from './im/WhatsApp'
+import ndt from './performance/NDT'
 
 const iconSize = 200
 const iconColor = theme.colors.black
@@ -50,7 +51,7 @@ export const tests = {
   facebook_messenger,
   telegram,
   whatsapp,
-  ndt: web_connectivity,
+  ndt,
   dash: web_connectivity,
   vanilla_tor: web_connectivity,
   'default': {
