@@ -9,19 +9,7 @@ import { FormattedMessage } from 'react-intl'
 
 import StatusBox from '../../measurement/StatusBox'
 import formatSpeed from '../../formatSpeed'
-
-// {
-//   "upload": 13167.668687352241,
-//   "download": 71491.99053672275,
-//   "ping": 9,
-//   "max_rtt": 0,
-//   "avg_rtt": 0,
-//   "min_rtt": 9,
-//   "mss": 0,
-//   "out_of_order": 0,
-//   "packet_loss": 0,
-//   "timeouts": 0
-// }
+import performanceTestGroup from './index'
 
 const NDT = ({measurement, render}) => {
   const testKeys = JSON.parse(measurement.test_keys)
@@ -40,8 +28,8 @@ const NDT = ({measurement, render}) => {
   const downloadSpeed = formatSpeed(download)
   const uploadSpeed = formatSpeed(upload)
   const NDTHero = (
-    <Box width={1} p={3}>
-      <Flex flexWrap='wrap' my={4} alignItems='center'>
+    <Box width={1}>
+      <Flex flexWrap='wrap' mx={4} my={4} alignItems='center'>
         <Box width={1/2} my={3}>
           <StatusBox
             label={<FormattedMessage id='TestResults.Details.Performance.NDT.Download' />}
@@ -121,6 +109,7 @@ const NDT = ({measurement, render}) => {
     <div>
       {render({
         hero: NDTHero,
+        heroBG: performanceTestGroup.color,
         details: <NDTetails />
 
       })}
