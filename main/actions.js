@@ -16,7 +16,7 @@ const listMeasurements = (resultID) => {
 
   return new Promise((resolve, reject) => {
     ooni.on('data', (data) => {
-      if (data.level == 'error') {
+      if (data.level === 'error') {
         errors.push(data.message)
         debug('error in row', data.message)
         return
@@ -55,8 +55,10 @@ const listResults = () => {
 
   return new Promise((resolve, reject) => {
     ooni.on('data', (data) => {
-      if (data.level == 'error') {
+      if (data.level === 'error') {
+        debug('error: ', data.message)
         reject(data.message)
+        return
       }
       switch(data.fields.type) {
       case 'result_item':
