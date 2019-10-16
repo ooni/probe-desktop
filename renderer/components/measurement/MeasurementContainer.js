@@ -25,6 +25,7 @@ import { FacebookMessenger } from '../nettests/im/FacebookMessenger'
 import { Telegram } from '../nettests/im/Telegram'
 import { WhatsApp } from '../nettests/im/WhatsApp'
 import { NDT } from '../nettests/performance/NDT'
+import { Dash } from '../nettests/performance/Dash'
 
 import FullHeightFlex from '../FullHeightFlex'
 
@@ -37,7 +38,7 @@ const detailsMap = {
   telegram: Telegram,
   whatsapp: WhatsApp,
   ndt: NDT,
-  // dash: DashDetails,
+  dash: Dash,
   // vanilla_tor: VanillaTorDetails,
 }
 

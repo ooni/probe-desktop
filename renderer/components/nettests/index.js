@@ -21,6 +21,7 @@ import facebook_messenger from './im/FacebookMessenger'
 import telegram from './im/Telegram'
 import whatsapp from './im/WhatsApp'
 import ndt from './performance/NDT'
+import dash from './performance/Dash'
 
 const iconSize = 200
 const iconColor = theme.colors.black
@@ -52,7 +53,7 @@ export const tests = {
   telegram,
   whatsapp,
   ndt,
-  dash: web_connectivity,
+  dash,
   vanilla_tor: web_connectivity,
   'default': {
     'name': 'Default',
