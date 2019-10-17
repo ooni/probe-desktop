@@ -24,10 +24,11 @@ import { HttpInvalidRequestLine } from '../nettests/middleboxes/HttpInvalidReque
 import { FacebookMessenger } from '../nettests/im/FacebookMessenger'
 import { Telegram } from '../nettests/im/Telegram'
 import { WhatsApp } from '../nettests/im/WhatsApp'
+import { NDT } from '../nettests/performance/NDT'
+import { Dash } from '../nettests/performance/Dash'
 
 import FullHeightFlex from '../FullHeightFlex'
 
-// TODO: (sarathms) Add rest of the implementations when ready
 const detailsMap = {
   web_connectivity: WebConnectivity,
   http_header_field_manipulation: HttpHeaderFieldManipulation,
@@ -35,9 +36,8 @@ const detailsMap = {
   facebook_messenger: FacebookMessenger,
   telegram: Telegram,
   whatsapp: WhatsApp,
-  // dash: DashDetails,
-  // ndt: NdtDetails,
-  // vanilla_tor: VanillaTorDetails,
+  ndt: NDT,
+  dash: Dash
 }
 
 export const colorMap = {
@@ -106,11 +106,6 @@ const StickyHero = ({
       </Flex>
     )
   } else {
-    // If a test wants to show a custom Hero, let it take over
-    if (hero) {
-      return hero
-    }
-
     return (
       <Flex flexDirection='column' bg={backgroundColor} color='white'>
         <Box width={1}>
@@ -123,25 +118,32 @@ const StickyHero = ({
             </Box>
           </Flex>
         </Box>
-        <Box width={1}>
-          <HeroLineItem size={60}>{heroIcon}</HeroLineItem>
-          <HeroLineItem size={24} fontWeight={900}>{heroTitle}</HeroLineItem>
-          <HeroLineItem size={16}>{heroSubtitle}</HeroLineItem>
-        </Box>
-        <Box width={1}>
-          <Flex flexWrap='wrap'>
-            <HeroItemBox
-              width={1/2}
-              label={<FormattedMessage id='TestResults.Summary.Hero.DateAndTime' />}
-              content={moment.utc(new Date(startTime)).format('lll')}
-            />
-            <HeroItemBox
-              width={1/2}
-              label={<FormattedMessage id='TestResults.Summary.Hero.Network' />}
-              content={`${networkName} (AS${asn})`}
-            />
-          </Flex>
-        </Box>
+        {hero ? (
+          // If a test wants to show a custom Hero, let it take over
+          hero
+        ) : (
+          <React.Fragment>
+            <Box width={1}>
+              <HeroLineItem size={60}>{heroIcon}</HeroLineItem>
+              <HeroLineItem size={24} fontWeight={900}>{heroTitle}</HeroLineItem>
+              <HeroLineItem size={16}>{heroSubtitle}</HeroLineItem>
+            </Box>
+            <Box width={1}>
+              <Flex flexWrap='wrap'>
+                <HeroItemBox
+                  width={1/2}
+                  label={<FormattedMessage id='TestResults.Summary.Hero.DateAndTime' />}
+                  content={moment.utc(new Date(startTime)).format('lll')}
+                />
+                <HeroItemBox
+                  width={1/2}
+                  label={<FormattedMessage id='TestResults.Summary.Hero.Network' />}
+                  content={`${networkName} (AS${asn})`}
+                />
+              </Flex>
+            </Box>
+          </React.Fragment>
+        )}
       </Flex>
     )
   }

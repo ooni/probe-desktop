@@ -20,6 +20,8 @@ import http_invalid_request_line from './middleboxes/HttpInvalidRequestLine'
 import facebook_messenger from './im/FacebookMessenger'
 import telegram from './im/Telegram'
 import whatsapp from './im/WhatsApp'
+import ndt from './performance/NDT'
+import dash from './performance/Dash'
 
 const iconSize = 200
 const iconColor = theme.colors.black
@@ -43,16 +45,14 @@ export const testGroups = {
 //  name: Full descriptive name of the test, translated with <FormattedMessage>
 //}
 export const tests = {
-  // TODO: (sarathms) Replace each one with their own implementations when ready
   web_connectivity,
   http_header_field_manipulation,
   http_invalid_request_line,
   facebook_messenger,
   telegram,
   whatsapp,
-  ndt: web_connectivity,
-  dash: web_connectivity,
-  vanilla_tor: web_connectivity,
+  ndt,
+  dash,
   'default': {
     'name': 'Default',
   }
