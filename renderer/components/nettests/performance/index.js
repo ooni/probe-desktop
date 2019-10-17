@@ -11,7 +11,7 @@ import { default as animation } from 'ooni-components/components/animations/Runn
 
 import { NettestGroupPerformance } from 'ooni-components/dist/icons'
 
-const color = theme.colors.fuschia6
+const color = theme.colors.fuchsia6
 const name = <FormattedMessage id="Test.Performance.Fullname" />
 const description = <FormattedMarkdownMessage id="Dashboard.Performance.Card.Description" />
 const longDescription = <div>

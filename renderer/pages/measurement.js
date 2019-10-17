@@ -11,7 +11,7 @@ import MeasurementContainer from '../components/measurement/MeasurementContainer
 import ErrorView from '../components/ErrorView'
 import LoadingOverlay from '../components/LoadingOverlay'
 
-const debug = require('debug')('ooniprobe-desktop.renderer.pages.results')
+const debug = require('debug')('ooniprobe-desktop.renderer.pages.measurement')
 
 class Measurement extends React.Component {
   constructor(props) {

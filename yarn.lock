@@ -2014,6 +2014,11 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
+"@types/semver@^6.0.1":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@types/semver/-/semver-6.0.2.tgz#5e8b09f0e4af53034b1d0fb9977a277847836205"
+  integrity sha512-G1Ggy7/9Nsa1Jt2yiBR2riEuyK2DFNnqow6R7cromXPMNynackRY1vqFTLz/gwnef1LHokbXThcPhqMRjUbkpQ==
+
 "@types/stack-trace@0.0.29":
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/stack-trace/-/stack-trace-0.0.29.tgz#eb7a7c60098edb35630ed900742a5ecb20cfcb4d"
@@ -3410,6 +3415,14 @@ builder-util-runtime@4.4.1, builder-util-runtime@^4.4.1:
     bluebird-lst "^1.0.5"
     debug "^3.1.0"
     fs-extra-p "^4.6.1"
+    sax "^1.2.4"
+
+builder-util-runtime@8.3.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/builder-util-runtime/-/builder-util-runtime-8.3.0.tgz#f5fac9139af6facf42a21fbe4d3aebed88fda33e"
+  integrity sha512-CSOdsYqf4RXIHh1HANPbrZHlZ9JQJXSuDDloblZPcWQVN62inyYoTQuSmY3KrgefME2Sv3Kn2MxHvbGQHRf8Iw==
+  dependencies:
+    debug "^4.1.1"
     sax "^1.2.4"
 
 builder-util@6.1.3, builder-util@~6.1.3:
@@ -5000,6 +5013,11 @@ electron-localshortcut@^3.1.0:
     keyboardevent-from-electron-accelerator "^1.1.0"
     keyboardevents-areequal "^0.2.1"
 
+electron-log@^3.0.7:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/electron-log/-/electron-log-3.0.8.tgz#ea672dc40b560143ed5d887eff1ff1904fe9ef71"
+  integrity sha512-B9+eJ8z3UbDnWEz+G33SIJvEDeKLznHEV4sCu6bR31KuOdp3dYN046QBWbLNsvKU+lzFI6eOi+xNCpNHZvatiw==
+
 electron-next@3.1.5:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/electron-next/-/electron-next-3.1.5.tgz#6d7df1ffe9bdc300f79b33a1eea43c6767085f57"
@@ -5046,6 +5064,20 @@ electron-unhandled@^3.0.0:
     electron-is-dev "^1.0.1"
     ensure-error "^2.0.0"
     lodash.debounce "^4.0.8"
+
+electron-updater@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/electron-updater/-/electron-updater-4.1.2.tgz#46a6e62cc8d0c7d935db7aff83207da2a21ff788"
+  integrity sha512-4Sk8IW0LfOilDz+WAB/gEDmX7+FUFRbKHGN1zGjehPilnd6H9cmjgBHK6Xzq/FLq/uOHGJ6GX/9tsF+jr7CvnA==
+  dependencies:
+    "@types/semver" "^6.0.1"
+    builder-util-runtime "8.3.0"
+    fs-extra "^8.1.0"
+    js-yaml "^3.13.1"
+    lazy-val "^1.0.4"
+    lodash.isequal "^4.5.0"
+    pako "^1.0.10"
+    semver "^6.2.0"
 
 electron-util@^0.12.1:
   version "0.12.1"
@@ -7408,6 +7440,11 @@ lazy-val@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/lazy-val/-/lazy-val-1.0.3.tgz#bb97b200ef00801d94c317e29dc6ed39e31c5edc"
 
+lazy-val@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/lazy-val/-/lazy-val-1.0.4.tgz#882636a7245c2cfe6e0a4e3ba6c5d68a137e5c65"
+  integrity sha512-u93kb2fPbIrfzBuLjZE+w+fJbUUMhNDXxNmMfaqNgpfQf1CO5ZSe2LfsnBqVAk7i/2NF48OSoRj+Xe2VT+lE8Q==
+
 lcid@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/lcid/-/lcid-1.0.0.tgz#308accafa0bc483a3867b4b6f2b9506251d1b835"
@@ -7670,6 +7707,11 @@ lodash.clonedeep@^4.5.0, lodash.clonedeep@~4.5.0:
 lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+
+lodash.isequal@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
+  integrity sha1-QVxEePK8wwEgwizhDtMib30+GOA=
 
 lodash.isplainobject@^4.0.6:
   version "4.0.6"
@@ -9161,6 +9203,11 @@ pacote@^9.1.0, pacote@^9.5.3, pacote@^9.5.8:
     tar "^4.4.10"
     unique-filename "^1.1.1"
     which "^1.3.1"
+
+pako@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.10.tgz#4328badb5086a426aa90f541977d4955da5c9732"
+  integrity sha512-0DTvPVU3ed8+HNXOu5Bs+o//Mbdj9VNQMUOe9oKCwh8l0GNwpTDMKCWbRjgtD291AWnkAgkqA/LOnQS8AmS1tw==
 
 pako@~1.0.5:
   version "1.0.6"
@@ -10995,7 +11042,7 @@ semver@^5.6.0, semver@^5.7.1:
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
   integrity sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==
 
-semver@^6.0.0, semver@^6.3.0:
+semver@^6.0.0, semver@^6.2.0, semver@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
   integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==

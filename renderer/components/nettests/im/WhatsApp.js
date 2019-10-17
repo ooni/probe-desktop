@@ -10,7 +10,6 @@ import { FormattedMessage } from 'react-intl'
 import StatusBox from '../../measurement/StatusBox'
 
 const WhatsApp = ({measurement, isAnomaly, render}) => {
-  // {"registration_server_blocking":false,"whatsapp_web_blocking":false,"whatsapp_endpoints_blocking":false}
   const testKeys = JSON.parse(measurement.test_keys)
   let appStatus = 'Okay'
   let webStatus = 'Okay'
