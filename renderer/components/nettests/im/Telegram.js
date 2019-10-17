@@ -14,7 +14,7 @@ const Telegram = ({measurement, isAnomaly, render}) => {
   let appStatus = 'Okay'
   let webStatus = 'Okay'
 
-  if (testKeys['telegram_http_blocking'] === true) {
+  if (testKeys['telegram_http_blocking'] === true || testKeys['telegram_tcp_blocking'] === true) {
     appStatus = 'Failed'
   }
   if (testKeys['telegram_web_blocking'] === true) {
