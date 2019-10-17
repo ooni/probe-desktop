@@ -18,12 +18,8 @@ const NDT = ({measurement, render}) => {
     upload,
     ping,
     server = 'Not in test_keys',
-    packet_loss,
-    out_of_order,
     avg_rtt,
-    max_rtt,
-    mss,
-    timeouts
+    mss
   } = testKeys
   const downloadSpeed = formatSpeed(download)
   const uploadSpeed = formatSpeed(upload)
@@ -65,40 +61,16 @@ const NDT = ({measurement, render}) => {
   const NDTetails = () => (
     <Box width={1}>
       <Flex flexWrap='wrap' alignItems='center' my={4}>
-        <Box width={1/3} my={4}>
-          <StatusBox
-            label={<FormattedMessage id='TestResults.Details.Performance.NDT.PacketLoss' />}
-            value={<Text>{packet_loss} <small> % </small></Text>}
-          />
-        </Box>
-        <Box width={1/3}>
-          <StatusBox
-            label={<FormattedMessage id='TestResults.Details.Performance.NDT.OutOfOrder' />}
-            value={out_of_order}
-          />
-        </Box>
-        <Box width={1/3}>
+        <Box width={1/2} my={4}>
           <StatusBox
             label={<FormattedMessage id='TestResults.Details.Performance.NDT.AveragePing' />}
             value={avg_rtt}
           />
         </Box>
-        <Box width={1/3}>
-          <StatusBox
-            label={<FormattedMessage id='TestResults.Details.Performance.NDT.MaxPing' />}
-            value={max_rtt}
-          />
-        </Box>
-        <Box width={1/3}>
+        <Box width={1/2}>
           <StatusBox
             label={<FormattedMessage id='TestResults.Details.Performance.NDT.MSS' />}
             value={mss}
-          />
-        </Box>
-        <Box width={1/3}>
-          <StatusBox
-            label={<FormattedMessage id='TestResults.Details.Performance.NDT.Timeouts' />}
-            value={timeouts}
           />
         </Box>
       </Flex>
