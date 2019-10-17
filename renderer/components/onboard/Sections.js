@@ -34,6 +34,8 @@ import {
   theme
 } from 'ooni-components'
 
+import FormattedMarkdownMessage from '../FormattedMarkdownMessage'
+
 const QuizModal = styled(Fixed)`
   max-width: 100vw;
   max-height: 100vh;
@@ -254,16 +256,13 @@ const SectionWhatIsOONI = ({onNext}) => (
       <Box width={1} p={4}>
         <Container width={700}>
           <Text>
-            <FormattedMessage id="Onboarding.WhatIsOONIProbe.Paragraph.1" />
-          </Text>
-          <Text>
-            <FormattedMessage id="Onboarding.WhatIsOONIProbe.Paragraph.2" />
+            <FormattedMarkdownMessage id="Onboarding.WhatIsOONIProbe.Paragraph" />
           </Text>
         </Container>
       </Box>
-      <Box style={{'margin': '0 auto'}}>
+      <Box mx='auto'>
         <Button inverted onClick={onNext}>
-      Continue {/* FIXME add this to the strings */}
+          <FormattedMessage id='Onboarding.WhatIsOONIProbe.GotIt' />
         </Button>
       </Box>
     </Flex>
@@ -282,7 +281,7 @@ const SectionDefaultSettings = ({onGo, onChange}) => (
         <Flex>
           <Box width={1/2}>
             <Heading h={4}>
-              <FormattedMessage id='Onboarding.DefaultSettings.Header.1' />
+              <FormattedMessage id='Onboarding.DefaultSettings.Header' />
             </Heading>
             <ul>
               <li>
@@ -297,14 +296,7 @@ const SectionDefaultSettings = ({onGo, onChange}) => (
             </ul>
           </Box>
           <Box width={1/2}>
-            <Heading h={4}>
-              <FormattedMessage id='Onboarding.DefaultSettings.Header.2' />
-            </Heading>
-            <ul>
-              <li>
-                <FormattedMessage id='Onboarding.DefaultSettings.Bullet.4' />
-              </li>
-            </ul>
+            <FormattedMarkdownMessage id='Onboarding.DefaultSettings.Paragraph' />
           </Box>
         </Flex>
       </Box>
