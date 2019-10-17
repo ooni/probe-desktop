@@ -83,7 +83,6 @@ const NDT = ({measurement, render}) => {
         hero: NDTHero,
         heroBG: performanceTestGroup.color,
         details: <NDTetails />
-
       })}
     </div>
   )
