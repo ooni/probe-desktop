@@ -240,7 +240,7 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
           </ul>
         </Container>
       </Box>
-      <Box style={{'margin': '0 auto'}}>
+      <Box mx='auto'>
         <Button inverted onClick={quizComplete ? onNext : toggleQuiz}>
           <FormattedMessage id="Onboarding.ThingsToKnow.Button" />
         </Button>
@@ -304,7 +304,7 @@ const SectionDefaultSettings = ({onGo, onChange}) => (
           </Box>
         </Flex>
       </Box>
-      <Box style={{'margin': '0 auto'}}>
+      <Box mx='auto'>
         <Button inverted onClick={onGo}>
           <FormattedMessage id='Onboarding.DefaultSettings.Button.Go' />
         </Button>
