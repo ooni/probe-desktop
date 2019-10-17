@@ -212,18 +212,18 @@ class QuizSteps extends React.Component {
 const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQuizComplete}) => (
   <div>
     {(quizActive && !quizComplete)
-    && <QuizSteps
-      onClose={toggleQuiz}
-      onDone={onQuizComplete}
-      questionList={[
-        <FormattedMessage key='Onboarding.PopQuiz.1.Question' id='Onboarding.PopQuiz.1.Question' />,
-        <FormattedMessage key='Onboarding.PopQuiz.2.Question' id='Onboarding.PopQuiz.2.Question' />
-      ]}
-      actuallyList={[
-        <FormattedMessage key='Onboarding.PopQuiz.1.Wrong.Paragraph' id='Onboarding.PopQuiz.1.Wrong.Paragraph' />,
-        <FormattedMessage key='Onboarding.PopQuiz.2.Wrong.Paragraph' id='Onboarding.PopQuiz.2.Wrong.Paragraph' />
-      ]}
-    />}
+      && <QuizSteps
+        onClose={toggleQuiz}
+        onDone={onQuizComplete}
+        questionList={[
+          <FormattedMessage key='Onboarding.PopQuiz.1.Question' id='Onboarding.PopQuiz.1.Question' />,
+          <FormattedMessage key='Onboarding.PopQuiz.2.Question' id='Onboarding.PopQuiz.2.Question' />
+        ]}
+        actuallyList={[
+          <FormattedMessage key='Onboarding.PopQuiz.1.Wrong.Paragraph' id='Onboarding.PopQuiz.1.Wrong.Paragraph' />,
+          <FormattedMessage key='Onboarding.PopQuiz.2.Wrong.Paragraph' id='Onboarding.PopQuiz.2.Wrong.Paragraph' />
+        ]}
+         />}
 
     <Flex flexWrap='wrap'>
       <Box width={1} p={2}>
