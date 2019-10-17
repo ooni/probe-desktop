@@ -45,7 +45,6 @@ export const testGroups = {
 //  name: Full descriptive name of the test, translated with <FormattedMessage>
 //}
 export const tests = {
-  // TODO: (sarathms) Replace each one with their own implementations when ready
   web_connectivity,
   http_header_field_manipulation,
   http_invalid_request_line,
@@ -54,7 +53,6 @@ export const tests = {
   whatsapp,
   ndt,
   dash,
-  vanilla_tor: web_connectivity,
   'default': {
     'name': 'Default',
   }

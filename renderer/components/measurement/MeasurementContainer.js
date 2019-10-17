@@ -29,7 +29,6 @@ import { Dash } from '../nettests/performance/Dash'
 
 import FullHeightFlex from '../FullHeightFlex'
 
-// TODO: (sarathms) Add rest of the implementations when ready
 const detailsMap = {
   web_connectivity: WebConnectivity,
   http_header_field_manipulation: HttpHeaderFieldManipulation,
@@ -38,8 +37,7 @@ const detailsMap = {
   telegram: Telegram,
   whatsapp: WhatsApp,
   ndt: NDT,
-  dash: Dash,
-  // vanilla_tor: VanillaTorDetails,
+  dash: Dash
 }
 
 export const colorMap = {
