@@ -18,10 +18,13 @@ import { tests } from '../nettests'
 import BackButton from '../BackButton'
 import { StickyContainer, Sticky } from 'react-sticky'
 
-import { FacebookMessengerDetails } from '../nettests/im/facebook-messenger'
 import { WebConnectivity } from '../nettests/websites/WebConnectivity'
 import { HttpHeaderFieldManipulation } from '../nettests/middleboxes/HttpHeaderFieldManipulation'
 import { HttpInvalidRequestLine } from '../nettests/middleboxes/HttpInvalidRequestLine'
+import { FacebookMessenger } from '../nettests/im/FacebookMessenger'
+import { Telegram } from '../nettests/im/Telegram'
+import { WhatsApp } from '../nettests/im/WhatsApp'
+
 import FullHeightFlex from '../FullHeightFlex'
 
 // TODO: (sarathms) Add rest of the implementations when ready
@@ -29,12 +32,12 @@ const detailsMap = {
   web_connectivity: WebConnectivity,
   http_header_field_manipulation: HttpHeaderFieldManipulation,
   http_invalid_request_line: HttpInvalidRequestLine,
+  facebook_messenger: FacebookMessenger,
+  telegram: Telegram,
+  whatsapp: WhatsApp,
   // dash: DashDetails,
   // ndt: NdtDetails,
-  // whatsapp: WhatsAppDetails,
-  // telegram: TelegramDetails,
   // vanilla_tor: VanillaTorDetails,
-  facebook_messenger: FacebookMessengerDetails
 }
 
 export const colorMap = {

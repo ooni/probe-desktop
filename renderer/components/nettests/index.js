@@ -6,8 +6,6 @@ import {
   Text
 } from 'ooni-components'
 
-import { FacebookMessengerDetails } from './im/facebook-messenger'
-
 // XXX this should be moved to the design-system
 import { IoMdSpeedometer } from 'react-icons/io'
 
@@ -19,62 +17,9 @@ import websites from './websites'
 import web_connectivity from './websites/WebConnectivity'
 import http_header_field_manipulation from './middleboxes/HttpHeaderFieldManipulation'
 import http_invalid_request_line from './middleboxes/HttpInvalidRequestLine'
-
-import {
-  Cross,
-  Tick
-} from 'ooni-components/dist/icons'
-
-const TODODetails = ({testKeys, isAnomaly, url, urlCategoryCode}) => {
-  return <Flex flexWrap='wrap' alignItems='flex-start' p={3}>
-    {url
-    && <Box width={1}>
-      <Text center fontSize={3}>{url} ({urlCategoryCode})</Text>
-    </Box>}
-    {isAnomaly
-    && <Box width={1}>
-      <Text center fontSize={3} color={theme.colors.red5}><Cross />An anomaly is present</Text>
-    </Box>}
-    {isAnomaly === false
-    && <Box width={1}>
-      <Text color={theme.colors.green6} center fontSize={3}><Tick />Everything is OK</Text>
-    </Box>}
-    {Object.keys(testKeys).map(key =>
-      <Box key={key} width={1/2}>
-        <Text bold>{key}</Text><Text>{JSON.stringify(testKeys[key])}</Text>
-      </Box>
-    )}
-    <Box width={1}><Text bold>Attention this is a beta, as such, things are subject to change</Text></Box>
-  </Flex>
-}
-
-const detailsMap = {
-  facebook_messenger: FacebookMessengerDetails
-}
-
-export const renderDetails = (measurement) => {
-  let testKeys = {}
-  const Component = detailsMap[name]
-  if (measurement.test_keys) {
-    testKeys = JSON.parse(measurement.test_keys)
-  }
-  if (!Component) {
-    return (
-      <TODODetails
-        url={measurement.url}
-        urlCategoryCode={measurement.url_category_code}
-        isAnomaly={measurement.is_anomaly}
-        testKeys={testKeys} />
-    )
-  }
-  return (
-    <Component
-      url={measurement.url}
-      urlCategoryCode={measurement.url_category_code}
-      testKeys={testKeys}
-      isAnomaly={measurement.is_anomaly} />
-  )
-}
+import facebook_messenger from './im/FacebookMessenger'
+import telegram from './im/Telegram'
+import whatsapp from './im/WhatsApp'
 
 const iconSize = 200
 const iconColor = theme.colors.black
@@ -102,9 +47,9 @@ export const tests = {
   web_connectivity,
   http_header_field_manipulation,
   http_invalid_request_line,
-  facebook_messenger: web_connectivity,
-  telegram: web_connectivity,
-  whatsapp: web_connectivity,
+  facebook_messenger,
+  telegram,
+  whatsapp,
   ndt: web_connectivity,
   dash: web_connectivity,
   vanilla_tor: web_connectivity,
