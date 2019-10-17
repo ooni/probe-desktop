@@ -61,7 +61,6 @@ const FacebookMessenger = ({measurement, isAnomaly, render}) => {
       {render({
         heroTitle: heroTitle,
         details: <FBDetails />
-
       })}
     </div>
   )

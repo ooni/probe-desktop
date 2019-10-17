@@ -13,12 +13,11 @@ const Telegram = ({measurement, isAnomaly, render}) => {
   const testKeys = JSON.parse(measurement.test_keys)
   let appStatus = 'Okay'
   let webStatus = 'Okay'
-  if (testKeys['telegram_http_blocking'] === true && testKeys['telegram_web_blocking'] === true) {
+
+  if (testKeys['telegram_http_blocking'] === true) {
     appStatus = 'Failed'
-    webStatus = 'Failed'
-  } else if (testKeys['telegram_http_blocking'] === true) {
-    appStatus = 'Failed'
-  } else if (testKeys['telegram_web_blocking'] === true) {
+  }
+  if (testKeys['telegram_web_blocking'] === true) {
     webStatus = 'Failed'
   }
 
