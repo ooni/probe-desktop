@@ -95,6 +95,11 @@ const ChangeLink = styled.a`
   }
 `
 
+const HeadsUpList = styled.li`
+  margin-top: 20px;
+  margin-bottom: 20px;
+`
+
 const QuizActually = ({text, onBack, onContinue}) => (
   <QuizModal width={400} bg={theme.colors.gray7}>
     <Heading center h={3}>
@@ -229,10 +234,9 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
       <Box width={1} p={4}>
         <Container width={700}>
           <ul>
-            <li><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.1" /></li>
-            <li><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.2" /></li>
-            <li><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.3" /></li>
-            <li><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.4" /></li>
+            <HeadsUpList><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.1" /></HeadsUpList>
+            <HeadsUpList><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.2" /></HeadsUpList>
+            <HeadsUpList><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.3" /></HeadsUpList>
           </ul>
         </Container>
       </Box>
