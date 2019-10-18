@@ -16,8 +16,7 @@ const color = theme.colors.violet8
 const name = <FormattedMessage id="Test.Middleboxes.Fullname" />
 const description = <FormattedMarkdownMessage id="Dashboard.Middleboxes.Card.Description" />
 const longDescription = <div>
-  <FormattedMarkdownMessage id={'Dashboard.Middleboxes.Overview.Paragraph.1'} />
-  <FormattedMarkdownMessage id={'Dashboard.Middleboxes.Overview.Paragraph.2'} />
+  <FormattedMarkdownMessage id={'Dashboard.Middleboxes.Overview.Paragraph'} />
 </div>
 
 const icon = <NettestGroupMiddleBoxes />

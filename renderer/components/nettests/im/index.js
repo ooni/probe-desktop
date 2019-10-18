@@ -15,8 +15,7 @@ const color = theme.colors.cyan6
 const name = <FormattedMessage id="Test.InstantMessaging.Fullname" />
 const description = <FormattedMarkdownMessage id="Dashboard.InstantMessaging.Card.Description" />
 const longDescription = <div>
-  <FormattedMarkdownMessage id={'Dashboard.InstantMessaging.Overview.Paragraph.1'} />
-  <FormattedMarkdownMessage id={'Dashboard.InstantMessaging.Overview.Paragraph.2'} />
+  <FormattedMarkdownMessage id={'Dashboard.InstantMessaging.Overview.Paragraph'} />
 </div>
 
 const icon = <NettestGroupInstantMessaging />

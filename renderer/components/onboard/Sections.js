@@ -34,6 +34,8 @@ import {
   theme
 } from 'ooni-components'
 
+import FormattedMarkdownMessage from '../FormattedMarkdownMessage'
+
 const QuizModal = styled(Fixed)`
   max-width: 100vw;
   max-height: 100vh;
@@ -91,6 +93,11 @@ const ChangeLink = styled.a`
   &:hover {
     color: ${props => props.theme.colors.gray7};
   }
+`
+
+const HeadsUpList = styled.li`
+  margin-top: 20px;
+  margin-bottom: 20px;
 `
 
 const QuizActually = ({text, onBack, onContinue}) => (
@@ -205,18 +212,18 @@ class QuizSteps extends React.Component {
 const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQuizComplete}) => (
   <div>
     {(quizActive && !quizComplete)
-    && <QuizSteps
-      onClose={toggleQuiz}
-      onDone={onQuizComplete}
-      questionList={[
-        <FormattedMessage key='Onboarding.PopQuiz.1.Question' id='Onboarding.PopQuiz.1.Question' />,
-        <FormattedMessage key='Onboarding.PopQuiz.2.Question' id='Onboarding.PopQuiz.2.Question' />
-      ]}
-      actuallyList={[
-        <FormattedMessage key='Onboarding.PopQuiz.1.Wrong.Paragraph' id='Onboarding.PopQuiz.1.Wrong.Paragraph' />,
-        <FormattedMessage key='Onboarding.PopQuiz.2.Wrong.Paragraph' id='Onboarding.PopQuiz.2.Wrong.Paragraph' />
-      ]}
-    />}
+      && <QuizSteps
+        onClose={toggleQuiz}
+        onDone={onQuizComplete}
+        questionList={[
+          <FormattedMessage key='Onboarding.PopQuiz.1.Question' id='Onboarding.PopQuiz.1.Question' />,
+          <FormattedMessage key='Onboarding.PopQuiz.2.Question' id='Onboarding.PopQuiz.2.Question' />
+        ]}
+        actuallyList={[
+          <FormattedMessage key='Onboarding.PopQuiz.1.Wrong.Paragraph' id='Onboarding.PopQuiz.1.Wrong.Paragraph' />,
+          <FormattedMessage key='Onboarding.PopQuiz.2.Wrong.Paragraph' id='Onboarding.PopQuiz.2.Wrong.Paragraph' />
+        ]}
+         />}
 
     <Flex flexWrap='wrap'>
       <Box width={1} p={2}>
@@ -227,14 +234,13 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
       <Box width={1} p={4}>
         <Container width={700}>
           <ul>
-            <li><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.1" /></li>
-            <li><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.2" /></li>
-            <li><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.3" /></li>
-            <li><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.4" /></li>
+            <HeadsUpList><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.1" /></HeadsUpList>
+            <HeadsUpList><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.2" /></HeadsUpList>
+            <HeadsUpList><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.3" /></HeadsUpList>
           </ul>
         </Container>
       </Box>
-      <Box style={{'margin': '0 auto'}}>
+      <Box mx='auto'>
         <Button inverted onClick={quizComplete ? onNext : toggleQuiz}>
           <FormattedMessage id="Onboarding.ThingsToKnow.Button" />
         </Button>
@@ -254,16 +260,13 @@ const SectionWhatIsOONI = ({onNext}) => (
       <Box width={1} p={4}>
         <Container width={700}>
           <Text>
-            <FormattedMessage id="Onboarding.WhatIsOONIProbe.Paragraph.1" />
-          </Text>
-          <Text>
-            <FormattedMessage id="Onboarding.WhatIsOONIProbe.Paragraph.2" />
+            <FormattedMarkdownMessage id="Onboarding.WhatIsOONIProbe.Paragraph" />
           </Text>
         </Container>
       </Box>
-      <Box style={{'margin': '0 auto'}}>
+      <Box mx='auto'>
         <Button inverted onClick={onNext}>
-      Continue {/* FIXME add this to the strings */}
+          <FormattedMessage id='Onboarding.WhatIsOONIProbe.GotIt' />
         </Button>
       </Box>
     </Flex>
@@ -282,7 +285,7 @@ const SectionDefaultSettings = ({onGo, onChange}) => (
         <Flex>
           <Box width={1/2}>
             <Heading h={4}>
-              <FormattedMessage id='Onboarding.DefaultSettings.Header.1' />
+              <FormattedMessage id='Onboarding.DefaultSettings.Header' />
             </Heading>
             <ul>
               <li>
@@ -297,18 +300,11 @@ const SectionDefaultSettings = ({onGo, onChange}) => (
             </ul>
           </Box>
           <Box width={1/2}>
-            <Heading h={4}>
-              <FormattedMessage id='Onboarding.DefaultSettings.Header.2' />
-            </Heading>
-            <ul>
-              <li>
-                <FormattedMessage id='Onboarding.DefaultSettings.Bullet.4' />
-              </li>
-            </ul>
+            <FormattedMarkdownMessage id='Onboarding.DefaultSettings.Paragraph' />
           </Box>
         </Flex>
       </Box>
-      <Box style={{'margin': '0 auto'}}>
+      <Box mx='auto'>
         <Button inverted onClick={onGo}>
           <FormattedMessage id='Onboarding.DefaultSettings.Button.Go' />
         </Button>

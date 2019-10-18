@@ -16,8 +16,7 @@ const color = theme.colors.indigo6
 const name = <FormattedMessage id="Test.Websites.Fullname" />
 const description = <FormattedMarkdownMessage id="Dashboard.Websites.Card.Description" />
 const longDescription = <div>
-  <FormattedMarkdownMessage id={'Dashboard.Websites.Overview.Paragraph.1'} />
-  <FormattedMarkdownMessage id={'Dashboard.Websites.Overview.Paragraph.2'} />
+  <FormattedMarkdownMessage id={'Dashboard.Websites.Overview.Paragraph'} />
 </div>
 
 const icon = <NettestGroupWebsites />

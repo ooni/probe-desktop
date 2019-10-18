@@ -15,8 +15,7 @@ const color = theme.colors.fuchsia6
 const name = <FormattedMessage id="Test.Performance.Fullname" />
 const description = <FormattedMarkdownMessage id="Dashboard.Performance.Card.Description" />
 const longDescription = <div>
-  <FormattedMarkdownMessage id={'Dashboard.Performance.Overview.Paragraph.1'} />
-  <FormattedMarkdownMessage id={'Dashboard.Performance.Overview.Paragraph.2'} />
+  <FormattedMarkdownMessage id={'Dashboard.Performance.Overview.Paragraph'} />
 </div>
 
 const icon = <NettestGroupPerformance />
