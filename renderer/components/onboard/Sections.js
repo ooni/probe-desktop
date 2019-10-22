@@ -100,6 +100,19 @@ const HeadsUpList = styled.li`
   margin-bottom: 20px;
 `
 
+const TopBar = styled(Box)`
+  height: 50px;
+  background-color: transparent;
+  color: ${props => props.theme.colors.white};
+  /* This makes it possible to drag the window around from the side bar */
+  -webkit-app-region: drag;
+`
+
+const OnboardBG = styled(Flex)`
+  background: ${props => `no-repeat url(${props.img})`};
+  background-size: cover;
+`
+
 const QuizActually = ({text, onBack, onContinue}) => (
   <QuizModal width={400} bg={theme.colors.gray7}>
     <Heading center h={3}>
@@ -198,12 +211,12 @@ class QuizSteps extends React.Component {
             onTrue={this.nextStep}
             onFalse={this.onWrongAnswer}
           />
-          :
-          <QuizActually
-            text={actuallyText}
-            onContinue={this.nextStep}
-            onBack={onClose}
-          />
+        :
+        <QuizActually
+          text={actuallyText}
+          onContinue={this.nextStep}
+          onBack={onClose}
+        />
         }
       </div>
     )
@@ -250,70 +263,66 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
 )
 
 const SectionWhatIsOONI = ({onNext}) => (
-  <div>
-    <Flex flexWrap='wrap'>
-      <Box width={1} p={2}>
-        <Heading center h={1}>
-          <FormattedMessage id="Onboarding.WhatIsOONIProbe.Title" />
-        </Heading>
-      </Box>
-      <Box width={1} p={4}>
-        <Container width={700}>
-          <Text>
-            <FormattedMarkdownMessage id="Onboarding.WhatIsOONIProbe.Paragraph" />
-          </Text>
-        </Container>
-      </Box>
-      <Box mx='auto'>
-        <Button inverted onClick={onNext}>
-          <FormattedMessage id='Onboarding.WhatIsOONIProbe.GotIt' />
-        </Button>
-      </Box>
-    </Flex>
-  </div>
+  <Flex flexWrap='wrap'>
+    <Box width={1} p={2}>
+      <Heading center h={1}>
+        <FormattedMessage id="Onboarding.WhatIsOONIProbe.Title" />
+      </Heading>
+    </Box>
+    <Box width={1} p={4}>
+      <Container width={700}>
+        <Text>
+          <FormattedMarkdownMessage id="Onboarding.WhatIsOONIProbe.Paragraph" />
+        </Text>
+      </Container>
+    </Box>
+    <Box mx='auto'>
+      <Button inverted onClick={onNext}>
+        <FormattedMessage id='Onboarding.WhatIsOONIProbe.GotIt' />
+      </Button>
+    </Box>
+  </Flex>
 )
 
 const SectionDefaultSettings = ({onGo, onChange}) => (
-  <div>
-    <Flex flexWrap='wrap'>
-      <Box width={1} p={2}>
-        <Heading center h={1}>
-          <FormattedMessage id='Onboarding.DefaultSettings.Title' />
-        </Heading>
-      </Box>
-      <Box width={1} p={4}>
-        <Flex>
-          <Box width={1/2}>
-            <Heading h={4}>
-              <FormattedMessage id='Onboarding.DefaultSettings.Header' />
-            </Heading>
-            <ul>
-              <li>
-                <FormattedMessage id='Onboarding.DefaultSettings.Bullet.1' />
-              </li>
-              <li>
-                <FormattedMessage id='Onboarding.DefaultSettings.Bullet.2' />
-              </li>
-              <li>
-                <FormattedMessage id='Onboarding.DefaultSettings.Bullet.3' />
-              </li>
-            </ul>
-          </Box>
-          <Box width={1/2}>
-            <FormattedMarkdownMessage id='Onboarding.DefaultSettings.Paragraph' />
-          </Box>
-        </Flex>
-      </Box>
-      <Box mx='auto'>
-        <Button inverted onClick={onGo}>
-          <FormattedMessage id='Onboarding.DefaultSettings.Button.Go' />
-        </Button>
-        <ChangeLink onClick={onChange}>
-          <FormattedMessage id='Onboarding.DefaultSettings.Button.Change' />
-        </ChangeLink>
-      </Box>
-    </Flex>
-  </div>
+  <Flex flexWrap='wrap'>
+    <Box width={1} p={2}>
+      <Heading center h={1}>
+        <FormattedMessage id='Onboarding.DefaultSettings.Title' />
+      </Heading>
+    </Box>
+    <Box width={1} p={4}>
+      <Flex>
+        <Box width={1/2}>
+          <Heading h={4}>
+            <FormattedMessage id='Onboarding.DefaultSettings.Header' />
+          </Heading>
+          <ul>
+            <li>
+              <FormattedMessage id='Onboarding.DefaultSettings.Bullet.1' />
+            </li>
+            <li>
+              <FormattedMessage id='Onboarding.DefaultSettings.Bullet.2' />
+            </li>
+            <li>
+              <FormattedMessage id='Onboarding.DefaultSettings.Bullet.3' />
+            </li>
+          </ul>
+        </Box>
+        <Box width={1/2}>
+          <FormattedMarkdownMessage id='Onboarding.DefaultSettings.Paragraph' />
+        </Box>
+      </Flex>
+    </Box>
+    <Box mx='auto'>
+      <Button inverted onClick={onGo}>
+        <FormattedMessage id='Onboarding.DefaultSettings.Button.Go' />
+      </Button>
+      <ChangeLink onClick={onChange}>
+        <FormattedMessage id='Onboarding.DefaultSettings.Button.Change' />
+      </ChangeLink>
+    </Box>
+  </Flex>
 )
 
 const StepperCircle = styled(Box)`
@@ -351,6 +360,7 @@ cursor: pointer;
 `
 
 const numSteps = 3
+
 class Sections extends React.Component {
   constructor(props) {
     super(props)
@@ -410,45 +420,60 @@ class Sections extends React.Component {
       onChange
     } = this.props
 
+    const onboardingBGs = [
+      '/static/images/onboarding_0.svg',
+      '/static/images/onboarding_1.svg',
+      '/static/images/onboarding_2.svg'
+    ]
+
     return (
-      <Flex flexWrap='wrap' justifyContent='center' alignItems='center'>
-        <Box width={1}>
-          {activeIdx === 0
-        && <SectionWhatIsOONI
-          onNext={this.nextStep}
-        />}
+      <OnboardBG img={onboardingBGs[activeIdx]} flexDirection='column' flex='0 1'>
+        <TopBar />
+        {/* <Illustration id={activeIdx} /> */}
+        <Flex flexWrap='wrap' justifyContent='center' alignItems='center'>
+          <Box width={1}>
+            {activeIdx === 0 &&
+              <SectionWhatIsOONI
+                onNext={this.nextStep}
+              />
+            }
 
-          {activeIdx === 1
-        && <SectionThingsToKnow
-          onQuizComplete={this.onQuizComplete}
-          quizComplete={quizComplete}
-          quizActive={quizActive}
-          toggleQuiz={this.toggleQuiz}
+            {activeIdx === 1 &&
+              <SectionThingsToKnow
+                onQuizComplete={this.onQuizComplete}
+                quizComplete={quizComplete}
+                quizActive={quizActive}
+                toggleQuiz={this.toggleQuiz}
 
-          onPrevious={this.prevStep}
-          onNext={this.nextStep}
-        />}
+                onPrevious={this.prevStep}
+                onNext={this.nextStep}
+              />
+            }
 
-          {activeIdx === 2
-        && <SectionDefaultSettings
-          onGo={onGo}
-          onChange={onChange}
-        />}
-        </Box>
+            {activeIdx === 2 &&
+              <SectionDefaultSettings
+                onGo={onGo}
+                onChange={onChange}
+              />
+            }
+          </Box>
 
-        <Box width={1}>
-          {activeIdx !== 0 && <BackButtonContainer onClick={this.prevStep}>
-            <Flex>
-              <Box><MdKeyboardArrowLeft size={20} /></Box>
-              <Box>Go Back</Box>
-            </Flex>
-          </BackButtonContainer>}
-        </Box>
+          <Box width={1}>
+            {activeIdx !== 0 &&
+              <BackButtonContainer onClick={this.prevStep}>
+                <Flex>
+                  <Box><MdKeyboardArrowLeft size={20} /></Box>
+                  <Box>Go Back</Box>
+                </Flex>
+              </BackButtonContainer>
+            }
+          </Box>
 
-        <Box width={1} pt={4}>
-          <Stepper activeIdx={activeIdx} />
-        </Box>
-      </Flex>
+          <Box width={1} pt={4}>
+            <Stepper activeIdx={activeIdx} />
+          </Box>
+        </Flex>
+      </OnboardBG>
     )
   }
 }
