@@ -41,8 +41,8 @@ const QuizModal = styled(Fixed)`
   max-height: 100vh;
   overflow: auto;
   transform: translate(-50%, -50%);
-  box-shadow: rgba(0, 0, 0, 0.25) 0 0 0 60vmax, rgba(0, 0, 0, 0.25) 0 0 32px;
-  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.80) 0 0 0 60vmax, rgba(0, 0, 0, 0.25) 0 0 32px;
+  border-radius: 10px;
   top: 50%;
   left: 50%;
   background-color: ${props => props.bg || props.theme.colors.blue5};
@@ -91,7 +91,7 @@ const ChangeLink = styled.a`
   text-align: center;
   padding-top: 10px;
   &:hover {
-    color: ${props => props.theme.colors.gray7};
+    color: ${props => props.theme.colors.gray3};
   }
 `
 
@@ -110,14 +110,17 @@ const TopBar = styled(Box)`
 
 const OnboardBG = styled(Flex)`
   background: ${props => `no-repeat url(${props.img})`};
-  background-size: cover;
+  background-color: #002b54;
+  background-size: contain;
+  height: 100vh;
 `
 
 const QuizActually = ({text, onBack, onContinue}) => (
   <QuizModal width={400} bg={theme.colors.gray7}>
-    <Heading center h={3}>
+    <Heading textAlign='center' h={3}>
       <FormattedMessage id='Onboarding.PopQuiz.1.Wrong.Title' />
     </Heading>
+    <Divider borderColor='white' />
     <Text p={4}>{text}</Text>
     <Flex>
       <BackButton width={1/2} onClick={onBack}>
@@ -133,16 +136,14 @@ const QuizActually = ({text, onBack, onContinue}) => (
 const QuizQuestion = ({qNum, question, onTrue, onFalse}) => (
   <QuizModal width={400}>
     <div>
-      <Heading center h={3}>
+      <Heading textAlign='center' h={3}>
         <FormattedMessage id='Onboarding.PopQuiz.Title' />
       </Heading>
-      <Divider />
-      <Heading center h={4}>
+      <Divider borderColor='white' />
+      <Heading textAlign='center' h={4}>
         <FormattedMessage id={`Onboarding.PopQuiz.${qNum}.Title`} />
       </Heading>
-      <Container pb={3}>
-        <Text>{question}</Text>
-      </Container>
+      <Text mx={5} my={4}>{question}</Text>
       <Flex>
         <TrueButton width={1/2} onClick={onTrue}>
           <FormattedMessage id='Onboarding.PopQuiz.True' />
@@ -203,7 +204,7 @@ class QuizSteps extends React.Component {
     return (
       <div>
         <Fixed top right bottom left />
-        {!actuallyActive ?
+        {!actuallyActive ? (
           <QuizQuestion
             qNum={qNum}
             question={questionText}
@@ -211,21 +212,21 @@ class QuizSteps extends React.Component {
             onTrue={this.nextStep}
             onFalse={this.onWrongAnswer}
           />
-        :
-        <QuizActually
-          text={actuallyText}
-          onContinue={this.nextStep}
-          onBack={onClose}
-        />
-        }
+        ) : (
+          <QuizActually
+            text={actuallyText}
+            onContinue={this.nextStep}
+            onBack={onClose}
+          />
+        )}
       </div>
     )
   }
 }
 const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQuizComplete}) => (
   <div>
-    {(quizActive && !quizComplete)
-      && <QuizSteps
+    {(quizActive && !quizComplete) &&
+      <QuizSteps
         onClose={toggleQuiz}
         onDone={onQuizComplete}
         questionList={[
@@ -236,22 +237,21 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
           <FormattedMessage key='Onboarding.PopQuiz.1.Wrong.Paragraph' id='Onboarding.PopQuiz.1.Wrong.Paragraph' />,
           <FormattedMessage key='Onboarding.PopQuiz.2.Wrong.Paragraph' id='Onboarding.PopQuiz.2.Wrong.Paragraph' />
         ]}
-         />}
+      />
+    }
 
-    <Flex flexWrap='wrap'>
-      <Box width={1} p={2}>
-        <Heading center h={1}>
+    <Flex flexWrap='wrap' flexDirection='column'>
+      <Box width={1}>
+        <Heading textAlign='center' h={1}>
           <FormattedMessage id="Onboarding.ThingsToKnow.Title" />
         </Heading>
       </Box>
-      <Box width={1} p={4}>
-        <Container width={700}>
-          <ul>
-            <HeadsUpList><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.1" /></HeadsUpList>
-            <HeadsUpList><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.2" /></HeadsUpList>
-            <HeadsUpList><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.3" /></HeadsUpList>
-          </ul>
-        </Container>
+      <Box width={2/3} my={0} mx='auto'>
+        <ul>
+          <HeadsUpList><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.1" /></HeadsUpList>
+          <HeadsUpList><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.2" /></HeadsUpList>
+          <HeadsUpList><FormattedMessage id="Onboarding.ThingsToKnow.Bullet.3" /></HeadsUpList>
+        </ul>
       </Box>
       <Box mx='auto'>
         <Button inverted onClick={quizComplete ? onNext : toggleQuiz}>
@@ -263,18 +263,16 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
 )
 
 const SectionWhatIsOONI = ({onNext}) => (
-  <Flex flexWrap='wrap'>
-    <Box width={1} p={2}>
-      <Heading center h={1}>
+  <Flex flexWrap='wrap' flexDirection='column'>
+    <Box width={1} px={4}>
+      <Heading h={1} textAlign='center'>
         <FormattedMessage id="Onboarding.WhatIsOONIProbe.Title" />
       </Heading>
     </Box>
-    <Box width={1} p={4}>
-      <Container width={700}>
-        <Text>
-          <FormattedMarkdownMessage id="Onboarding.WhatIsOONIProbe.Paragraph" />
-        </Text>
-      </Container>
+    <Box width={1/2} my={3} px={4} mx='auto'>
+      <Text>
+        <FormattedMarkdownMessage id="Onboarding.WhatIsOONIProbe.Paragraph" />
+      </Text>
     </Box>
     <Box mx='auto'>
       <Button inverted onClick={onNext}>
@@ -285,13 +283,13 @@ const SectionWhatIsOONI = ({onNext}) => (
 )
 
 const SectionDefaultSettings = ({onGo, onChange}) => (
-  <Flex flexWrap='wrap'>
-    <Box width={1} p={2}>
-      <Heading center h={1}>
+  <Flex flexWrap='wrap' flexDirection='column'>
+    <Box width={1}>
+      <Heading textAlign='center' h={1}>
         <FormattedMessage id='Onboarding.DefaultSettings.Title' />
       </Heading>
     </Box>
-    <Box width={1} p={4}>
+    <Box width={1} px={4}>
       <Flex>
         <Box width={1/2}>
           <Heading h={4}>
@@ -309,7 +307,7 @@ const SectionDefaultSettings = ({onGo, onChange}) => (
             </li>
           </ul>
         </Box>
-        <Box width={1/2}>
+        <Box width={1/2} mt={4}>
           <FormattedMarkdownMessage id='Onboarding.DefaultSettings.Paragraph' />
         </Box>
       </Flex>
@@ -427,9 +425,13 @@ class Sections extends React.Component {
     ]
 
     return (
-      <OnboardBG img={onboardingBGs[activeIdx]} flexDirection='column' flex='0 1'>
+      <OnboardBG
+        img={onboardingBGs[activeIdx]}
+        flexDirection='column'
+        justifyContent='flex-end'
+        flex='0 1'
+      >
         <TopBar />
-        {/* <Illustration id={activeIdx} /> */}
         <Flex flexWrap='wrap' justifyContent='center' alignItems='center'>
           <Box width={1}>
             {activeIdx === 0 &&
@@ -469,7 +471,7 @@ class Sections extends React.Component {
             }
           </Box>
 
-          <Box width={1} pt={4}>
+          <Box width={1} my={4}>
             <Stepper activeIdx={activeIdx} />
           </Box>
         </Flex>

@@ -9,7 +9,6 @@ import Layout from '../components/Layout'
 import Sections from '../components/onboard/Sections'
 
 const SectionContainer = styled.div`
-  min-height: 100vh;
   color: ${props => props.theme.colors.white};
 `
 
