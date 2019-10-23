@@ -157,27 +157,27 @@ const QuizQuestion = ({qNum, question, onTrue, onFalse}) => (
   </React.Fragment>
 )
 
-// const Animation = ({ okay }) => {
-//   const animationData = okay ? tickAnimation : crossAnimation
-//   return (
-//     <Lottie
-//       width={300}
-//       height={300}
-//       options={{
-//         loop: false,
-//         autoplay: true,
-//         animationData: animationData,
-//         rendererSettings: {
-//           preserveAspectRatio: 'xMidYMid slice'
-//         },
-//         eventListeners: [{
-//           eventName: 'complete',
-//           callback: () => this.onAnimatonComplete(),
-//         }]
-//       }}
-//     />
-//   )
-// }
+const Animation = ({ okay }) => {
+  const animationData = okay ? tickAnimation : crossAnimation
+  return (
+    <Lottie
+      width={300}
+      height={300}
+      options={{
+        loop: false,
+        autoplay: true,
+        animationData: animationData,
+        rendererSettings: {
+          preserveAspectRatio: 'xMidYMid slice'
+        },
+        eventListeners: [{
+          eventName: 'complete',
+          callback: () => this.onAnimatonComplete(),
+        }]
+      }}
+    />
+  )
+}
 
 class QuizSteps extends React.Component {
   constructor(props) {
@@ -251,22 +251,7 @@ class QuizSteps extends React.Component {
       <QuizModal>
         <Fixed top right bottom left />
         {(showOkayAnimation || showNopeAnimation) ? (
-          <Lottie
-            width={300}
-            height={300}
-            options={{
-              loop: false,
-              autoplay: true,
-              animationData: showOkayAnimation ? tickAnimation : crossAnimation,
-              rendererSettings: {
-                preserveAspectRatio: 'xMidYMid slice'
-              },
-              eventListeners: [{
-                eventName: 'complete',
-                callback: () => this.onAnimatonComplete(),
-              }]
-            }}
-          />
+          showAnimation()
         ) : (
           !actuallyActive ? (
             <QuizQuestion
