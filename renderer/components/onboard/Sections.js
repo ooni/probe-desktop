@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { FormattedMessage } from 'react-intl'
-
+import Lottie from 'react-lottie'
 import { MdKeyboardArrowLeft } from 'react-icons/md'
 /*
  * XXX This component is a bit written a bit hasily. State is stored and encapsulated in the following way:
@@ -29,12 +29,13 @@ import {
   Flex,
   Heading,
   Fixed,
-  Container,
   Divider,
   theme
 } from 'ooni-components'
 
 import FormattedMarkdownMessage from '../FormattedMarkdownMessage'
+import { default as tickAnimation } from 'ooni-components/components/animations/TickOK.json'
+import { default as crossAnimation } from 'ooni-components/components/animations/CrossNotOK.json'
 
 const QuizModal = styled(Fixed)`
   max-width: 100vw;
@@ -116,7 +117,7 @@ const OnboardBG = styled(Flex)`
 `
 
 const QuizActually = ({text, onBack, onContinue}) => (
-  <QuizModal width={400} bg={theme.colors.gray7}>
+  <React.Fragment width={400} bg={theme.colors.gray7}>
     <Heading textAlign='center' h={3}>
       <FormattedMessage id='Onboarding.PopQuiz.1.Wrong.Title' />
     </Heading>
@@ -130,11 +131,11 @@ const QuizActually = ({text, onBack, onContinue}) => (
         <FormattedMessage id='Onboarding.PopQuiz.Wrong.Button.Continue' />
       </ContinueButton>
     </Flex>
-  </QuizModal>
+  </React.Fragment>
 )
 
 const QuizQuestion = ({qNum, question, onTrue, onFalse}) => (
-  <QuizModal width={400}>
+  <React.Fragment width={400}>
     <div>
       <Heading textAlign='center' h={3}>
         <FormattedMessage id='Onboarding.PopQuiz.Title' />
@@ -153,18 +154,43 @@ const QuizQuestion = ({qNum, question, onTrue, onFalse}) => (
         </FalseButton>
       </Flex>
     </div>
-  </QuizModal>
+  </React.Fragment>
 )
+
+const Animation = ({ okay }) => {
+  const animationData = okay ? tickAnimation : crossAnimation
+  return (
+    <Lottie
+      width={300}
+      height={300}
+      options={{
+        loop: false,
+        autoplay: true,
+        animationData: animationData,
+        rendererSettings: {
+          preserveAspectRatio: 'xMidYMid slice'
+        },
+        eventListeners: [{
+          eventName: 'complete',
+          callback: () => this.onAnimatonComplete(),
+        }]
+      }}
+    />
+  )
+}
 
 class QuizSteps extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       activeIdx: 0,
-      actuallyActive: false
+      actuallyActive: false,
+      showOkayAnimation: false,
+      showNopeAnimation: false
     }
     this.nextStep = this.nextStep.bind(this)
     this.onWrongAnswer = this.onWrongAnswer.bind(this)
+    this.onAnimatonComplete = this.onAnimatonComplete.bind(this)
   }
 
   nextStep() {
@@ -175,7 +201,16 @@ class QuizSteps extends React.Component {
 
     this.setState({
       activeIdx: this.state.activeIdx + 1,
-      actuallyActive: false
+      actuallyActive: false,
+      showOkayAnimation: true
+    })
+  }
+
+  onAnimatonComplete() {
+    alert('Complete')
+    this.setState({
+      showOkayAnimation: false,
+      showNopeAnimation: false
     })
   }
 
@@ -193,6 +228,8 @@ class QuizSteps extends React.Component {
     } = this.props
 
     const {
+      showOkayAnimation,
+      showNopeAnimation,
       actuallyActive,
       activeIdx
     } = this.state
@@ -201,25 +238,38 @@ class QuizSteps extends React.Component {
       questionText = questionList[activeIdx],
       actuallyText = actuallyList[activeIdx]
 
+    const showAnimation = () => {
+      if (showOkayAnimation) {
+        return <Animation okay={true} />
+      }
+      if (showNopeAnimation) {
+        return <Animation okay={false} />
+      }
+    }
+
     return (
-      <div>
+      <QuizModal>
         <Fixed top right bottom left />
-        {!actuallyActive ? (
-          <QuizQuestion
-            qNum={qNum}
-            question={questionText}
-            actually={actuallyText}
-            onTrue={this.nextStep}
-            onFalse={this.onWrongAnswer}
-          />
+        {(showOkayAnimation || showNopeAnimation) ? (
+          showAnimation()
         ) : (
-          <QuizActually
-            text={actuallyText}
-            onContinue={this.nextStep}
-            onBack={onClose}
-          />
+          !actuallyActive ? (
+            <QuizQuestion
+              qNum={qNum}
+              question={questionText}
+              actually={actuallyText}
+              onTrue={this.nextStep}
+              onFalse={this.onWrongAnswer}
+            />
+          ) : (
+            <QuizActually
+              text={actuallyText}
+              onContinue={this.nextStep}
+              onBack={onClose}
+            />
+          )
         )}
-      </div>
+      </QuizModal>
     )
   }
 }
