@@ -157,7 +157,7 @@ const QuizQuestion = ({qNum, question, onTrue, onFalse}) => (
   </React.Fragment>
 )
 
-const Animation = ({ okay }) => {
+const Animation = ({ okay, onComplete }) => {
   const animationData = okay ? tickAnimation : crossAnimation
   return (
     <Lottie
@@ -169,12 +169,12 @@ const Animation = ({ okay }) => {
         animationData: animationData,
         rendererSettings: {
           preserveAspectRatio: 'xMidYMid slice'
-        },
-        eventListeners: [{
-          eventName: 'complete',
-          callback: () => this.onAnimatonComplete(),
-        }]
+        }
       }}
+      eventListeners={[{
+        eventName: 'complete',
+        callback: () => onComplete(),
+      }]}
     />
   )
 }
@@ -194,11 +194,6 @@ class QuizSteps extends React.Component {
   }
 
   nextStep() {
-    const questionCount = this.props.questionList.length
-    if (this.state.activeIdx >= (questionCount - 1)) {
-      return this.props.onDone()
-    }
-
     this.setState({
       activeIdx: this.state.activeIdx + 1,
       actuallyActive: false,
@@ -206,18 +201,22 @@ class QuizSteps extends React.Component {
     })
   }
 
+  onWrongAnswer() {
+    this.setState({
+      actuallyActive: true,
+      showNopeAnimation: true
+    })
+  }
+
   onAnimatonComplete() {
-    alert('Complete')
+    const questionCount = this.props.questionList.length
     this.setState({
       showOkayAnimation: false,
       showNopeAnimation: false
     })
-  }
-
-  onWrongAnswer() {
-    this.setState({
-      actuallyActive: true
-    })
+    if (this.state.activeIdx >= questionCount) {
+      return this.props.onDone()
+    }
   }
 
   render() {
@@ -238,14 +237,12 @@ class QuizSteps extends React.Component {
       questionText = questionList[activeIdx],
       actuallyText = actuallyList[activeIdx]
 
-    const showAnimation = () => {
-      if (showOkayAnimation) {
-        return <Animation okay={true} />
-      }
-      if (showNopeAnimation) {
-        return <Animation okay={false} />
-      }
-    }
+    const showAnimation = () => (
+      <Animation
+        okay={showOkayAnimation === true && showNopeAnimation === false}
+        onComplete={() => this.onAnimatonComplete()}
+      />
+    )
 
     return (
       <QuizModal>
