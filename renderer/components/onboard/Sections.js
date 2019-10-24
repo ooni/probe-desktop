@@ -1,9 +1,7 @@
 import React from 'react'
-
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
-
 import { FormattedMessage } from 'react-intl'
-import Lottie from 'react-lottie'
 import { MdKeyboardArrowLeft } from 'react-icons/md'
 /*
  * XXX This component is a bit written a bit hasily. State is stored and encapsulated in the following way:
@@ -27,63 +25,12 @@ import {
   Button,
   Box,
   Flex,
-  Heading,
-  Fixed,
-  Divider,
-  theme
+  Heading
 } from 'ooni-components'
 
 import FormattedMarkdownMessage from '../FormattedMarkdownMessage'
-import { default as tickAnimation } from 'ooni-components/components/animations/TickOK.json'
-import { default as crossAnimation } from 'ooni-components/components/animations/CrossNotOK.json'
-
-const QuizModal = styled(Fixed)`
-  max-width: 100vw;
-  max-height: 100vh;
-  overflow: auto;
-  transform: translate(-50%, -50%);
-  box-shadow: rgba(0, 0, 0, 0.80) 0 0 0 60vmax, rgba(0, 0, 0, 0.25) 0 0 32px;
-  border-radius: 10px;
-  top: 50%;
-  left: 50%;
-  background-color: ${props => props.bg || props.theme.colors.blue5};
-`
-
-const QuizButton = styled(Box)`
-  height: 50px;
-  text-align: center;
-  line-height: 50px;
-  cursor: pointer;
-`
-
-const TrueButton = styled(QuizButton)`
-  background-color: ${props => props.theme.colors.green7};
-  &:hover {
-    background-color: ${props => props.theme.colors.green6};
-  }
-`
-
-const FalseButton = styled(QuizButton)`
-  background-color: ${props => props.theme.colors.red8};
-  &:hover {
-    background-color: ${props => props.theme.colors.red7};
-  }
-`
-
-const ContinueButton = styled(QuizButton)`
-  color: ${props => props.theme.colors.black};
-  background-color: ${props => props.theme.colors.gray4};
-  &:hover {
-    background-color: ${props => props.theme.colors.gray3};
-  }
-`
-
-const BackButton = styled(QuizButton)`
-  background-color: ${props => props.theme.colors.gray7};
-  &:hover {
-    background-color: ${props => props.theme.colors.gray6};
-  }
-`
+import Stepper from './Stepper'
+import QuizSteps from './QuizSteps'
 
 const ChangeLink = styled.a`
   color: ${props => props.theme.colors.white};
@@ -116,160 +63,6 @@ const OnboardBG = styled(Flex)`
   height: 100vh;
 `
 
-const QuizActually = ({text, onBack, onContinue}) => (
-  <React.Fragment width={400} bg={theme.colors.gray7}>
-    <Heading textAlign='center' h={3}>
-      <FormattedMessage id='Onboarding.PopQuiz.1.Wrong.Title' />
-    </Heading>
-    <Divider borderColor='white' />
-    <Text p={4}>{text}</Text>
-    <Flex>
-      <BackButton width={1/2} onClick={onBack}>
-        <FormattedMessage id='Onboarding.PopQuiz.Wrong.Button.Back' />
-      </BackButton>
-      <ContinueButton width={1/2} onClick={onContinue}>
-        <FormattedMessage id='Onboarding.PopQuiz.Wrong.Button.Continue' />
-      </ContinueButton>
-    </Flex>
-  </React.Fragment>
-)
-
-const QuizQuestion = ({qNum, question, onTrue, onFalse}) => (
-  <React.Fragment width={400}>
-    <div>
-      <Heading textAlign='center' h={3}>
-        <FormattedMessage id='Onboarding.PopQuiz.Title' />
-      </Heading>
-      <Divider borderColor='white' />
-      <Heading textAlign='center' h={4}>
-        <FormattedMessage id={`Onboarding.PopQuiz.${qNum}.Title`} />
-      </Heading>
-      <Text mx={5} my={4}>{question}</Text>
-      <Flex>
-        <TrueButton width={1/2} onClick={onTrue}>
-          <FormattedMessage id='Onboarding.PopQuiz.True' />
-        </TrueButton>
-        <FalseButton width={1/2} onClick={onFalse}>
-          <FormattedMessage id='Onboarding.PopQuiz.False' />
-        </FalseButton>
-      </Flex>
-    </div>
-  </React.Fragment>
-)
-
-const Animation = ({ okay, onComplete }) => {
-  const animationData = okay ? tickAnimation : crossAnimation
-  return (
-    <Lottie
-      width={300}
-      height={300}
-      options={{
-        loop: false,
-        autoplay: true,
-        animationData: animationData,
-        rendererSettings: {
-          preserveAspectRatio: 'xMidYMid slice'
-        }
-      }}
-      eventListeners={[{
-        eventName: 'complete',
-        callback: () => onComplete(),
-      }]}
-    />
-  )
-}
-
-class QuizSteps extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      activeIdx: 0,
-      actuallyActive: false,
-      showOkayAnimation: false,
-      showNopeAnimation: false
-    }
-    this.nextStep = this.nextStep.bind(this)
-    this.onWrongAnswer = this.onWrongAnswer.bind(this)
-    this.onAnimatonComplete = this.onAnimatonComplete.bind(this)
-  }
-
-  nextStep() {
-    this.setState({
-      activeIdx: this.state.activeIdx + 1,
-      actuallyActive: false,
-      showOkayAnimation: true
-    })
-  }
-
-  onWrongAnswer() {
-    this.setState({
-      actuallyActive: true,
-      showNopeAnimation: true
-    })
-  }
-
-  onAnimatonComplete() {
-    const questionCount = this.props.questionList.length
-    this.setState({
-      showOkayAnimation: false,
-      showNopeAnimation: false
-    })
-    if (this.state.activeIdx >= questionCount) {
-      return this.props.onDone()
-    }
-  }
-
-  render() {
-    const {
-      questionList,
-      actuallyList,
-      onClose
-    } = this.props
-
-    const {
-      showOkayAnimation,
-      showNopeAnimation,
-      actuallyActive,
-      activeIdx
-    } = this.state
-
-    const qNum = activeIdx + 1,
-      questionText = questionList[activeIdx],
-      actuallyText = actuallyList[activeIdx]
-
-    const showAnimation = () => (
-      <Animation
-        okay={showOkayAnimation === true && showNopeAnimation === false}
-        onComplete={() => this.onAnimatonComplete()}
-      />
-    )
-
-    return (
-      <QuizModal>
-        <Fixed top right bottom left />
-        {(showOkayAnimation || showNopeAnimation) ? (
-          showAnimation()
-        ) : (
-          !actuallyActive ? (
-            <QuizQuestion
-              qNum={qNum}
-              question={questionText}
-              actually={actuallyText}
-              onTrue={this.nextStep}
-              onFalse={this.onWrongAnswer}
-            />
-          ) : (
-            <QuizActually
-              text={actuallyText}
-              onContinue={this.nextStep}
-              onBack={onClose}
-            />
-          )
-        )}
-      </QuizModal>
-    )
-  }
-}
 const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQuizComplete}) => (
   <div>
     {(quizActive && !quizComplete) &&
@@ -309,6 +102,14 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
   </div>
 )
 
+SectionThingsToKnow.propTypes = {
+  quizActive: PropTypes.bool,
+  quizComplete: PropTypes.bool,
+  toggleQuiz: PropTypes.func,
+  onQuizComplete: PropTypes.func,
+  onNext: PropTypes.func
+}
+
 const SectionWhatIsOONI = ({onNext}) => (
   <Flex flexWrap='wrap' flexDirection='column'>
     <Box width={1} px={4}>
@@ -328,6 +129,10 @@ const SectionWhatIsOONI = ({onNext}) => (
     </Box>
   </Flex>
 )
+
+SectionWhatIsOONI.propTypes = {
+  onNext: PropTypes.func
+}
 
 const SectionDefaultSettings = ({onGo, onChange}) => (
   <Flex flexWrap='wrap' flexDirection='column'>
@@ -370,38 +175,19 @@ const SectionDefaultSettings = ({onGo, onChange}) => (
   </Flex>
 )
 
-const StepperCircle = styled(Box)`
-  background-color: ${props => props.active ? props.theme.colors.white : props.theme.colors.blue5};
-  width: 15px;
-  height: 15px;
-  border-radius: 15px;
-`
-
-const StepperLine = styled(Box)`
-  background-color: ${props => props.active ? props.theme.colors.white : props.theme.colors.blue5};
-  width: 50px;
-  height: 3px;
-`
-
-const Stepper = ({activeIdx}) => {
-  return (
-    <Flex justifyContent='center' alignItems='center'>
-      <StepperCircle active={true} />
-      <StepperLine active={activeIdx > 0} />
-      <StepperCircle active={activeIdx > 0} />
-      <StepperLine active={activeIdx > 1} />
-      <StepperCircle active={activeIdx > 1} />
-    </Flex>
-  )
+SectionDefaultSettings.propTypes = {
+  onGo: PropTypes.func,
+  onChange: PropTypes.func
 }
+
 const BackButtonContainer = styled.div`
-position: absolute;
-left: 10px;
-top: 40px;
-cursor: pointer;
-&:hover {
-  color: ${props => props.theme.colors.gray4};
-}
+  position: absolute;
+  left: 10px;
+  top: 40px;
+  cursor: pointer;
+  &:hover {
+    color: ${props => props.theme.colors.gray4};
+  }
 `
 
 const numSteps = 3
@@ -525,6 +311,11 @@ class Sections extends React.Component {
       </OnboardBG>
     )
   }
+}
+
+Sections.propTypes = {
+  onGo: PropTypes.func,
+  onChange: PropTypes.func
 }
 
 export default Sections
