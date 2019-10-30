@@ -123,6 +123,7 @@ const groupRowsByMonth = (rows) => {
     byMonth[month].push(row)
   })
   return Object.keys(byMonth)
+    // Filter out months with no measurements in them to avoid showing empty months
     .filter(month => byMonth[month].length > 0 )
     .sort()
     .reverse()
