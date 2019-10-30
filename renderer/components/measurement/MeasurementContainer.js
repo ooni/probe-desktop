@@ -28,6 +28,7 @@ import { NDT } from '../nettests/performance/NDT'
 import { Dash } from '../nettests/performance/Dash'
 
 import FullHeightFlex from '../FullHeightFlex'
+import colorMap from './colorMap'
 
 const detailsMap = {
   web_connectivity: WebConnectivity,
@@ -38,12 +39,6 @@ const detailsMap = {
   whatsapp: WhatsApp,
   ndt: NDT,
   dash: Dash
-}
-
-export const colorMap = {
-  anomaly: theme.colors.yellow9,
-  reachable: theme.colors.green8,
-  error: theme.colors.gray6
 }
 
 const Placeholder = ({ id }) => <Box px={5} py={3} bg='gray3'>{id}</Box>

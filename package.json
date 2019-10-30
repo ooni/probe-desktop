@@ -21,6 +21,7 @@
     "publish": "npm run build && build -mw -p always",
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
     "lint": "eslint --ignore-path .gitignore .",
+    "test": "npm run build",
     "postinstall": "electron-builder install-app-deps",
     "storybook": "start-storybook -p 6006"
   },
