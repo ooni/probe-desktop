@@ -160,10 +160,22 @@ class QuizSteps extends React.Component {
   }
 
   nextStep() {
+    const { actuallyActive, activeIdx } = this.state
+    const { questionList } = this.props
+
+    // if continuing from wrong answer and all questions are answered
+    const questionCount = questionList.length
+    if (actuallyActive === true && activeIdx >= (questionCount - 1)) {
+      return this.props.onDone()
+    }
+
+    // if continuing after answering wrong, don't show okay animation
+    const showOkayAnimation = actuallyActive ? false : true
+
     this.setState({
       activeIdx: this.state.activeIdx + 1,
       actuallyActive: false,
-      showOkayAnimation: true
+      showOkayAnimation: showOkayAnimation
     })
   }
 
