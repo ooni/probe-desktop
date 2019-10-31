@@ -65,7 +65,7 @@ const FalseButton = styled(QuizButton)`
 `
 
 const QuizActually = ({text, onBack, onContinue}) => (
-  <React.Fragment width={400} bg={theme.colors.gray7}>
+  <Box width={300} bg={theme.colors.gray7}>
     <Heading textAlign='center' h={3}>
       <FormattedMessage id='Onboarding.PopQuiz.1.Wrong.Title' />
     </Heading>
@@ -79,7 +79,7 @@ const QuizActually = ({text, onBack, onContinue}) => (
         <FormattedMessage id='Onboarding.PopQuiz.Wrong.Button.Continue' />
       </ContinueButton>
     </Flex>
-  </React.Fragment>
+  </Box>
 )
 
 QuizActually.propTypes = {
@@ -89,7 +89,7 @@ QuizActually.propTypes = {
 }
 
 const QuizQuestion = ({qNum, question, onTrue, onFalse}) => (
-  <React.Fragment width={400}>
+  <Box width={300}>
     <div>
       <Heading textAlign='center' h={3}>
         <FormattedMessage id='Onboarding.PopQuiz.Title' />
@@ -108,7 +108,7 @@ const QuizQuestion = ({qNum, question, onTrue, onFalse}) => (
         </FalseButton>
       </Flex>
     </div>
-  </React.Fragment>
+  </Box>
 )
 
 QuizQuestion.propTypes = {
@@ -123,7 +123,7 @@ const Animation = ({ okay, onComplete }) => {
   return (
     <Lottie
       width={300}
-      height={300}
+      height={290}
       options={{
         loop: false,
         autoplay: true,
