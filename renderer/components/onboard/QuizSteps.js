@@ -210,8 +210,17 @@ class QuizSteps extends React.Component {
       />
     )
 
+    let modalBg = theme.colors.blue5
+    if (showOkayAnimation) {
+      modalBg = theme.colors.green7
+    } else if (showNopeAnimation) {
+      modalBg = theme.colors.red8
+    } else if (actuallyActive) {
+      modalBg = theme.colors.gray7
+    }
+
     return (
-      <QuizModal>
+      <QuizModal bg={modalBg}>
         <Fixed top right bottom left />
         {(showOkayAnimation || showNopeAnimation) ? (
           showAnimation()
