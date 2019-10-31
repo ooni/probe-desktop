@@ -14,11 +14,11 @@
     "build": "next build renderer && next export renderer",
     "dist": "npm run build && build --dir -mw",
     "download-bin": "node scripts/download-bin.js",
-    "pack": "npm run build && build -mw",
-    "pack:win": "npm run build && build --win --x64",
-    "pack:mac": "npm run build && build --mac",
-    "pack:linux": "npm run build && build --linux",
-    "publish": "npm run build && build -mw -p always",
+    "pack": "npm run build && electron-builder -mw",
+    "pack:win": "npm run build && electron-builder --win --x64",
+    "pack:mac": "npm run build && electron-builder --mac",
+    "pack:linux": "npm run build && electron-builder --linux",
+    "publish": "npm run build && electron-builder -mw -p always",
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
     "lint": "eslint --ignore-path .gitignore .",
     "test": "npm run build",
@@ -36,7 +36,9 @@
       "renderer/out"
     ],
     "linux": {
-      "target": [ "deb" ],
+      "target": [
+        "deb",
+      ],
       "category": "Network"
     },
     "win": {
@@ -97,8 +99,8 @@
     "babel-plugin-styled-components": "1.10.6",
     "chroma-js": "^2.0.6",
     "csv-parse": "^2.5.0",
-    "electron": "3.0.1",
-    "electron-builder": "20.28.4",
+    "electron": "6.0.2",
+    "electron-builder": "21.2.0",
     "electron-devtools-installer": "^2.2.4",
     "eslint": "^4.19.1",
     "eslint-plugin-react": "^7.14.3",
