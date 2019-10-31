@@ -49,8 +49,8 @@
       "icon": "main/static/icons/app.ico",
       "extraFiles": [
         {
-          "from": "./bin/windows_amd64/ooni.exe",
-          "to": "./resources/bin/ooni.exe"
+          "from": "./bin/windows_amd64/ooniprobe.exe",
+          "to": "./resources/bin/ooniprobe.exe"
         },
         {
           "from": "./bin/cert.pem",
@@ -65,12 +65,15 @@
       "publish": [
         "github"
       ],
+      "hardenedRuntime": true,
+      "entitlements": "./build/entitlements.mac.inherit.plist",
+      "entitlementsInherit": "./build/entitlements.mac.inherit.plist",
       "category": "public.app-category.tools",
       "icon": "main/static/icons/app.icns",
       "extraFiles": [
         {
-          "from": "./bin/darwin_amd64/ooni",
-          "to": "./Resources/bin/ooni"
+          "from": "./bin/darwin_amd64/ooniprobe",
+          "to": "./Resources/bin/ooniprobe"
         },
         {
           "from": "./bin/cert.pem",
