@@ -61,7 +61,7 @@ const TopBar = styled(Box)`
 
 const OnboardBG = styled(Flex)`
   background: ${props => `no-repeat url(${props.img})`};
-  background-color: #002b54;
+  background-color: ${props => props.bgColor || '#002b54'};
   background-size: contain;
   height: 100vh;
 `
@@ -263,6 +263,8 @@ class Sections extends React.Component {
     return (
       <OnboardBG
         img={onboardingBGs[activeIdx]}
+        // last onboarding screen needs a darker background
+        bgColor={activeIdx === 2 ? '#001a33' : '#002b54'}
         flexDirection='column'
         justifyContent='flex-end'
         flex='0 1'
