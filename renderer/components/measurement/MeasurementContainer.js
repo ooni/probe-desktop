@@ -161,6 +161,7 @@ const MeasurementContainer = ({measurement, isAnomaly}) => {
   const startTime = measurement.start_time
   const networkName = measurement.network_name
   const asn = measurement.asn
+  const runtime = measurement.runtime
 
   return (
     <MeasurementDetailContainer
@@ -203,9 +204,14 @@ const MeasurementContainer = ({measurement, isAnomaly}) => {
           </Sticky>
           <Container>
             <Flex flexDirection='column' style={{ 'minHeight': '60vh' }}>
-              <Flex my={3} justifyContent='space-around'>
+              <Flex my={3} justifyContent='space-around' alignItems='center'>
                 <MethodologyButton href={tests[testName].methodology} />
-                <Placeholder id='Runtime: 2s' />
+                <Box>
+                  <Text fontWeight='bold' is='span'>
+                    <FormattedMessage id='TestResults.Details.Hero.Runtime' />
+                  </Text>
+                  : {moment.duration(runtime * 1000).seconds()}s
+                </Box>
               </Flex>
               <FullHeightFlex>
                 {details}
