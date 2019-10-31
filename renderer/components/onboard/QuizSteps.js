@@ -12,8 +12,8 @@ import {
   Divider,
   theme
 } from 'ooni-components'
-import { default as tickAnimation } from 'ooni-components/components/animations/TickOK.json'
-import { default as crossAnimation } from 'ooni-components/components/animations/CrossNotOK.json'
+import { default as tickAnimation } from '../../static/animations/checkMark.json'
+import { default as crossAnimation } from '../../static/animations/crossMark.json'
 
 const QuizModal = styled(Fixed)`
   max-width: 100vw;
