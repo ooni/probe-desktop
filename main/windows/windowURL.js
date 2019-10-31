@@ -11,7 +11,7 @@ const windowURL = page => {
   }
   const devPath = `http://localhost:8000/${page}`
   let prodPath = format({
-    pathname: resolve(`renderer/out/${page}/index.html`),
+    pathname: resolve(`renderer/out/${page}.html`),
     protocol: 'file:',
     slashes: true
   })
