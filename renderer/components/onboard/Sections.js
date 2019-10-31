@@ -49,6 +49,9 @@ const HeadsUpList = styled.li`
 `
 
 const TopBar = styled(Box)`
+  position: absolute;
+  top: 0;
+  width: 100%;
   height: 50px;
   background-color: transparent;
   color: ${props => props.theme.colors.white};
