@@ -98,7 +98,7 @@ const QuizQuestion = ({qNum, question, onTrue, onFalse}) => (
       <Heading textAlign='center' h={4}>
         <FormattedMessage id={`Onboarding.PopQuiz.${qNum}.Title`} />
       </Heading>
-      <Text mx={5} my={4}>{question}</Text>
+      <Text mx={3} my={4} textAlign='center'>{question}</Text>
       <Flex>
         <TrueButton width={1/2} onClick={onTrue}>
           <FormattedMessage id='Onboarding.PopQuiz.True' />
