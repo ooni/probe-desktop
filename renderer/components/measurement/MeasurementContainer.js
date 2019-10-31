@@ -28,6 +28,7 @@ import { NDT } from '../nettests/performance/NDT'
 import { Dash } from '../nettests/performance/Dash'
 
 import FullHeightFlex from '../FullHeightFlex'
+import MethodologyButton from './MethodologyButton'
 import colorMap from './colorMap'
 
 const detailsMap = {
@@ -203,7 +204,7 @@ const MeasurementContainer = ({measurement, isAnomaly}) => {
           <Container>
             <Flex flexDirection='column' style={{ 'minHeight': '60vh' }}>
               <Flex my={3} justifyContent='space-around'>
-                <Placeholder id='Methodology' />
+                <MethodologyButton href={tests[testName].methodology} />
                 <Placeholder id='Runtime: 2s' />
               </Flex>
               <FullHeightFlex>

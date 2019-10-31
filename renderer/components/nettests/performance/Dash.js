@@ -91,5 +91,6 @@ export { Dash }
 
 // Metadata for the nettest
 export default {
-  name: <FormattedMessage id='Test.Dash.Fullname' />
+  name: <FormattedMessage id='Test.Dash.Fullname' />,
+  methodology: 'https://ooni.org/nettest/dash/'
 }

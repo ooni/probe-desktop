@@ -82,5 +82,6 @@ export { WebConnectivity }
 
 // Metadata for the nettest
 export default {
-  name: <FormattedMessage id='Test.WebConnectivity.Fullname' />
+  name: <FormattedMessage id='Test.WebConnectivity.Fullname' />,
+  methodology: 'https://ooni.org/nettest/web-connectivity/'
 }

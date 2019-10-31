@@ -98,5 +98,6 @@ export { NDT }
 
 // Metadata for the nettest
 export default {
-  name: <FormattedMessage id='Test.NDT.Fullname' />
+  name: <FormattedMessage id='Test.NDT.Fullname' />,
+  methodology: 'https://ooni.org/nettest/ndt/'
 }

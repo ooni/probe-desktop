@@ -52,5 +52,6 @@ HttpInvalidRequestLine.propTypes = {
 export { HttpInvalidRequestLine }
 
 export default {
-  name: <FormattedMessage id='Test.HTTPInvalidRequestLine.Fullname' />
+  name: <FormattedMessage id='Test.HTTPInvalidRequestLine.Fullname' />,
+  methodology: 'https://ooni.org/nettest/http-invalid-request-line/'
 }
