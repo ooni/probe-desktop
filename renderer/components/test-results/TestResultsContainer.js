@@ -107,7 +107,7 @@ const groupRowsByMonth = (rows) => {
     return []
   }
 
-  // We assume the rows are sorted from newest to oldest
+  // We assume the rows are sorted from oldest to newest
   const start = moment(rows[0].start_time)
   const end = moment()
   let range = moment.range(start, end).snapTo('month')
@@ -115,13 +115,19 @@ const groupRowsByMonth = (rows) => {
   Array.from(range.by('month', { excludeEnd: false})).map(m => {
     byMonth[m.format('YYYY-MM-01')] = []
   })
+
   // XXX I think there is a better way to do this without so many list
   // reversals.
   rows.reverse().map(row => {
     const month = moment(row.start_time).format('YYYY-MM-01')
     byMonth[month].push(row)
   })
-  return Object.keys(byMonth).sort().reverse().map(key => [key, byMonth[key]])
+  return Object.keys(byMonth)
+    // Filter out months with no measurements in them to avoid showing empty months
+    .filter(month => byMonth[month].length > 0 )
+    .sort()
+    .reverse()
+    .map(key => [key, byMonth[key]])
 }
 
 const FullWidth = styled.div`
