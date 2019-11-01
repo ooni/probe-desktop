@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { Text } from 'rebass'
@@ -7,7 +7,7 @@ import {
   Flex,
   Box,
   Heading,
-  theme
+  Button
 } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
@@ -29,6 +29,7 @@ import { Dash } from '../nettests/performance/Dash'
 
 import FullHeightFlex from '../FullHeightFlex'
 import MethodologyButton from './MethodologyButton'
+import RawDataContainer from './RawDataContainer'
 import colorMap from './colorMap'
 
 const detailsMap = {
@@ -156,83 +157,94 @@ MeasurementDetailContainer.propTypes = {
   measurement: PropTypes.object
 }
 
-const MeasurementContainer = ({measurement, isAnomaly}) => {
+const MeasurementContainer = ({measurement, isAnomaly, rawData}) => {
   const testName = measurement.test_name
   const startTime = measurement.start_time
   const networkName = measurement.network_name
   const asn = measurement.asn
   const runtime = measurement.runtime
 
-  return (
-    <MeasurementDetailContainer
-      isAnomaly={isAnomaly}
-      measurement={measurement}
-      render={({
-        hero,
-        heroBG,
-        heroIcon,
-        heroTitle,
-        heroSubtitle,
-        collapsedHero,
-        details
-      }) => (
-        <StickyContainer>
-          <Sticky topOffset={100}>
-            {({
-              style,
-              isSticky
-            }) => {
-              return (
-                <Box style={style}>
-                  <StickyHero
-                    isSticky={isSticky}
-                    isAnomaly={isAnomaly}
-                    bg={heroBG}
-                    testName={testName}
-                    startTime={startTime}
-                    networkName={networkName}
-                    asn={asn}
-                    hero={hero}
-                    heroIcon={heroIcon}
-                    heroTitle={heroTitle}
-                    heroSubtitle={heroSubtitle}
-                    collapsedHero={collapsedHero}
-                  />
-                </Box>
-              )
-            }}
-          </Sticky>
-          <Container>
-            <Flex flexDirection='column' style={{ 'minHeight': '60vh' }}>
-              <Flex my={3} justifyContent='space-around' alignItems='center'>
-                <MethodologyButton href={tests[testName].methodology} />
-                <Box>
-                  <Text fontWeight='bold' is='span'>
-                    <FormattedMessage id='TestResults.Details.Hero.Runtime' />
-                  </Text>
-                  : {moment.duration(runtime * 1000).seconds()}s
-                </Box>
-              </Flex>
-              <FullHeightFlex>
-                {details}
-              </FullHeightFlex>
-              <Flex my={3} justifyContent='space-around'>
-                <Placeholder id='Raw Data' />
-                <Placeholder id='Explorer URL' />
-                <Placeholder id='View Log' />
-              </Flex>
-            </Flex>
-          </Container>
-        </StickyContainer>
-      )}
-    />
-  )
+  const [rawDataOpen, setRawDataOpen] = useState(false)
 
+  return (
+    <React.Fragment>
+
+      <MeasurementDetailContainer
+        isAnomaly={isAnomaly}
+        measurement={measurement}
+        render={({
+          hero,
+          heroBG,
+          heroIcon,
+          heroTitle,
+          heroSubtitle,
+          collapsedHero,
+          details
+        }) => (
+          <StickyContainer>
+            <Sticky topOffset={100}>
+              {({
+                style,
+                isSticky
+              }) => {
+                return (
+                  <Box style={style}>
+                    <StickyHero
+                      isSticky={isSticky}
+                      isAnomaly={isAnomaly}
+                      bg={heroBG}
+                      testName={testName}
+                      startTime={startTime}
+                      networkName={networkName}
+                      asn={asn}
+                      hero={hero}
+                      heroIcon={heroIcon}
+                      heroTitle={heroTitle}
+                      heroSubtitle={heroSubtitle}
+                      collapsedHero={collapsedHero}
+                    />
+                  </Box>
+                )
+              }}
+            </Sticky>
+            <Container>
+              <Flex flexDirection='column' style={{ 'minHeight': '60vh' }}>
+                <Flex my={3} justifyContent='space-around' alignItems='center'>
+                  <MethodologyButton href={tests[testName].methodology} />
+                  <Box>
+                    <Text fontWeight='bold' is='span'>
+                      <FormattedMessage id='TestResults.Details.Hero.Runtime' />
+                    </Text>
+                    : {moment.duration(runtime * 1000).seconds()}s
+                  </Box>
+                </Flex>
+                <FullHeightFlex>
+                  {details}
+                </FullHeightFlex>
+                <Flex my={3} justifyContent='space-around'>
+                  <Button onClick={() => setRawDataOpen(!rawDataOpen)}>
+                    <FormattedMessage id='TestResults.Details.RawData' />
+                  </Button>
+                  <Placeholder id='Explorer URL' />
+                </Flex>
+              </Flex>
+            </Container>
+          </StickyContainer>
+        )}
+      />
+      <RawDataContainer
+        rawData={rawData}
+        isOpen={rawDataOpen}
+        onClose={() => setRawDataOpen(false)}
+      />
+    </React.Fragment>
+  )
 }
 
 MeasurementContainer.propTypes = {
   measurement: PropTypes.object,
-  isAnomaly: PropTypes.bool
+  isAnomaly: PropTypes.bool,
+  rawMeasurement: PropTypes.object
 }
 
 export default MeasurementContainer
