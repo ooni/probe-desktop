@@ -82,7 +82,7 @@ const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, on
         <BgIcon>
           {icon}
         </BgIcon>
-        <Flex pt={5}>
+        <Flex pt={5} alignItems='center'>
           <Box width={3/4} pr={4}>
             {description}
           </Box>
