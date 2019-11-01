@@ -44,6 +44,7 @@ const RawDataContainer = ({ rawData, isOpen, onClose }) => {
   // We wrap the json viewer so that we can render it only in client side rendering
   class JsonViewer extends React.Component {
     render() {
+      // eslint-disable-next-line no-undef
       const ReactJson = require('react-json-view').default
       const {
         src
