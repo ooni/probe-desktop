@@ -65,7 +65,7 @@ const FalseButton = styled(QuizButton)`
 `
 
 const QuizActually = ({text, onBack, onContinue}) => (
-  <Box width={300} bg={theme.colors.gray7}>
+  <Box width={400} bg={theme.colors.gray7}>
     <Heading textAlign='center' h={3}>
       <FormattedMessage id='Onboarding.PopQuiz.1.Wrong.Title' />
     </Heading>
@@ -89,7 +89,7 @@ QuizActually.propTypes = {
 }
 
 const QuizQuestion = ({qNum, question, onTrue, onFalse}) => (
-  <Box width={300}>
+  <Box width={400}>
     <div>
       <Heading textAlign='center' h={3}>
         <FormattedMessage id='Onboarding.PopQuiz.Title' />
@@ -122,8 +122,8 @@ const Animation = ({ okay, onComplete }) => {
   const animationData = okay ? tickAnimation : crossAnimation
   return (
     <Lottie
-      width={300}
-      height={290}
+      width={400}
+      height={270}
       options={{
         loop: false,
         autoplay: true,
