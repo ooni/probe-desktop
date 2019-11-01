@@ -19,10 +19,12 @@ class Measurement extends React.Component {
     this.state = {
       loading: true,
       measurement: {},
+      rawMeasurement: {},
       error: null
     }
     this.loadMeasurement = this.loadMeasurement.bind(this)
     this.loadData = this.loadData.bind(this)
+    this.loadRawData = this.loadRawData.bind(this)
   }
 
   loadMeasurement(resultID, measurementID) {
@@ -57,8 +59,27 @@ class Measurement extends React.Component {
     return this.loadMeasurement(query.resultID, query.measurementID)
   }
 
+  loadRawData() {
+    const { query } = this.props.router
+    const remote = electron.remote
+    const { showMeasurement } = remote.require('./actions')
+    return showMeasurement(query.measurementID).then(measurement => {
+      // XXX this can maybe be improved
+      this.setState({
+        rawData: measurement
+      })
+    }).catch(err => {
+      Raven.captureException(err, {extra: {scope: 'renderer.showMeasurement'}})
+      debug('error triggered', err)
+      return this.setState({
+        error: err
+      })
+    })
+  }
+
   componentDidMount() {
     this.loadData()
+    this.loadRawData()
   }
 
   componentDidUpdate(prevProps) {
@@ -71,7 +92,8 @@ class Measurement extends React.Component {
     const {
       loading,
       measurement,
-      error
+      error,
+      rawData
     } = this.state
 
     // comes from <MeasurementRow> in the results list
@@ -82,7 +104,11 @@ class Measurement extends React.Component {
       <Layout>
         <Sidebar>
           <LoadingOverlay loading={loading} />
-          {!loading && <MeasurementContainer measurement={measurement} isAnomaly={isAnomaly}/>}
+          {!loading && <MeasurementContainer
+            measurement={measurement}
+            isAnomaly={isAnomaly}
+            rawData={rawData}
+          />}
           {error && <ErrorView error={error} />}
         </Sidebar>
       </Layout>

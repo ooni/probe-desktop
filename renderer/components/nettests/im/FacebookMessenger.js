@@ -77,5 +77,6 @@ export { FacebookMessenger }
 
 // Metadata for the nettest
 export default {
-  name: <FormattedMessage id='Test.FacebookMessenger.Fullname' />
+  name: <FormattedMessage id='Test.FacebookMessenger.Fullname' />,
+  methodology: 'https://ooni.org/nettest/facebook-messenger/'
 }

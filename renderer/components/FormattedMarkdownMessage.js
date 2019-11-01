@@ -6,6 +6,8 @@ import styled from 'styled-components'
 import remark from 'remark'
 import reactRenderer from 'remark-react'
 
+import { openInBrowser } from './utils'
+
 const StyledLink = styled.a`
   color: ${props => props.theme.colors.blue5};
   text-decoration: none;
@@ -14,12 +16,6 @@ const StyledLink = styled.a`
     color: ${props => props.theme.colors.blue3};
   }
 `
-
-const openInBrowser = (url, event) => {
-  var shell = require('electron').shell
-  event.preventDefault()
-  shell.openExternal(url)
-}
 
 const OpenLinkInBrowser = ({href, children}) => {
   return (

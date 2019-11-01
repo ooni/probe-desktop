@@ -87,5 +87,6 @@ export { WhatsApp }
 
 // Metadata for the nettest
 export default {
-  name: <FormattedMessage id='Test.WhatsApp.Fullname' />
+  name: <FormattedMessage id='Test.WhatsApp.Fullname' />,
+  methodology: 'https://ooni.org/nettest/whatsapp/'
 }
