@@ -66,6 +66,11 @@ const ConfigureButton = styled(Button)`
   border: 1px solid ${props => props.theme.colors.white};
 `
 
+const ScrollableBox = styled(Box)`
+  max-height: 150px;
+  overflow: auto;
+`
+
 const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, onConfigure}) => (
   <Box width={1/2} pr={3} pb={3}>
     <Card bg={color} color='white' style={{position: 'relative', height: '250px'}}>
@@ -101,7 +106,9 @@ const BackCardContent = ({name, longDescription, color, toggleCard}) => (
       </TopLeftFloatingButton>
       <CardContent>
         <Heading h={3}>{name}</Heading>
-        {longDescription}
+        <ScrollableBox>
+          {longDescription}
+        </ScrollableBox>
       </CardContent>
     </Card>
   </Box>
