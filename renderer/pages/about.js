@@ -18,6 +18,8 @@ import { Text } from 'rebass'
 
 const { remote } = require('electron')
 
+import { version } from '../../package.json'
+
 class About extends React.Component {
   constructor(props) {
     super(props)
@@ -57,7 +59,7 @@ class About extends React.Component {
             <OONIHorizontalMonochromeInverted width='200px' />
           </Box>
           <Box mt={3}>
-            <Text fontSize={14} color='white'>{remote.app.getVersion()}</Text>
+            <Text fontSize={14} color='white'>{version}</Text>
           </Box>
         </Flex>
         <Container>
