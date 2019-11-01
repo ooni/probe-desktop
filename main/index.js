@@ -167,9 +167,6 @@ app.on('ready', async () => {
     if (config._informed_consent !== true) {
       windows.main.loadURL(windowURL('onboard'))
     }
-    if (config._is_beta === true) {
-      toggleWindow(null, openAboutWindow())
-    }
     windows.main.once('ready-to-show', () => {
       toggleWindow(null, windows.main)
     })
