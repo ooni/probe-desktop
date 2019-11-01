@@ -64,7 +64,7 @@ if (!isDev && firstRun()) {
 
 let menuTemplate = [
   {
-    label: 'BETA',
+    label: 'About',
     submenu: [
       { label: 'About OONI Probe', click: () => openAboutWindow() },
     ]
@@ -144,10 +144,6 @@ app.on('ready', async () => {
       .then((name) => console.log(`Added Extension:  ${name}`))
       .catch((err) => console.log('An error occurred: ', err))
       /* eslint-enable no-console */
-  }
-
-  if (config._is_beta === true) {
-    // XXX do something like delete all the measurements on a fresh launch.
   }
 
   await prepareNext('./renderer')
