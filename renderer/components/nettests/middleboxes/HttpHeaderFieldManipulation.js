@@ -52,5 +52,6 @@ HttpHeaderFieldManipulation.propTypes = {
 export { HttpHeaderFieldManipulation }
 
 export default {
-  name: <FormattedMessage id='Test.HTTPHeaderFieldManipulation.Fullname' />
+  name: <FormattedMessage id='Test.HTTPHeaderFieldManipulation.Fullname' />,
+  methodology: 'https://ooni.org/nettest/http-header-field-manipulation/'
 }

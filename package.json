@@ -149,6 +149,8 @@
     "lodash": "^4.17.15",
     "ms": "^2.1.2",
     "npm": "^6.11.3",
+    "react-json-view": "1.19.1",
+    "react-spring": "^8.0.27",
     "react-sticky": "^6.0.3",
     "split2": "^2.2.0",
     "sudo-prompt": "^7.1.1",

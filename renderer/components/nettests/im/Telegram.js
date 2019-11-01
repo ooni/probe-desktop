@@ -78,5 +78,6 @@ export { Telegram }
 
 // Metadata for the nettest
 export default {
-  name: <FormattedMessage id='Test.Telegram.Fullname' />
+  name: <FormattedMessage id='Test.Telegram.Fullname' />,
+  methodology: 'https://ooni.org/nettest/telegram/'
 }
