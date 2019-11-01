@@ -2,18 +2,23 @@
 import React from 'react'
 
 import Layout from '../components/Layout'
+import FormattedMarkdownMessage from '../components/FormattedMarkdownMessage'
 
-import OONIVerticalColor from 'ooni-components/components/svgs/logos/OONI-VerticalColor.svg'
+import OONIHorizontalMonochromeInverted from 'ooni-components/components/svgs/logos/OONI-HorizontalMonochromeInverted.svg'
 import {
+  Container,
   Button,
   Heading,
-  Text,
   Flex,
   Box,
   Code
 } from 'ooni-components'
 
+import { Text } from 'rebass'
+
 const { remote } = require('electron')
+
+import { version } from '../../package.json'
 
 class About extends React.Component {
   constructor(props) {
@@ -49,38 +54,47 @@ class About extends React.Component {
 
     return (
       <Layout>
-        <div style={{padding: '20px'}}>
-          <Flex justifyContent='center' alignItems='center'>
-            <Box><OONIVerticalColor width='100px' /></Box>
-          </Flex>
-          {msg && <Heading h={4} color='red5'>{msg}</Heading>}
+        <Flex flexDirection='column' alignItems='center' bg='blue5' py={5}>
+          <Box>
+            <OONIHorizontalMonochromeInverted width='200px' />
+          </Box>
+          <Box mt={3}>
+            <Text fontSize={14} color='white'>{version}</Text>
+          </Box>
+        </Flex>
+        <Container>
+          <Text>
+            <FormattedMarkdownMessage id='Settings.About.Content.Paragraph' />
+          </Text>
 
-          <Heading h={3} center>This is a BETA!</Heading>
-          <Text>When you install the final release please be sure to do a hard
-          reset by clicking on the button below.</Text>
-          <Text bold>Do not rely on this version keeping your data</Text>
-          <Text>If you encounter any bugs with it please report them via email
-          to contact@openobservatory.org or (even better) on
-          github.com/ooni/probe-desktop</Text>
 
           <Flex justifyContent='center' alignItems='center' pt={2}>
             <Box>
               <Button onClick={this.onReset}>Hard reset</Button>
             </Box>
           </Flex>
+          <Flex flexDirection='column' my={2}>
+            <Box>
+              <Heading textAlign='center' h={4}>Debug information</Heading>
+            </Box>
+            <Box bg='gray1' p={2}>
+              {Object.keys(debugPaths).map(key => {
+                return (
+                  <Flex key={key} flexDirection='column' mb={3}>
+                    <Box>
+                      <Text fontWeight='bold'>{key}</Text>
+                    </Box>
+                    <Box>
+                      <Code>{debugPaths[key]}</Code>
+                    </Box>
+                  </Flex>
+                )
+              })}
+            </Box>
+          </Flex>
 
-          <Heading h={4}>Debug information</Heading>
-          <div>
-            {Object.keys(debugPaths).map(key => {
-              return (
-                <div key={key}>
-                  <Text bold>{key}</Text>
-                  <Code>{debugPaths[key]}</Code>
-                </div>
-              )
-            })}
-          </div>
-        </div>
+          {msg && <Heading h={4} color='red5'>{msg}</Heading>}
+        </Container>
       </Layout>
     )
   }

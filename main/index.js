@@ -64,7 +64,7 @@ if (!isDev && firstRun()) {
 
 let menuTemplate = [
   {
-    label: 'BETA',
+    label: 'About',
     submenu: [
       { label: 'About OONI Probe', click: () => openAboutWindow() },
     ]
@@ -170,9 +170,6 @@ app.on('ready', async () => {
   if (!wasOpenedAtLogin) {
     if (config._informed_consent !== true) {
       windows.main.loadURL(windowURL('onboard'))
-    }
-    if (config._is_beta === true) {
-      toggleWindow(null, openAboutWindow())
     }
     windows.main.once('ready-to-show', () => {
       toggleWindow(null, windows.main)
