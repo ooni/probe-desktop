@@ -24,7 +24,7 @@ class Measurement extends React.Component {
     }
     this.loadMeasurement = this.loadMeasurement.bind(this)
     this.loadData = this.loadData.bind(this)
-    this.loadRawdData = this.loadRawData.bind(this)
+    this.loadRawData = this.loadRawData.bind(this)
   }
 
   loadMeasurement(resultID, measurementID) {

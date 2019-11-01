@@ -29,6 +29,7 @@ import { Dash } from '../nettests/performance/Dash'
 
 import FullHeightFlex from '../FullHeightFlex'
 import MethodologyButton from './MethodologyButton'
+import ExplorerURLButton from './ExplorerURLButton'
 import RawDataContainer from './RawDataContainer'
 import colorMap from './colorMap'
 
@@ -221,11 +222,20 @@ const MeasurementContainer = ({measurement, isAnomaly, rawData}) => {
                 <FullHeightFlex>
                   {details}
                 </FullHeightFlex>
-                <Flex my={3} justifyContent='space-around'>
-                  <Button onClick={() => setRawDataOpen(!rawDataOpen)}>
-                    <FormattedMessage id='TestResults.Details.RawData' />
-                  </Button>
-                  <Placeholder id='Explorer URL' />
+                <Flex my={3}>
+                  <Box mr='auto'>
+                    <Button onClick={() => setRawDataOpen(!rawDataOpen)}>
+                      <FormattedMessage id='TestResults.Details.RawData' />
+                    </Button>
+                  </Box>
+                  {
+                    rawData && measurement.is_uploaded &&
+                    <ExplorerURLButton
+                      reportID={rawData.report_id}
+                      input={rawData.input}
+                    />
+
+                  }
                 </Flex>
               </Flex>
             </Container>
@@ -244,7 +254,7 @@ const MeasurementContainer = ({measurement, isAnomaly, rawData}) => {
 MeasurementContainer.propTypes = {
   measurement: PropTypes.object,
   isAnomaly: PropTypes.bool,
-  rawMeasurement: PropTypes.object
+  rawData: PropTypes.object
 }
 
 export default MeasurementContainer
