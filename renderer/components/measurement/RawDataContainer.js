@@ -1,7 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Flex, Box, Fixed, Heading} from 'ooni-components'
-import ReactJson from 'react-json-view'
 import { useSpring, animated } from 'react-spring'
 import { MdClose } from 'react-icons/md'
 import { FormattedMessage } from 'react-intl'
@@ -41,6 +41,33 @@ const RawDataContainer = ({ rawData, isOpen, onClose }) => {
     to: { bottom: isOpen ? 0 : -2000 }
   })
 
+  // We wrap the json viewer so that we can render it only in client side rendering
+  class JsonViewer extends React.Component {
+    render() {
+      const ReactJson = require('react-json-view').default
+      const {
+        src
+      } = this.props
+      const StyledReactJsonContainer = styled.div`
+        .string-value {
+          text-overflow: ellipsis;
+          max-width: 800px;
+          overflow: hidden;
+          display: inline-block;
+        }
+      `
+      return (
+        <StyledReactJsonContainer>
+          <ReactJson collapsed={1} src={src} />
+        </StyledReactJsonContainer>
+      )
+    }
+  }
+
+  JsonViewer.propTypes = {
+    src: PropTypes.object.isRequired
+  }
+
   return (
     <AnimatedWrapper bottom={props.bottom} left right>
       <Flex flexDirection='column' flexWrap='wrap'>
@@ -58,7 +85,7 @@ const RawDataContainer = ({ rawData, isOpen, onClose }) => {
         </Box>
         <Box width={1}>
           <StyledReactJsonContainer>
-            <ReactJson src={rawData} collapsed={1} />
+            <JsonViewer src={rawData} />
           </StyledReactJsonContainer>
         </Box>
       </Flex>
