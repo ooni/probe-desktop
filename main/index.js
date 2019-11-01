@@ -146,6 +146,10 @@ app.on('ready', async () => {
       /* eslint-enable no-console */
   }
 
+  if (config._is_beta === true) {
+    // XXX do something like delete all the measurements on a fresh launch.
+  }
+
   await prepareNext('./renderer')
 
   windows = {
