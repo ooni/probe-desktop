@@ -36,8 +36,18 @@
       "renderer/out"
     ],
     "linux": {
-      "target": [ "deb" ],
-      "category": "Network"
+      "target": [
+        "deb",
+        "rpm",
+        "tar.gz"
+      ],
+      "category": "Network",
+      "extraFiles": [
+        {
+          "from": "./bin/linux_amd64/ooniprobe",
+          "to": "./resources/bin/ooniprobe"
+        }
+      ]
     },
     "win": {
       "publish": [
