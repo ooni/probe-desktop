@@ -61,10 +61,6 @@
         {
           "from": "./bin/windows_amd64/ooniprobe.exe",
           "to": "./resources/bin/ooniprobe.exe"
-        },
-        {
-          "from": "./bin/cert.pem",
-          "to": "./resources/cert.pem"
         }
       ]
     },
@@ -84,10 +80,6 @@
         {
           "from": "./bin/darwin_amd64/ooniprobe",
           "to": "./Resources/bin/ooniprobe"
-        },
-        {
-          "from": "./bin/cert.pem",
-          "to": "./Resources/cert.pem"
         }
       ]
     },
