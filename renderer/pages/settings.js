@@ -13,6 +13,7 @@ import {
   Container,
   Label,
   Checkbox,
+  Input,
   Text
 } from 'ooni-components'
 
@@ -26,7 +27,7 @@ const TopBar = styled.div`
   padding-bottom: 20px;
 `
 
-const getConfigValue = (config, optionKey) => optionKey.split('.').reduce((o,i) => o[i] || false, config)
+const getConfigValue = (config, optionKey) => optionKey.split('.').reduce((o,i) => o[i], config)
 
 class BooleanOption extends React.Component {
   constructor(props) {
@@ -70,6 +71,57 @@ class BooleanOption extends React.Component {
     return (
       <Label>
         <Checkbox checked={checked} onChange={this.handleChange} />
+        {label}
+      </Label>
+    )
+  }
+}
+
+
+class NumberOption extends React.Component {
+  constructor(props) {
+    super(props)
+    this.handleChange = this.handleChange.bind(this)
+  }
+
+  handleChange(event) {
+    const {
+      optionKey,
+      config
+    } = this.props
+
+    const remote = electron.remote
+    const { setConfig } = remote.require('./utils/config')
+
+    const target = event.target
+    const newValue = target.value
+    const oldValue = getConfigValue(config, optionKey)
+    setConfig(optionKey, oldValue, newValue).then(() => {
+      this.props.onConfigSet()
+    }).catch(() => {
+      console.log('inconsistency detected')
+      this.props.onConfigSet()
+    })
+  }
+
+  render() {
+    const {
+      label,
+      optionKey,
+      config
+    } = this.props
+
+
+    if (config === null) {
+      return <div />
+    }
+
+    const value = getConfigValue(config, optionKey)
+    console.log('value', value)
+    console.log(config)
+    return (
+      <Label>
+        <Input value={value} onChange={this.handleChange} />
         {label}
       </Label>
     )
@@ -141,6 +193,12 @@ class Settings extends React.Component {
                 onConfigSet={this.reloadConfig}
                 label={<FormattedMessage id='Settings.Sharing.IncludeIP' />}
                 optionKey='sharing.include_ip'
+                config={config} />
+
+              <NumberOption
+                onConfigSet={this.reloadConfig}
+                label={<Text>Websites tested (0 means all)</Text>}
+                optionKey='nettests.websites_url_limit'
                 config={config} />
               <Text pt={3}>OONI Probe Desktop v{pkgJson.version}</Text>
             </Container>
