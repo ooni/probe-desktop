@@ -65,13 +65,15 @@
       ]
     },
     "dmg": {
-      "background": "build/background.png"
+      "background": "build/background.png",
+      "sign": false
     },
     "mac": {
       "publish": [
         "github"
       ],
       "hardenedRuntime": true,
+      "gatekeeperAssess": false,
       "entitlements": "./build/entitlements.mac.inherit.plist",
       "entitlementsInherit": "./build/entitlements.mac.inherit.plist",
       "category": "public.app-category.tools",
