@@ -55,13 +55,6 @@ const getBinaryPath = () => {
   return path.join(directoryPath, 'ooniprobe' + suffix)
 }
 
-const getSSLCertFilePath = () => {
-  if (is.development) {
-    return path.join(getResourcesDirectory(), 'bin', 'cert.pem')
-  }
-  return path.join(getResourcesDirectory(), 'cert.pem')
-}
-
 const getHomeDir = () => {
   const userDataPath = (electron.app || electron.remote.app).getPath('userData')
   if (is.development) {
@@ -74,7 +67,6 @@ const debugGetAllPaths = () => ({
   'binaryPath': getBinaryPath(),
   'binaryDirectory': getBinaryDirectory(),
   'binarySuffix': getBinarySuffix(),
-  'SSLCertFilePath': getSSLCertFilePath(),
   'homeDir': getHomeDir()
 })
 
@@ -82,7 +74,6 @@ module.exports = {
   getBinaryPath,
   getBinaryDirectory,
   getBinarySuffix,
-  getSSLCertFilePath,
   getHomeDir,
   debugGetAllPaths
 }

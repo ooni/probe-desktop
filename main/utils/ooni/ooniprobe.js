@@ -10,7 +10,7 @@ const split2 = require('split2')
 
 const Sentry = require('@sentry/electron')
 
-const { getBinaryPath, getSSLCertFilePath, getHomeDir } = require('../paths')
+const { getBinaryPath, getHomeDir } = require('../paths')
 
 const debug = require('debug')('ooniprobe-desktop.utils.ooni.ooniprobe')
 
@@ -44,7 +44,6 @@ class Ooniprobe extends EventEmitter {
             stdio: ['pipe', 'pipe', 'pipe'],
             env: {
               'OONI_HOME': getHomeDir(),
-              'SSL_CERT_FILE': getSSLCertFilePath()
             }
           }
         if (is.windows) {
