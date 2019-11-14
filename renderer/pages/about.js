@@ -17,17 +17,40 @@ import {
 import { Text } from 'rebass'
 
 const { remote } = require('electron')
+const { ipcRenderer } = require('electron')
 
 import { version } from '../../package.json'
+
+import styled from 'styled-components'
+
+const UpdatesContainer = styled.div`
+  padding-left: 20px;
+  padding-top: 1px;
+  padding-bottom: 30px;
+  background-color: ${props => props.theme.colors.gray4};
+`
+
+const UpdateMessages = ({messages}) => {
+  return (
+    <UpdatesContainer>
+      <Heading h={3}>Auto update</Heading>
+      {messages.map((text) => (
+        <Text>{text}</Text>
+      ))}
+    </UpdatesContainer>
+  )
+}
 
 class About extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       debugPaths: {},
-      msg: ''
+      msg: '',
+      updateMessages: []
     }
     this.onReset = this.onReset.bind(this)
+    this.onUpdateMessage = this.onUpdateMessage.bind(this)
   }
 
   onReset() {
@@ -39,17 +62,29 @@ class About extends React.Component {
     })
   }
 
+  onUpdateMessage(event, text) {
+    this.setState({
+      updateMessages: [...this.state.updateMessages, text]
+    })
+  }
+
   componentDidMount() {
     const paths = remote.require('./utils/paths')
     this.setState({
       debugPaths: paths.debugGetAllPaths()
     })
+    ipcRenderer.on('update-message', this.onUpdateMessage)
+
+  }
+  componentWillUnmount() {
+    ipcRenderer.removeListener('update-message', this.onUpdateMessage)
   }
 
   render() {
     const {
       debugPaths,
-      msg
+      msg,
+      updateMessages
     } = this.state
 
     return (
@@ -63,6 +98,9 @@ class About extends React.Component {
           </Box>
         </Flex>
         <Container>
+          {updateMessages.length > 0
+          && <UpdateMessages messages={updateMessages} />}
+
           <Text>
             <FormattedMarkdownMessage id='Settings.About.Content.Paragraph' />
           </Text>

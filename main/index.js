@@ -10,7 +10,6 @@ const isDev = require('electron-is-dev')
 const fixPath = require('fix-path')
 const { getConfig } = require('./utils/config')
 const { getSentryConfig } = require('./utils/sentry')
-const { startAutoUpdater } = require('./update')
 
 const log = require('electron-log')
 
@@ -98,7 +97,9 @@ app.on('window-all-closed', () => {
 })
 
 function sendStatusToWindow(text) {
+  const aboutWindow = openAboutWindow()
   log.info(text)
+  aboutWindow.webContents.send('update-message', text)
 }
 
 autoUpdater.on('checking-for-update', () => {
@@ -120,9 +121,8 @@ autoUpdater.on('download-progress', (progressObj) => {
   sendStatusToWindow(log_message)
 })
 autoUpdater.on('update-downloaded', () => {
-  sendStatusToWindow('Update downloaded')
-  // This can be called to quit the application and install the update
-  // autoUpdater.quitAndInstall()
+  sendStatusToWindow('Update downloaded. Quitting and installing.')
+  autoUpdater.quitAndInstall()
 })
 
 // Prepare the renderer once the app is ready
@@ -157,9 +157,6 @@ app.on('ready', async () => {
   }
 
   Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate))
-
-  startAutoUpdater(windows.main)
-
   // Make the window instances accessible from everywhere
   global.windows = windows
 
