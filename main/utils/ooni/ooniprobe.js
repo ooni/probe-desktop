@@ -32,12 +32,23 @@ class Ooniprobe extends EventEmitter {
   constructor(props) {
     super()
     this._binaryPath = (props && props.binaryPath) || getBinaryPath()
+    this.ooni = null
+  }
+
+  kill() {
+    if (this.ooni === null) {
+      throw Error('cannot kill an unstarted process')
+    }
+    this.ooni.kill()
   }
 
   call(argv) {
     const self = this
+    if (self.ooni !== null) {
+      throw Error('can only use call once per instance. Create a new Oooniprobe object!')
+    }
+
     return new Promise((resolve, reject) => {
-      let ooni
       try {
         let binPath = self._binaryPath,
           options = {
@@ -58,32 +69,32 @@ class Ooniprobe extends EventEmitter {
               console.log('detected non-ascii characters in homeDir', homeDir)
               const shortHomeDir = GetHomeShortPath()
               options.env['OONI_HOME'] = path.join(shortHomeDir, path.relative(homeDir, options.env.OONI_HOME))
-              options.env['SSL_CERT_FILE'] = path.join(shortHomeDir, path.relative(homeDir, options.env.SSL_CERT_FILE))
             }
           } catch (err) {
             // eslint-disable-next-line no-console
             console.log('failed to determine the home shortpath. Things will break with user homes which contain non-ascii characters.')
           }
         }
+
         argv = ['--batch'].concat(argv)
 
         debug('running', binPath, argv, options)
-        ooni = childProcess.spawn(binPath, argv, options)
+        self.ooni = childProcess.spawn(binPath, argv, options)
       } catch (err) {
         reject(err)
         return
       }
 
-      ooni.on('error', function(err) {
+      self.ooni.on('error', function(err) {
         debug('cp.spawn.error:', err)
         reject(err)
       })
 
-      ooni.stdout.on('data', data => {
+      self.ooni.stdout.on('data', data => {
         debug('stderr: ', data.toString())
       })
 
-      ooni.stderr.pipe(split2()).on('data', line => {
+      self.ooni.stderr.pipe(split2()).on('data', line => {
         debug('stdout: ', line.toString())
         try {
           const msg = JSON.parse(line.toString('utf8'))
@@ -100,9 +111,10 @@ class Ooniprobe extends EventEmitter {
         }
       })
 
-      ooni.on('exit', code => {
+      self.ooni.on('exit', code => {
         debug('exited with code', code)
-        if (code === 0) {
+        // code === null means the process was killed
+        if (code === 0 || code === null) {
           resolve()
           return
         }

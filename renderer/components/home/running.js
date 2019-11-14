@@ -9,9 +9,11 @@ import {
   Heading,
   Text,
   Container,
+  Button,
   theme
 } from 'ooni-components'
 
+import { MdClear } from 'react-icons/md'
 import { Line as LineProgress } from 'rc-progress'
 import { FormattedMessage } from 'react-intl'
 
@@ -57,6 +59,7 @@ const ToggleButtonContainer = styled(Flex)`
   }
 `
 
+
 const ToggleLogButton = ({open, onClick}) => {
   if (open) {
     return <ToggleButtonContainer onClick={onClick}>
@@ -100,9 +103,17 @@ const Log = ({lines, onToggleLog, open}) => {
   </LogContainer>
 }
 
+const CloseButtonContainer = styled.div`
+  color: white;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 99999;
+  cursor: pointer;
+`
 
 //name, icon, color, description, longDescription, onClickClose, active
-const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, logLines, runningTestName, error, totalRuntime}) => {
+const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, logLines, runningTestName, error, totalRuntime, onKill}) => {
   let eta = totalRuntime
   if (percent > 0) {
     eta = Math.round(totalRuntime - percent * totalRuntime)
@@ -122,6 +133,9 @@ const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, lo
 
   return <StyledRunningTest>
     <Container>
+      <CloseButtonContainer>
+        <MdClear onClick={onKill} size={30} />
+      </CloseButtonContainer>
       <Heading h={2}>{testGroup.name}</Heading>
       <Heading h={3}>
         <FormattedMessage
@@ -136,7 +150,7 @@ const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, lo
           width={300}
           height={300}
           options={lottieOptions}
-           />}
+        />}
       <LineProgress
         percent={percent*100}
         strokeColor={theme.colors.white}
@@ -204,7 +218,8 @@ class Running extends React.Component {
       runningTestName,
       logLines,
       totalRuntime,
-      error
+      error,
+      onKill
     } = this.props
 
     const {
@@ -224,6 +239,7 @@ class Running extends React.Component {
           error={error}
           testGroup={testGroup}
           logOpen={logOpen}
+          onKill={onKill}
           onToggleLog={this.onToggleLog}
           totalRuntime={totalRuntime}
         />

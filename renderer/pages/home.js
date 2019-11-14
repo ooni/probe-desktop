@@ -160,6 +160,8 @@ class Home extends React.Component {
     this.onConfigure = this.onConfigure.bind(this)
     this.onRun = this.onRun.bind(this)
     this.onMessage = this.onMessage.bind(this)
+    this.onKill = this.onKill.bind(this)
+    this.runner = null
   }
 
   componentWillUnmount() {
@@ -205,6 +207,12 @@ class Home extends React.Component {
     }
   }
 
+  onKill() {
+    if (this.runner !== null) {
+      this.runner.kill()
+    }
+  }
+
   onRun(testGroupName) {
     const { remote } = require('electron')
     return () => {
@@ -212,7 +220,9 @@ class Home extends React.Component {
       this.setState({
         runningTestGroupName: testGroupName
       })
-      remote.require('./utils/ooni/run')({testGroupName}).then(() => {
+      const Runner = remote.require('./utils/ooni/run').Runner
+      this.runner = new Runner({testGroupName})
+      this.runner.run().then(() => {
         this.setState({done: true})
         Router.push('/test-results')
       }).catch(error => {
@@ -244,6 +254,7 @@ class Home extends React.Component {
             logLines={runLogLines}
             error={runError}
             testGroupName={runningTestGroupName}
+            onKill={this.onKill}
           />
         </Layout>
       )
