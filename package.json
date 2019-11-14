@@ -11,13 +11,13 @@
   "scripts": {
     "start": "electron -r @babel/register .",
     "dev": "yarn run start",
-    "build": "next build renderer && next export renderer",
+    "build": "next build renderer && next export renderer && yarn run probe-cli",
     "dist": "yarn run build && electron-builder --dir -mw",
-    "download-bin": "node scripts/download-bin.js",
     "pack": "yarn run build && electron-builder --win --mac --linux",
     "pack:win": "yarn run build && electron-builder --win --x64",
     "pack:mac": "yarn run build && electron-builder --mac",
     "pack:linux": "yarn run build && electron-builder --linux",
+    "probe-cli": "node scripts/download-bin.js",
     "publish": "yarn run build && electron-builder --mac --win -p always",
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
     "lint": "eslint --ignore-path .gitignore .",
@@ -59,7 +59,7 @@
       "icon": "main/static/icons/app.ico",
       "extraFiles": [
         {
-          "from": "./bin/windows_amd64/ooniprobe.exe",
+          "from": "./build/probe-cli/windows_amd64/ooniprobe.exe",
           "to": "./resources/bin/ooniprobe.exe"
         }
       ]
@@ -80,7 +80,7 @@
       "icon": "main/static/icons/app.icns",
       "extraFiles": [
         {
-          "from": "./bin/darwin_amd64/ooniprobe",
+          "from": "./build/probe-cli/darwin_amd64/ooniprobe",
           "to": "./Resources/bin/ooniprobe"
         }
       ]

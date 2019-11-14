@@ -3,6 +3,7 @@ dist
 renderer/.next
 renderer/out
 /bin/
+/build/probe-cli/
 yarn-error.log
 
 # dependencies

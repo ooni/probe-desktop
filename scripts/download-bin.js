@@ -1,18 +1,23 @@
 /* global require */
 
+const path = require('path')
 const { execSync } = require('child_process')
-const { readFileSync } = require('fs')
+const { readFileSync, existsSync } = require('fs')
 const pkgJson = require('../package.json')
 
 const probeVersion = pkgJson['probeVersion']
 const baseURL = `https://github.com/ooni/probe-cli/releases/download/v${probeVersion}`
+
+const appRoot = path.resolve(path.join(__dirname, '..'))
+const dstDir = path.join(appRoot, 'build', 'probe-cli')
+
 const download = () => {
   let checksums = {}
 
-  execSync('mkdir -p bin/')
+  execSync(`mkdir -p ${dstDir}`)
 
-  execSync(`curl -#f -L -o ./bin/ooniprobe_checksums.txt ${baseURL}/ooniprobe_checksums.txt`)
-  const checksumsData = readFileSync('./bin/ooniprobe_checksums.txt')
+  execSync(`curl -#f -L -o ${dstDir}/ooniprobe_checksums.txt ${baseURL}/ooniprobe_checksums.txt`)
+  const checksumsData = readFileSync(`${dstDir}/ooniprobe_checksums.txt`)
   checksumsData.toString().split('\n').forEach(line => {
     if (line === '') {
       return
@@ -26,15 +31,18 @@ const download = () => {
     }
     const d = result[1]
     const downloadURL = `${baseURL}/${tarPath}`
-    console.log(`Downloading ${downloadURL}`)
-    execSync(`mkdir -p bin/${d}`)
-    execSync(`curl -#f -L -o ./bin/${tarPath} ${downloadURL}`)
-    execSync(`cd ./bin/${d} && tar xzf ../${tarPath}`)
-    const shasum = execSync(`shasum -a 256 ./bin/${tarPath}`).toString().split(' ')[0]
+
+    if (existsSync(`${dstDir}/${tarPath}`) === false) {
+      console.log(`Downloading ${downloadURL}`)
+      execSync(`mkdir -p ${dstDir}/${d}`)
+      execSync(`curl -#f -L -o ${dstDir}/${tarPath} ${downloadURL}`)
+    }
+    const shasum = execSync(`shasum -a 256 ${dstDir}/${tarPath}`).toString().split(' ')[0]
     if (shasum !== checksums[tarPath]) {
       throw Error(`Invalid checksum ${shasum} ${checksums[tarPath]}`)
     }
-    execSync(`rm ./bin/${tarPath}`)
+    console.log(`Verified ${dstDir}/${tarPath}`)
+    execSync(`cd ${dstDir}/${d} && tar xzf ../${tarPath}`)
   })
 }
 

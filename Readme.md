@@ -38,20 +38,28 @@ To build and run a development mode electron instance run:
 yarn run start
 ```
 
-To create a standalone packaged app:
-
-Be sure you have copied the binaries into the bin tree, by doing:
+To create a signed packaged app you will need to have configured the following
+environment variables:
 
 ```
-yarn run download-bin
+CSC_NAME=Hermes OONI Dev Key
+APPLEIDPASS=XXXX
+APPLEID=xxx@yyy.com
+
+CSC_LINK=/path/to/secrets/file.p12
+CSC_KEY_PASSWORD=XXXX
 ```
 
-The above expects you to have in ../probe-cli a built version of all the
-binaries you need.
-
-Then run:
+You can place them inside of `.env` file and they will be picked up by the
+following build commands:
 
 ```
 yarn run pack:mac
 yarn run pack:win
+```
+
+To make a linux build run:
+
+```
+yarn run pack:linux
 ```
