@@ -39,7 +39,7 @@
   "Dashboard.Overview.ChooseWebsites": "Choose websites",
   "Dashboard.Running.Running": "Running:",
   "Dashboard.Running.EstimatedTimeLeft": "Estimated time left:",
-  "Dashboard.Running.Seconds": "{seconds} seconds",
+  "Dashboard.Running.Seconds": "{seconds}",
   "Dashboard.Running.PreparingTest": "Preparing test",
   "Dashboard.Running.ShowLog": "Show Log",
   "Dashboard.Running.CloseLog": "Close Log",

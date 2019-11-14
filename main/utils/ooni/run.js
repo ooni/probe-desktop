@@ -28,6 +28,7 @@ class Runner {
         windows.main.send('ooni', {
           key: 'ooni.run.progress',
           percentage: data.fields.percentage,
+          eta: data.fields.eta,
           message: data.message,
           testKey: data.fields.key,
         })
