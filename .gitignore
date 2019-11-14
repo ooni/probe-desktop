@@ -17,3 +17,6 @@ npm-debug.log
 # development
 /ooni_home*
 cert.pem
+
+# secrets
+/.env
