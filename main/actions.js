@@ -62,7 +62,11 @@ const listResults = () => {
       }
       switch(data.fields.type) {
       case 'result_item':
-        rows.push(data.fields)
+        // Hide measurements which have not been completed
+        // TODO improve how we handle terminating an OONI Probe run in probe-cli
+        if (data.fields.is_done == true) {
+          rows.push(data.fields)
+        }
         break
       case 'result_summary':
         summary = data.fields
