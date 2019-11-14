@@ -21,6 +21,26 @@ const { ipcRenderer } = require('electron')
 
 import { version } from '../../package.json'
 
+import styled from 'styled-components'
+
+const UpdatesContainer = styled.div`
+  padding-left: 20px;
+  padding-top: 1px;
+  padding-bottom: 30px;
+  background-color: ${props => props.theme.colors.gray4};
+`
+
+const UpdateMessages = ({messages}) => {
+  return (
+    <UpdatesContainer>
+      <Heading h={3}>Auto update</Heading>
+      {messages.map((text) => (
+        <Text>{text}</Text>
+      ))}
+    </UpdatesContainer>
+  )
+}
+
 class About extends React.Component {
   constructor(props) {
     super(props)
@@ -44,7 +64,7 @@ class About extends React.Component {
 
   onUpdateMessage(event, text) {
     this.setState({
-      updateMessages: [...this.updateMessages, text]
+      updateMessages: [...this.state.updateMessages, text]
     })
   }
 
@@ -78,7 +98,9 @@ class About extends React.Component {
           </Box>
         </Flex>
         <Container>
-          {updateMessages.forEach((msg) => (<Text>{msg}</Text>))}
+          {updateMessages.length > 0
+          && <UpdateMessages messages={updateMessages} />}
+
           <Text>
             <FormattedMarkdownMessage id='Settings.About.Content.Paragraph' />
           </Text>

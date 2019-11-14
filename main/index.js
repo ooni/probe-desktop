@@ -99,7 +99,7 @@ app.on('window-all-closed', () => {
 function sendStatusToWindow(text) {
   const aboutWindow = openAboutWindow()
   log.info(text)
-  aboutWindow.send('update-message', text)
+  aboutWindow.webContents.send('update-message', text)
 }
 
 autoUpdater.on('checking-for-update', () => {
