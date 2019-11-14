@@ -36,8 +36,18 @@
       "renderer/out"
     ],
     "linux": {
-      "target": [ "deb" ],
-      "category": "Network"
+      "target": [
+        "deb",
+        "rpm",
+        "tar.gz"
+      ],
+      "category": "Network",
+      "extraFiles": [
+        {
+          "from": "./bin/linux_amd64/ooniprobe",
+          "to": "./resources/bin/ooniprobe"
+        }
+      ]
     },
     "win": {
       "publish": [
@@ -51,10 +61,6 @@
         {
           "from": "./bin/windows_amd64/ooniprobe.exe",
           "to": "./resources/bin/ooniprobe.exe"
-        },
-        {
-          "from": "./bin/cert.pem",
-          "to": "./resources/cert.pem"
         }
       ]
     },
@@ -74,10 +80,6 @@
         {
           "from": "./bin/darwin_amd64/ooniprobe",
           "to": "./Resources/bin/ooniprobe"
-        },
-        {
-          "from": "./bin/cert.pem",
-          "to": "./Resources/cert.pem"
         }
       ]
     },
@@ -148,7 +150,6 @@
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.15",
     "ms": "^2.1.2",
-    "npm": "^6.11.3",
     "react-json-view": "1.19.1",
     "react-spring": "^8.0.27",
     "react-sticky": "^6.0.3",
