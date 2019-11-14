@@ -13,7 +13,9 @@ const StyledWrapper = styled(Fixed)`
   overflow-y: scroll;
   background-color: ${props => props.theme.colors.gray1};
   z-index: 2;
-
+  left: 0;
+  right: 0;
+  margin-left: 220px;
   &::-webkit-scrollbar {
     display: none;
   }
