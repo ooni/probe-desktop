@@ -17,6 +17,7 @@ import {
 import { Text } from 'rebass'
 
 const { remote } = require('electron')
+const { ipcRenderer } = require('electron')
 
 import { version } from '../../package.json'
 
@@ -25,9 +26,11 @@ class About extends React.Component {
     super(props)
     this.state = {
       debugPaths: {},
-      msg: ''
+      msg: '',
+      updateMessages: []
     }
     this.onReset = this.onReset.bind(this)
+    this.onUpdateMessage = this.onUpdateMessage.bind(this)
   }
 
   onReset() {
@@ -39,17 +42,29 @@ class About extends React.Component {
     })
   }
 
+  onUpdateMessage(event, text) {
+    this.setState({
+      updateMessages: [...this.updateMessages, text]
+    })
+  }
+
   componentDidMount() {
     const paths = remote.require('./utils/paths')
     this.setState({
       debugPaths: paths.debugGetAllPaths()
     })
+    ipcRenderer.on('update-message', this.onUpdateMessage)
+
+  }
+  componentWillUnmount() {
+    ipcRenderer.removeListener('update-message', this.onUpdateMessage)
   }
 
   render() {
     const {
       debugPaths,
-      msg
+      msg,
+      updateMessages
     } = this.state
 
     return (
@@ -63,6 +78,7 @@ class About extends React.Component {
           </Box>
         </Flex>
         <Container>
+          {updateMessages.forEach((msg) => (<Text>{msg}</Text>))}
           <Text>
             <FormattedMarkdownMessage id='Settings.About.Content.Paragraph' />
           </Text>
