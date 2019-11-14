@@ -39,10 +39,10 @@ const getResourcesDirectory = () => {
 const getBinaryDirectory = () => {
   if (is.development) {
     if (is.macos) {
-      return path.join(getResourcesDirectory(), 'bin/darwin_amd64')
+      return path.join(getResourcesDirectory(), 'build/probe-cli/darwin_amd64')
     }
     if (is.linux) {
-      return path.join(getResourcesDirectory(), 'bin/linux_amd64')
+      return path.join(getResourcesDirectory(), 'build/probe-cli/linux_amd64')
     }
     throw Error('Only macos and linux development is currently supported')
   }
