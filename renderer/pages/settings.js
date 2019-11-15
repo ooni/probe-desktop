@@ -117,11 +117,17 @@ class NumberOption extends React.Component {
     }
 
     const value = getConfigValue(config, optionKey)
-    console.log('value', value)
-    console.log(config)
     return (
       <Label>
-        <Input value={value} onChange={this.handleChange} />
+        <Box width={1/16}>
+          <Input
+            type='number'
+            min={0}
+            max={999}
+            value={value}
+            onChange={this.handleChange}
+          />
+        </Box>
         {label}
       </Label>
     )
@@ -151,7 +157,6 @@ class Settings extends React.Component {
   componentDidMount() {
     this.reloadConfig()
   }
-
 
   render() {
     const {
