@@ -1,10 +1,12 @@
 /* global require, module */
 const { Ooniprobe } = require('./utils/ooni/ooniprobe')
 
+const log = require('electron-log')
 const debug = require('debug')('ooniprobe-desktop.main.actions')
 
 const hardReset = () => {
   const ooni = new Ooniprobe()
+  log.info('hardReset: performing a hard reset of the installation')
   return ooni.call(['reset', '--force'])
 }
 
@@ -17,8 +19,8 @@ const listMeasurements = (resultID) => {
   return new Promise((resolve, reject) => {
     ooni.on('data', (data) => {
       if (data.level === 'error') {
+        log.error('listMeasurements: error in row', data.message)
         errors.push(data.message)
-        debug('error in row', data.message)
         return
       }
       switch(data.fields.type) {
@@ -56,7 +58,7 @@ const listResults = () => {
   return new Promise((resolve, reject) => {
     ooni.on('data', (data) => {
       if (data.level === 'error') {
-        debug('error: ', data.message)
+        log.error('listResults: error in row', data.message)
         reject(data.message)
         return
       }
@@ -108,6 +110,7 @@ const showMeasurement = (msmtID) => {
         measurement = data.fields.measurement_json
         break
       default:
+        log.error('showMeasurement: extra data.fields', data.fields)
         debug('extra data.fields', data.fields)
       }
     })

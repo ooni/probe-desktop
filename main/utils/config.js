@@ -1,6 +1,7 @@
 /* global require, module */
 const path = require('path')
 const fs = require('fs-extra')
+const log = require('electron-log')
 
 const { getHomeDir } = require('./paths')
 
@@ -26,6 +27,8 @@ const setConfig = async (optionKey, currentValue, newValue) => {
   // via probe-cli.
   const currentOldValue = optionKey.split('.').reduce((o,i) => o[i], config)
   if (currentOldValue !== currentValue) {
+    log.info('setConfig: config file path', OONI_CONFIG_PATH)
+    log.error('setConfig: inconsistent config file', currentOldValue, currentValue)
     throw Error('inconsistent config file')
   }
   setIndex(config, optionKey, newValue)

@@ -3,7 +3,7 @@ const { EventEmitter } = require('events')
 const childProcess = require('child_process')
 const os = require('os')
 const path = require('path')
-
+const log = require('electron-log')
 const { is } = require('electron-util')
 
 const split2 = require('split2')
@@ -11,8 +11,6 @@ const split2 = require('split2')
 const Sentry = require('@sentry/electron')
 
 const { getBinaryPath, getHomeDir } = require('../paths')
-
-const debug = require('debug')('ooniprobe-desktop.utils.ooni.ooniprobe')
 
 const GetHomeShortPath = () => {
   // This is taken from: https://github.com/sindresorhus/untildify/pull/13/files
@@ -22,6 +20,7 @@ const GetHomeShortPath = () => {
   // depending on the language of the OS.
   const userDir = homeDir.replace(/([^\\])+$/g, '')
   if (!tmpDir.startsWith(userDir)) {
+    log.error('GetHomeShortPath: cannot fixup', userDir, homeDir)
     throw Error('cannot fixup the shortpath')
   }
   const user83 = tmpDir.slice(userDir.length).replace(/\\.*$/, '')
@@ -66,7 +65,7 @@ class Ooniprobe extends EventEmitter {
             // For more context see: https://github.com/nodejs/node/issues/17586
             if (!isAscii.test(homeDir)) {
               // eslint-disable-next-line no-console
-              console.log('detected non-ascii characters in homeDir', homeDir)
+              log.info('detected non-ascii characters in homeDir', homeDir)
               const shortHomeDir = GetHomeShortPath()
               options.env['OONI_HOME'] = path.join(shortHomeDir, path.relative(homeDir, options.env.OONI_HOME))
             }
@@ -78,7 +77,7 @@ class Ooniprobe extends EventEmitter {
 
         argv = ['--batch'].concat(argv)
 
-        debug('running', binPath, argv, options)
+        log.info('running', binPath, argv, options)
         self.ooni = childProcess.spawn(binPath, argv, options)
       } catch (err) {
         reject(err)
@@ -86,21 +85,21 @@ class Ooniprobe extends EventEmitter {
       }
 
       self.ooni.on('error', function(err) {
-        debug('cp.spawn.error:', err)
+        log.error('cp.spawn.error:', err)
         reject(err)
       })
 
       self.ooni.stdout.on('data', data => {
-        debug('stderr: ', data.toString())
+        log.error('stderr: ', data.toString())
       })
 
       self.ooni.stderr.pipe(split2()).on('data', line => {
-        debug('stdout: ', line.toString())
+        log.debug('stdout: ', line.toString())
         try {
           const msg = JSON.parse(line.toString('utf8'))
           self.emit('data', msg)
         } catch (err) {
-          debug('failed to call JSON.parse', line.toString('utf8'), err)
+          log.error('failed to call JSON.parse', line.toString('utf8'), err)
           Sentry.addBreadcrumb({
             message: 'got unparseable line from ooni cli',
             category: 'internal',
@@ -112,7 +111,7 @@ class Ooniprobe extends EventEmitter {
       })
 
       self.ooni.on('exit', code => {
-        debug('exited with code', code)
+        log.info('exited with code', code)
         // code === null means the process was killed
         if (code === 0 || code === null) {
           resolve()
