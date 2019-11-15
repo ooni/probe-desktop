@@ -63,3 +63,13 @@ To make a linux build run:
 ```
 yarn run pack:linux
 ```
+
+To publish a release you should run:
+```
+yarn run publish
+```
+
+**Important caveat** be sure to not push the tag for the upcoming release until
+after the `yarn run publish` command has run successfully. If you do so users
+of the OONI Probe Desktop app will get an error when they start the app because
+the auto-update system will try to fetch the metadata associated with that tag.
