@@ -143,14 +143,13 @@ class Settings extends React.Component {
     this.reloadConfig = this.reloadConfig.bind(this)
   }
 
-  reloadConfig() {
+  async reloadConfig() {
     const remote = electron.remote
     const { getConfig } = remote.require('./utils/config')
 
-    getConfig().then(config => {
-      this.setState({
-        config
-      })
+    const config = await getConfig()
+    this.setState({
+      config
     })
   }
 
