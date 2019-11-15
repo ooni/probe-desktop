@@ -8,6 +8,7 @@ const { is } = require('electron-util')
 const electron = require('electron')
 
 const debug = require('debug')('ooniprobe-desktop.utils.binary')
+const log = require('electron-log')
 
 const getBinarySuffix = () => (process.platform === 'win32' ? '.exe' : '')
 
@@ -67,7 +68,8 @@ const debugGetAllPaths = () => ({
   'binaryPath': getBinaryPath(),
   'binaryDirectory': getBinaryDirectory(),
   'binarySuffix': getBinarySuffix(),
-  'homeDir': getHomeDir()
+  'homeDir': getHomeDir(),
+  'logFile': log.transports.file.findLogPath(),
 })
 
 module.exports = {

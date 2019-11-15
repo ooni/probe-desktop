@@ -13,10 +13,13 @@ import {
   Container,
   Label,
   Checkbox,
+  Input,
   Text
 } from 'ooni-components'
 
 import { default as pkgJson } from '../../package.json'
+
+import log from 'electron-log'
 
 const TopBar = styled.div`
   background-color: ${props => props.theme.colors.blue5};
@@ -26,7 +29,7 @@ const TopBar = styled.div`
   padding-bottom: 20px;
 `
 
-const getConfigValue = (config, optionKey) => optionKey.split('.').reduce((o,i) => o[i] || false, config)
+const getConfigValue = (config, optionKey) => optionKey.split('.').reduce((o,i) => o[i], config)
 
 class BooleanOption extends React.Component {
   constructor(props) {
@@ -49,7 +52,7 @@ class BooleanOption extends React.Component {
     setConfig(optionKey, oldValue, newValue).then(() => {
       this.props.onConfigSet()
     }).catch(() => {
-      console.log('inconsistency detected')
+      log.error('inconsistency detected in config')
       this.props.onConfigSet()
     })
   }
@@ -76,6 +79,63 @@ class BooleanOption extends React.Component {
   }
 }
 
+
+class NumberOption extends React.Component {
+  constructor(props) {
+    super(props)
+    this.handleChange = this.handleChange.bind(this)
+  }
+
+  handleChange(event) {
+    const {
+      optionKey,
+      config
+    } = this.props
+
+    const remote = electron.remote
+    const { setConfig } = remote.require('./utils/config')
+
+    const target = event.target
+    const newValue = Number(target.value)
+    const oldValue = Number(getConfigValue(config, optionKey))
+    setConfig(optionKey, oldValue, newValue).then(() => {
+      this.props.onConfigSet()
+    }).catch(() => {
+      log.error('inconsistency detected in config')
+      this.props.onConfigSet()
+    })
+  }
+
+  render() {
+    const {
+      label,
+      optionKey,
+      config
+    } = this.props
+
+
+    if (config === null) {
+      return <div />
+    }
+
+    const value = getConfigValue(config, optionKey)
+    return (
+      <Label>
+        <Box width={1/16}>
+          <Input
+            type='number'
+            min={0}
+            max={999}
+            value={value}
+            onChange={this.handleChange}
+          />
+        </Box>
+        {label}
+      </Label>
+    )
+  }
+}
+
 class Settings extends React.Component {
   constructor(props) {
     super(props)
@@ -85,21 +145,19 @@ class Settings extends React.Component {
     this.reloadConfig = this.reloadConfig.bind(this)
   }
 
-  reloadConfig() {
+  async reloadConfig() {
     const remote = electron.remote
     const { getConfig } = remote.require('./utils/config')
 
-    getConfig().then(config => {
-      this.setState({
-        config
-      })
+    const config = await getConfig()
+    this.setState({
+      config
     })
   }
 
   componentDidMount() {
     this.reloadConfig()
   }
-
 
   render() {
     const {
@@ -141,6 +199,12 @@ class Settings extends React.Component {
                 onConfigSet={this.reloadConfig}
                 label={<FormattedMessage id='Settings.Sharing.IncludeIP' />}
                 optionKey='sharing.include_ip'
+                config={config} />
+
+              <NumberOption
+                onConfigSet={this.reloadConfig}
+                label={<Text>Websites tested (0 means all)</Text>}
+                optionKey='nettests.websites_url_limit'
                 config={config} />
               <Text pt={3}>OONI Probe Desktop v{pkgJson.version}</Text>
             </Container>

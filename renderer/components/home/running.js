@@ -23,6 +23,8 @@ import { MdKeyboardArrowUp, MdKeyboardArrowDown} from 'react-icons/md'
 
 import Lottie from 'react-lottie'
 
+import moment from 'moment'
+
 const debug = require('debug')('ooniprobe-desktop.renderer.components.home.running')
 
 const StyledRunningTest = styled.div`
@@ -113,11 +115,7 @@ const CloseButtonContainer = styled.div`
 `
 
 //name, icon, color, description, longDescription, onClickClose, active
-const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, logLines, runningTestName, error, totalRuntime, onKill}) => {
-  let eta = totalRuntime
-  if (percent > 0) {
-    eta = Math.round(totalRuntime - percent * totalRuntime)
-  }
+const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, logLines, runningTestName, error, eta, onKill}) => {
   const lottieOptions = {
     loop: true,
     autoplay: true,
@@ -158,10 +156,16 @@ const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, lo
         trailColor='rgba(255,255,255,0.4)'
         trailWidth='2'
       />
-      <Text>
-        <FormattedMessage id='Dashboard.Running.EstimatedTimeLeft' />
-        <FormattedMessage id='Dashboard.Running.Seconds' values={{ seconds: eta }}/>
-      </Text>
+      {eta > 0 &&
+      <Flex justifyContent='center'>
+        <Box pr={1}>
+          <FormattedMessage id='Dashboard.Running.EstimatedTimeLeft' />
+        </Box>
+        <Box>
+          <FormattedMessage id='Dashboard.Running.Seconds' values={{ seconds: moment.duration(eta*1000).humanize() }}/>
+        </Box>
+      </Flex>
+      }
       <Text>{progressLine}</Text>
     </Container>
 
@@ -217,7 +221,7 @@ class Running extends React.Component {
       percent,
       runningTestName,
       logLines,
-      totalRuntime,
+      eta,
       error,
       onKill
     } = this.props
@@ -241,7 +245,7 @@ class Running extends React.Component {
           logOpen={logOpen}
           onKill={onKill}
           onToggleLog={this.onToggleLog}
-          totalRuntime={totalRuntime}
+          eta={eta}
         />
       </ContentContainer>
     </WindowContainer>
@@ -251,7 +255,7 @@ class Running extends React.Component {
 Running.defaultProps = {
   progressLine: '',
   percent: 0,
-  totalRuntime: 60,
+  eta: -1,
   logLines: [],
   error: null,
   runningTestName: ''

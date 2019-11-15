@@ -155,6 +155,7 @@ class Home extends React.Component {
       runError: null,
       runLogLines: [],
       runPercent: 0,
+      runEta: -1,
       runDone: true
     }
     this.onConfigure = this.onConfigure.bind(this)
@@ -179,6 +180,7 @@ class Home extends React.Component {
     case 'ooni.run.progress':
       this.setState({
         runPercent: data.percentage,
+        runEta: data.eta,
         runProgressLine: data.message,
         runningTestName: data.testKey
       })
@@ -240,6 +242,7 @@ class Home extends React.Component {
       runningTestName,
       runProgressLine,
       runPercent,
+      runEta,
       runLogLines,
       runError
     } = this.state
@@ -250,6 +253,7 @@ class Home extends React.Component {
           <Running
             progressLine={runProgressLine}
             percent={runPercent}
+            eta={runEta}
             runningTestName={runningTestName}
             logLines={runLogLines}
             error={runError}

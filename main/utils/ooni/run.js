@@ -1,5 +1,6 @@
 /* global windows, require, module */
 const { Ooniprobe } = require('./ooniprobe')
+const log = require('electron-log')
 
 class Runner {
   constructor({testGroupName}) {
@@ -8,6 +9,7 @@ class Runner {
   }
 
   kill() {
+    log.info('Runner: terminating the ooniprobe process')
     return this.ooni.kill()
   }
 
@@ -16,6 +18,7 @@ class Runner {
     windows.main.send('starting', testGroupName)
     this.ooni.on('data', (data) => {
       if (data.level == 'error') {
+        log.error('Runner: error', data.message)
         windows.main.send('ooni', {
           key: 'error',
           message: data.message
@@ -28,6 +31,7 @@ class Runner {
         windows.main.send('ooni', {
           key: 'ooni.run.progress',
           percentage: data.fields.percentage,
+          eta: data.fields.eta,
           message: data.message,
           testKey: data.fields.key,
         })
@@ -39,6 +43,7 @@ class Runner {
         })
       }
     })
+    log.info('Runner: calling run', testGroupName)
     return this.ooni.call(['run', testGroupName])
   }
 }
