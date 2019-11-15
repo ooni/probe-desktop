@@ -13,6 +13,18 @@ import LoadingOverlay from '../components/LoadingOverlay'
 
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.result')
 
+const sortMeasurementRows = (rows) => {
+  return rows.sort((a, b) => {
+    if (a.is_anomaly === b.is_anomaly) {
+      return 0
+    }
+    if (a.is_anomaly) {
+      return -1
+    }
+    return 1
+  })
+}
+
 class Result extends React.Component {
   constructor(props) {
     super(props)
@@ -40,7 +52,7 @@ class Result extends React.Component {
       return this.setState({
         loading: false,
         measurementSummary: summary,
-        measurementRows: rows
+        measurementRows: sortMeasurementRows(rows)
       })
     }).catch(err => {
       Raven.captureException(err, {extra: {scope: 'renderer.listMeasurements'}})
