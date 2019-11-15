@@ -19,6 +19,8 @@ import {
 
 import { default as pkgJson } from '../../package.json'
 
+import log from 'electron-log'
+
 const TopBar = styled.div`
   background-color: ${props => props.theme.colors.blue5};
   color: ${props => props.theme.colors.white};
@@ -50,7 +52,7 @@ class BooleanOption extends React.Component {
     setConfig(optionKey, oldValue, newValue).then(() => {
       this.props.onConfigSet()
     }).catch(() => {
-      console.log('inconsistency detected')
+      log.error('inconsistency detected in config')
       this.props.onConfigSet()
     })
   }
@@ -94,12 +96,12 @@ class NumberOption extends React.Component {
     const { setConfig } = remote.require('./utils/config')
 
     const target = event.target
-    const newValue = target.value
-    const oldValue = getConfigValue(config, optionKey)
+    const newValue = Number(target.value)
+    const oldValue = Number(getConfigValue(config, optionKey))
     setConfig(optionKey, oldValue, newValue).then(() => {
       this.props.onConfigSet()
     }).catch(() => {
-      console.log('inconsistency detected')
+      log.error('inconsistency detected in config')
       this.props.onConfigSet()
     })
   }
