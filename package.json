@@ -65,13 +65,18 @@
       ]
     },
     "dmg": {
-      "background": "build/background.png",
-      "sign": false
+      "background": "build/background.tiff",
+      "sign": false,
+      "window": {
+        "width": 540,
+        "height": 400
+      }
     },
     "mac": {
       "publish": [
         "github"
       ],
+      "target": "dmg",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "./build/entitlements.mac.inherit.plist",
