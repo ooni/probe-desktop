@@ -118,7 +118,7 @@ const MiddleboxStats = ({anomalyCount}) => {
             <NettestGroupMiddleBoxes size={100} />
           </Box>
         </Flex>
-        <Text center><FormattedMessage id='Test.Middleboxes.Fullname' /> <FormattedMessage id={msgID} /></Text>
+        <Text textAlign='center'><FormattedMessage id='Test.Middleboxes.Fullname' /> <FormattedMessage id={msgID} /></Text>
       </Box>
     </Flex>
   )
@@ -165,13 +165,20 @@ const PerformanceStats = ({testKeys}) => {
   )
 }
 
-
+const CircumventionStats = () => {
+  return (
+    <Flex justifyContent='center'>
+      {/* Insert Circumvention Stats Here */}
+    </Flex>
+  )
+}
 
 const statsMap = {
   'websites': WebsitesStats,
   'im': IMStats,
   'middlebox': MiddleboxStats,
-  'performance': PerformanceStats
+  'performance': PerformanceStats,
+  'circumvention': CircumventionStats
 }
 
 const StatsOverview = ({name, anomalyCount, totalCount, testKeys}) => {

@@ -116,6 +116,12 @@ const MiddelboxSummary = ({anomalyCount}) => {
   </VerticalCenter>
 }
 
+const CircumventionSummary = ({testKeys}) => (
+  <SummaryContainer>
+    <Box> Circumvention Summary </Box>
+  </SummaryContainer>
+)
+
 const SummaryError = () => {
   return <VerticalCenter>
     <Text color={theme.colors.red8}>Error</Text>
@@ -126,7 +132,8 @@ const summaryMap = {
   'websites': WebsitesSummary,
   'im': IMSummary,
   'middlebox': MiddelboxSummary,
-  'performance': PerformanceSummary
+  'performance': PerformanceSummary,
+  'circumvention': CircumventionSummary
 }
 
 

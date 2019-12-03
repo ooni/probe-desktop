@@ -120,7 +120,8 @@ const fullnameMap = {
   telegram: 'Test.Telegram.Fullname',
   whatsapp: 'Test.WhatsApp.Fullname',
   http_invalid_request_line: 'Test.HTTPInvalidRequestLine.Fullname',
-  http_header_field_manipulation: 'Test.HTTPHeaderFieldManipulation.Fullname'
+  http_header_field_manipulation: 'Test.HTTPHeaderFieldManipulation.Fullname',
+  psiphon: 'Test.Psiphon.Fullname'
 }
 
 const IconContainer = styled.div`
@@ -131,7 +132,8 @@ const IconContainer = styled.div`
 const iconMap = {
   facebook_messenger: <NettestFacebookMessenger size={40} />,
   telegram: <NettestTelegram size={40} />,
-  whatsapp: <NettestWhatsApp size={40} />
+  whatsapp: <NettestWhatsApp size={40} />,
+  psiphon: <NettestWhatsApp size={40} />
 }
 
 const StatusBox = ({testName, testKeys, isAnomaly}) => {
@@ -188,7 +190,8 @@ const rowMap = {
   'websites': URLRow,
   'im': TestRow,
   'middlebox': TestRow,
-  'performance': TestRow
+  'performance': TestRow,
+  'circumvention': TestRow
 }
 
 const MeasurementRow = ({groupName, measurement, router}) => {
