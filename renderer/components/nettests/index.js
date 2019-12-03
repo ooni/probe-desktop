@@ -20,6 +20,7 @@ import telegram from './im/Telegram'
 import whatsapp from './im/WhatsApp'
 import ndt from './performance/NDT'
 import dash from './performance/Dash'
+import psiphon from './circumvention/Psiphon'
 
 const iconSize = 200
 const iconColor = theme.colors.black
@@ -52,6 +53,7 @@ export const tests = {
   whatsapp,
   ndt,
   dash,
+  psiphon,
   'default': {
     'name': 'Default',
   }

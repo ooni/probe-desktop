@@ -10,7 +10,6 @@ import {
   Button
 } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
-import styled from 'styled-components'
 import { Tick } from 'ooni-components/dist/icons'
 import { MdPriorityHigh } from 'react-icons/md'
 
@@ -26,6 +25,7 @@ import { Telegram } from '../nettests/im/Telegram'
 import { WhatsApp } from '../nettests/im/WhatsApp'
 import { NDT } from '../nettests/performance/NDT'
 import { Dash } from '../nettests/performance/Dash'
+import { Psiphon } from '../nettests/circumvention/Psiphon'
 
 import FullHeightFlex from '../FullHeightFlex'
 import MethodologyButton from './MethodologyButton'
@@ -41,10 +41,9 @@ const detailsMap = {
   telegram: Telegram,
   whatsapp: WhatsApp,
   ndt: NDT,
-  dash: Dash
+  dash: Dash,
+  psiphon: Psiphon
 }
-
-const Placeholder = ({ id }) => <Box px={5} py={3} bg='gray3'>{id}</Box>
 
 const HeroItemBox = ({ label, content, ...props }) => (
   <Box p={3} {...props}>
