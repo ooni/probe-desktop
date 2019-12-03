@@ -81,6 +81,8 @@ Dashboard.InstantMessaging.Card.Description,Test the blocking of instant messagi
 Dashboard.InstantMessaging.Overview.Paragraph,"Check whether [WhatsApp](https://ooni.io/nettest/whatsapp/), [Facebook Messenger](https://ooni.io/nettest/facebook-messenger/) and [Telegram](https://ooni.io/nettest/telegram/) are blocked.
 
 Your results will be published on [OONI Explorer](https://explorer.ooni.io/world/) and [OONI API](https://api.ooni.io/).",
+Dashboard.Circumvention.Card.Description,Dashboard InstantMessaging Card Description,
+Dashboard.Circumvention.Overview.Paragraph,Dashboard InstantMessaging Overview Paragraph,
 TestResults.Gbps,Gbps,
 TestResults.Mbps,Mbps,
 TestResults.Kbps,Kbps,
@@ -272,6 +274,7 @@ Test.Websites.Fullname,Websites,
 Test.InstantMessaging.Fullname,Instant Messaging,
 Test.Middleboxes.Fullname,Middleboxes,
 Test.Performance.Fullname,Performance,
+Test.Circumvention.Fullname,Circumvention,
 Test.HTTPInvalidRequestLine.Fullname,HTTP Invalid Request Line Test,
 Test.HTTPHeaderFieldManipulation.Fullname,HTTP Header Field Manipulation Test,38
 Test.WebConnectivity.Fullname,Web Connectivity Test,38
@@ -298,6 +301,8 @@ Settings.AutomatedTesting.Reminder,Remind me to run tests,
 Settings.AutomatedTesting.EnabledTests,Enabled tests,
 Settings.AutomatedTesting.Reminder.Time,Time,
 Settings.AutomatedTesting.RunAutomatically.TimesPerDay,Test runs per day,
+Settings.AutomatedTesting.RunAutomatically.WiFiOnly,Test only when connected to Wi-Fi,
+Settings.AutomatedTesting.RunAutomatically.CountURLs,Amount of tested URLs,
 Settings.AutomatedTesting.Categories.Label,Categories,
 Settings.AutomatedTesting.Categories.Title,Website categories to test,
 Settings.AutomatedTesting.Categories.Subtitle,{{Count}} categories enabled,

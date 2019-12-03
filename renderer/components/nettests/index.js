@@ -1,9 +1,6 @@
 import React from 'react'
 import {
-  Flex,
-  Box,
   theme,
-  Text
 } from 'ooni-components'
 
 // XXX this should be moved to the design-system
@@ -13,6 +10,7 @@ import im from './im'
 import middlebox from './middleboxes'
 import performance from './performance'
 import websites from './websites'
+import circumvention from './circumvention'
 
 import web_connectivity from './websites/WebConnectivity'
 import http_header_field_manipulation from './middleboxes/HttpHeaderFieldManipulation'
@@ -31,6 +29,7 @@ export const testGroups = {
   im,
   middlebox,
   performance,
+  circumvention,
   'default': {
     'color': theme.colors.blue5,
     'description': '',
@@ -58,7 +57,7 @@ export const tests = {
   }
 }
 
-export const testList  = ['websites', 'im', 'performance', 'middlebox'].map(key => ({
+export const testList  = ['websites', 'im', 'performance', 'middlebox', 'circumvention'].map(key => ({
   name: testGroups[key].name,
   key: key,
   color: testGroups[key].color,
