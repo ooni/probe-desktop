@@ -104,7 +104,7 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
         </Button>
       </Box>
       <Box mt={3} mx='auto'>
-        <NLink href='https://ooni.io/about/risks/' passHref>
+        <NLink href='https://ooni.org/about/risks/' passHref>
           <ExternalLink color='white'>Learn More</ExternalLink>
         </NLink>
       </Box>
