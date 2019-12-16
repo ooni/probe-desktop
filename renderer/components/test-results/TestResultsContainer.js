@@ -139,10 +139,13 @@ const TestResultsContainer = ({results}) => {
     testCount,
     networkCount,
     dataUsageUp,
-    dataUsageDown
+    dataUsageDown,
+    rows
   } = results
 
-  const byMonth = groupRowsByMonth(results.rows)
+  const validResults = rows.filter(result => result.is_done === true)
+
+  const byMonth = groupRowsByMonth(validResults)
 
   return (
     <FullWidth>
