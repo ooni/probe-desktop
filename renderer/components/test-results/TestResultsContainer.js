@@ -1,5 +1,5 @@
 import React from 'react'
-
+import PropTypes from 'prop-types'
 import {
   theme
 } from 'ooni-components'
@@ -52,6 +52,13 @@ const DataUsage = ({dataUsage}) => {
   )
 }
 
+DataUsage.propTypes = {
+  dataUsage: PropTypes.shape({
+    up: PropTypes.number,
+    down: PropTypes.number
+  })
+}
+
 const StyledResultsHeader = styled.div`
   background-color: ${props => props.theme.colors.blue5};
   color: ${props => props.theme.colors.white};
@@ -86,6 +93,15 @@ const ResultsHeader = ({testCount, networkCount, dataUsage}) => {
   )
 }
 
+ResultsHeader.propTypes = {
+  testCount: PropTypes.number,
+  networkCount: PropTypes.number,
+  dataUsage: PropTypes.shape({
+    up: PropTypes.number,
+    down: PropTypes.number
+  })
+}
+
 const MonthContainer = styled.div`
   padding: 5px 20px;
   background-color: ${props => props.theme.colors.gray1};
@@ -100,6 +116,11 @@ const ResultsSection = ({month, rows}) => {
       {rows.map(row => <ResultRow  key={row.id} resultID={row.id} {...row} />)}
     </div>
   )
+}
+
+ResultsSection.propTypes = {
+  month: PropTypes.string,
+  rows: PropTypes.arrayOf(PropTypes.object)
 }
 
 const groupRowsByMonth = (rows) => {
@@ -164,6 +185,16 @@ const TestResultsContainer = ({results}) => {
       </StickyDraggableHeader>
     </FullWidth>
   )
+}
+
+TestResultsContainer.propTypes = {
+  results: PropTypes.shape({
+    testCount: PropTypes.number,
+    networkCount: PropTypes.number,
+    dataUsageUp: PropTypes.number,
+    dataUsageDown: PropTypes.number,
+    rows: PropTypes.arrayOf(PropTypes.object)
+  })
 }
 
 export default TestResultsContainer
