@@ -2,7 +2,7 @@ import React from 'react'
 import { theme } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 import { default as animation } from 'ooni-components/components/animations/RunningInstantMessaging.json'
-import { NettestGroupInstantMessaging } from 'ooni-components/dist/icons'
+import { NettestGroupCircumvention } from 'ooni-components/dist/icons'
 
 import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
 
@@ -13,7 +13,7 @@ const longDescription = <div>
   <FormattedMarkdownMessage id={'Dashboard.Circumvention.Overview.Paragraph'} />
 </div>
 
-const icon = <NettestGroupInstantMessaging />
+const icon = <NettestGroupCircumvention />
 
 export default {
   color,
