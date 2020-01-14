@@ -19,7 +19,7 @@ import formatBitrate from '../formatBitrate'
 import formatSpeed from '../formatSpeed'
 
 const addPlurality = (id, count) => {
-  if (parseInt(count) > 1) {
+  if (parseInt(count) === 0 || parseInt(count) > 1) {
     return `${id}.Plural`
   }
   return `${id}.Singular`
@@ -165,10 +165,41 @@ const PerformanceStats = ({testKeys}) => {
   )
 }
 
-const CircumventionStats = () => {
+const CircumventionStats = ({anomalyCount, totalCount}) => {
+  const testedCount = totalCount
+  const blockedCount = anomalyCount
+  const accessibleCount = testedCount - blockedCount
+
+  let testedLabelID = addPlurality('TestResults.Summary.Circumvention.Hero.Tested', testedCount)
+  let blockedLabelID = addPlurality('TestResults.Summary.Circumvention.Hero.Blocked', blockedCount)
+  let accessibleLabelID = addPlurality('TestResults.Summary.Circumvention.Hero.Reachable', accessibleCount)
+
+  let blockedAppsID = addPlurality('TestResults.Summary.Circumvention.Hero.Tools', blockedCount)
+  let accessibleAppsID = addPlurality('TestResults.Summary.Circumvention.Hero.Tools', accessibleCount)
+  let testedAppsID = addPlurality('TestResults.Summary.Circumvention.Hero.Tools', testedCount)
+
   return (
     <Flex justifyContent='center'>
-      {/* Insert Circumvention Stats Here */}
+      <Box width={1/3}>
+        <StatBox
+          value={testedCount}
+          unit={<FormattedMessage id={testedAppsID} />}
+          label={<FormattedMessage id={testedLabelID} />} />
+      </Box>
+      <VerticalDivider />
+      <Box width={1/3}>
+        <StatBox
+          value={blockedCount}
+          unit={<FormattedMessage id={blockedAppsID} />}
+          label={<FormattedMessage id={blockedLabelID} />} />
+      </Box>
+      <VerticalDivider />
+      <Box width={1/3}>
+        <StatBox
+          value={accessibleCount}
+          unit={<FormattedMessage id={accessibleAppsID} />}
+          label={<FormattedMessage id={accessibleLabelID} />} />
+      </Box>
     </Flex>
   )
 }

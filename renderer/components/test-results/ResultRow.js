@@ -127,7 +127,7 @@ const CircumventionSummary = ({anomalyCount, totalCount}) => (
     </Box>
     <Box width={1}>
       <Text>
-        <MdWeb /><FormattedMessage id='TestResults.Overview.Circumvention.Tested.Plural' values={{ Count: totalCount - anomalyCount}} />
+        <MdDone /><FormattedMessage id='TestResults.Overview.Circumvention.Tested.Plural' values={{ Count: totalCount - anomalyCount}} />
       </Text>
     </Box>
   </SummaryContainer>
