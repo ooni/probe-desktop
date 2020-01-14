@@ -31,7 +31,7 @@ import FullHeightFlex from '../FullHeightFlex'
 import MethodologyButton from './MethodologyButton'
 import ExplorerURLButton from './ExplorerURLButton'
 import RawDataContainer from './RawDataContainer'
-import colorMap from './colorMap'
+import colorMap from '../colorMap'
 
 const detailsMap = {
   web_connectivity: WebConnectivity,
