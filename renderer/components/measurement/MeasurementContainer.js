@@ -168,7 +168,6 @@ const MeasurementContainer = ({measurement, isAnomaly, rawData}) => {
 
   return (
     <React.Fragment>
-
       <MeasurementDetailContainer
         isAnomaly={isAnomaly}
         measurement={measurement}

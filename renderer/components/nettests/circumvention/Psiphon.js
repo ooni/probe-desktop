@@ -1,14 +1,59 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
+import { Flex, Box } from 'ooni-components'
+import { Text } from 'rebass'
+import styled from 'styled-components'
+
+import colorMap from '../../colorMap'
 
 const Psiphon = ({measurement, isAnomaly, render}) => {
   const testKeys = JSON.parse(measurement.test_keys)
+
+  // TODO Remove this when actual testKeys come in from newer probe-cli
+  testKeys['bootstrap_time'] = 5.1123455
+
+  const heroTitle = isAnomaly ? (
+    <FormattedMessage id='TestResults.Details.Circumvention.Psiphon.Blocked.Hero.Title' />
+  ) : (
+    <FormattedMessage id='TestResults.Details.Circumvention.Psiphon.Reachable.Hero.Title' />
+  )
+
+  // const StyledBootstrapTime = styled()
+
+  const PsiphonDetails = () => (
+    <Box width={1}>
+      <Flex my={4} justifyContent='center'>
+        <Text>
+          {isAnomaly ? (
+            <FormattedMessage id='TestResults.Details.Circumvention.Psiphon.Blocked.Content.Paragraph' />
+          ) : (
+            <FormattedMessage id='TestResults.Details.Circumvention.Psiphon.Reachable.Content.Paragraph' />
+          )}
+        </Text>
+      </Flex>
+      {
+        testKeys['bootstrap_time'] !== null &&
+        <Flex my={4} flexDirection='column'>
+          <Box>
+            <FormattedMessage id='TestResults.Details.Circumvention.Psiphon.BootstrapTime.Label.Title' />
+          </Box>
+          <Box>
+            <Text is='span' color='blue5' fontSize={3}>{testKeys.bootstrap_time.toFixed(2)}</Text>
+            {' '}
+            <FormattedMessage id='TestResults.Details.Circumvention.Psiphon.BootstrapTime.Unit' />
+          </Box>
+        </Flex>
+      }
+    </Box>
+  )
+
   return (
     <div>
       {render({
-        heroTitle: isAnomaly ? 'Blocked' : 'Not Blocked',
-        details: <pre>{JSON.stringify(testKeys, null, 2)}</pre>
+        heroTitle: heroTitle,
+        heroBG: isAnomaly ? colorMap.blocked : colorMap.reachable,
+        details: <PsiphonDetails />
       })}
     </div>
   )
