@@ -13,13 +13,11 @@ import {
 } from 'ooni-components'
 
 import {
-  NettestWhatsApp,
-  NettestTelegram,
-  NettestFacebookMessenger,
   Cross,
   Tick
 } from 'ooni-components/dist/icons'
 
+import { tests } from '../nettests'
 import styled from 'styled-components'
 import RightArrow from '../RightArrow'
 
@@ -112,29 +110,10 @@ const URLRow =  ({measurement, query, isAnomaly}) => (
   </Link>
 )
 
-const fullnameMap = {
-  web_connectivity: 'Test.WebConnectivity.Fullname',
-  dash: 'Test.Dash.Fullname',
-  ndt: 'Test.NDT.Fullname',
-  facebook_messenger: 'Test.FacebookMessenger.Fullname',
-  telegram: 'Test.Telegram.Fullname',
-  whatsapp: 'Test.WhatsApp.Fullname',
-  http_invalid_request_line: 'Test.HTTPInvalidRequestLine.Fullname',
-  http_header_field_manipulation: 'Test.HTTPHeaderFieldManipulation.Fullname',
-  psiphon: 'Test.Psiphon.Fullname'
-}
-
 const IconContainer = styled.div`
   display: inline;
   padding-right: 10px;
 `
-
-const iconMap = {
-  facebook_messenger: <NettestFacebookMessenger size={40} />,
-  telegram: <NettestTelegram size={40} />,
-  whatsapp: <NettestWhatsApp size={40} />,
-  psiphon: <NettestWhatsApp size={40} />
-}
 
 const StatusBox = ({testName, testKeys, isAnomaly}) => {
   if (testName === 'http_invalid_request_line' || testName === 'http_header_field_manipulation') {
@@ -160,18 +139,17 @@ const StatusBox = ({testName, testKeys, isAnomaly}) => {
 // XXX still need to show the summary in here
 const TestRow =  ({measurement, query, testKeys, isAnomaly}) => {
 
-  const icon = iconMap[measurement.test_name]
-  let fullnameID = fullnameMap[measurement.test_name]
-  if (!fullnameID) {
-    fullnameID = 'Test.MISSING.Fullname'
-  }
+  const icon = tests[measurement.test_name].icon && React.cloneElement(
+    tests[measurement.test_name].icon,
+    {size: 40}
+  )
 
   return (
     <Link href={{pathname: '/measurement', query}}>
       <BorderedRow>
         <Box width={5/8} pl={2}>
           {icon && <IconContainer>{icon}</IconContainer>}
-          <FormattedMessage id={fullnameID} />
+          {tests[measurement.test_name] && tests[measurement.test_name].name}
         </Box>
         <Box width={2/8} h={1}>
           <StatusBox testName={measurement.test_name} isAnomaly={isAnomaly} testKeys={testKeys} />

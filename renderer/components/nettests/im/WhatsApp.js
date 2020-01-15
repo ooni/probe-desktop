@@ -6,6 +6,7 @@ import {
   Text
 } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
+import { NettestWhatsApp } from 'ooni-components/dist/icons'
 
 import StatusBox from '../../measurement/StatusBox'
 
@@ -88,5 +89,6 @@ export { WhatsApp }
 // Metadata for the nettest
 export default {
   name: <FormattedMessage id='Test.WhatsApp.Fullname' />,
+  icon: <NettestWhatsApp />,
   methodology: 'https://ooni.org/nettest/whatsapp/'
 }

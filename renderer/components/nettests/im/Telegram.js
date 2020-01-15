@@ -6,6 +6,7 @@ import {
   Text
 } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
+import { NettestTelegram } from 'ooni-components/dist/icons'
 
 import StatusBox from '../../measurement/StatusBox'
 
@@ -79,5 +80,6 @@ export { Telegram }
 // Metadata for the nettest
 export default {
   name: <FormattedMessage id='Test.Telegram.Fullname' />,
+  icon: <NettestTelegram />,
   methodology: 'https://ooni.org/nettest/telegram/'
 }
