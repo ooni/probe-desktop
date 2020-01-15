@@ -126,7 +126,7 @@ const StickyHero = ({
               <HeroLineItem size={16}>{heroSubtitle}</HeroLineItem>
             </Box>
             <Box width={1}>
-              <Flex flexWrap='wrap'>
+              <Flex flexWrap='wrap' alignItems='center'>
                 <HeroItemBox
                   width={1/2}
                   label={<FormattedMessage id='TestResults.Summary.Hero.DateAndTime' />}
@@ -208,9 +208,11 @@ const MeasurementContainer = ({measurement, isAnomaly, rawData}) => {
             </Sticky>
             <Container>
               <Flex flexDirection='column' style={{ 'minHeight': '60vh' }}>
-                <Flex my={3} justifyContent='space-around' alignItems='center'>
-                  <MethodologyButton href={tests[testName].methodology} />
-                  <Box>
+                <Flex my={3} alignItems='center'>
+                  <Box width={1/2}>
+                    <MethodologyButton href={tests[testName].methodology} />
+                  </Box>
+                  <Box width={1/2} px={3}>
                     <Text fontWeight='bold' is='span'>
                       <FormattedMessage id='TestResults.Details.Hero.Runtime' />
                     </Text>
@@ -232,7 +234,6 @@ const MeasurementContainer = ({measurement, isAnomaly, rawData}) => {
                       reportID={rawData.report_id}
                       input={rawData.input}
                     />
-
                   }
                 </Flex>
               </Flex>
