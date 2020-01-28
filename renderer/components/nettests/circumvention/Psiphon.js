@@ -10,9 +10,6 @@ import colorMap from '../../colorMap'
 const Psiphon = ({measurement, isAnomaly, render}) => {
   const testKeys = JSON.parse(measurement.test_keys)
 
-  // TODO Remove this when actual testKeys come in from newer probe-cli
-  testKeys['bootstrap_time'] = 5.1123455
-
   const heroTitle = isAnomaly ? (
     <FormattedMessage id='TestResults.Details.Circumvention.Psiphon.Blocked.Hero.Title' />
   ) : (
@@ -37,7 +34,7 @@ const Psiphon = ({measurement, isAnomaly, render}) => {
             <FormattedMessage id='TestResults.Details.Circumvention.Psiphon.BootstrapTime.Label.Title' />
           </Box>
           <Box>
-            <Text is='span' color='blue5' fontSize={3}>{testKeys.bootstrap_time.toFixed(2)}</Text>
+            <Text is='span' color='blue5' fontSize={3}>{testKeys['bootstrap_time'].toFixed(2)}</Text>
             {' '}
             <FormattedMessage id='TestResults.Details.Circumvention.Psiphon.BootstrapTime.Unit' />
           </Box>
