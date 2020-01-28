@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { Flex, Box } from 'ooni-components'
 import { Text } from 'rebass'
-import styled from 'styled-components'
+import { NettestPsiphon } from 'ooni-components/dist/icons'
 
 import colorMap from '../../colorMap'
 
@@ -18,8 +18,6 @@ const Psiphon = ({measurement, isAnomaly, render}) => {
   ) : (
     <FormattedMessage id='TestResults.Details.Circumvention.Psiphon.Reachable.Hero.Title' />
   )
-
-  // const StyledBootstrapTime = styled()
 
   const PsiphonDetails = () => (
     <Box width={1}>
@@ -70,5 +68,6 @@ export { Psiphon }
 // Metadata for the nettest
 export default {
   name: <FormattedMessage id='Test.Psiphon.Fullname' />,
+  icon: <NettestPsiphon />,
   methodology: 'https://ooni.org/nettest/psiphon/'
 }
