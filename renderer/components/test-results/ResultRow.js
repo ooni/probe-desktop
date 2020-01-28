@@ -54,50 +54,57 @@ const VerticalCenter = ({children}) => {
     </Flex>
   )
 }
+
 const SummaryContainer = styled(Flex)`
-  padding-left: 20px;
-  padding-top: 20px;
+  height: 100%;
 `
 
-const WebsitesSummary = ({anomalyCount, totalCount}) => {
-  return <SummaryContainer flexWrap='wrap'>
-    <Box width={1}>
-      <Text color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black}>
-        <MdClear /><FormattedMessage id='TestResults.Overview.Websites.Blocked.Plural' values={{ Count: anomalyCount }}/>
-      </Text>
-    </Box>
-    <Box width={1}>
-      <Text>
-        <MdWeb /><FormattedMessage id='TestResults.Overview.Websites.Tested.Plural' values={{ Count: totalCount }} />
-      </Text>
-    </Box>
-  </SummaryContainer>
+SummaryContainer.defaultProps = {
+  flexDirection: 'column',
+  justifyContent: 'center',
+  width: 2/3,
+  mx: 'auto'
 }
 
+const WebsitesSummary = ({anomalyCount, totalCount}) => (
+  <SummaryContainer>
+    <Box>
+      <Flex color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black} alignItems='center'>
+        <MdClear />&nbsp;<FormattedMessage id='TestResults.Overview.Websites.Blocked.Plural' values={{ Count: anomalyCount }}/>
+      </Flex>
+    </Box>
+    <Box>
+      <Flex alignItems='center'>
+        <MdWeb />&nbsp;<FormattedMessage id='TestResults.Overview.Websites.Tested.Plural' values={{ Count: totalCount }} />
+      </Flex>
+    </Box>
+  </SummaryContainer>
+)
+
 const IMSummary = ({anomalyCount, totalCount}) => {
-  return <SummaryContainer flexWrap='wrap'>
-    <Box width={1}>
-      <Text color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black}>
-        <MdClear /><FormattedMessage id='TestResults.Overview.InstantMessaging.Blocked.Plural' values={{ Count: anomalyCount }}/>
-      </Text>
+  return <SummaryContainer>
+    <Box>
+      <Flex color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black} alignItems='center'>
+        <MdClear />&nbsp;<FormattedMessage id='TestResults.Overview.InstantMessaging.Blocked.Plural' values={{ Count: anomalyCount }}/>
+      </Flex>
     </Box>
     <Box width={1}>
       <Text>
-        <MdDone /> <FormattedMessage id='TestResults.Overview.InstantMessaging.Available.Plural' values={{ Count: totalCount - anomalyCount }} />
+        <MdDone />&nbsp;<FormattedMessage id='TestResults.Overview.InstantMessaging.Available.Plural' values={{ Count: totalCount - anomalyCount }} />
       </Text>
     </Box>
   </SummaryContainer>
 }
 
 const PerformanceSummary = ({testKeys}) => {
-  return <SummaryContainer flexWrap='wrap'>
-    <Box width={1/2}>
+  return <SummaryContainer>
+    <Box>
       <DownloadSpeed bits={testKeys['download']} />
     </Box>
-    <Box width={1/2}>
+    <Box>
       <VideoQuality bitrate={testKeys['median_bitrate']} />
     </Box>
-    <Box width={1/2}>
+    <Box>
       <UploadSpeed bits={testKeys['upload']} />
     </Box>
   </SummaryContainer>

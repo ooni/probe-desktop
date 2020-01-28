@@ -27,8 +27,10 @@ import {
   Flex,
   Heading
 } from 'ooni-components'
+import NLink from 'next/link'
 
 import FormattedMarkdownMessage from '../FormattedMarkdownMessage'
+import ExternalLink from '../ExternalLink'
 import Stepper from './Stepper'
 import QuizSteps from './QuizSteps'
 
@@ -100,6 +102,11 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
         <Button inverted onClick={quizComplete ? onNext : toggleQuiz}>
           <FormattedMessage id="Onboarding.ThingsToKnow.Button" />
         </Button>
+      </Box>
+      <Box mt={3} mx='auto'>
+        <NLink href='https://ooni.org/about/risks/' passHref>
+          <ExternalLink color='white'>Learn More</ExternalLink>
+        </NLink>
       </Box>
     </Flex>
   </div>
