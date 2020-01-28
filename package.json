@@ -170,7 +170,10 @@
   },
   "resolutions": {
     "js-yaml": "3.13.1",
+    "lodash": "^4.17.15",
     "rebass": "2.3.3",
+    "serialize-javascript": "^2.1.1",
+    "set-value": "^2.0.1",
     "styled-components": "3.4.10",
     "styled-system": "3.1.6"
   }
