@@ -2,9 +2,6 @@ import React from 'react'
 
 import Link from 'next/link'
 import { withRouter } from 'next/router'
-
-import { FormattedMessage } from 'react-intl'
-
 import {
   theme,
   Text,

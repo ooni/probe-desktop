@@ -59,7 +59,8 @@ export const tests = {
   }
 }
 
-export const testList  = ['websites', 'im', 'performance', 'middlebox', 'circumvention'].map(key => ({
+// Note: The order of test groups controls how they are rendered in the home screen
+export const testList  = ['websites', 'im', 'circumvention', 'performance', 'middlebox'].map(key => ({
   name: testGroups[key].name,
   key: key,
   color: testGroups[key].color,
