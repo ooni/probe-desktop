@@ -64,9 +64,15 @@ class Measurement extends React.Component {
     const remote = electron.remote
     const { showMeasurement } = remote.require('./actions')
     return showMeasurement(query.measurementID).then(measurement => {
-      // XXX this can maybe be improved
+      // Inserting `test_keys` from `ooniprobe show <msmtId>` into
+      // `state.measurement` earlier extracted from `ooniprobe list <resultId>`
+      // Some test screens need more from the full msmt e.g `targets` in Tor
       this.setState({
-        rawData: measurement
+        rawData: measurement,
+        measurement: {
+          ...this.state.measurement,
+          test_keys: JSON.stringify(measurement.test_keys)
+        }
       })
     }).catch(err => {
       Raven.captureException(err, {extra: {scope: 'renderer.showMeasurement'}})
