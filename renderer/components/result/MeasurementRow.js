@@ -179,6 +179,11 @@ const MeasurementRow = ({groupName, measurement, router}) => {
   const query = {...router.query, measurementID: measurement.id, isAnomaly: measurement.is_anomaly}
 
   const RowElement = rowMap[groupName]
+
+  // NOTE: For now, hiding results of tests that aren't supported yet
+  if (Object.keys(tests).indexOf(measurement.test_name) < 0) {
+    return <div />
+  }
   return <RowElement measurement={measurement} query={query} testKeys={testKeys} isAnomaly={measurement['is_anomaly']} />
 }
 
