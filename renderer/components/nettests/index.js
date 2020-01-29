@@ -21,6 +21,7 @@ import whatsapp from './im/WhatsApp'
 import ndt from './performance/NDT'
 import dash from './performance/Dash'
 import psiphon from './circumvention/Psiphon'
+import tor from './circumvention/Tor'
 
 const iconSize = 200
 const iconColor = theme.colors.black
@@ -54,6 +55,7 @@ export const tests = {
   ndt,
   dash,
   psiphon,
+  tor,
   'default': {
     'name': 'Default',
   }
