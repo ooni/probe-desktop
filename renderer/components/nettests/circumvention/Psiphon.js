@@ -18,7 +18,7 @@ const Psiphon = ({measurement, isAnomaly, render}) => {
 
   const PsiphonDetails = () => (
     <Box width={1}>
-      <Flex my={4} justifyContent='center'>
+      <Flex my={4}>
         <Text>
           {isAnomaly ? (
             <FormattedMessage id='TestResults.Details.Circumvention.Psiphon.Blocked.Content.Paragraph' />
