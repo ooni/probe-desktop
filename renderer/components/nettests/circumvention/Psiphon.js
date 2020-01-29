@@ -28,7 +28,7 @@ const Psiphon = ({measurement, isAnomaly, render}) => {
         </Text>
       </Flex>
       {
-        testKeys['bootstrap_time'] !== null &&
+        testKeys['bootstrap_time'] &&
         <Flex my={4} flexDirection='column'>
           <Box>
             <FormattedMessage id='TestResults.Details.Circumvention.Psiphon.BootstrapTime.Label.Title' />
