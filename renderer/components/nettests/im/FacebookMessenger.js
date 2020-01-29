@@ -6,6 +6,7 @@ import {
   Text
 } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
+import { NettestFacebookMessenger } from 'ooni-components/dist/icons'
 
 import StatusBox from '../../measurement/StatusBox'
 
@@ -78,5 +79,6 @@ export { FacebookMessenger }
 // Metadata for the nettest
 export default {
   name: <FormattedMessage id='Test.FacebookMessenger.Fullname' />,
+  icon: <NettestFacebookMessenger />,
   methodology: 'https://ooni.org/nettest/facebook-messenger/'
 }

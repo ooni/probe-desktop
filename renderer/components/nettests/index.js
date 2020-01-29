@@ -1,9 +1,6 @@
 import React from 'react'
 import {
-  Flex,
-  Box,
   theme,
-  Text
 } from 'ooni-components'
 
 // XXX this should be moved to the design-system
@@ -13,6 +10,7 @@ import im from './im'
 import middlebox from './middleboxes'
 import performance from './performance'
 import websites from './websites'
+import circumvention from './circumvention'
 
 import web_connectivity from './websites/WebConnectivity'
 import http_header_field_manipulation from './middleboxes/HttpHeaderFieldManipulation'
@@ -22,6 +20,7 @@ import telegram from './im/Telegram'
 import whatsapp from './im/WhatsApp'
 import ndt from './performance/NDT'
 import dash from './performance/Dash'
+import psiphon from './circumvention/Psiphon'
 
 const iconSize = 200
 const iconColor = theme.colors.black
@@ -31,6 +30,7 @@ export const testGroups = {
   im,
   middlebox,
   performance,
+  circumvention,
   'default': {
     'color': theme.colors.blue5,
     'description': '',
@@ -53,12 +53,14 @@ export const tests = {
   whatsapp,
   ndt,
   dash,
+  psiphon,
   'default': {
     'name': 'Default',
   }
 }
 
-export const testList  = ['websites', 'im', 'performance', 'middlebox'].map(key => ({
+// Note: The order of test groups controls how they are rendered in the home screen
+export const testList  = ['websites', 'im', 'circumvention', 'performance', 'middlebox'].map(key => ({
   name: testGroups[key].name,
   key: key,
   color: testGroups[key].color,

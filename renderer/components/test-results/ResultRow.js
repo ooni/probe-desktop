@@ -88,10 +88,10 @@ const IMSummary = ({anomalyCount, totalCount}) => {
         <MdClear />&nbsp;<FormattedMessage id='TestResults.Overview.InstantMessaging.Blocked.Plural' values={{ Count: anomalyCount }}/>
       </Flex>
     </Box>
-    <Box>
-      <Flex alignItems='center'>
-        <MdDone />&nbsp;<FormattedMessage id='TestResults.Overview.InstantMessaging.Available.Plural' values={{ Count: totalCount }} />
-      </Flex>
+    <Box width={1}>
+      <Text>
+        <MdDone />&nbsp;<FormattedMessage id='TestResults.Overview.InstantMessaging.Available.Plural' values={{ Count: totalCount - anomalyCount }} />
+      </Text>
     </Box>
   </SummaryContainer>
 }
@@ -118,22 +118,40 @@ const MiddelboxSummary = ({anomalyCount}) => {
     msgID = 'TestResults.Summary.Middleboxes.Hero.Found'
   }
 
-  return <SummaryContainer>
-    <FormattedMessage id={msgID} />
-  </SummaryContainer>
+  return <Flex flexDirection='column'>
+    <Text textAlign='center'>
+      <FormattedMessage id={msgID} />
+    </Text>
+  </Flex>
 }
 
-const SummaryError = () => {
-  return <SummaryContainer>
-    <Text color={theme.colors.red8}>Error</Text>
+const CircumventionSummary = ({anomalyCount, totalCount}) => (
+  <SummaryContainer flexWrap='wrap'>
+    <Box width={1}>
+      <Text color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black}>
+        <MdClear /><FormattedMessage id='TestResults.Overview.Circumvention.Blocked.Plural' values={{ Count: anomalyCount }}/>
+      </Text>
+    </Box>
+    <Box width={1}>
+      <Text>
+        <MdDone /><FormattedMessage id='TestResults.Overview.Circumvention.Available.Plural' values={{ Count: totalCount - anomalyCount}} />
+      </Text>
+    </Box>
   </SummaryContainer>
+)
+
+const SummaryError = () => {
+  return <Flex flexDirection='column' justifyContent='center' alignItems='center'>
+    <Text color={theme.colors.red8}>Error</Text>
+  </Flex>
 }
 
 const summaryMap = {
   'websites': WebsitesSummary,
   'im': IMSummary,
   'middlebox': MiddelboxSummary,
-  'performance': PerformanceSummary
+  'performance': PerformanceSummary,
+  'circumvention': CircumventionSummary
 }
 
 
@@ -149,7 +167,7 @@ class ResultRow extends React.Component {
     const group = testGroups[name]
 
     return (
-      <Flex justifyContent='center' alignItems='center'>
+      <Flex alignItems='center'>
         <Box width={1/8}>
           <ColorCode color={group.color} />
         </Box>
@@ -173,15 +191,15 @@ class ResultRow extends React.Component {
   renderNetwork() {
     const {
       asn,
-      network,
+      network_name,
       network_country_code
     } = this.props
 
     return (
-      <VerticalCenter>
-        <Text>{network}</Text>
+      <Flex flexDirection='column'>
+        <Text fontWeight='bold'>{network_name}</Text>
         <Text>AS{asn} ({network_country_code})</Text>
-      </VerticalCenter>
+      </Flex>
     )
   }
 
@@ -191,9 +209,9 @@ class ResultRow extends React.Component {
     } = this.props
 
     return (
-      <VerticalCenter>
+      <Flex flexDirection='column' alignItems='center'>
         <Text>{moment(start_time).format('HH:mm Do MMM')}</Text>
-      </VerticalCenter>
+      </Flex>
     )
   }
   renderTestKeys() {
@@ -222,7 +240,7 @@ class ResultRow extends React.Component {
     } = this.props
     return <BorderedRow>
       <Link href={{ pathname: '/result', query: {resultID} }} passHref>
-        <Flex>
+        <Flex alignItems='center'>
           <Box pr={2} width={4/16}>
             {this.renderIcon()}
           </Box>
@@ -232,13 +250,11 @@ class ResultRow extends React.Component {
           <Box width={3/16}>
             {this.renderDate()}
           </Box>
-          <Box width={5/16} >
+          <Box width={5/16} mr='auto'>
             {this.renderTestKeys()}
           </Box>
-          <Box width={1/16} ml='auto'>
-            <VerticalCenter>
-              <RightArrowStyled />
-            </VerticalCenter>
+          <Box>
+            <RightArrowStyled />
           </Box>
         </Flex>
       </Link>

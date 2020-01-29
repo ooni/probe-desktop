@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Flex, Box, Text } from 'ooni-components'
 
-import colorMap from './colorMap'
+import colorMap from '../colorMap'
 
 const StatusBox = ({label, value, ok = 'true'}) => (
   <Flex flexWrap='wrap'>

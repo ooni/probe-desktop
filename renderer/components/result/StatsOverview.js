@@ -19,7 +19,7 @@ import formatBitrate from '../formatBitrate'
 import formatSpeed from '../formatSpeed'
 
 const addPlurality = (id, count) => {
-  if (parseInt(count) > 1) {
+  if (parseInt(count) === 0 || parseInt(count) > 1) {
     return `${id}.Plural`
   }
   return `${id}.Singular`
@@ -118,7 +118,7 @@ const MiddleboxStats = ({anomalyCount}) => {
             <NettestGroupMiddleBoxes size={100} />
           </Box>
         </Flex>
-        <Text center><FormattedMessage id='Test.Middleboxes.Fullname' /> <FormattedMessage id={msgID} /></Text>
+        <Text textAlign='center'><FormattedMessage id='Test.Middleboxes.Fullname' /> <FormattedMessage id={msgID} /></Text>
       </Box>
     </Flex>
   )
@@ -165,13 +165,51 @@ const PerformanceStats = ({testKeys}) => {
   )
 }
 
+const CircumventionStats = ({anomalyCount, totalCount}) => {
+  const testedCount = totalCount
+  const blockedCount = anomalyCount
+  const accessibleCount = testedCount - blockedCount
 
+  let testedLabelID = addPlurality('TestResults.Summary.Circumvention.Hero.Tested', testedCount)
+  let blockedLabelID = addPlurality('TestResults.Summary.Circumvention.Hero.Blocked', blockedCount)
+  let accessibleLabelID = addPlurality('TestResults.Summary.Circumvention.Hero.Reachable', accessibleCount)
+
+  let blockedAppsID = addPlurality('TestResults.Summary.Circumvention.Hero.Tools', blockedCount)
+  let accessibleAppsID = addPlurality('TestResults.Summary.Circumvention.Hero.Tools', accessibleCount)
+  let testedAppsID = addPlurality('TestResults.Summary.Circumvention.Hero.Tools', testedCount)
+
+  return (
+    <Flex justifyContent='center'>
+      <Box width={1/3}>
+        <StatBox
+          value={testedCount}
+          unit={<FormattedMessage id={testedAppsID} />}
+          label={<FormattedMessage id={testedLabelID} />} />
+      </Box>
+      <VerticalDivider />
+      <Box width={1/3}>
+        <StatBox
+          value={blockedCount}
+          unit={<FormattedMessage id={blockedAppsID} />}
+          label={<FormattedMessage id={blockedLabelID} />} />
+      </Box>
+      <VerticalDivider />
+      <Box width={1/3}>
+        <StatBox
+          value={accessibleCount}
+          unit={<FormattedMessage id={accessibleAppsID} />}
+          label={<FormattedMessage id={accessibleLabelID} />} />
+      </Box>
+    </Flex>
+  )
+}
 
 const statsMap = {
   'websites': WebsitesStats,
   'im': IMStats,
   'middlebox': MiddleboxStats,
-  'performance': PerformanceStats
+  'performance': PerformanceStats,
+  'circumvention': CircumventionStats
 }
 
 const StatsOverview = ({name, anomalyCount, totalCount, testKeys}) => {

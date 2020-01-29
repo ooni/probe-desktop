@@ -10,7 +10,6 @@ import {
   Button
 } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
-import styled from 'styled-components'
 import { Tick } from 'ooni-components/dist/icons'
 import { MdPriorityHigh } from 'react-icons/md'
 
@@ -26,12 +25,13 @@ import { Telegram } from '../nettests/im/Telegram'
 import { WhatsApp } from '../nettests/im/WhatsApp'
 import { NDT } from '../nettests/performance/NDT'
 import { Dash } from '../nettests/performance/Dash'
+import { Psiphon } from '../nettests/circumvention/Psiphon'
 
 import FullHeightFlex from '../FullHeightFlex'
 import MethodologyButton from './MethodologyButton'
 import ExplorerURLButton from './ExplorerURLButton'
 import RawDataContainer from './RawDataContainer'
-import colorMap from './colorMap'
+import colorMap from '../colorMap'
 
 const detailsMap = {
   web_connectivity: WebConnectivity,
@@ -41,10 +41,9 @@ const detailsMap = {
   telegram: Telegram,
   whatsapp: WhatsApp,
   ndt: NDT,
-  dash: Dash
+  dash: Dash,
+  psiphon: Psiphon
 }
-
-const Placeholder = ({ id }) => <Box px={5} py={3} bg='gray3'>{id}</Box>
 
 const HeroItemBox = ({ label, content, ...props }) => (
   <Box p={3} {...props}>
@@ -127,7 +126,7 @@ const StickyHero = ({
               <HeroLineItem size={16}>{heroSubtitle}</HeroLineItem>
             </Box>
             <Box width={1}>
-              <Flex flexWrap='wrap'>
+              <Flex flexWrap='wrap' alignItems='center'>
                 <HeroItemBox
                   width={1/2}
                   label={<FormattedMessage id='TestResults.Summary.Hero.DateAndTime' />}
@@ -169,7 +168,6 @@ const MeasurementContainer = ({measurement, isAnomaly, rawData}) => {
 
   return (
     <React.Fragment>
-
       <MeasurementDetailContainer
         isAnomaly={isAnomaly}
         measurement={measurement}
@@ -210,9 +208,11 @@ const MeasurementContainer = ({measurement, isAnomaly, rawData}) => {
             </Sticky>
             <Container>
               <Flex flexDirection='column' style={{ 'minHeight': '60vh' }}>
-                <Flex my={3} justifyContent='space-around' alignItems='center'>
-                  <MethodologyButton href={tests[testName].methodology} />
-                  <Box>
+                <Flex my={3} alignItems='center'>
+                  <Box width={1/2}>
+                    <MethodologyButton href={tests[testName].methodology} />
+                  </Box>
+                  <Box width={1/2} px={3}>
                     <Text fontWeight='bold' is='span'>
                       <FormattedMessage id='TestResults.Details.Hero.Runtime' />
                     </Text>
@@ -234,7 +234,6 @@ const MeasurementContainer = ({measurement, isAnomaly, rawData}) => {
                       reportID={rawData.report_id}
                       input={rawData.input}
                     />
-
                   }
                 </Flex>
               </Flex>
