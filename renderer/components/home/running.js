@@ -119,7 +119,7 @@ const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, lo
   const lottieOptions = {
     loop: true,
     autoplay: true,
-    animationData: testGroup.animation,
+    animationData: testGroup['animation'] || null,
     rendererSettings: {
       preserveAspectRatio: 'xMidYMid slice'
     }
@@ -143,12 +143,16 @@ const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, lo
           }}
         />
       </Heading>
-      {!logOpen
+      {!logOpen && lottieOptions.animationData
         && <Lottie
           width={300}
           height={300}
           options={lottieOptions}
         />}
+      {
+        !lottieOptions.animationData &&
+        React.cloneElement(testGroup.icon, {size: 300})
+      }
       <LineProgress
         percent={percent*100}
         strokeColor={theme.colors.white}

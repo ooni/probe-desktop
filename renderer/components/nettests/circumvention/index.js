@@ -1,7 +1,6 @@
 import React from 'react'
 import { theme } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
-import { default as animation } from 'ooni-components/components/animations/RunningInstantMessaging.json'
 import { NettestGroupCircumvention } from 'ooni-components/dist/icons'
 
 import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
@@ -20,6 +19,5 @@ export default {
   name,
   icon,
   description,
-  longDescription,
-  animation
+  longDescription
 }
