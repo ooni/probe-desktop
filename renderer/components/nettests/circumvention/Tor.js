@@ -44,6 +44,13 @@ const Styles = styled.div`
   }
 `
 
+const NameCell = styled.div`
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+`
+
 const Table = ({ columns, data }) => {
   const {
     getTableProps,
@@ -57,6 +64,7 @@ const Table = ({ columns, data }) => {
   })
 
   return (
+    /* eslint-disable react/jsx-key */
     <table {...getTableProps()}>
       <thead>
         {headerGroups.map(headerGroup => (
@@ -81,11 +89,10 @@ const Table = ({ columns, data }) => {
         )}
       </tbody>
     </table>
+    /* eslint-enable react/js-key */
+
   )
 }
-
-
-
 
 const Tor = ({measurement, isAnomaly, render}) => {
   const testKeys = JSON.parse(measurement.test_keys)
@@ -109,7 +116,10 @@ const Tor = ({measurement, isAnomaly, render}) => {
   const columns = useMemo(() => [
     {
       Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Name' />,
-      accessor: 'name'
+      accessor: 'name',
+      Cell: ({ cell: { value } }) => ( // eslint-disable-line react/display-name,react/prop-types
+        <NameCell>{value}</NameCell>
+      )
     },
     {
       Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Address' />,
@@ -121,11 +131,13 @@ const Tor = ({measurement, isAnomaly, render}) => {
     },
     {
       Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Connect' />,
-      accessor: 'connect'
+      accessor: 'connect',
+      collapse: true
     },
     {
       Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Handshake' />,
-      accessor: 'handshake'
+      accessor: 'handshake',
+      collapse: true
     }
   ], [])
 
@@ -139,7 +151,7 @@ const Tor = ({measurement, isAnomaly, render}) => {
       const handshakeStatus = <Cross color={theme.colors.red7} />
 
       return {
-        name: targets[target].target_name || 'No Name',
+        name: targets[target].target_name || target,
         address: targets[target].target_address,
         type: targets[target].target_protocol,
         connect: connectStatus,
