@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl'
 import { Flex, Box, theme } from 'ooni-components'
 import { Text } from 'rebass'
 import { Cross, Tick, NettestTor } from 'ooni-components/dist/icons'
-import { useTable, useExpanded } from 'react-table'
+import { useTable, useExpanded, useSortBy } from 'react-table'
 import styled from 'styled-components'
 
 import colorMap from '../../colorMap'
@@ -67,7 +67,8 @@ const Table = ({ columns, data, showExpandedRow }) => {
         hiddenColumns: ['connectFailure']
       }
     },
-    useExpanded
+    useExpanded,
+    useSortBy
   )
 
   return (
@@ -77,7 +78,17 @@ const Table = ({ columns, data, showExpandedRow }) => {
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                {column.render('Header')}
+                {/* Sort order indicator */}
+                <span>
+                  {column.isSorted
+                    ? column.isSortedDesc
+                      ? ' 🔽'
+                      : ' 🔼'
+                    : ''}
+                </span>
+              </th>
             ))}
           </tr>
         ))}
