@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl'
 import { Flex, Box, theme } from 'ooni-components'
 import { Text } from 'rebass'
 import { Cross, Tick, NettestTor } from 'ooni-components/dist/icons'
-import { useTable } from 'react-table'
+import { useTable, useExpanded } from 'react-table'
 import styled from 'styled-components'
 
 import colorMap from '../../colorMap'
@@ -51,17 +51,24 @@ const NameCell = styled.div`
 
 `
 
-const Table = ({ columns, data }) => {
+const Table = ({ columns, data, showExpandedRow }) => {
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({
-    columns,
-    data,
-  })
+    flatColumns,
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: {
+        hiddenColumns: ['connectFailure']
+      }
+    },
+    useExpanded
+  )
 
   return (
     /* eslint-disable react/jsx-key */
@@ -76,16 +83,24 @@ const Table = ({ columns, data }) => {
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
-        {rows.map(
-          (row) => {
-            prepareRow(row)
-            return (
-              <tr {...row.getRowProps()}>
+        {rows.map((row) => {
+          prepareRow(row)
+          return (
+            <React.Fragment>
+              <tr {...row.getRowProps()} {...row.getExpandedToggleProps()}>
                 {row.cells.map(cell => {
                   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}
               </tr>
-            )}
+              {row.isExpanded ? (
+                <tr>
+                  <td colSpan={flatColumns.length}>
+                    {showExpandedRow({ row })}
+                  </td>
+                </tr>
+              ) : null}
+            </React.Fragment>
+          )}
         )}
       </tbody>
     </table>
@@ -132,21 +147,25 @@ const Tor = ({measurement, isAnomaly, render}) => {
     {
       Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Connect' />,
       accessor: 'connect',
-      collapse: true
+      collapse: true,
+      Cell: ({ cell: { value } }) => ( // eslint-disable-line react/display-name,react/prop-types
+        value ? <Tick color={theme.colors.green7} /> : <Cross color={theme.colors.red7} />
+      )
     },
     {
       Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Handshake' />,
       accessor: 'handshake',
       collapse: true
+    },
+    {
+      accessor: 'connectFailure',
     }
   ], [])
 
   const data = useMemo(() => (
     Object.keys(targets).map(target => {
-      const connectStatus = targets[target].tcp_connect[0].status.success === true
-        ? <Tick color={theme.colors.green7} />
-        : <Cross color={theme.colors.red7} />
-
+      const connectStatus = targets[target].tcp_connect[0].status.success
+      const connectFailure = targets[target].tcp_connect[0].status.failure
       // const handshakeStatus = targets[target].tls_handshakes
       const handshakeStatus = <Cross color={theme.colors.red7} />
 
@@ -155,10 +174,30 @@ const Tor = ({measurement, isAnomaly, render}) => {
         address: targets[target].target_address,
         type: targets[target].target_protocol,
         connect: connectStatus,
+        connectFailure: connectFailure,
         handshake: handshakeStatus
       }
     })
   ), [targets])
+
+  const showExpandedRow = React.useCallback(
+    ({ row }) => (
+      <Flex flexDirection='column'>
+        <Flex>
+          <Text fontWeight='bold' mx={3}> Name </Text>
+          <Box>{row.values.name}</Box>
+        </Flex>
+        {row.values.connectFailure &&
+          <Flex>
+            <Text fontWeight='bold' mx={3}> Reason for failure </Text>
+            <Box>{row.values.connectFailure}</Box>
+          </Flex>
+        }
+      </Flex>
+    ),
+    []
+  )
+
 
   const TorDetails = () => (
     <Box width={1}>
@@ -207,7 +246,11 @@ const Tor = ({measurement, isAnomaly, render}) => {
         </Box>
       </Flex>
       <Styles>
-        <Table columns={columns} data={data} />
+        <Table
+          columns={columns}
+          data={data}
+          showExpandedRow={showExpandedRow}
+        />
       </Styles>
     </Box>
   )
