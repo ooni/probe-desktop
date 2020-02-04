@@ -4,8 +4,10 @@ import { FormattedMessage } from 'react-intl'
 import { Flex, Box, theme } from 'ooni-components'
 import { Text } from 'rebass'
 import { Cross, Tick, NettestTor } from 'ooni-components/dist/icons'
-import { useTable, useExpanded, useSortBy } from 'react-table'
+import { useTable, useSortBy } from 'react-table'
 import styled from 'styled-components'
+import { useClipboard } from 'use-clipboard-copy'
+import { FaClipboardCheck } from 'react-icons/fa'
 
 import colorMap from '../../colorMap'
 import StatusBox from '../../measurement/StatusBox'
@@ -44,14 +46,51 @@ const Styles = styled.div`
   }
 `
 
-const NameCell = styled.div`
-  width: 200px;
+const StyledNameCell = styled.div`
+  width: 80px;
   overflow: hidden;
   text-overflow: ellipsis;
-
+  position: relative;
 `
 
-const Table = ({ columns, data, showExpandedRow }) => {
+const ClipboardIcon = styled.span`
+  position: absolute;
+  right: 10px;
+  top: -5px;
+`
+
+const ClipboardCopiedToast = styled.span`
+  background-color: ${props => props.theme.colors.black};
+  color: white;
+  padding: 3px;
+  font-size: 8px;
+`
+
+const NameCell = ({ children }) => {
+  const clipboard = useClipboard({ copiedTimeout: 1500 })
+
+  return (
+    <React.Fragment>
+      <StyledNameCell
+        title={`${children} (Click to copy)`}
+        onClick={() => clipboard.copy(children)}
+      >
+        {children}
+        <ClipboardIcon>
+          {clipboard.copied && <FaClipboardCheck size={10} color={theme.colors.green7} />}
+          {/* {clipboard.copied && <ClipboardCopiedToast>Copied</ClipboardCopiedToast>} */}
+        </ClipboardIcon>
+      </StyledNameCell>
+
+    </React.Fragment>
+  )
+}
+
+NameCell.propTypes = {
+  children: PropTypes.element.isRequired
+}
+
+const Table = ({ columns, data }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -67,7 +106,6 @@ const Table = ({ columns, data, showExpandedRow }) => {
         hiddenColumns: ['connectFailure']
       }
     },
-    useExpanded,
     useSortBy
   )
 
@@ -98,18 +136,11 @@ const Table = ({ columns, data, showExpandedRow }) => {
           prepareRow(row)
           return (
             <React.Fragment>
-              <tr {...row.getRowProps()} {...row.getExpandedToggleProps()}>
+              <tr {...row.getRowProps()}>
                 {row.cells.map(cell => {
                   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}
               </tr>
-              {row.isExpanded ? (
-                <tr>
-                  <td colSpan={flatColumns.length}>
-                    {showExpandedRow({ row })}
-                  </td>
-                </tr>
-              ) : null}
             </React.Fragment>
           )}
         )}
@@ -159,14 +190,27 @@ const Tor = ({measurement, isAnomaly, render}) => {
       Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Connect' />,
       accessor: 'connect',
       collapse: true,
-      Cell: ({ cell: { value } }) => ( // eslint-disable-line react/display-name,react/prop-types
-        value ? <Tick color={theme.colors.green7} /> : <Cross color={theme.colors.red7} />
-      )
+      Cell: ({ cell: { value }, row: { values: { connectFailure } } }) => { // eslint-disable-line react/display-name,react/prop-types
+        const statusIcon = value ? <Tick color={theme.colors.green7} /> : <Cross color={theme.colors.red7} />
+        return (
+          <React.Fragment>
+            {statusIcon} {value || connectFailure}
+          </React.Fragment>
+        )
+      }
     },
     {
       Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Handshake' />,
       accessor: 'handshake',
-      collapse: true
+      collapse: true,
+      Cell: ({ cell: { value }, row: { values: { connectFailure } } }) => { // eslint-disable-line react/display-name,react/prop-types
+        const statusIcon = !value ? <Tick color={theme.colors.green7} /> : <Cross color={theme.colors.red7} />
+        return (
+          <React.Fragment>
+            {statusIcon} {'ssl_invalid_certificate'}
+          </React.Fragment>
+        )
+      }
     },
     {
       accessor: 'connectFailure',
@@ -177,7 +221,7 @@ const Tor = ({measurement, isAnomaly, render}) => {
     Object.keys(targets).map(target => {
       const connectStatus = targets[target].tcp_connect[0].status.success
       const connectFailure = targets[target].tcp_connect[0].status.failure
-      // const handshakeStatus = targets[target].tls_handshakes
+      // TODO: Use the right values for the handshake column. Placeholder now.
       const handshakeStatus = <Cross color={theme.colors.red7} />
 
       return {
@@ -190,25 +234,6 @@ const Tor = ({measurement, isAnomaly, render}) => {
       }
     })
   ), [targets])
-
-  const showExpandedRow = React.useCallback(
-    ({ row }) => (
-      <Flex flexDirection='column'>
-        <Flex>
-          <Text fontWeight='bold' mx={3}> Name </Text>
-          <Box>{row.values.name}</Box>
-        </Flex>
-        {row.values.connectFailure &&
-          <Flex>
-            <Text fontWeight='bold' mx={3}> Reason for failure </Text>
-            <Box>{row.values.connectFailure}</Box>
-          </Flex>
-        }
-      </Flex>
-    ),
-    []
-  )
-
 
   const TorDetails = () => (
     <Box width={1}>
@@ -260,7 +285,6 @@ const Tor = ({measurement, isAnomaly, render}) => {
         <Table
           columns={columns}
           data={data}
-          showExpandedRow={showExpandedRow}
         />
       </Styles>
     </Box>

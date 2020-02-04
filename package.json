@@ -164,6 +164,7 @@
     "split2": "^2.2.0",
     "sudo-prompt": "^7.1.1",
     "svgo": "^1.3.0",
+    "use-clipboard-copy": "^0.1.2",
     "webpack-bundle-analyzer": "^3.5.0"
   },
   "optionalDependencies": {
