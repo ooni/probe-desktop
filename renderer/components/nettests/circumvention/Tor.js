@@ -151,6 +151,20 @@ const Table = ({ columns, data }) => {
   )
 }
 
+const ConnectionStatusCell = ({ cell: { value} }) => {
+  let statusIcon = null
+  if (value === false) {
+    statusIcon = <Text fontWeight='bold' fontSize={1} color={theme.colors.gray7}>N/A</Text>
+  } else {
+    statusIcon = value === null ? <Tick color={theme.colors.green7} /> : <Cross color={theme.colors.red7} />
+  }
+  return (
+    <React.Fragment>
+      {statusIcon} {value}
+    </React.Fragment>
+  )
+}
+
 const Tor = ({measurement, isAnomaly, render}) => {
   const testKeys = JSON.parse(measurement.test_keys)
   const {
@@ -190,27 +204,13 @@ const Tor = ({measurement, isAnomaly, render}) => {
       Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Connect' />,
       accessor: 'connect',
       collapse: true,
-      Cell: ({ cell: { value }, row: { values: { connectFailure } } }) => { // eslint-disable-line react/display-name,react/prop-types
-        const statusIcon = value ? <Tick color={theme.colors.green7} /> : <Cross color={theme.colors.red7} />
-        return (
-          <React.Fragment>
-            {statusIcon} {value || connectFailure}
-          </React.Fragment>
-        )
-      }
+      Cell: ConnectionStatusCell
     },
     {
       Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Handshake' />,
       accessor: 'handshake',
       collapse: true,
-      Cell: ({ cell: { value }, row: { values: { connectFailure } } }) => { // eslint-disable-line react/display-name,react/prop-types
-        const statusIcon = !value ? <Tick color={theme.colors.green7} /> : <Cross color={theme.colors.red7} />
-        return (
-          <React.Fragment>
-            {statusIcon} {'ssl_invalid_certificate'}
-          </React.Fragment>
-        )
-      }
+      Cell: ConnectionStatusCell
     },
     {
       accessor: 'connectFailure',
@@ -219,17 +219,24 @@ const Tor = ({measurement, isAnomaly, render}) => {
 
   const data = useMemo(() => (
     Object.keys(targets).map(target => {
-      const connectStatus = targets[target].tcp_connect[0].status.success
-      const connectFailure = targets[target].tcp_connect[0].status.failure
-      // TODO: Use the right values for the handshake column. Placeholder now.
-      const handshakeStatus = <Cross color={theme.colors.red7} />
+      // Connection Status values
+      // false: Didn't run (N/A)
+      // null: No failure a.k.a success
+      // string: Failure with error string
+      let connectStatus = false, handshakeStatus = false
+      if (targets[target].summary.connect) {
+        connectStatus = targets[target].summary.connect.failure
+      }
+
+      if (targets[target].summary.handshake) {
+        handshakeStatus = targets[target].summary.handshake.failure
+      }
 
       return {
         name: targets[target].target_name || target,
         address: targets[target].target_address,
         type: targets[target].target_protocol,
         connect: connectStatus,
-        connectFailure: connectFailure,
         handshake: handshakeStatus
       }
     })
