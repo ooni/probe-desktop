@@ -26,6 +26,7 @@ import { WhatsApp } from '../nettests/im/WhatsApp'
 import { NDT } from '../nettests/performance/NDT'
 import { Dash } from '../nettests/performance/Dash'
 import { Psiphon } from '../nettests/circumvention/Psiphon'
+import { Tor } from '../nettests/circumvention/Tor'
 
 import FullHeightFlex from '../FullHeightFlex'
 import MethodologyButton from './MethodologyButton'
@@ -42,7 +43,8 @@ const detailsMap = {
   whatsapp: WhatsApp,
   ndt: NDT,
   dash: Dash,
-  psiphon: Psiphon
+  psiphon: Psiphon,
+  tor: Tor
 }
 
 const HeroItemBox = ({ label, content, ...props }) => (
