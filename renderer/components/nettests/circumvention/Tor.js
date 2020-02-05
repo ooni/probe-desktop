@@ -53,9 +53,9 @@ const StyledNameCell = styled.div`
   position: relative;
 `
 
-const ClipboardIcon = styled.span`
+const ClipboardIcon = styled.div`
   position: absolute;
-  right: 10px;
+  right: -3px;
   top: -5px;
 `
 
