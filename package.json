@@ -76,7 +76,6 @@
       "publish": [
         "github"
       ],
-      "target": "dmg",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "./build/entitlements.mac.inherit.plist",
