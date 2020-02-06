@@ -3,7 +3,7 @@
   "description": "OONI Probe Desktop app",
   "author": "Open Observatory of Network Interference (OONI) <contact@openobservatory.org>",
   "productName": "OONI Probe",
-  "version": "3.0.0-rc.3",
+  "version": "3.0.0-rc.4",
   "probeVersion": "3.0.0-rc.9",
   "main": "main/index.js",
   "license": "MIT",
@@ -76,7 +76,6 @@
       "publish": [
         "github"
       ],
-      "target": "dmg",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "./build/entitlements.mac.inherit.plist",
