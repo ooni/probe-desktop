@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Flex, Box, Fixed, Heading} from 'ooni-components'
@@ -71,6 +71,24 @@ const RawDataContainer = ({ rawData, isOpen, onClose }) => {
   JsonViewer.propTypes = {
     src: PropTypes.object.isRequired
   }
+
+  const onEscape = useCallback((event) => {
+    if (event.key === 'Escape') {
+      onClose()
+    }
+  })
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener('keydown', onEscape)
+    } else {
+      document.removeEventListener('keydown', onEscape)
+    }
+
+    return () => {
+      document.removeEventListener('keydown', onEscape)
+    }
+  }, [isOpen])
 
   return (
     <AnimatedWrapper style={props}>
