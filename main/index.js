@@ -43,6 +43,8 @@ let windows = null
 // Set the application name
 app.setName('OONI Probe')
 
+// TODO verify if this code is redundant as the Sentry.init code should already
+// cover this.
 process.on('uncaughtException', error => {
   Sentry.captureException(error)
 })
