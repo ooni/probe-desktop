@@ -212,13 +212,13 @@ const MeasurementContainer = ({measurement, isAnomaly, rawData}) => {
               <Flex flexDirection='column' style={{ 'minHeight': '60vh' }}>
                 <Flex my={3} alignItems='center'>
                   <Box width={1/2}>
-                    <MethodologyButton href={tests[testName].methodology} />
-                  </Box>
-                  <Box width={1/2} px={3}>
                     <Text fontWeight='bold' is='span'>
                       <FormattedMessage id='TestResults.Details.Hero.Runtime' />
                     </Text>
                     : {moment.duration(runtime * 1000).seconds()}s
+                  </Box>
+                  <Box ml='auto'>
+                    <MethodologyButton href={tests[testName].methodology} />
                   </Box>
                 </Flex>
                 <FullHeightFlex>
