@@ -4,7 +4,7 @@ const withSourceMaps = require('@zeit/next-source-maps')
 const withCSS = require('@zeit/next-css')
 
 module.exports = withSourceMaps(withCSS({
-  webpack: (config) => {
+  webpack: (config, options) => {
     config.target = 'electron-renderer'
 
     config.node = {
@@ -20,6 +20,9 @@ module.exports = withSourceMaps(withCSS({
         }
       ]
     })
+    if (!options.isServer) {
+      config.resolve.alias['@sentry/node'] = '@sentry/browser'
+    }
     return config
   },
 

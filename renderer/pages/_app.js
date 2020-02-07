@@ -1,9 +1,8 @@
 import React from 'react'
 import App from 'next/app'
-import * as Sentry from '@sentry/electron'
+import * as Sentry from '@sentry/node'
 
 Sentry.init({
-  // Replace with your project's Sentry DSN
   dsn: 'https://e1eef2aaa6054d94bffc4a648fb78f09@sentry.io/1210892',
 })
 
