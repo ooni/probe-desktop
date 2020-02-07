@@ -38,7 +38,7 @@ class Ooniprobe extends EventEmitter {
     if (this.ooni === null) {
       throw Error('cannot kill an unstarted process')
     }
-    this.ooni.kill()
+    this.ooni.kill('SIGINT')
   }
 
   call(argv) {
