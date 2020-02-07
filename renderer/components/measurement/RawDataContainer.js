@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Flex, Box, Fixed, Heading} from 'ooni-components'
@@ -40,7 +40,7 @@ const StyledCloseButton = styled(MdClose)`
 const RawDataContainer = ({ rawData, isOpen, onClose }) => {
 
   const props = useSpring({
-    from: { bottom: -6000 },
+    from: { bottom: -2000 },
     to: { bottom: isOpen ? 0 : -2000 }
   })
 
@@ -72,8 +72,26 @@ const RawDataContainer = ({ rawData, isOpen, onClose }) => {
     src: PropTypes.object.isRequired
   }
 
+  const onEscape = useCallback((event) => {
+    if (event.key === 'Escape') {
+      onClose()
+    }
+  })
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener('keydown', onEscape)
+    } else {
+      document.removeEventListener('keydown', onEscape)
+    }
+
+    return () => {
+      document.removeEventListener('keydown', onEscape)
+    }
+  }, [isOpen])
+
   return (
-    <AnimatedWrapper bottom={props.bottom} left right>
+    <AnimatedWrapper style={props}>
       <Flex flexDirection='column' flexWrap='wrap'>
         <Box width={1} mb={2}>
           <Flex justifyContent='space-between' alignItems='center' bg='gray3'>
