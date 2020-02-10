@@ -1,10 +1,10 @@
+/* global require */
 import React from 'react'
 
 import Document, { Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 
 import '../components/globalStyle'
-import withSentry from '../components/withSentry'
 
 const debug = require('debug')('ooniprobe-desktop.renderer.pages._document')
 
@@ -39,4 +39,4 @@ class CustomDocument extends Document {
   }
 }
 
-export default withSentry(CustomDocument)
+export default CustomDocument

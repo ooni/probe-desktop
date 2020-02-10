@@ -137,7 +137,9 @@
     "webpack": "4.40.2"
   },
   "dependencies": {
-    "@sentry/electron": "^0.17.3",
+    "@sentry/browser": "^5.12.1",
+    "@sentry/node": "^5.12.1",
+    "@sentry/electron": "^1.2.0",
     "@zeit/next-css": "^1.0.1",
     "app-root-path": "2.2.1",
     "debug": "^4.1.1",
