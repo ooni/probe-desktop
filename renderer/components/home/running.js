@@ -15,7 +15,7 @@ import {
 
 import { MdClear } from 'react-icons/md'
 import { Line as LineProgress } from 'rc-progress'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 import { testGroups } from '../nettests'
 
@@ -129,6 +129,9 @@ const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, lo
     TestName = <FormattedMessage id={`Test.${runningTestName.split('.')[1]}.Fullname`} />
   }
 
+  // Use the locale used by react-intl to localize the ETA label ('un minuto')
+  const { locale } = useIntl()
+
   return <StyledRunningTest>
     <Container>
       <CloseButtonContainer>
@@ -166,7 +169,7 @@ const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, lo
           <FormattedMessage id='Dashboard.Running.EstimatedTimeLeft' />
         </Box>
         <Box>
-          <FormattedMessage id='Dashboard.Running.Seconds' values={{ seconds: moment.duration(eta*1000).humanize() }}/>
+          {moment.duration(eta*1000).locale(locale).humanize()}
         </Box>
       </Flex>
       }
