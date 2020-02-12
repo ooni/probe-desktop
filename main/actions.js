@@ -64,11 +64,13 @@ const listResults = () => {
       }
       switch(data.fields.type) {
       case 'result_item':
-        // Hide measurements which have not been completed
-        // TODO improve how we handle terminating an OONI Probe run in probe-cli
-        if (data.fields.is_done == true) {
-          rows.push(data.fields)
-        }
+        rows.push(data.fields)
+
+        // Sort the result_items because probe-cli returns incomplete results
+        // first and gets pushed at one end of the array
+        rows.sort((resultA, resultB) => (
+          new Date(resultA.start_time) - new Date(resultB.start_time)
+        ))
         break
       case 'result_summary':
         summary = data.fields

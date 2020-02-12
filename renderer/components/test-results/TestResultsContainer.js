@@ -164,9 +164,7 @@ const TestResultsContainer = ({results}) => {
     rows
   } = results
 
-  const validResults = rows.filter(result => result.is_done === true)
-
-  const byMonth = groupRowsByMonth(validResults)
+  const byMonth = groupRowsByMonth(rows)
 
   return (
     <FullWidth>
