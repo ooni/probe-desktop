@@ -142,13 +142,13 @@ const CircumventionSummary = ({anomalyCount, totalCount}) => (
 
 const SummaryError = () => (
   <Flex flexDirection='column' justifyContent='center' alignItems='center'>
-    <Text color={theme.colors.red8}>Error</Text>
+    <Text color={theme.colors.red8}><FormattedMessage id='TestResults.Overview.Error' /></Text>
   </Flex>
 )
 
 const SummaryIncomplete = () => (
   <Flex justifyContent='center' alignItems='center'>
-    <MdWarning /> <Text ml={1}>Incomplete Result</Text>
+    <MdWarning /> <Text ml={1}><FormattedMessage id='TestResults.Overview.IncompleteResult' /></Text>
   </Flex>
 )
 

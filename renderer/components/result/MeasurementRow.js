@@ -8,38 +8,40 @@ import {
   Flex,
   Box
 } from 'ooni-components'
-
+import { FormattedMessage } from 'react-intl'
 import {
   Cross,
   Tick
 } from 'ooni-components/dist/icons'
 
 import { tests } from '../nettests'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import RightArrow from '../RightArrow'
 
 import UploadSpeed from '../UploadSpeed'
 import DownloadSpeed from '../DownloadSpeed'
 import VideoQuality from '../VideoQuality'
+import { parseTestKeys } from '../utils'
 
 // XXX this should be moved to the design-system
 import { MdPriorityHigh } from 'react-icons/md'
 
 import * as OOIcons from 'ooni-components/dist/icons'
 
-const BorderedRow = styled(Flex)`
-  width: 100%;
+const BorderedFlex = styled(Flex)`
   padding-top: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid ${props => props.theme.colors.gray3};
-  &:hover {
-    background-color: ${props => props.theme.colors.white};
-    cursor: pointer;
-  }
+  ${props => !props.noHover && css`
+    &:hover {
+      background-color: ${props => props.theme.colors.white};
+      cursor: pointer;
+    }
+  `}
 `
 
 const RightArrowStyled = styled(RightArrow)`
-  ${BorderedRow}:hover & {
+  ${BorderedFlex}:hover & {
     color: ${props => props.theme.colors.gray6};
   }
 `
@@ -88,7 +90,7 @@ const CategoryCode = ({code}) => {
 
 const URLRow =  ({measurement, query, isAnomaly}) => (
   <Link href={{pathname: '/measurement', query}}>
-    <BorderedRow>
+    <BorderedFlex>
       <Box pr={2} pl={2} width={1/8}>
         <CategoryCode code={measurement['url_category_code']} />
       </Box>
@@ -103,7 +105,7 @@ const URLRow =  ({measurement, query, isAnomaly}) => (
           <RightArrowStyled />
         </VerticalCenter>
       </Box>
-    </BorderedRow>
+    </BorderedFlex>
   </Link>
 )
 
@@ -133,20 +135,27 @@ const StatusBox = ({testName, testKeys, isAnomaly}) => {
   )
 }
 
-// XXX still need to show the summary in here
-const TestRow =  ({measurement, query, testKeys, isAnomaly}) => {
-
-  const icon = tests[measurement.test_name].icon && React.cloneElement(
-    tests[measurement.test_name].icon,
+const TestNameIcon = ({ testName }) => {
+  const icon = tests[testName].icon && React.cloneElement(
+    tests[testName].icon,
     {size: 40}
   )
 
   return (
+    <div>
+      {icon && <IconContainer>{icon}</IconContainer>}
+      {tests[testName] && tests[testName].name}
+    </div>
+  )
+}
+// XXX still need to show the summary in here
+const TestRow =  ({measurement, query, testKeys, isAnomaly}) => {
+
+  return (
     <Link href={{pathname: '/measurement', query}}>
-      <BorderedRow>
+      <BorderedFlex alignItems='center'>
         <Box width={5/8} pl={2}>
-          {icon && <IconContainer>{icon}</IconContainer>}
-          {tests[measurement.test_name] && tests[measurement.test_name].name}
+          <TestNameIcon testName={measurement.test_name} />
         </Box>
         <Box width={2/8} h={1}>
           <StatusBox testName={measurement.test_name} isAnomaly={isAnomaly} testKeys={testKeys} />
@@ -156,8 +165,21 @@ const TestRow =  ({measurement, query, testKeys, isAnomaly}) => {
             <RightArrowStyled />
           </VerticalCenter>
         </Box>
-      </BorderedRow>
+      </BorderedFlex>
     </Link>
+  )
+}
+
+const IncompleteRow = ({ testName }) => {
+  return (
+    <BorderedFlex noHover color='gray5' bg='gray0' alignItems='center'>
+      <Box width={5/8} pl={2}>
+        <TestNameIcon testName={testName} />
+      </Box>
+      <Box>
+        <FormattedMessage id='TestResults.Summary.ErrorInMeasurement' />
+      </Box>
+    </BorderedFlex>
   )
 }
 
@@ -170,11 +192,16 @@ const rowMap = {
 }
 
 const MeasurementRow = ({groupName, measurement, router}) => {
-  if (measurement == null || groupName === 'default' || !measurement['test_keys']) {
+  if (measurement == null || groupName === 'default') {
     return <Text color={theme.colors.red8}>Error</Text>
   }
 
-  const testKeys = JSON.parse(measurement['test_keys'])
+  const testKeys = parseTestKeys(measurement['test_keys'])
+
+  if (!testKeys) {
+    return <IncompleteRow testName={measurement.test_name} />
+  }
+
   // We pass in `is_anomaly` here to use in the `/measurement` page
   const query = {...router.query, measurementID: measurement.id, isAnomaly: measurement.is_anomaly}
 
