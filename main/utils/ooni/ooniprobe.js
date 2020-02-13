@@ -38,7 +38,9 @@ class Ooniprobe extends EventEmitter {
     if (this.ooni === null) {
       throw Error('cannot kill an unstarted process')
     }
-    this.ooni.kill()
+    // See https://github.com/ooni/probe-cli/pull/111 for documentation
+    // concerning the design of killing ooniprobe portably
+    this.ooni.stdin.end()
   }
 
   call(argv) {
@@ -54,6 +56,9 @@ class Ooniprobe extends EventEmitter {
             stdio: ['pipe', 'pipe', 'pipe'],
             env: {
               'OONI_HOME': getHomeDir(),
+              // See https://github.com/ooni/probe-cli/pull/111 for documentation
+              // concerning the design of killing ooniprobe portably
+              'OONI_STDIN_EOF_IMPLIES_SIGTERM': 'true'
             }
           }
         if (is.windows) {
