@@ -14,7 +14,7 @@ import {
 
 import Link from 'next/link'
 
-import { MdWeb, MdDone, MdClear } from 'react-icons/md'
+import { MdWeb, MdDone, MdClear, MdWarning } from 'react-icons/md'
 import { testGroups } from '../nettests'
 import RightArrow from '../RightArrow'
 
@@ -69,7 +69,7 @@ SummaryContainer.defaultProps = {
 const WebsitesSummary = ({anomalyCount, totalCount}) => (
   <SummaryContainer>
     <Box>
-      <Flex color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black} alignItems='center'>
+      <Flex color={anomalyCount > 0 ? theme.colors.red8 : 'unset'} alignItems='center'>
         <MdClear />&nbsp;<FormattedMessage id='TestResults.Overview.Websites.Blocked.Plural' values={{ Count: anomalyCount }}/>
       </Flex>
     </Box>
@@ -84,7 +84,7 @@ const WebsitesSummary = ({anomalyCount, totalCount}) => (
 const IMSummary = ({anomalyCount, totalCount}) => {
   return <SummaryContainer>
     <Box>
-      <Flex color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black} alignItems='center'>
+      <Flex color={anomalyCount > 0 ? theme.colors.red8 : 'unset'} alignItems='center'>
         <MdClear />&nbsp;<FormattedMessage id='TestResults.Overview.InstantMessaging.Blocked.Plural' values={{ Count: anomalyCount }}/>
       </Flex>
     </Box>
@@ -128,7 +128,7 @@ const MiddelboxSummary = ({anomalyCount}) => {
 const CircumventionSummary = ({anomalyCount, totalCount}) => (
   <SummaryContainer flexWrap='wrap'>
     <Box width={1}>
-      <Text color={anomalyCount > 0 ? theme.colors.red8 : theme.colors.black}>
+      <Text color={anomalyCount > 0 ? theme.colors.red8 : 'unset'}>
         <MdClear /><FormattedMessage id='TestResults.Overview.Circumvention.Blocked.Plural' values={{ Count: anomalyCount }}/>
       </Text>
     </Box>
@@ -140,11 +140,17 @@ const CircumventionSummary = ({anomalyCount, totalCount}) => (
   </SummaryContainer>
 )
 
-const SummaryError = () => {
-  return <Flex flexDirection='column' justifyContent='center' alignItems='center'>
+const SummaryError = () => (
+  <Flex flexDirection='column' justifyContent='center' alignItems='center'>
     <Text color={theme.colors.red8}>Error</Text>
   </Flex>
-}
+)
+
+const SummaryIncomplete = () => (
+  <Flex justifyContent='center' alignItems='center'>
+    <MdWarning /> <Text ml={1}>Incomplete Result</Text>
+  </Flex>
+)
 
 const summaryMap = {
   'websites': WebsitesSummary,
@@ -219,12 +225,15 @@ class ResultRow extends React.Component {
       name,
       test_keys,
       measurement_anomaly_count,
-      measurement_count
+      measurement_count,
+      is_done
     } = this.props
 
     const testKeys = JSON.parse(test_keys)
     let SummaryElement = SummaryError
-    if (testKeys != null) {
+    if (!is_done) {
+      SummaryElement = SummaryIncomplete
+    } else if (testKeys != null) {
       SummaryElement = summaryMap[name]
     }
 
@@ -236,7 +245,7 @@ class ResultRow extends React.Component {
 
   render() {
     const {
-      resultID
+      resultID,
     } = this.props
     return <BorderedRow>
       <Link href={{ pathname: '/result', query: {resultID} }} passHref>
