@@ -1,4 +1,5 @@
 /* global require */
+import log from 'electron-log'
 
 export const openInBrowser = (url, event) => {
   var shell = require('electron').shell
@@ -11,7 +12,7 @@ export const parseTestKeys = (testKeys) => {
   try {
     parsedTestKeys = JSON.parse(testKeys)
   } catch (e) {
-    parsedTestKeys = null
+    log.error(`error in parsing testKeys: ${e}`)
   }
   return parsedTestKeys
 }
