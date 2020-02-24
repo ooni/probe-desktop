@@ -21,3 +21,6 @@ cert.pem
 
 # secrets
 /.env
+
+# sketchapp related
+*.sketchplugin

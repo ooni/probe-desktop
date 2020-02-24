@@ -18,12 +18,17 @@
     "pack:mac": "yarn run build && electron-builder --mac",
     "pack:linux": "yarn run build && electron-builder --linux",
     "probe-cli": "node scripts/download-bin.js",
+    "render": "skpm-build --watch --run",
     "publish": "yarn run build && electron-builder --mac --win -p always",
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
     "lint": "eslint --ignore-path .gitignore .",
     "test": "yarn run build",
     "postinstall": "electron-builder install-app-deps",
     "storybook": "start-storybook -p 6006"
+  },
+  "skpm": {
+    "main": "ooniprobe-desktop.sketchplugin",
+    "manifest": "sketchapp/manifest.json"
   },
   "build": {
     "appId": "org.ooni.probe-desktop",
@@ -95,6 +100,7 @@
     "@babel/cli": "7.6.0",
     "@babel/core": "7.6.0",
     "@babel/register": "7.6.0",
+    "@skpm/builder": "0.6.0",
     "@storybook/addon-actions": "5.2.1",
     "@storybook/addon-links": "5.2.1",
     "@storybook/addon-storysource": "5.2.1",
@@ -131,6 +137,8 @@
     "react-icons": "3.7.0",
     "react-intl": "3.3.2",
     "react-lottie": "^1.2.3",
+    "react-sketchapp": "^3.1.0",
+    "react-test-renderer": "^16.12.0",
     "remark": "^11.0.1",
     "remark-react": "^6.0.0",
     "styled-components": "^4.4.1",
@@ -138,8 +146,8 @@
   },
   "dependencies": {
     "@sentry/browser": "^5.12.1",
-    "@sentry/node": "^5.12.1",
     "@sentry/electron": "^1.2.0",
+    "@sentry/node": "^5.12.1",
     "@zeit/next-css": "^1.0.1",
     "app-root-path": "2.2.1",
     "debug": "^4.1.1",
