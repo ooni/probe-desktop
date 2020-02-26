@@ -184,6 +184,27 @@ const Tor = ({measurement, isAnomaly, render}) => {
     <FormattedMessage id='TestResults.Details.Circumvention.Tor.Reachable.Hero.Title' />
   )
 
+  const statusColumnSort = (rowA, rowB, columnId, desc) => {
+    const sortMap = {
+      na: 0,
+      nullValue: 1,
+      notNullValue: 2
+    }
+
+    const mappedA = rowA.original.handshake === false ? sortMap.na : (
+      rowA.original.handshake === null ? sortMap.nullValue : sortMap.notNullValue
+    )
+    const mappedB = rowB.original.handshake === false ? sortMap.na : (
+      rowB.original.handshake === null ? sortMap.nullValue : sortMap.notNullValue
+    )
+
+    if (desc) {
+      return mappedA - mappedB
+    } else {
+      return mappedB - mappedA
+    }
+  }
+
   const columns = useMemo(() => [
     {
       Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Name' />,
@@ -204,13 +225,16 @@ const Tor = ({measurement, isAnomaly, render}) => {
       Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Connect' />,
       accessor: 'connect',
       collapse: true,
-      Cell: ConnectionStatusCell
+      Cell: ConnectionStatusCell,
+      sortType: statusColumnSort
     },
     {
       Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Handshake' />,
       accessor: 'handshake',
       collapse: true,
-      Cell: ConnectionStatusCell
+      Cell: ConnectionStatusCell,
+      sortType: statusColumnSort
+
     },
     {
       accessor: 'connectFailure',
