@@ -144,6 +144,10 @@ const Table = ({ columns, data }) => {
   )
 }
 
+const StyledConnectionStatusCell = styled.div`
+  word-break: break-word;
+`
+
 const ConnectionStatusCell = ({ cell: { value} }) => {
   let statusIcon = null
   if (value === false) {
@@ -152,9 +156,9 @@ const ConnectionStatusCell = ({ cell: { value} }) => {
     statusIcon = value === null ? <Tick color={theme.colors.green7} /> : <Cross color={theme.colors.red7} />
   }
   return (
-    <React.Fragment>
+    <StyledConnectionStatusCell>
       {statusIcon} {value}
-    </React.Fragment>
+    </StyledConnectionStatusCell>
   )
 }
 
