@@ -8,7 +8,7 @@ import {
   Flex,
   Box
 } from 'ooni-components'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import {
   Cross,
   Tick
@@ -24,7 +24,7 @@ import VideoQuality from '../VideoQuality'
 import { parseTestKeys } from '../utils'
 
 // XXX this should be moved to the design-system
-import { MdPriorityHigh } from 'react-icons/md'
+import { MdPriorityHigh, MdCloudOff } from 'react-icons/md'
 
 import * as OOIcons from 'ooni-components/dist/icons'
 
@@ -88,6 +88,17 @@ const CategoryCode = ({code}) => {
   )
 }
 
+const NotUploadedNotice = () => {
+  const intl = useIntl()
+  return (
+    <Text as='span' ml={2} color='gray6'
+      title={intl.formatMessage({id: 'TestResults.Summary.NoUploaded'})}
+    >
+      <MdCloudOff size={20} />
+    </Text>
+  )
+}
+
 const URLRow =  ({measurement, query, isAnomaly}) => (
   <Link href={{pathname: '/measurement', query}}>
     <BorderedFlex>
@@ -96,6 +107,7 @@ const URLRow =  ({measurement, query, isAnomaly}) => (
       </Box>
       <Box width={6/8} h={1}>
         {formatURL(measurement.url)}
+        {!measurement.is_uploaded && <NotUploadedNotice />}
       </Box>
       <Box width={1/8} h={1}>
         <Status notok={isAnomaly} />
@@ -155,7 +167,10 @@ const TestRow =  ({measurement, query, testKeys, isAnomaly}) => {
     <Link href={{pathname: '/measurement', query}}>
       <BorderedFlex alignItems='center'>
         <Box width={5/8} pl={2}>
-          <TestNameIcon testName={measurement.test_name} />
+          <Flex alignItems='center'>
+            <TestNameIcon testName={measurement.test_name} />
+            {!measurement.is_uploaded && <NotUploadedNotice />}
+          </Flex>
         </Box>
         <Box width={2/8} h={1}>
           <StatusBox testName={measurement.test_name} isAnomaly={isAnomaly} testKeys={testKeys} />
