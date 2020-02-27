@@ -7,7 +7,6 @@ import { Cross, Tick, NettestTor } from 'ooni-components/dist/icons'
 import { useTable, useSortBy } from 'react-table'
 import styled from 'styled-components'
 import { useClipboard } from 'use-clipboard-copy'
-import { FaClipboardCheck } from 'react-icons/fa'
 
 import colorMap from '../../colorMap'
 import StatusBox from '../../measurement/StatusBox'
@@ -46,26 +45,24 @@ const Styles = styled.div`
   }
 `
 
-const StyledNameCell = styled.div`
+const StyledNameCell = styled(Flex)`
   width: 80px;
   overflow: hidden;
   text-overflow: ellipsis;
-  position: relative;
-`
-
-const ClipboardIcon = styled.div`
-  position: absolute;
-  right: -3px;
-  top: -5px;
+  white-space: nowrap;
+  cursor: default;
 `
 
 const ClipboardCopiedToast = styled.span`
+  width: 100%;
   background-color: ${props => props.theme.colors.black};
   color: white;
-  padding: 3px;
-  font-size: 8px;
+  padding: 2px;
+  font-size: 12px;
 `
 
+// Custom render of cells in the Name column. Copies name to clipboard upon
+// click. Shows the message (toast) "Copied!" for 1.5 seconds
 const NameCell = ({ children }) => {
   const clipboard = useClipboard({ copiedTimeout: 1500 })
 
@@ -75,11 +72,8 @@ const NameCell = ({ children }) => {
         title={`${children} (Click to copy)`}
         onClick={() => clipboard.copy(children)}
       >
-        {children}
-        <ClipboardIcon>
-          {clipboard.copied && <FaClipboardCheck size={10} color={theme.colors.green7} />}
-          {/* {clipboard.copied && <ClipboardCopiedToast>Copied</ClipboardCopiedToast>} */}
-        </ClipboardIcon>
+        {!clipboard.copied && children}
+        {clipboard.copied && <ClipboardCopiedToast>Copied</ClipboardCopiedToast>}
       </StyledNameCell>
 
     </React.Fragment>
@@ -96,8 +90,7 @@ const Table = ({ columns, data }) => {
     getTableBodyProps,
     headerGroups,
     rows,
-    prepareRow,
-    flatColumns,
+    prepareRow
   } = useTable(
     {
       columns,
@@ -163,6 +156,10 @@ const ConnectionStatusCell = ({ cell: { value} }) => {
       {statusIcon} {value}
     </React.Fragment>
   )
+}
+
+ConnectionStatusCell.propTypes = {
+  cell: PropTypes.object
 }
 
 const Tor = ({measurement, isAnomaly, render}) => {
