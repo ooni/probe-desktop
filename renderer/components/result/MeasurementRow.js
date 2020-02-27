@@ -24,7 +24,7 @@ import VideoQuality from '../VideoQuality'
 import { parseTestKeys } from '../utils'
 
 // XXX this should be moved to the design-system
-import { MdPriorityHigh } from 'react-icons/md'
+import { MdPriorityHigh, MdCloudOff } from 'react-icons/md'
 
 import * as OOIcons from 'ooni-components/dist/icons'
 
@@ -96,6 +96,11 @@ const URLRow =  ({measurement, query, isAnomaly}) => (
       </Box>
       <Box width={6/8} h={1}>
         {formatURL(measurement.url)}
+        {!measurement.is_uploaded &&
+          <Text as='span' ml={2} color='gray6'>
+            <MdCloudOff size={20} />
+          </Text>
+        }
       </Box>
       <Box width={1/8} h={1}>
         <Status notok={isAnomaly} />
@@ -155,7 +160,14 @@ const TestRow =  ({measurement, query, testKeys, isAnomaly}) => {
     <Link href={{pathname: '/measurement', query}}>
       <BorderedFlex alignItems='center'>
         <Box width={5/8} pl={2}>
-          <TestNameIcon testName={measurement.test_name} />
+          <Flex alignItems='center'>
+            <TestNameIcon testName={measurement.test_name} />
+            {!measurement.is_uploaded &&
+              <Box ml={2} color='gray6'>
+                <MdCloudOff size={20} />
+              </Box>
+            }
+          </Flex>
         </Box>
         <Box width={2/8} h={1}>
           <StatusBox testName={measurement.test_name} isAnomaly={isAnomaly} testKeys={testKeys} />
