@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Flex, Box, Text } from 'ooni-components'
 
-import FullHeightFlex from '../../FullHeightFlex'
 import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
 
 const WebConnectivity = ({measurement, isAnomaly, render}) => {

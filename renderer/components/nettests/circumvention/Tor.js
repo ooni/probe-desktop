@@ -10,6 +10,7 @@ import { useClipboard } from 'use-clipboard-copy'
 
 import colorMap from '../../colorMap'
 import StatusBox from '../../measurement/StatusBox'
+import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
 
 // TODO Should check if it helps to convert these into styled components and
 // render them instead of the native <table> <td> <tr> elements
@@ -272,9 +273,9 @@ const Tor = ({measurement, isAnomaly, render}) => {
       <Flex my={4}>
         <Text>
           {isAnomaly ? (
-            <FormattedMessage id='TestResults.Details.Circumvention.Tor.Blocked.Content.Paragraph' />
+            <FormattedMarkdownMessage id='TestResults.Details.Circumvention.Tor.Blocked.Content.Paragraph' />
           ) : (
-            <FormattedMessage id='TestResults.Details.Circumvention.Tor.Reachable.Content.Paragraph' />
+            <FormattedMarkdownMessage id='TestResults.Details.Circumvention.Tor.Reachable.Content.Paragraph' />
           )}
         </Text>
       </Flex>

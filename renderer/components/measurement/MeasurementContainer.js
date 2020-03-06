@@ -12,10 +12,9 @@ import {
 import { FormattedMessage } from 'react-intl'
 import { Tick } from 'ooni-components/dist/icons'
 import { MdPriorityHigh } from 'react-icons/md'
-
+import styled from 'styled-components'
 import { tests } from '../nettests'
 import BackButton from '../BackButton'
-import { StickyContainer, Sticky } from 'react-sticky'
 
 import { WebConnectivity } from '../nettests/websites/WebConnectivity'
 import { HttpHeaderFieldManipulation } from '../nettests/middleboxes/HttpHeaderFieldManipulation'
@@ -72,8 +71,13 @@ HeroLineItem.propTypes = {
   children: PropTypes.node
 }
 
-const StickyHero = ({
-  isSticky,
+const StickyHeader = styled(Box)`
+  position: sticky;
+  top: 0px;
+  width: 100%;
+`
+
+const Hero = ({
   isAnomaly,
   bg,
   testName,
@@ -85,67 +89,43 @@ const StickyHero = ({
   heroTitle,
   heroSubtitle
 }) => {
-  const testFullName = tests[testName].name
 
   let backgroundColor = bg
-  // If there is no bg override, determine color based on anomaly-ness
-  if (!backgroundColor) {
-    backgroundColor = isAnomaly ? colorMap.anomaly : colorMap.reachable
-  }
 
   if (!heroIcon) {
     heroIcon = isAnomaly ? <MdPriorityHigh /> : <Tick />
   }
 
-  if (isSticky) {
-    return (
-      <Flex bg={backgroundColor} color='white' alignItems='center'>
-        <Box><BackButton /></Box>
-        <Box><Heading textAlign='center' h={4}>{testFullName}</Heading></Box>
-      </Flex>
-    )
-  } else {
-    return (
-      <Flex flexDirection='column' bg={backgroundColor} color='white'>
-        <Box width={1}>
-          <Flex>
-            <Box>
-              <BackButton />
-            </Box>
-            <Box width={7/8}>
-              <Heading textAlign='center' h={4}>{testFullName}</Heading>
-            </Box>
-          </Flex>
-        </Box>
-        {hero ? (
-          // If a test wants to show a custom Hero, let it take over
-          hero
-        ) : (
-          <React.Fragment>
-            <Box width={1}>
-              <HeroLineItem size={60}>{heroIcon}</HeroLineItem>
-              <HeroLineItem size={24} fontWeight={900}>{heroTitle}</HeroLineItem>
-              <HeroLineItem size={16}>{heroSubtitle}</HeroLineItem>
-            </Box>
-            <Box width={1}>
-              <Flex flexWrap='wrap' alignItems='center'>
-                <HeroItemBox
-                  width={1/2}
-                  label={<FormattedMessage id='TestResults.Summary.Hero.DateAndTime' />}
-                  content={moment.utc(new Date(startTime)).format('lll')}
-                />
-                <HeroItemBox
-                  width={1/2}
-                  label={<FormattedMessage id='TestResults.Summary.Hero.Network' />}
-                  content={`${networkName} (AS${asn})`}
-                />
-              </Flex>
-            </Box>
-          </React.Fragment>
-        )}
-      </Flex>
-    )
-  }
+  return (
+    <Flex flexDirection='column' bg={backgroundColor} color='white'>
+      {hero ? (
+        // If a test wants to show a custom Hero, let it take over
+        hero
+      ) : (
+        <React.Fragment>
+          <Box width={1}>
+            <HeroLineItem size={60}>{heroIcon}</HeroLineItem>
+            <HeroLineItem size={24} fontWeight={900}>{heroTitle}</HeroLineItem>
+            <HeroLineItem size={16}>{heroSubtitle}</HeroLineItem>
+          </Box>
+          <Box width={1}>
+            <Flex flexWrap='wrap' alignItems='center'>
+              <HeroItemBox
+                width={1/2}
+                label={<FormattedMessage id='TestResults.Summary.Hero.DateAndTime' />}
+                content={moment.utc(new Date(startTime)).format('lll')}
+              />
+              <HeroItemBox
+                width={1/2}
+                label={<FormattedMessage id='TestResults.Summary.Hero.Network' />}
+                content={`${networkName} (AS${asn})`}
+              />
+            </Flex>
+          </Box>
+        </React.Fragment>
+      )}
+    </Flex>
+  )
 }
 
 const MeasurementDetailContainer = ({ measurement, ...props }) => {
@@ -168,87 +148,90 @@ const MeasurementContainer = ({measurement, isAnomaly, rawData}) => {
 
   const [rawDataOpen, setRawDataOpen] = useState(false)
 
+  // anomaly-ness based backgaround color, in case nettest doesn't send
+  // an override in `heroBG`
+  const backgroundColor = isAnomaly ? colorMap.anomaly : colorMap.reachable
+  const testFullName = tests[testName].name
+
   return (
-    <React.Fragment>
-      <MeasurementDetailContainer
-        isAnomaly={isAnomaly}
-        measurement={measurement}
-        render={({
-          hero,
-          heroBG,
-          heroIcon,
-          heroTitle,
-          heroSubtitle,
-          collapsedHero,
-          details
-        }) => (
-          <StickyContainer>
-            <Sticky topOffset={100}>
-              {({
-                style,
-                isSticky
-              }) => {
-                return (
-                  <Box style={style}>
-                    <StickyHero
-                      isSticky={isSticky}
-                      isAnomaly={isAnomaly}
-                      bg={heroBG}
-                      testName={testName}
-                      startTime={startTime}
-                      networkName={networkName}
-                      asn={asn}
-                      hero={hero}
-                      heroIcon={heroIcon}
-                      heroTitle={heroTitle}
-                      heroSubtitle={heroSubtitle}
-                      collapsedHero={collapsedHero}
-                    />
-                  </Box>
-                )
-              }}
-            </Sticky>
-            <Container>
-              <Flex flexDirection='column' style={{ 'minHeight': '60vh' }}>
-                <Flex my={3} alignItems='center'>
-                  <Box width={1/2}>
-                    <Text fontWeight='bold' is='span'>
-                      <FormattedMessage id='TestResults.Details.Hero.Runtime' />
-                    </Text>
-                    : {moment.duration(runtime * 1000).seconds()}s
-                  </Box>
-                  <Box ml='auto'>
-                    <MethodologyButton href={tests[testName].methodology} />
-                  </Box>
-                </Flex>
-                <FullHeightFlex>
-                  {details}
-                </FullHeightFlex>
-                <Flex my={3}>
-                  <Box mr='auto'>
-                    <Button onClick={() => setRawDataOpen(!rawDataOpen)}>
-                      <FormattedMessage id='TestResults.Details.RawData' />
-                    </Button>
-                  </Box>
-                  {
-                    rawData && measurement.is_uploaded &&
-                    <ExplorerURLButton
-                      reportID={rawData.report_id}
-                      input={rawData.input}
-                    />
-                  }
-                </Flex>
+    <MeasurementDetailContainer
+      isAnomaly={isAnomaly}
+      measurement={measurement}
+      render={({
+        hero,
+        heroBG,
+        heroIcon,
+        heroTitle,
+        heroSubtitle,
+        collapsedHero,
+        details
+      }) => (
+        <React.Fragment>
+          <StickyHeader width={1} bg={heroBG || backgroundColor}>
+            <Flex>
+              <Box>
+                <BackButton />
+              </Box>
+              <Box width={7/8}>
+                <Heading textAlign='center' h={4} color='white'>
+                  {testFullName}
+                </Heading>
+              </Box>
+            </Flex>
+          </StickyHeader>
+          <Hero
+            isAnomaly={isAnomaly}
+            bg={heroBG || backgroundColor}
+            testName={testName}
+            startTime={startTime}
+            networkName={networkName}
+            asn={asn}
+            hero={hero}
+            heroIcon={heroIcon}
+            heroTitle={heroTitle}
+            heroSubtitle={heroSubtitle}
+            collapsedHero={collapsedHero}
+          />
+          <Container>
+            <Flex flexDirection='column' >
+              <Flex my={3} alignItems='center'>
+                <Box width={1/2}>
+                  <Text fontWeight='bold' is='span'>
+                    <FormattedMessage id='TestResults.Details.Hero.Runtime' />
+                  </Text>
+                  : {moment.duration(runtime * 1000).seconds()}s
+                </Box>
+                <Box ml='auto'>
+                  <MethodologyButton href={tests[testName].methodology} />
+                </Box>
               </Flex>
-            </Container>
-          </StickyContainer>
-        )}
-      />
-      <RawDataContainer
-        rawData={rawData}
-        isOpen={rawDataOpen}
-        onClose={() => setRawDataOpen(false)}
-      />
-    </React.Fragment>
+              <FullHeightFlex>
+                {details}
+              </FullHeightFlex>
+              <Flex my={3}>
+                <Box mr='auto'>
+                  <Button onClick={() => setRawDataOpen(!rawDataOpen)}>
+                    <FormattedMessage id='TestResults.Details.RawData' />
+                  </Button>
+                </Box>
+                {rawData && measurement.is_uploaded &&
+                  <ExplorerURLButton
+                    reportID={rawData.report_id}
+                    input={rawData.input}
+                  />
+                }
+              </Flex>
+            </Flex>
+          </Container>
+
+          <RawDataContainer
+            rawData={rawData}
+            isOpen={rawDataOpen}
+            onClose={() => setRawDataOpen(false)}
+          />
+        </React.Fragment>
+      )}
+    />
   )
 }
 
