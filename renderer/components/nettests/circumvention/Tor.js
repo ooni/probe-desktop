@@ -7,7 +7,6 @@ import { Cross, Tick, NettestTor } from 'ooni-components/dist/icons'
 import { useTable, useSortBy } from 'react-table'
 import styled from 'styled-components'
 import { useClipboard } from 'use-clipboard-copy'
-import { FaClipboardCheck } from 'react-icons/fa'
 
 import colorMap from '../../colorMap'
 import StatusBox from '../../measurement/StatusBox'
@@ -46,26 +45,24 @@ const Styles = styled.div`
   }
 `
 
-const StyledNameCell = styled.div`
+const StyledNameCell = styled(Flex)`
   width: 80px;
   overflow: hidden;
   text-overflow: ellipsis;
-  position: relative;
-`
-
-const ClipboardIcon = styled.div`
-  position: absolute;
-  right: -3px;
-  top: -5px;
+  white-space: nowrap;
+  cursor: default;
 `
 
 const ClipboardCopiedToast = styled.span`
+  width: 100%;
   background-color: ${props => props.theme.colors.black};
   color: white;
-  padding: 3px;
-  font-size: 8px;
+  padding: 2px;
+  font-size: 12px;
 `
 
+// Custom render of cells in the Name column. Copies name to clipboard upon
+// click. Shows the message (toast) "Copied!" for 1.5 seconds
 const NameCell = ({ children }) => {
   const clipboard = useClipboard({ copiedTimeout: 1500 })
 
@@ -75,11 +72,8 @@ const NameCell = ({ children }) => {
         title={`${children} (Click to copy)`}
         onClick={() => clipboard.copy(children)}
       >
-        {children}
-        <ClipboardIcon>
-          {clipboard.copied && <FaClipboardCheck size={10} color={theme.colors.green7} />}
-          {/* {clipboard.copied && <ClipboardCopiedToast>Copied</ClipboardCopiedToast>} */}
-        </ClipboardIcon>
+        {!clipboard.copied && children}
+        {clipboard.copied && <ClipboardCopiedToast>Copied</ClipboardCopiedToast>}
       </StyledNameCell>
 
     </React.Fragment>
@@ -96,8 +90,7 @@ const Table = ({ columns, data }) => {
     getTableBodyProps,
     headerGroups,
     rows,
-    prepareRow,
-    flatColumns,
+    prepareRow
   } = useTable(
     {
       columns,
@@ -151,6 +144,10 @@ const Table = ({ columns, data }) => {
   )
 }
 
+const StyledConnectionStatusCell = styled.div`
+  word-break: break-word;
+`
+
 const ConnectionStatusCell = ({ cell: { value} }) => {
   let statusIcon = null
   if (value === false) {
@@ -159,10 +156,14 @@ const ConnectionStatusCell = ({ cell: { value} }) => {
     statusIcon = value === null ? <Tick color={theme.colors.green7} /> : <Cross color={theme.colors.red7} />
   }
   return (
-    <React.Fragment>
+    <StyledConnectionStatusCell>
       {statusIcon} {value}
-    </React.Fragment>
+    </StyledConnectionStatusCell>
   )
+}
+
+ConnectionStatusCell.propTypes = {
+  cell: PropTypes.object
 }
 
 const Tor = ({measurement, isAnomaly, render}) => {
@@ -184,6 +185,27 @@ const Tor = ({measurement, isAnomaly, render}) => {
     <FormattedMessage id='TestResults.Details.Circumvention.Tor.Reachable.Hero.Title' />
   )
 
+  const statusColumnSort = (rowA, rowB, columnId, desc) => {
+    const sortMap = {
+      na: 0,
+      nullValue: 1,
+      notNullValue: 2
+    }
+
+    const mappedA = rowA.original.handshake === false ? sortMap.na : (
+      rowA.original.handshake === null ? sortMap.nullValue : sortMap.notNullValue
+    )
+    const mappedB = rowB.original.handshake === false ? sortMap.na : (
+      rowB.original.handshake === null ? sortMap.nullValue : sortMap.notNullValue
+    )
+
+    if (desc) {
+      return mappedA - mappedB
+    } else {
+      return mappedB - mappedA
+    }
+  }
+
   const columns = useMemo(() => [
     {
       Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Name' />,
@@ -204,13 +226,16 @@ const Tor = ({measurement, isAnomaly, render}) => {
       Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Connect' />,
       accessor: 'connect',
       collapse: true,
-      Cell: ConnectionStatusCell
+      Cell: ConnectionStatusCell,
+      sortType: statusColumnSort
     },
     {
       Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Handshake' />,
       accessor: 'handshake',
       collapse: true,
-      Cell: ConnectionStatusCell
+      Cell: ConnectionStatusCell,
+      sortType: statusColumnSort
+
     },
     {
       accessor: 'connectFailure',
