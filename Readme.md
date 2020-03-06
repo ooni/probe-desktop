@@ -28,7 +28,7 @@ directory for the platform you plan to do development on.
 
 You can download them by running:
 ```
-yarn run download-bin
+yarn run probe-cli
 ```
 
 ## Usage
@@ -51,18 +51,7 @@ CSC_KEY_PASSWORD=XXXX
 ```
 
 You can place them inside of `.env` file and they will be picked up by the
-following build commands:
-
-```
-yarn run pack:mac
-yarn run pack:win
-```
-
-To make a linux build run:
-
-```
-yarn run pack:linux
-```
+following build commands.
 
 To publish a release you should run:
 ```
@@ -73,3 +62,10 @@ yarn run publish
 after the `yarn run publish` command has run successfully. If you do so users
 of the OONI Probe Desktop app will get an error when they start the app because
 the auto-update system will try to fetch the metadata associated with that tag.
+
+You can also make a build, but not publish it by running the following commands:
+```
+yarn run pack:mac
+yarn run pack:win
+yarn run pack:linux
+```
