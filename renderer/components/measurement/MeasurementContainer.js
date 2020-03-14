@@ -75,6 +75,8 @@ const StickyHeader = styled(Box)`
   position: sticky;
   top: 0px;
   width: 100%;
+  /* This makes it possible to drag the window around from the side bar */
+  -webkit-app-region: drag;
 `
 
 const Hero = ({
