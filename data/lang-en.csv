@@ -1,7 +1,7 @@
 Key,Text,Max length
 General.AppName,OONI Probe,
 Onboarding.WhatIsOONIProbe.Title,What is OONI Probe?,
-Onboarding.WhatIsOONIProbe.Paragraph,"Your app for measuring internet censorship. 
+Onboarding.WhatIsOONIProbe.Paragraph,"OONI Probe is your app for measuring internet censorship. 
 
 Are websites and social media apps blocked? Is your internet connection unusually slow?
 
@@ -47,6 +47,7 @@ Dashboard.Running.Running,Running:,
 Dashboard.Running.EstimatedTimeLeft,Estimated time left:,
 Dashboard.Running.Seconds,{{seconds}} seconds,
 Dashboard.Running.PreparingTest,Preparing test,
+Dashboard.Running.CalculatingETA,Calculating ETA,
 Dashboard.Running.ShowLog,Show Log,
 Dashboard.Running.CloseLog,Close Log,
 Dashboard.Card.Subtitle,Tap card for more,
@@ -60,7 +61,14 @@ To test the sites of your choice, tap the Choose websites button or select categ
 
 This test measures whether websites are blocked by means of DNS tampering, TCP/IP blocking or by a transparent HTTP proxy.
 
-Your results will be published on [OONI Explorer](https://explorer.ooni.io/world/) and [OONI API](https://api.ooni.io/).",
+Your results will be published on [OONI Explorer](https://explorer.ooni.org/) and [OONI API](https://api.ooni.io/).",
+Dashboard.Websites.Overview.Paragraph.Desktop,"Check whether websites are blocked using OONI's [Web Connectivity test](https://ooni.io/nettest/web-connectivity/).
+
+You will test the websites included in the Citizen Lab's [global](https://github.com/citizenlab/test-lists/blob/master/lists/global.csv) and [country-specific](https://github.com/citizenlab/test-lists/tree/master/lists) test lists.
+
+This test measures whether websites are blocked by means of DNS tampering, TCP/IP blocking or by a transparent HTTP proxy.
+
+Your results will be published on [OONI Explorer](https://explorer.ooni.org/) and [OONI API](https://api.ooni.io/).",
 Dashboard.Performance.Card.Description,Test your network speed and performance,
 Dashboard.Performance.Overview.Paragraph,"Measure the speed and performance of your network using the [NDT](https://ooni.io/nettest/ndt/) test.
 
@@ -68,7 +76,7 @@ Measure video streaming performance using the [DASH](https://ooni.io/nettest/das
 
 These tests consume data depending on your network speed.
 
-Your results will be published on [OONI Explorer](https://explorer.ooni.io/world/) and [OONI API](https://api.ooni.io/).
+Your results will be published on [OONI Explorer](https://explorer.ooni.org/) and [OONI API](https://api.ooni.io/).
 
 Disclaimer: These tests rely on third party servers. We therefore cannot guarantee that your IP address will not be collected.",
 Dashboard.Middleboxes.Card.Description,Detect middleboxes in your network,
@@ -76,13 +84,13 @@ Dashboard.Middleboxes.Overview.Paragraph,"Internet Service Providers often use n
 
 Find middleboxes in your network using OONI's [HTTP Invalid Request Line](https://ooni.io/nettest/http-invalid-request-line/) and [HTTP Header Field Manipulation](https://ooni.io/nettest/http-header-field-manipulation/) tests.
 
-Your results will be published on [OONI Explorer](https://explorer.ooni.io/world/) and [OONI API](https://api.ooni.io/).",
+Your results will be published on [OONI Explorer](https://explorer.ooni.org/) and [OONI API](https://api.ooni.io/).",
 Dashboard.InstantMessaging.Card.Description,Test the blocking of instant messaging apps,
 Dashboard.InstantMessaging.Overview.Paragraph,"Check whether [WhatsApp](https://ooni.io/nettest/whatsapp/), [Facebook Messenger](https://ooni.io/nettest/facebook-messenger/) and [Telegram](https://ooni.io/nettest/telegram/) are blocked.
 
-Your results will be published on [OONI Explorer](https://explorer.ooni.io/world/) and [OONI API](https://api.ooni.io/).",
+Your results will be published on [OONI Explorer](https://explorer.ooni.org/) and [OONI API](https://api.ooni.io/).",
 Dashboard.Circumvention.Card.Description,Test the blocking of censorship circumvention tools,
-Dashboard.Circumvention.Overview.Paragraph,"Check whether [Psiphon](https://ooni.io/nettest/psiphon/) and [Tor](https://ooni.io/nettest/tor/) are blocked.
+Dashboard.Circumvention.Overview.Paragraph,"Check whether [Tor](https://ooni.io/nettest/tor/) and [Psiphon](https://ooni.io/nettest/psiphon/) are blocked.
 
 Your results will be published on [OONI Explorer](https://explorer.ooni.org/) and [OONI API](https://api.ooni.io/).",
 TestResults.Gbps,Gbit/s,
@@ -108,7 +116,7 @@ TestResults.Overview.Websites.Blocked.Plural,{{Count}} blocked,23
 TestResults.Overview.Websites.Tested.Singular,{{Count}} tested,23
 TestResults.Overview.Websites.Tested.Plural,{{Count}} tested,23
 TestResults.Overview.MiddleBoxes.Found,Detected,23
-TestResults.Overview.MiddleBoxes.NotFound,Not detected,25
+TestResults.Overview.MiddleBoxes.NotFound,Not Detected,25
 TestResults.Overview.MiddleBoxes.Failed,Failed,
 TestResults.Overview.InstantMessaging.Blocked.Singular,{{Count}} blocked,23
 TestResults.Overview.InstantMessaging.Blocked.Plural,{{Count}} blocked,23
@@ -143,7 +151,7 @@ TestResults.Summary.Performance.Hero.Upload,Upload,12
 TestResults.Summary.Performance.Hero.Download,Download,12
 TestResults.Summary.Performance.Hero.Ping,Ping,12
 TestResults.Summary.Middleboxes.Hero.Found,Detected,23
-TestResults.Summary.Middleboxes.Hero.NotFound,Not detected,25
+TestResults.Summary.Middleboxes.Hero.NotFound,Not Detected,25
 TestResults.Summary.Middleboxes.Hero.Failed,Failed,
 TestResults.Summary.InstantMessaging.Hero.Tested.Singular,Tested,20
 TestResults.Summary.InstantMessaging.Hero.Tested.Plural,Tested,20
@@ -176,7 +184,7 @@ TestResults.Details.Websites.Reachable.Content.Paragraph,{{WebsiteURL}} is acces
 TestResults.Details.Websites.LikelyBlocked.Hero.Title,Likely blocked,
 TestResults.Details.Websites.LikelyBlocked.Content.Paragraph,"{{WebsiteURL}} is likely blocked by means of {{BlockingReason}}.
 
-Note: False positives can occur. Learn more [here](https://ooni.io/nettest/web-connectivity/).",
+Note: [False positives](https://ooni.org/support/faq/#why-do-false-positives-occur) can occur. Learn how this test works [here](https://ooni.io/nettest/web-connectivity/).",
 TestResults.Details.Websites.LikelyBlocked.Content.LearnToCircumvent,Censorship Circumvention,
 TestResults.Details.Websites.LikelyBlocked.BlockingReason.DNS,**DNS tampering**,
 TestResults.Details.Websites.LikelyBlocked.BlockingReason.TCPIP,**TCP/IP based blocking**,
