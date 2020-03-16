@@ -6,6 +6,7 @@ import { Text } from 'rebass'
 import { NettestPsiphon } from 'ooni-components/dist/icons'
 
 import colorMap from '../../colorMap'
+import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
 
 const Psiphon = ({measurement, isAnomaly, render}) => {
   const testKeys = JSON.parse(measurement.test_keys)
@@ -21,9 +22,9 @@ const Psiphon = ({measurement, isAnomaly, render}) => {
       <Flex my={4}>
         <Text>
           {isAnomaly ? (
-            <FormattedMessage id='TestResults.Details.Circumvention.Psiphon.Blocked.Content.Paragraph' />
+            <FormattedMarkdownMessage id='TestResults.Details.Circumvention.Psiphon.Blocked.Content.Paragraph' />
           ) : (
-            <FormattedMessage id='TestResults.Details.Circumvention.Psiphon.Reachable.Content.Paragraph' />
+            <FormattedMarkdownMessage id='TestResults.Details.Circumvention.Psiphon.Reachable.Content.Paragraph' />
           )}
         </Text>
       </Flex>
