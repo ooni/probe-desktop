@@ -110,7 +110,7 @@ const PerformanceSummary = ({testKeys}) => {
   </SummaryContainer>
 }
 
-const MiddelboxSummary = ({anomalyCount}) => {
+const MiddleboxSummary = ({anomalyCount}) => {
   let msgID = 'TestResults.Summary.Middleboxes.Hero.Failed'
   if (anomalyCount == 0) {
     msgID = 'TestResults.Summary.Middleboxes.Hero.NotFound'
@@ -159,7 +159,7 @@ const SummaryIncomplete = () => (
 const summaryMap = {
   'websites': WebsitesSummary,
   'im': IMSummary,
-  'middlebox': MiddelboxSummary,
+  'middlebox': MiddleboxSummary,
   'performance': PerformanceSummary,
   'circumvention': CircumventionSummary
 }
