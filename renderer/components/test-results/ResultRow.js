@@ -118,11 +118,15 @@ const MiddelboxSummary = ({anomalyCount}) => {
     msgID = 'TestResults.Summary.Middleboxes.Hero.Found'
   }
 
-  return <Flex flexDirection='column'>
-    <Text textAlign='center'>
-      <FormattedMessage id={msgID} />
-    </Text>
-  </Flex>
+  return (
+    <SummaryContainer>
+      <Box width={1}>
+        <Text>
+          <FormattedMessage id={msgID} />
+        </Text>
+      </Box>
+    </SummaryContainer>
+  )
 }
 
 const CircumventionSummary = ({anomalyCount, totalCount}) => (
