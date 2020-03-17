@@ -11,11 +11,12 @@ import {
 } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 import { Tick } from 'ooni-components/dist/icons'
+import OONILogoInverted from 'ooni-components/components/svgs/logos/Icon-Inverted.svg'
 import { MdPriorityHigh } from 'react-icons/md'
 import styled from 'styled-components'
+
 import { tests } from '../nettests'
 import BackButton from '../BackButton'
-
 import { WebConnectivity } from '../nettests/websites/WebConnectivity'
 import { HttpHeaderFieldManipulation } from '../nettests/middleboxes/HttpHeaderFieldManipulation'
 import { HttpInvalidRequestLine } from '../nettests/middleboxes/HttpInvalidRequestLine'
@@ -26,7 +27,6 @@ import { NDT } from '../nettests/performance/NDT'
 import { Dash } from '../nettests/performance/Dash'
 import { Psiphon } from '../nettests/circumvention/Psiphon'
 import { Tor } from '../nettests/circumvention/Tor'
-
 import FullHeightFlex from '../FullHeightFlex'
 import MethodologyButton from './MethodologyButton'
 import ExplorerURLButton from './ExplorerURLButton'
@@ -79,6 +79,19 @@ const StickyHeader = styled(Box)`
   -webkit-app-region: drag;
 `
 
+const FlexRelative = styled(Flex)`
+  position: relative;
+  /* This clips the logo container when positioned to flow beyond this Flex */
+  overflow: hidden;
+`
+
+const OONILogoContainer = styled.div`
+  position: absolute;
+  bottom: -16px;
+  right: -16px;
+  opacity: 0.4;
+`
+
 const Hero = ({
   isAnomaly,
   bg,
@@ -99,7 +112,7 @@ const Hero = ({
   }
 
   return (
-    <Flex flexDirection='column' bg={backgroundColor} color='white'>
+    <FlexRelative flexDirection='column' bg={backgroundColor} color='white'>
       {hero ? (
         // If a test wants to show a custom Hero, let it take over
         hero
@@ -124,9 +137,12 @@ const Hero = ({
               />
             </Flex>
           </Box>
+          <OONILogoContainer>
+            <OONILogoInverted width={100} />
+          </OONILogoContainer>
         </React.Fragment>
       )}
-    </Flex>
+    </FlexRelative>
   )
 }
 
