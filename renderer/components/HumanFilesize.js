@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import humanize from 'humanize'
 
 import {
-  Box
+  Flex
 } from 'ooni-components'
 
 const FileUnit = styled.span`
@@ -17,20 +17,15 @@ const FileAmount = styled.span`
   font-weight: 300;
 `
 
-const StyledHumanFilesize = styled(Box)`
-  padding: 0px;
-  text-align: center;
-`
-
 const HumanFilesize = ({icon, size, fontSize}) => {
   const human = humanize.filesize(size)
   const [amount, unit] = human.split(' ')
   return (
-    <StyledHumanFilesize>
+    <Flex alignItems='baseline'>
       {icon}
       <FileAmount fontSize={fontSize}>{amount}</FileAmount>
       <FileUnit fontSize={fontSize}>{unit}</FileUnit>
-    </StyledHumanFilesize>
+    </Flex>
   )
 }
 
@@ -41,7 +36,7 @@ HumanFilesize.propTypes = {
 }
 
 HumanFilesize.defaultProps = {
-  fontSize: 24
+  fontSize: 36
 }
 
 export default HumanFilesize

@@ -38,16 +38,14 @@ const DataUsage = ({dataUsage}) => {
       <LabelBox>
         <FormattedMessage id='TestResults.Overview.Hero.DataUsage' />
       </LabelBox>
-      <Box>
-        <Flex>
-          <Box width={1/2}>
-            <HumanFilesize icon={<MdArrowUpward size={20}/>} size={dataUsage.up*1024} />
-          </Box>
-          <Box width={1/2}>
-            <HumanFilesize icon={<MdArrowDownward size={20} />} size={dataUsage.down*1024} />
-          </Box>
-        </Flex>
-      </Box>
+      <Flex alignItems='center' justifyContent='space-around'>
+        <Box>
+          <HumanFilesize icon={<MdArrowUpward size={20}/>} size={dataUsage.up*1024} />
+        </Box>
+        <Box>
+          <HumanFilesize icon={<MdArrowDownward size={20} />} size={dataUsage.down*1024} />
+        </Box>
+      </Flex>
     </Flex>
   )
 }
@@ -72,19 +70,19 @@ const ResultsHeader = ({testCount, networkCount, dataUsage}) => {
     <StyledResultsHeader>
       <Container>
         <Flex>
-          <Box width={1/3}>
+          <Box width={1/4}>
             <StatBox
               label={<FormattedMessage id='TestResults.Overview.Hero.Tests' />}
               value={testCount} />
           </Box>
           <VerticalDivider />
-          <Box width={1/3}>
+          <Box width={1/4}>
             <StatBox
               label={<FormattedMessage id='TestResults.Overview.Hero.Networks' />}
               value={networkCount} />
           </Box>
           <VerticalDivider />
-          <Box width={1/3}>
+          <Box width={2/4}>
             <DataUsage dataUsage={dataUsage} />
           </Box>
         </Flex>
