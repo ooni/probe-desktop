@@ -110,7 +110,7 @@ const PerformanceSummary = ({testKeys}) => {
   </SummaryContainer>
 }
 
-const MiddelboxSummary = ({anomalyCount}) => {
+const MiddleboxSummary = ({anomalyCount}) => {
   let msgID = 'TestResults.Summary.Middleboxes.Hero.Failed'
   if (anomalyCount == 0) {
     msgID = 'TestResults.Summary.Middleboxes.Hero.NotFound'
@@ -118,11 +118,15 @@ const MiddelboxSummary = ({anomalyCount}) => {
     msgID = 'TestResults.Summary.Middleboxes.Hero.Found'
   }
 
-  return <Flex flexDirection='column'>
-    <Text textAlign='center'>
-      <FormattedMessage id={msgID} />
-    </Text>
-  </Flex>
+  return (
+    <SummaryContainer>
+      <Box width={1}>
+        <Text>
+          <FormattedMessage id={msgID} />
+        </Text>
+      </Box>
+    </SummaryContainer>
+  )
 }
 
 const CircumventionSummary = ({anomalyCount, totalCount}) => (
@@ -155,7 +159,7 @@ const SummaryIncomplete = () => (
 const summaryMap = {
   'websites': WebsitesSummary,
   'im': IMSummary,
-  'middlebox': MiddelboxSummary,
+  'middlebox': MiddleboxSummary,
   'performance': PerformanceSummary,
   'circumvention': CircumventionSummary
 }
