@@ -222,8 +222,6 @@ class Home extends React.Component {
       this.setState({
         runningTestGroupName: testGroupName
       })
-      // TODO Remove this before merge. Here only to test the animation
-      return
 
       const Runner = remote.require('./utils/ooni/run').Runner
       this.runner = new Runner({testGroupName})
