@@ -100,7 +100,7 @@ const MainContainer = styled.div`
 `
 
 const StyledOONILogo = styled(OONILogo)`
-  fill: ${props => props.theme.colors.gray8};
+  fill: ${props => props.theme.colors.gray5};
 `
 
 export const Sidebar = ({children, router}) => (
@@ -120,12 +120,12 @@ export const Sidebar = ({children, router}) => (
           )
         })}
       </Box>
-      <Box px={2}>
-        <Box my={2}>
+      <Box pr={2}>
+        <Box pl={4}>
           <StyledOONILogo />
         </Box>
-        <Box my={2}>
-          <Text fontSize={12} textAlign='right' color='gray8'>
+        <Box mb={2}>
+          <Text fontSize={12} textAlign='right' color='gray5'>
             {process.env.npm_package_version}
           </Text>
         </Box>
