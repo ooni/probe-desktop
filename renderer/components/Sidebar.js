@@ -1,19 +1,19 @@
-// XXX rename this component to Navigation
-// or maybe WithNavigation
+/* global process */
 import React from 'react'
 import styled from 'styled-components'
 import { withRouter } from 'next/router'
-
 import {
+  Text,
   Flex,
   Box
 } from 'ooni-components'
-
 import Link from 'next/link'
 import { FormattedMessage } from 'react-intl'
-
+import OONILogo from 'ooni-components/components/svgs/logos/Probe-HorizontalMonochrome.svg'
 import { MdWeb, MdHistory } from 'react-icons/md'
 import { FaCog } from 'react-icons/fa'
+
+import ExternalLink from './ExternalLink'
 
 const StyledNavItem = styled.div`
   position: relative;
@@ -81,7 +81,7 @@ const navigationPaths = {
 
 const WindowContainer = styled.div``
 
-const SidebarContainer = styled.div`
+const SidebarContainer = styled(Flex)`
   padding-top: 50px;
   background-color: ${props => props.theme.colors.gray1};
   border-right: 1px solid ${props => props.theme.colors.gray3};
@@ -99,20 +99,37 @@ const MainContainer = styled.div`
   margin-left: 220px;
 `
 
+const StyledOONILogo = styled(OONILogo)`
+  fill: ${props => props.theme.colors.gray8};
+`
+
 export const Sidebar = ({children, router}) => (
   <WindowContainer>
-    <SidebarContainer>
-      {Object.keys(navigationPaths).map((path, idx) => {
-        const info = navigationPaths[path]
-        return (
-          <NavItem
-            key={idx}
-            currentUrl={router}
-            href={path}
-            icon={info.icon}
-            label={info.name} />
-        )
-      })}
+    <SidebarContainer flexDirection='column' justifyContent='space-between'>
+      <Box>
+        {Object.keys(navigationPaths).map((path, idx) => {
+          const info = navigationPaths[path]
+          return (
+            <NavItem
+              key={idx}
+              currentUrl={router}
+              href={path}
+              icon={info.icon}
+              label={info.name}
+            />
+          )
+        })}
+      </Box>
+      <Box px={2}>
+        <Box my={2}>
+          <StyledOONILogo />
+        </Box>
+        <Box my={2}>
+          <Text fontSize={12} textAlign='right' color='gray8'>
+            {process.env.npm_package_version}
+          </Text>
+        </Box>
+      </Box>
     </SidebarContainer>
 
     <MainContainer>
