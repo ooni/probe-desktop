@@ -222,6 +222,7 @@ class Home extends React.Component {
       this.setState({
         runningTestGroupName: testGroupName
       })
+
       const Runner = remote.require('./utils/ooni/run').Runner
       this.runner = new Runner({testGroupName})
       this.runner.run().then(() => {
