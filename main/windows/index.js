@@ -21,7 +21,9 @@ const mainWindow = () => {
     title: 'OONI Probe',
     titleBarStyle: 'hiddenInset',
     show: false,
-    webPreferences: {}
+    webPreferences: {
+      nodeIntegration: true
+    }
   })
 
   win.loadURL(windowURL('home'))
