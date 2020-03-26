@@ -21,7 +21,7 @@
     "publish": "yarn run build && electron-builder --mac --win -p always",
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
     "lint": "eslint --ignore-path .gitignore .",
-    "test": "NODE_ENV=test mocha",
+    "test": "cross-env NODE_ENV=test mocha",
     "postinstall": "electron-builder install-app-deps",
     "storybook": "start-storybook -p 6006"
   },
@@ -110,6 +110,7 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chroma-js": "^2.0.6",
+    "cross-env": "^7.0.2",
     "csv-parse": "^4.4.6",
     "electron": "^7.0.0",
     "electron-builder": "21.2.0",
