@@ -1,33 +1,27 @@
-const Application = require('spectron').Application
-const assert = require('assert')
-// Require Electron from the binaries included in node_modules.
-const electronPath = require('electron')
-const path = require('path')
+const { startApp, stopApp } = require('./utils')
 
 describe('Application launch', function() {
   this.timeout(30000)
 
-  beforeEach(function() {
-    this.app = new Application({
-      path: electronPath,
-      args: [path.join(__dirname, '..')],
-      startTimeout: 30000,
-      chromeDriverArgs: ['–remote-debugging-port=12209']
-    })
-    return this.app.start()
+  let app
+
+  beforeEach(async function() {
+    app = await startApp()
   })
 
-  afterEach(function() {
-    if (this.app && this.app.isRunning()) {
-      return this.app.stop()
-    }
+  afterEach(async function() {
+    await stopApp(app)
   })
 
-  it('shows an initial window', function() {
-    return this.app.client.getWindowCount().then(function(count) {
-      assert.equal(count, 1)
-      // Please note that getWindowCount() will return 2 if `dev tools` are opened.
-      // assert.equal(count, 2)
-    })
+  it('launches the window with home page', async function() {
+    await app.browserWindow.getTitle().should.eventually.equal('OONI Probe')
+    await app.client.getUrl().should.eventually.include('home')
+  })
+
+  it('cards are visible', async function() {
+    await app.client
+      .isVisible('div[data-test-id|="card"]')
+      .should.eventually.have.property('length')
+      .and.equal(5)
   })
 })
