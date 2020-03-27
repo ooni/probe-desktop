@@ -11,8 +11,7 @@ global.before(async function() {
 })
 
 const execHardReset = (app) => {
-  return new Promise((resolve, reject) => {
-    const res = app.client.executeAsync(function(done) {
+    return app.client.executeAsync(function(done) {
       require('electron')
         .remote.require('./actions')
         .hardReset()
@@ -24,11 +23,6 @@ const execHardReset = (app) => {
           console.log(done(err))
         })
     })
-    console.log(res)
-    if (res === undefined || res.status !== 0) {
-      return reject(Error('execAsync failed ' + JSON.stringify(res)))
-    }
-    return resolve()
   })
 }
 
