@@ -11,18 +11,17 @@ global.before(async function() {
 })
 
 const execHardReset = (app) => {
-    return app.client.executeAsync(function(done) {
-      require('electron')
-        .remote.require('./actions')
-        .hardReset()
-        .then(() => {
-          console.log('done')
-          done()
-        }, (err) => {
-          console.log('err')
-          console.log(done(err))
-        })
-    })
+  return app.client.executeAsync(function(done) {
+    require('electron')
+      .remote.require('./actions')
+      .hardReset()
+      .then(() => {
+        console.log('done')
+        done()
+      }, (err) => {
+        console.log('err')
+        console.log(done(err))
+      })
   })
 }
 
