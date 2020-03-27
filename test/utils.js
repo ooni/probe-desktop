@@ -10,6 +10,24 @@ global.before(async function() {
   chai.use(chaiAsPromised)
 })
 
+const execHardReset = (app) => {
+  return new Promise((resolve, reject) => {
+    app.client.executeAsync(function(done) {
+      require('electron')
+        .remote.require('./actions')
+        .hardReset()
+        .then(() => {
+          console.log('done')
+          done()
+        }, (err) => {
+          console.log('err')
+          console.log(err)
+        })
+    })
+    resolve()
+  })
+}
+
 module.exports = {
   async startApp() {
     const app = await new Application({
@@ -34,7 +52,7 @@ module.exports = {
   async resetData(app) {
     console.log('Resetting `$OONI_HOME`...')
     await app.client.waitUntilWindowLoaded()
-    await require('electron').remote.require('./actions').hardReset()
+    await execHardReset(app)
     console.log('...done.')
   },
 
