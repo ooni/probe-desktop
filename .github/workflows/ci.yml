@@ -6,7 +6,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macOS-latest, ubuntu-18.04, windows-latest]
+        os: [macOS-latest, ubuntu-18.04]
         node-version: [12.x]
 
     steps:
@@ -35,5 +35,7 @@ jobs:
       - name: Install
         run: yarn install --frozen-lockfile
 
-      - name: Test
-        run: yarn test
+      - name: Integration Tests
+        uses: GabrielBB/xvfb-action@v1.0
+        with:
+          run: yarn test
