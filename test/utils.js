@@ -16,6 +16,7 @@ module.exports = {
       path: electronPath,
       args: [path.join(__dirname, '..')],
       startTimeout: 30000,
+      waitTimeout: 30000,
       chromeDriverArgs: ['–remote-debugging-port=12209']
     })
 
@@ -32,14 +33,9 @@ module.exports = {
 
   async resetData(app) {
     console.log('Resetting `$OONI_HOME`...')
-    const resetResponse = await app.client.execute(function() {
-      return require('electron')
-        .remote.require('./actions')
-        .hardReset()
-    })
-    if (resetResponse.value === null) {
-      console.log('...done.')
-    }
+    await app.client.waitUntilWindowLoaded()
+    await require('electron').remote.require('./actions').hardReset()
+    console.log('...done.')
   },
 
   async screenshotApp(app) {
