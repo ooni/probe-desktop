@@ -15,11 +15,7 @@ const log = require('electron-log')
 
 const toggleWindow = require('./windows/toggle')
 
-const {
-  mainWindow,
-  openAboutWindow,
-  windowURL
-} = require('./windows')
+const { mainWindow, openAboutWindow, windowURL } = require('./windows')
 
 const Sentry = require('@sentry/electron')
 Sentry.init(getSentryConfig())
@@ -27,7 +23,7 @@ Sentry.init(getSentryConfig())
 require('debug-to-file')
 require('electron-unhandled')()
 require('electron-debug')({
-  showDevTools: true,
+  showDevTools: isDev && process.env.NODE_ENV !== 'test',
   // null means activate it only if isDev == true. FORCE_ELECTRON_DEBUG will
   // make sure it's always enabled even in "production" builds.
   enabled: parseInt(process.env.FORCE_ELECTRON_DEBUG, 10) === 1 ? true : null
@@ -78,10 +74,9 @@ const editMenu = {
 let menuTemplate = [
   {
     label: 'About',
-    submenu: [
-      { label: 'About OONI Probe', click: () => openAboutWindow() },
-    ]
-  }, editMenu
+    submenu: [{ label: 'About OONI Probe', click: () => openAboutWindow() }]
+  },
+  editMenu
 ]
 if (is.macos) {
   menuTemplate = [
@@ -96,7 +91,8 @@ if (is.macos) {
         { type: 'separator' },
         { role: 'quit' }
       ]
-    }, editMenu
+    },
+    editMenu
   ]
 }
 
@@ -125,13 +121,14 @@ autoUpdater.on('update-available', () => {
 autoUpdater.on('update-not-available', () => {
   sendStatusToWindow('Update not available.')
 })
-autoUpdater.on('error', (err) => {
+autoUpdater.on('error', err => {
   sendStatusToWindow('Error in auto-updater. ' + err)
 })
-autoUpdater.on('download-progress', (progressObj) => {
+autoUpdater.on('download-progress', progressObj => {
   let log_message = 'Download speed: ' + progressObj.bytesPerSecond
   log_message = log_message + ' - Downloaded ' + progressObj.percent + '%'
-  log_message = log_message + ' (' + progressObj.transferred + '/' + progressObj.total + ')'
+  log_message =
+    log_message + ' (' + progressObj.transferred + '/' + progressObj.total + ')'
   sendStatusToWindow(log_message)
 })
 autoUpdater.on('update-downloaded', () => {
@@ -146,18 +143,21 @@ app.on('ready', async () => {
   let config
   try {
     config = await getConfig()
-  } catch(err) {
+  } catch (err) {
     config = {}
   }
 
-  if (isDev) {
-    const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
+  if (isDev && process.env.NODE_ENV !== 'test') {
+    const {
+      default: installExtension,
+      REACT_DEVELOPER_TOOLS
+    } = require('electron-devtools-installer')
 
     installExtension(REACT_DEVELOPER_TOOLS)
       /* eslint-disable no-console */
-      .then((name) => console.log(`Added Extension:  ${name}`))
-      .catch((err) => console.log('An error occurred: ', err))
-      /* eslint-enable no-console */
+      .then(name => console.log(`Added Extension:  ${name}`))
+      .catch(err => console.log('An error occurred: ', err))
+    /* eslint-enable no-console */
   }
 
   if (config._is_beta === true) {

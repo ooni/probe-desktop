@@ -12,13 +12,7 @@ import styled from 'styled-components'
 
 import { MdHelp, MdClear } from 'react-icons/md'
 
-import {
-  Button,
-  Box,
-  Flex,
-  Heading,
-  Card
-} from 'ooni-components'
+import { Button, Box, Flex, Heading, Card } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 
 import Layout from '../components/Layout'
@@ -40,8 +34,8 @@ const CardContent = styled.div`
 
 const BgIcon = styled.div`
   position: absolute;
-  right: ${props => props.active ? '0' : '-30px'};
-  top: ${props => props.active ? '0' : '-30px'};
+  right: ${props => (props.active ? '0' : '-30px')};
+  top: ${props => (props.active ? '0' : '-30px')};
   z-index: -900;
   opacity: 0.5;
 `
@@ -71,26 +65,37 @@ const ScrollableBox = styled(Box)`
   overflow: auto;
 `
 
-const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, onConfigure}) => (
-  <Box width={1/2} pr={3} pb={3}>
-    <Card bg={color} color='white' style={{position: 'relative', height: '250px'}}>
+const FrontCardContent = ({
+  name,
+  id,
+  description,
+  icon,
+  color,
+  toggleCard,
+  onRun,
+  onConfigure
+}) => (
+  <Box width={1 / 2} pr={3} pb={3}>
+    <Card
+      data-test-id={`card-${id}`}
+      bg={color}
+      color="white"
+      style={{ position: 'relative', height: '250px' }}
+    >
       <TopLeftFloatingButton>
         <MdHelp onClick={toggleCard} size={30} />
       </TopLeftFloatingButton>
       <CardContent>
         <Heading h={2}>{name}</Heading>
-        <BgIcon>
-          {icon}
-        </BgIcon>
-        <Flex pt={5} alignItems='center'>
-          <Box width={3/4} pr={4}>
+        <BgIcon>{icon}</BgIcon>
+        <Flex pt={5} alignItems="center">
+          <Box width={3 / 4} pr={4}>
             {description}
           </Box>
-          <Box width={1/4} mr={2}>
-            <Button
-              inverted
-              fontSize={1}
-              onClick={onRun}><FormattedMessage id='Dashboard.Card.Run' /></Button>
+          <Box width={1 / 4} mr={2}>
+            <Button inverted fontSize={1} onClick={onRun}>
+              <FormattedMessage id="Dashboard.Card.Run" />
+            </Button>
           </Box>
         </Flex>
       </CardContent>
@@ -98,17 +103,21 @@ const FrontCardContent = ({name, description, icon, color, toggleCard, onRun, on
   </Box>
 )
 
-const BackCardContent = ({name, longDescription, color, toggleCard}) => (
-  <Box width={1/2} pr={3} pb={3}>
-    <Card bg={chroma(color).darken(2).desaturate()} color='white' style={{position: 'relative', height: '250px', padding: '20px'}}>
+const BackCardContent = ({ name, longDescription, color, toggleCard }) => (
+  <Box width={1 / 2} pr={3} pb={3}>
+    <Card
+      bg={chroma(color)
+        .darken(2)
+        .desaturate()}
+      color="white"
+      style={{ position: 'relative', height: '250px', padding: '20px' }}
+    >
       <TopLeftFloatingButton>
         <MdClear onClick={toggleCard} size={30} />
       </TopLeftFloatingButton>
       <CardContent>
         <Heading h={3}>{name}</Heading>
-        <ScrollableBox>
-          {longDescription}
-        </ScrollableBox>
+        <ScrollableBox>{longDescription}</ScrollableBox>
       </CardContent>
     </Card>
   </Box>
@@ -124,22 +133,16 @@ class RunTestCard extends React.Component {
   }
 
   toggleCard(idx) {
-    this.setState({isFlipped: !this.state.isFlipped})
+    this.setState({ isFlipped: !this.state.isFlipped })
   }
 
   render() {
-    const {
-      isFlipped
-    } = this.state
+    const { isFlipped } = this.state
 
     if (isFlipped) {
-      return <BackCardContent
-        toggleCard={this.toggleCard}
-        {...this.props} />
+      return <BackCardContent toggleCard={this.toggleCard} {...this.props} />
     }
-    return <FrontCardContent
-      toggleCard={this.toggleCard}
-      {...this.props} />
+    return <FrontCardContent toggleCard={this.toggleCard} {...this.props} />
   }
 }
 
@@ -189,7 +192,7 @@ class Home extends React.Component {
       debug('error received', data)
       this.setState({
         runError: data.message,
-        runningTestName: '',
+        runningTestName: ''
       })
       break
     case 'log':
@@ -224,15 +227,20 @@ class Home extends React.Component {
       })
 
       const Runner = remote.require('./utils/ooni/run').Runner
-      this.runner = new Runner({testGroupName})
-      this.runner.run().then(() => {
-        this.setState({done: true})
-        Router.push('/test-results')
-      }).catch(error => {
-        debug('error', error)
-        Raven.captureException(error, {extra: {scope: 'renderer.runTest'}})
-        this.setState({error: error})
-      })
+      this.runner = new Runner({ testGroupName })
+      this.runner
+        .run()
+        .then(() => {
+          this.setState({ done: true })
+          Router.push('/test-results')
+        })
+        .catch(error => {
+          debug('error', error)
+          Raven.captureException(error, {
+            extra: { scope: 'renderer.runTest' }
+          })
+          this.setState({ error: error })
+        })
     }
   }
 
@@ -268,14 +276,17 @@ class Home extends React.Component {
     return (
       <Layout>
         <Sidebar>
-          <StickyDraggableHeader height='40px' />
-          <Flex flexWrap='wrap' pl={3}>
-            {testList.map((t, idx) =>
+          <StickyDraggableHeader height="40px" />
+          <Flex flexWrap="wrap" pl={3}>
+            {testList.map((t, idx) => (
               <RunTestCard
                 onRun={this.onRun(t.key)}
                 onConfigure={this.onConfigure(t.key)}
-                key={idx} {...t} />
-            )}
+                key={idx}
+                id={t.key}
+                {...t}
+              />
+            ))}
           </Flex>
           {error && <p>Error: {error.toString()}</p>}
         </Sidebar>
