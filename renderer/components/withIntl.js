@@ -33,7 +33,8 @@ const withIntl = Page => {
       const now = Date.now()
 
       let messages = supportedMessages['en']
-      if (supportedMessages[locale] !== null) {
+
+      if (Object.keys(supportedMessages).indexOf(locale) > -1) {
         messages = supportedMessages[locale]
       }
 
