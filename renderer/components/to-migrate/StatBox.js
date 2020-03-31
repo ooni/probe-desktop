@@ -7,7 +7,7 @@ import {
   Box
 } from 'ooni-components'
 
-const LabelBox= styled(Box)`
+export const LabelBox= styled(Box)`
   font-size: 12px;
   text-align: center;
 `

@@ -24,13 +24,8 @@ import {
 } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 
-import StatBox from '../to-migrate/StatBox'
+import StatBox, { LabelBox } from '../to-migrate/StatBox'
 import VerticalDivider from '../to-migrate/VerticalDivider'
-
-const LabelBox= styled(Box)`
-  font-size: 12px;
-  text-align: center;
-`
 
 const DataUsage = ({dataUsage}) => {
   return (
