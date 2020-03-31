@@ -164,6 +164,7 @@
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.15",
     "ms": "^2.1.2",
+    "os-locale": "^5.0.0",
     "react-json-view": "1.19.1",
     "react-spring": "^8.0.27",
     "react-sticky": "^6.0.3",
