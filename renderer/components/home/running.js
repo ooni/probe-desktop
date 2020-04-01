@@ -9,7 +9,6 @@ import {
   Heading,
   Text,
   Container,
-  Button,
   theme
 } from 'ooni-components'
 
@@ -25,7 +24,7 @@ import Lottie from 'react-lottie'
 
 import moment from 'moment'
 
-const debug = require('debug')('ooniprobe-desktop.renderer.components.home.running')
+import { StripedProgress } from './StripedProgress'
 
 const StyledRunningTest = styled.div`
   text-align: center;
@@ -115,7 +114,19 @@ const CloseButtonContainer = styled.div`
 `
 
 //name, icon, color, description, longDescription, onClickClose, active
-const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, logLines, runningTestName, error, eta, onKill}) => {
+const RunningTest = ({
+  testGroup,
+  logOpen,
+  onToggleLog,
+  progressLine,
+  percent,
+  logLines,
+  runningTestName,
+  error,
+  eta,
+  onKill,
+  stopping
+}) => {
   const lottieOptions = {
     loop: true,
     autoplay: true,
@@ -146,32 +157,37 @@ const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, lo
           }}
         />
       </Heading>
-      {!logOpen && lottieOptions.animationData
-        && <Lottie
+      {!logOpen && lottieOptions.animationData && (
+        <Lottie
           width={300}
           height={300}
           options={lottieOptions}
-        />}
+        />
+      )}
       {
         !lottieOptions.animationData &&
         React.cloneElement(testGroup.icon, {size: 300})
       }
-      <LineProgress
-        percent={percent*100}
-        strokeColor={theme.colors.white}
-        strokeWidth='2'
-        trailColor='rgba(255,255,255,0.4)'
-        trailWidth='2'
-      />
+      {!stopping ? (
+        <LineProgress
+          percent={percent*100}
+          strokeColor={theme.colors.white}
+          strokeWidth='2'
+          trailColor='rgba(255,255,255,0.4)'
+          trailWidth='2'
+        />
+      ) : (
+        <StripedProgress percent={percent * 100} />
+      )}
       {eta > 0 &&
-      <Flex justifyContent='center'>
-        <Box pr={1}>
-          <FormattedMessage id='Dashboard.Running.EstimatedTimeLeft' />
-        </Box>
-        <Box>
-          {moment.duration(eta*1000).locale(locale).humanize()}
-        </Box>
-      </Flex>
+        <Flex justifyContent='center'>
+          <Box pr={1}>
+            <FormattedMessage id='Dashboard.Running.EstimatedTimeLeft' />
+          </Box>
+          <Box>
+            {moment.duration(eta*1000).locale(locale).humanize()}
+          </Box>
+        </Flex>
       }
       <Text>{progressLine}</Text>
     </Container>
@@ -230,7 +246,8 @@ class Running extends React.Component {
       logLines,
       eta,
       error,
-      onKill
+      onKill,
+      stopping
     } = this.props
 
     const {
@@ -251,6 +268,7 @@ class Running extends React.Component {
           testGroup={testGroup}
           logOpen={logOpen}
           onKill={onKill}
+          stopping={stopping}
           onToggleLog={this.onToggleLog}
           eta={eta}
         />
