@@ -1,8 +1,6 @@
 /* global require */
 import React from 'react'
-
 import styled from 'styled-components'
-
 import {
   Flex,
   Box,
@@ -11,19 +9,13 @@ import {
   Container,
   theme
 } from 'ooni-components'
-
-import { MdClear } from 'react-icons/md'
 import { Line as LineProgress } from 'rc-progress'
 import { FormattedMessage, useIntl } from 'react-intl'
-
-import { testGroups } from '../nettests'
-
-import { MdKeyboardArrowUp, MdKeyboardArrowDown} from 'react-icons/md'
-
+import { MdClear, MdKeyboardArrowUp, MdKeyboardArrowDown} from 'react-icons/md'
 import Lottie from 'react-lottie'
-
 import moment from 'moment'
 
+import { testGroups } from '../nettests'
 import { StripedProgress } from './StripedProgress'
 
 const StyledRunningTest = styled.div`
@@ -60,7 +52,6 @@ const ToggleButtonContainer = styled(Flex)`
   }
 `
 
-
 const ToggleLogButton = ({open, onClick}) => {
   if (open) {
     return <ToggleButtonContainer onClick={onClick}>
@@ -91,18 +82,18 @@ const CodeLog = ({lines}) => {
 }
 
 const LogContainer = styled.div`
-position: absolute;
-bottom: 0;
-left: 0;
-width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 `
 
-const Log = ({lines, onToggleLog, open}) => {
-  return <LogContainer>
+const Log = ({lines, onToggleLog, open}) => (
+  <LogContainer>
     <ToggleLogButton onClick={onToggleLog} open={open} />
     {open && <CodeLog lines={lines} />}
   </LogContainer>
-}
+)
 
 const CloseButtonContainer = styled.div`
   color: white;
@@ -207,7 +198,7 @@ const RunningTest = ({
           </Box>
         </Flex>
       }
-      <Text>{progressLine}</Text>
+      {progressLine && <Text>{progressLine}</Text>}
     </Container>
 
     <Log lines={logLines} onToggleLog={onToggleLog} open={logOpen} />

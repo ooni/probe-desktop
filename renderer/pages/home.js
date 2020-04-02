@@ -1,25 +1,16 @@
 /* global require */
-
 import React from 'react'
-
 import Router from 'next/router'
-
 import Raven from 'raven-js'
-
 import * as chroma from 'chroma-js'
-
 import styled from 'styled-components'
-
 import { MdHelp, MdClear } from 'react-icons/md'
-
 import { Button, Box, Flex, Heading, Card } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
-
 import Running from '../components/home/running'
-
 import { testList } from '../components/nettests'
 import StickyDraggableHeader from '../components/StickyDraggableHeader'
 
