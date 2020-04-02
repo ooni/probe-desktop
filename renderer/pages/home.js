@@ -213,7 +213,7 @@ class Home extends React.Component {
   }
 
   onKill() {
-    if (this.runner !== null) {
+    if (this.runner !== null && this.state.stopping !== true) {
       this.setState({
         stopping: true
       })

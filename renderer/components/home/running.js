@@ -145,26 +145,39 @@ const RunningTest = ({
 
   return <StyledRunningTest>
     <Container>
-      <CloseButtonContainer>
-        <MdClear onClick={onKill} size={30} />
-      </CloseButtonContainer>
+      {stopping || (
+        <CloseButtonContainer>
+          <MdClear onClick={onKill} size={30} />
+        </CloseButtonContainer>
+      )}
       <Heading h={2}>{testGroup.name}</Heading>
       <Heading h={3}>
-        <FormattedMessage
-          id='Dashboard.Running.Running'
-          values={{
-            TestName
-          }}
-        />
+        {stopping ? (
+          <FormattedMessage
+            id='Dashboard.Running.Stopping.Title'
+            values={{
+              TestName
+            }}
+          />
+        ):(
+          <FormattedMessage
+            id='Dashboard.Running.Running'
+            values={{
+              TestName
+            }}
+          />
+        )}
       </Heading>
       {!logOpen && lottieOptions.animationData && (
         <Lottie
           width={300}
           height={300}
           options={lottieOptions}
+          isStopped={stopping}
         />
       )}
       {
+        // Show the group logo when animation not available
         !lottieOptions.animationData &&
         React.cloneElement(testGroup.icon, {size: 300})
       }
@@ -177,7 +190,12 @@ const RunningTest = ({
           trailWidth='2'
         />
       ) : (
-        <StripedProgress percent={percent * 100} />
+        <StripedProgress />
+      )}
+      {stopping && (
+        <Text my={2}>
+          <FormattedMessage id='Dashboard.Running.Notice.Stopping' />
+        </Text>
       )}
       {eta > 0 &&
         <Flex justifyContent='center'>

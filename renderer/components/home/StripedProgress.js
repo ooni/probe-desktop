@@ -24,7 +24,7 @@ const StripedBar = styled.span`
   display: block;
   height: 100%;
 	border-radius: 25px;
-  width: 99%;
+  width: ${props => props.percent || 100}%;
   background-color: ${props => props.theme.colors.gray5};
   position: relative;
   overflow: hidden;
