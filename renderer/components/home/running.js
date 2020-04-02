@@ -164,7 +164,7 @@ const RunningTest = ({
           width={300}
           height={300}
           options={lottieOptions}
-          isStopped={stopping}
+          isPaused={stopping}
         />
       )}
       {
