@@ -161,10 +161,15 @@ const TestResultsContainer = ({results}) => {
     networkCount,
     dataUsageUp,
     dataUsageDown,
-    rows
+    rows,
+    errors,
   } = results
 
-  const byMonth = groupRowsByMonth(rows)
+  // We try to add rows which were reported as errors by probe-cli into
+  // the results. Missing fields are handled in `ResultRow`
+  const fullRows = rows.concat(errors)
+
+  const byMonth = groupRowsByMonth(fullRows)
 
   return (
     <FullWidth>
@@ -191,7 +196,8 @@ TestResultsContainer.propTypes = {
     networkCount: PropTypes.number,
     dataUsageUp: PropTypes.number,
     dataUsageDown: PropTypes.number,
-    rows: PropTypes.arrayOf(PropTypes.object)
+    rows: PropTypes.arrayOf(PropTypes.object),
+    errors: PropTypes.arrayOf(PropTypes.object)
   })
 }
 

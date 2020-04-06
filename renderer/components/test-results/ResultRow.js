@@ -172,30 +172,33 @@ class ResultRow extends React.Component {
   }
 
   renderIcon() {
-    const { name } = this.props
-
-    const group = testGroups[name]
-
-    return (
-      <Flex alignItems='center'>
-        <Box width={1/8}>
-          <ColorCode color={group.color} />
-        </Box>
-        <Box width={7/8}>
-          <Flex>
-            <Box pr={2}>
-              {React.cloneElement(
-                group.icon,
-                {size: 20, color: group.color}
-              )}
-            </Box>
-            <Box>
-              <Text color={group.color} bold>{group.name}</Text>
-            </Box>
-          </Flex>
-        </Box>
-      </Flex>
-    )
+    try {
+      const { name } = this.props
+      const group = testGroups[name]
+      return (
+        <Flex alignItems='center'>
+          <Box width={1/8}>
+            <ColorCode color={group.color} />
+          </Box>
+          <Box width={7/8}>
+            <Flex>
+              <Box pr={2}>
+                {React.cloneElement(
+                  group.icon,
+                  {size: 20, color: group.color}
+                )}
+              </Box>
+              <Box>
+                <Text color={group.color} bold>{group.name}</Text>
+              </Box>
+            </Flex>
+          </Box>
+        </Flex>
+      )
+    } catch (e) {
+      console.error('name missing in result', e)
+      return null
+    }
   }
 
   renderNetwork() {
@@ -207,44 +210,58 @@ class ResultRow extends React.Component {
 
     return (
       <Flex flexDirection='column'>
-        <Text fontWeight='bold'>{network_name}</Text>
-        <Text>AS{asn} ({network_country_code})</Text>
+        {network_name && (
+          <Text fontWeight='bold'>{network_name}</Text>
+        )}
+        <Text>{asn && `AS${asn}`} {network_country_code && `(${network_country_code})`}</Text>
       </Flex>
     )
   }
 
   renderDate() {
-    const {
-      start_time
-    } = this.props
-
-    return (
-      <Flex flexDirection='column' alignItems='center'>
-        <Text>{moment(start_time).format('HH:mm Do MMM')}</Text>
-      </Flex>
-    )
+    try {
+      const {
+        start_time
+      } = this.props
+      return (
+        <Flex flexDirection='column' alignItems='center'>
+          <Text>{moment(start_time).format('HH:mm Do MMM')}</Text>
+        </Flex>
+      )
+    } catch (e) {
+      console.error('start_time missing in result')
+      return null
+    }
   }
   renderTestKeys() {
-    const {
-      name,
-      test_keys,
-      measurement_anomaly_count,
-      measurement_count,
-      is_done
-    } = this.props
+    try {
+      const {
+        name,
+        test_keys,
+        measurement_anomaly_count,
+        measurement_count,
+        is_done
+      } = this.props
+      console.log('renderTestKeys...')
+      const testKeys = JSON.parse(test_keys)
+      let SummaryElement = SummaryError
+      if (!is_done) {
+        SummaryElement = SummaryIncomplete
+      } else if (testKeys != null) {
+        SummaryElement = summaryMap[name]
+      }
 
-    const testKeys = JSON.parse(test_keys)
-    let SummaryElement = SummaryError
-    if (!is_done) {
-      SummaryElement = SummaryIncomplete
-    } else if (testKeys != null) {
-      SummaryElement = summaryMap[name]
+      return (
+        <SummaryElement
+          testKeys={testKeys}
+          anomalyCount={measurement_anomaly_count}
+          totalCount={measurement_count}
+        />
+      )
+    } catch (e) {
+      console.error('test_keys missing in result')
+      return null
     }
-
-    return <SummaryElement
-      testKeys={testKeys}
-      anomalyCount={measurement_anomaly_count}
-      totalCount={measurement_count} />
   }
 
   render() {

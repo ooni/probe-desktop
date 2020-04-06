@@ -53,15 +53,17 @@ const listMeasurements = (resultID) => {
 const listResults = () => {
   const ooni = new Ooniprobe()
   let rows = [],
+    errors = [],
     summary = {}
 
   return new Promise((resolve, reject) => {
     ooni.on('data', (data) => {
-      if (data.level === 'error') {
+      if (data.fields.type === 'result_item'  && data.level === 'error') {
         log.error('listResults: error in row', data.message)
-        reject(data.message)
+        errors.push(data.fields)
         return
       }
+
       switch(data.fields.type) {
       case 'result_item':
         rows.push(data.fields)
@@ -84,6 +86,7 @@ const listResults = () => {
       .call(['list'])
       .then(() => {
         resolve({
+          errors: errors,
           rows: rows,
           testCount: summary.total_tests,
           networkCount: summary.total_networks,
