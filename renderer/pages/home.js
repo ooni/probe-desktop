@@ -1,25 +1,16 @@
 /* global require */
-
 import React from 'react'
-
 import Router from 'next/router'
-
 import Raven from 'raven-js'
-
 import * as chroma from 'chroma-js'
-
 import styled from 'styled-components'
-
 import { MdHelp, MdClear } from 'react-icons/md'
-
 import { Button, Box, Flex, Heading, Card } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
-
 import Running from '../components/home/running'
-
 import { testList } from '../components/nettests'
 import StickyDraggableHeader from '../components/StickyDraggableHeader'
 
@@ -151,7 +142,6 @@ class Home extends React.Component {
     super(props)
     this.state = {
       error: null,
-
       runningTestName: '',
       runTestGroupName: null,
       runProgressLine: '',
@@ -159,7 +149,8 @@ class Home extends React.Component {
       runLogLines: [],
       runPercent: 0,
       runEta: -1,
-      runDone: true
+      runDone: true,
+      stopping: false
     }
     this.onConfigure = this.onConfigure.bind(this)
     this.onRun = this.onRun.bind(this)
@@ -213,8 +204,11 @@ class Home extends React.Component {
   }
 
   onKill() {
-    if (this.runner !== null) {
+    if (this.runner !== null && this.state.stopping !== true) {
       this.runner.kill()
+      this.setState({
+        stopping: true
+      })
     }
   }
 
@@ -253,7 +247,8 @@ class Home extends React.Component {
       runPercent,
       runEta,
       runLogLines,
-      runError
+      runError,
+      stopping
     } = this.state
 
     if (runningTestGroupName) {
@@ -268,6 +263,7 @@ class Home extends React.Component {
             error={runError}
             testGroupName={runningTestGroupName}
             onKill={this.onKill}
+            stopping={stopping}
           />
         </Layout>
       )
