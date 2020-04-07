@@ -83,7 +83,7 @@ const NameCell = ({ children }) => {
 }
 
 NameCell.propTypes = {
-  children: PropTypes.element.isRequired
+  children: PropTypes.string.isRequired
 }
 
 const Table = ({ columns, data }) => {
