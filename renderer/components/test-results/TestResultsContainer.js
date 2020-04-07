@@ -27,18 +27,18 @@ import { FormattedMessage } from 'react-intl'
 import StatBox, { LabelBox } from '../to-migrate/StatBox'
 import VerticalDivider from '../to-migrate/VerticalDivider'
 
-const DataUsage = ({dataUsage}) => {
+const DataUsage = ({ dataUsage }) => {
   return (
-    <Flex flexDirection='column'>
+    <Flex flexDirection='column' alignItems='center'>
       <LabelBox>
         <FormattedMessage id='TestResults.Overview.Hero.DataUsage' />
       </LabelBox>
-      <Flex alignItems='center' justifyContent='space-around'>
+      <Flex flexDirection='column'>
         <Box>
-          <HumanFilesize icon={<MdArrowUpward size={20}/>} size={dataUsage.up*1024} />
+          <HumanFilesize icon={<MdArrowUpward size={28} />} size={dataUsage.up*1024} />
         </Box>
         <Box>
-          <HumanFilesize icon={<MdArrowDownward size={20} />} size={dataUsage.down*1024} />
+          <HumanFilesize icon={<MdArrowDownward size={28} />} size={dataUsage.down*1024} />
         </Box>
       </Flex>
     </Flex>
@@ -65,19 +65,19 @@ const ResultsHeader = ({testCount, networkCount, dataUsage}) => {
     <StyledResultsHeader>
       <Container>
         <Flex>
-          <Box width={1/4}>
+          <Box width={1/3}>
             <StatBox
               label={<FormattedMessage id='TestResults.Overview.Hero.Tests' />}
               value={testCount} />
           </Box>
           <VerticalDivider />
-          <Box width={1/4}>
+          <Box width={1/3}>
             <StatBox
               label={<FormattedMessage id='TestResults.Overview.Hero.Networks' />}
               value={networkCount} />
           </Box>
           <VerticalDivider />
-          <Box width={2/4}>
+          <Box width={1/3}>
             <DataUsage dataUsage={dataUsage} />
           </Box>
         </Flex>

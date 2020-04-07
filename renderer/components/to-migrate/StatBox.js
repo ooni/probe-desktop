@@ -13,13 +13,13 @@ export const LabelBox= styled(Box)`
 `
 
 const ValueBox = styled(Box)`
-  font-size: 36px;
+  font-size: 60px;
   font-weight: 300;
   text-align: center;
 `
 
 const StatBox = ({value, label, unit}) => (
-  <Flex flexDirection='column'>
+  <Flex flexDirection='column' justifyContent='space-between' style={{ height: '100%' }}>
     {label && <LabelBox>
       {label}
     </LabelBox>}
