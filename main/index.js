@@ -37,7 +37,9 @@ log.info('App starting...')
 let windows = null
 
 // Set the application name
-app.setName('OONI Probe')
+app.name = 'OONI Probe'
+
+app.allowRendererProcessReuse = true
 
 // TODO verify if this code is redundant as the Sentry.init code should already
 // cover this.
@@ -73,7 +75,7 @@ const editMenu = {
 
 let menuTemplate = [
   {
-    label: 'About',
+    label: app.name,
     submenu: [{ label: 'About OONI Probe', click: () => openAboutWindow() }]
   },
   editMenu
@@ -81,7 +83,7 @@ let menuTemplate = [
 if (is.macos) {
   menuTemplate = [
     {
-      label: app.getName(),
+      label: app.name,
       submenu: [
         { label: 'About OONI Probe', click: () => openAboutWindow() },
         { type: 'separator' },
