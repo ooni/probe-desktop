@@ -79,8 +79,12 @@ class Ooniprobe extends EventEmitter {
             console.log('failed to determine the home shortpath. Things will break with user homes which contain non-ascii characters.')
           }
         }
-
-        argv = ['--batch'].concat(argv)
+        const fixedArgs = [
+          '--batch',
+          `--software-name=${process.env.npm_package_name}`,
+          `--software-version=${process.env.npm_package_version}`
+        ]
+        argv = fixedArgs.concat(argv)
 
         log.info('running', binPath, argv, options)
         self.ooni = childProcess.spawn(binPath, argv, options)
