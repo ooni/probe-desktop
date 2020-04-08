@@ -35,10 +35,10 @@ const DataUsage = ({ dataUsage }) => {
       </LabelBox>
       <Flex flexDirection='column'>
         <Box>
-          <HumanFilesize icon={<MdArrowUpward size={28} />} size={dataUsage.up*1024} />
+          <HumanFilesize fontSize={26} icon={<MdArrowUpward size={22} />} size={dataUsage.up*1024} />
         </Box>
         <Box>
-          <HumanFilesize icon={<MdArrowDownward size={28} />} size={dataUsage.down*1024} />
+          <HumanFilesize fontSize={26} icon={<MdArrowDownward size={22} />} size={dataUsage.down*1024} />
         </Box>
       </Flex>
     </Flex>
