@@ -38,6 +38,12 @@ To build and run a development mode electron instance run:
 yarn run start
 ```
 
+To update the translations:
+* Save the strings from the canonical spreadsheet into `data/lang-en.csv`
+* Run `$ node scripts/update-translations.js`
+* Commit `data/lang-en.csv`, `lang/en.json` and `renderer/static/translations.js`
+into git
+
 To create a signed packaged app you will need to have configured the following
 environment variables:
 
