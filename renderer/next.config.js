@@ -35,7 +35,7 @@ module.exports = withSourceMaps(withCSS({
       '/home': { page: '/home' },
       '/test-results': { page: '/test-results' },
       '/result': { page: '/result', query: { resultID: null } },
-      '/measurement': { page: '/measurement', query: { resultID: null, measurementID: null } },
+      '/measurement': { page: '/measurement', query: { resultID: null, measurementID: null, isAnomaly: null } },
       '/settings': { page: '/settings' },
       '/onboard': { page: '/onboard' }
     }
