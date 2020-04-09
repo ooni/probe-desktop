@@ -5,7 +5,7 @@ import Raven from 'raven-js'
 import * as chroma from 'chroma-js'
 import styled from 'styled-components'
 import { MdHelp, MdClear } from 'react-icons/md'
-import { Button, Box, Flex, Heading, Card } from 'ooni-components'
+import { Button, Text, Box, Flex, Heading, Card } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 
 import Layout from '../components/Layout'
@@ -68,6 +68,8 @@ const FrontCardContent = ({
 }) => (
   <Box width={1 / 2} pr={3} pb={3}>
     <Card
+      // fontSize={0} because padding on Card is controlled by `fontSizeMult`
+      fontSize={0}
       data-test-id={`card-${id}`}
       bg={color}
       color="white"
@@ -77,17 +79,19 @@ const FrontCardContent = ({
         <MdHelp onClick={toggleCard} size={30} />
       </TopLeftFloatingButton>
       <CardContent>
-        <Heading h={2}>{name}</Heading>
-        <BgIcon>{icon}</BgIcon>
-        <Flex pt={5} alignItems="center">
-          <Box width={3 / 4} pr={4}>
+        <Flex flexDirection='column' justifyContent='space-between' style={{ height: '200px'}}>
+          <Text fontSize={4} fontWeight={300} m={0}>{name}</Text>
+          <Text fontSize={1}>
             {description}
-          </Box>
-          <Box width={1 / 4} mr={2}>
-            <Button inverted fontSize={1} onClick={onRun}>
-              <FormattedMessage id="Dashboard.Card.Run" />
-            </Button>
-          </Box>
+          </Text>
+          <BgIcon>{icon}</BgIcon>
+          <Flex justifyContent='flex-end'>
+            <Box>
+              <Button inverted fontSize={1} onClick={onRun}>
+                <FormattedMessage id="Dashboard.Card.Run" />
+              </Button>
+            </Box>
+          </Flex>
         </Flex>
       </CardContent>
     </Card>
