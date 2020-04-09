@@ -44,7 +44,7 @@
       "category": "Network",
       "extraFiles": [
         {
-          "from": "./bin/linux_amd64/ooniprobe",
+          "from": "./build/probe-cli/linux_amd64/ooniprobe",
           "to": "./resources/bin/ooniprobe"
         }
       ]
