@@ -128,9 +128,7 @@ const SectionWhatIsOONI = ({onNext}) => (
       </Heading>
     </Box>
     <Box width={1/2} my={3} px={4} mx='auto'>
-      <Text>
-        <FormattedMarkdownMessage id="Onboarding.WhatIsOONIProbe.Paragraph" />
-      </Text>
+      <FormattedMarkdownMessage id="Onboarding.WhatIsOONIProbe.Paragraph" />
     </Box>
     <Box mx='auto'>
       <Button inverted onClick={onNext}>

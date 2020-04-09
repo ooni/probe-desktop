@@ -1,7 +1,7 @@
 {
   "General.AppName": "OONI Probe",
   "Onboarding.WhatIsOONIProbe.Title": "What is OONI Probe?",
-  "Onboarding.WhatIsOONIProbe.Paragraph": "errors.length",
+  "Onboarding.WhatIsOONIProbe.Paragraph": "Your app for measuring internet censorship.\nAre websites and social media apps blocked?\nIs your internet connection unusually slow?\nRun OONI Probe to find out!",
   "Onboarding.WhatIsOONIProbe.GotIt": "Got It",
   "Onboarding.ThingsToKnow.Title": "Heads-up!",
   "Onboarding.ThingsToKnow.Bullet.1": "OONI data is openly published and will include your network information. ",
