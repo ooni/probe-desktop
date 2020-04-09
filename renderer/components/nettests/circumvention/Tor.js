@@ -11,6 +11,7 @@ import { useClipboard } from 'use-clipboard-copy'
 import colorMap from '../../colorMap'
 import StatusBox from '../../measurement/StatusBox'
 import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
+import { useRawData } from '../../useRawData'
 
 // TODO Should check if it helps to convert these into styled components and
 // render them instead of the native <table> <td> <tr> elements
@@ -82,7 +83,7 @@ const NameCell = ({ children }) => {
 }
 
 NameCell.propTypes = {
-  children: PropTypes.element.isRequired
+  children: PropTypes.string.isRequired
 }
 
 const Table = ({ columns, data }) => {
@@ -129,13 +130,11 @@ const Table = ({ columns, data }) => {
         {rows.map((row) => {
           prepareRow(row)
           return (
-            <React.Fragment>
-              <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                })}
-              </tr>
-            </React.Fragment>
+            <tr {...row.getRowProps()}>
+              {row.cells.map(cell => {
+                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+              })}
+            </tr>
           )}
         )}
       </tbody>
@@ -169,6 +168,7 @@ ConnectionStatusCell.propTypes = {
 
 const Tor = ({measurement, isAnomaly, render}) => {
   const testKeys = JSON.parse(measurement.test_keys)
+
   const {
     or_port_accessible,
     or_port_total,
@@ -178,15 +178,15 @@ const Tor = ({measurement, isAnomaly, render}) => {
     obfs4_total,
     dir_port_accessible,
     dir_port_total,
-    targets = {}
   } = testKeys
+
   const heroTitle = isAnomaly ? (
     <FormattedMessage id='TestResults.Details.Circumvention.Tor.Blocked.Hero.Title' />
   ) : (
     <FormattedMessage id='TestResults.Details.Circumvention.Tor.Reachable.Hero.Title' />
   )
 
-  const statusColumnSort = (rowA, rowB, columnId, desc) => {
+  const statusColumnSort = (rowA, rowB, desc) => {
     const sortMap = {
       na: 0,
       nullValue: 1,
@@ -243,30 +243,36 @@ const Tor = ({measurement, isAnomaly, render}) => {
     }
   ], [])
 
-  const data = useMemo(() => (
-    Object.keys(targets).map(target => {
-      // Connection Status values
-      // false: Didn't run (N/A)
-      // null: No failure a.k.a success
-      // string: Failure with error string
-      let connectStatus = false, handshakeStatus = false
-      if (targets[target].summary.connect) {
-        connectStatus = targets[target].summary.connect.failure
-      }
+  // Targets data is available only in the raw measurement data JSON
+  const { rawData } = useRawData()
 
-      if (targets[target].summary.handshake) {
-        handshakeStatus = targets[target].summary.handshake.failure
-      }
+  const data = useMemo(() => {
+    const targets = rawData ? rawData.test_keys.targets : {}
+    return (
+      Object.keys(targets).map(target => {
+        // Connection Status values
+        // false: Didn't run (N/A)
+        // null: No failure a.k.a success
+        // string: Failure with error string
+        let connectStatus = false, handshakeStatus = false
+        if (targets[target].summary.connect) {
+          connectStatus = targets[target].summary.connect.failure
+        }
 
-      return {
-        name: targets[target].target_name || target,
-        address: targets[target].target_address,
-        type: targets[target].target_protocol,
-        connect: connectStatus,
-        handshake: handshakeStatus
-      }
-    })
-  ), [targets])
+        if (targets[target].summary.handshake) {
+          handshakeStatus = targets[target].summary.handshake.failure
+        }
+
+        return {
+          name: targets[target].target_name || target,
+          address: targets[target].target_address,
+          type: targets[target].target_protocol,
+          connect: connectStatus,
+          handshake: handshakeStatus
+        }
+      })
+    )
+  }, [rawData])
 
   const TorDetails = () => (
     <Box width={1}>

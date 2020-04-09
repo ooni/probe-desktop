@@ -44,13 +44,13 @@ const ResultOverviewContainer = styled.div`
 const overviewShape = PropTypes.shape({
   countryCode: PropTypes.string.isRequired,
   networkName: PropTypes.string.isRequired,
-  asn: PropTypes.string.isRequired,
+  asn: PropTypes.number.isRequired,
   anomalyCount: PropTypes.number.isRequired,
   totalCount: PropTypes.number.isRequired,
   dataUsageUp: PropTypes.number.isRequired,
   dataUsageDown: PropTypes.number.isRequired,
   runtime: PropTypes.number.isRequired,
-  startTime: PropTypes.object
+  startTime: PropTypes.string
 })
 
 // XXX groupName is also passed in
@@ -185,7 +185,7 @@ const mapOverviewProps = (rows, summary) => {
       runtime: summary.total_runtime || 0,
       networkName: msmt.network_name || '',
       countryCode: msmt.network_country_code || '',
-      asn: msmt.asn || '',
+      asn: msmt.asn || 0,
     }
   }
 }
