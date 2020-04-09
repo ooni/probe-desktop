@@ -13,7 +13,9 @@ const aboutWindow = () => {
     //titleBarStyle: 'hidden-inset',
     show: false,
     backgroundColor: '#fff',
-    webPreferences: {}
+    webPreferences: {
+      nodeIntegration: true
+    }
   })
 
   win.loadURL(windowURL('about'))
