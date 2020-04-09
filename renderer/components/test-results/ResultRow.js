@@ -1,23 +1,19 @@
 import React from 'react'
-
 import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
-
 import moment from 'moment'
-
 import {
   theme,
   Box,
   Flex,
   Text
 } from 'ooni-components'
-
 import Link from 'next/link'
-
 import { MdWeb, MdDone, MdClear, MdWarning } from 'react-icons/md'
+import * as Sentry from '@sentry/electron'
+
 import { testGroups } from '../nettests'
 import RightArrow from '../RightArrow'
-
 import UploadSpeed from '../UploadSpeed'
 import DownloadSpeed from '../DownloadSpeed'
 import VideoQuality from '../VideoQuality'
@@ -44,16 +40,6 @@ const RightArrowStyled = styled(RightArrow)`
     color: ${props => props.theme.colors.gray6};
   }
 `
-
-const VerticalCenter = ({children}) => {
-  return (
-    <Flex justifyContent='center' alignItems='center' style={{height: '100%'}}>
-      <Box>
-        {children}
-      </Box>
-    </Flex>
-  )
-}
 
 const SummaryContainer = styled(Flex)`
   height: 100%;
@@ -196,7 +182,7 @@ class ResultRow extends React.Component {
         </Flex>
       )
     } catch (e) {
-      console.error('name missing in result', e)
+      Sentry.captureException(new Error('name missing in result', e))
       return null
     }
   }
@@ -229,10 +215,11 @@ class ResultRow extends React.Component {
         </Flex>
       )
     } catch (e) {
-      console.error('start_time missing in result')
+      Sentry.captureException(new Error('start_time missing in result'))
       return null
     }
   }
+
   renderTestKeys() {
     try {
       const {
@@ -242,7 +229,6 @@ class ResultRow extends React.Component {
         measurement_count,
         is_done
       } = this.props
-      console.log('renderTestKeys...')
       const testKeys = JSON.parse(test_keys)
       let SummaryElement = SummaryError
       if (!is_done) {
@@ -260,6 +246,7 @@ class ResultRow extends React.Component {
       )
     } catch (e) {
       console.error('test_keys missing in result')
+      Sentry.captureException(new Error('test_keys missing in result'))
       return null
     }
   }
