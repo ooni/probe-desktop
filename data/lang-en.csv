@@ -1,7 +1,11 @@
 Key,Text,Max length
 General.AppName,OONI Probe,
 Onboarding.WhatIsOONIProbe.Title,What is OONI Probe?,
-Onboarding.WhatIsOONIProbe.Paragraph,errors.length,
+Onboarding.WhatIsOONIProbe.Paragraph,"Your app for measuring internet censorship. 
+
+Are websites and social media apps blocked? Is your internet connection unusually slow?
+
+Run OONI Probe to find out!",
 Onboarding.WhatIsOONIProbe.GotIt,Got It,
 Onboarding.ThingsToKnow.Title,Heads-up!,
 Onboarding.ThingsToKnow.Bullet.1,OONI data is openly published and will include your network information. ,
