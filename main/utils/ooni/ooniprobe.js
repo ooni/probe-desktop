@@ -11,6 +11,7 @@ const split2 = require('split2')
 const Sentry = require('@sentry/electron')
 
 const { getBinaryPath, getHomeDir } = require('../paths')
+const pkgJson = require('../../../package.json')
 
 const GetHomeShortPath = () => {
   // This is taken from: https://github.com/sindresorhus/untildify/pull/13/files
@@ -79,10 +80,11 @@ class Ooniprobe extends EventEmitter {
             console.log('failed to determine the home shortpath. Things will break with user homes which contain non-ascii characters.')
           }
         }
+        console.log(pkgJson)
         const fixedArgs = [
           '--batch',
-          `--software-name=${process.env.npm_package_name}`,
-          `--software-version=${process.env.npm_package_version}`
+          `--software-name=${pkgJson.name}`,
+          `--software-version=${pkgJson.version}`
         ]
         argv = fixedArgs.concat(argv)
 
