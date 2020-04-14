@@ -5,7 +5,7 @@ This is the desktop implementation of OONI Probe.
 Our two primary target platforms are:
 
 - macOS
-- Windows > 7 (we may also support older versions, but not as primary tagets)
+- Windows > 7 (we may also support older versions, but not as primary targets)
 
 Moreover, since it's written in electron, we plan on also supporting Linux desktop users.
 
