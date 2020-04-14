@@ -2,16 +2,12 @@ const Application = require('spectron').Application
 // Require Electron from the binaries included in node_modules.
 const electronPath = require('electron')
 const path = require('path')
-const chai = require('chai')
-const chaiAsPromised = require('chai-as-promised')
+const fs = require('fs')
 
-global.before(async function() {
-  chai.should()
-  chai.use(chaiAsPromised)
-})
+const screenshotsDir = path.resolve('.', 'test', 'screenshots')
 
 const execHardReset = (app) => {
-  return app.client.executeAsync(function(done) {
+  return app.client.executeAsync(done => {
     require('electron')
       .remote.require('./actions')
       .hardReset()
@@ -35,8 +31,6 @@ module.exports = {
       chromeDriverArgs: ['–remote-debugging-port=12209']
     })
 
-    chaiAsPromised.transferPromiseness = app.transferPromiseness
-
     return app.start()
   },
 
@@ -53,9 +47,13 @@ module.exports = {
     console.log('...done.')
   },
 
-  async screenshotApp(app) {
+  async screenshotApp(app, label) {
     if (app && app.isRunning) {
       const screenshotBuffer = await app.browserWindow.capturePage()
+      if (screenshotBuffer) {
+        const filename = path.resolve(screenshotsDir, `${label}.png`)
+        fs.writeFile(filename, screenshotBuffer)
+      }
     }
   }
 }

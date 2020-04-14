@@ -21,7 +21,7 @@
     "publish": "yarn run build && electron-builder --mac --win -p always",
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
     "lint": "eslint --ignore-path .gitignore .",
-    "test": "cross-env NODE_ENV=test mocha",
+    "test": "cross-env NODE_ENV=test jest --runInBand",
     "postinstall": "electron-builder install-app-deps",
     "storybook": "start-storybook -p 6006"
   },
@@ -107,8 +107,6 @@
     "babel-plugin-inline-react-svg": "1.1.0",
     "babel-plugin-react-intl": "^2.4.0",
     "babel-plugin-styled-components": "1.10.6",
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
     "chroma-js": "^2.0.6",
     "cross-env": "^7.0.2",
     "csv-parse": "^4.4.6",
@@ -117,11 +115,11 @@
     "electron-devtools-installer": "^2.2.4",
     "electron-notarize": "0.1.1",
     "eslint": "^4.19.1",
-    "eslint-plugin-mocha": "^6.3.0",
+    "eslint-plugin-jest": "^23.8.2",
     "eslint-plugin-react": "^7.14.3",
     "humanize": "^0.0.9",
     "icon-gen": "^2.0.0",
-    "mocha": "^7.1.1",
+    "jest": "^25.3.0",
     "moment": "^2.24.0",
     "moment-range": "^4.0.2",
     "next": "9.3.2",
@@ -187,5 +185,18 @@
     "set-value": "^2.0.1",
     "styled-components": "^4.4.1",
     "styled-system": "3.1.6"
+  },
+  "jest": {
+    "verbose": true,
+    "roots": [
+      "<rootDir>/test"
+    ],
+    "testMatch": [
+      "**/test/**/*.e2e.js"
+    ],
+    "setupFiles": [
+      "<rootDir>/test/lib/setup.js"
+    ],
+    "testSequencer": "<rootDir>/test/lib/sequencer.js"
   }
 }

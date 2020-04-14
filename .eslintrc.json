@@ -6,7 +6,8 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:mocha/recommended"
+    "plugin:jest/recommended",
+    "plugin:jest/style"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -16,7 +17,7 @@
     "ecmaVersion": "2017",
     "sourceType": "module"
   },
-  "plugins": ["react", "mocha"],
+  "plugins": ["react", "jest"],
   "rules": {
     "indent": ["error", 2],
     "linebreak-style": ["error", "unix"],
@@ -27,7 +28,7 @@
   "overrides": [
     {
       "files": ["test/**/*.js"],
-      "env": { "mocha": true }
+      "env": { "jest/globals": true }
     },
     {
       "files": ["renderer/**/*.js"],
