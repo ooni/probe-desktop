@@ -1,19 +1,25 @@
 const { startApp, stopApp } = require('./utils')
-const { expect } = require('chai')
 
-describe('Sidebar Works', function() {
-  this.timeout(30000)
+beforeAll(() => {
+  jest.setTimeout(30000)
+})
+
+describe.skip('Sidebar Works', () => {
   let app
 
-  beforeEach(async function() {
+  beforeEach(async () => {
     app = await startApp()
+    return app
   })
 
-  afterEach(async function() {
-    await stopApp(app)
+  afterEach(async () => {
+    if (app && app.isRunning()) {
+      await stopApp(app)
+    }
   })
 
-  it('should just do a noop', async function() {
-    await expect(true).to.be.true
+  it('has window title set to "OONI Probe"', async () => {
+    const title = await app.browserWindow.getTitle()
+    expect(title).toBe('OONI Probe')
   })
 })
