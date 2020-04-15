@@ -40,17 +40,6 @@ const TopLeftFloatingButton = styled.div`
   cursor: pointer;
 `
 
-const ConfigureButton = styled(Button)`
-  font-size: 12px;
-  border-radius: 20px;
-  height: 25px;
-  line-height: 1;
-  padding-left: 15px;
-  padding-right: 15px;
-  text-transform: none;
-  border: 1px solid ${props => props.theme.colors.white};
-`
-
 const ScrollableBox = styled(Box)`
   max-height: 150px;
   overflow: auto;
@@ -63,8 +52,7 @@ const FrontCardContent = ({
   icon,
   color,
   toggleCard,
-  onRun,
-  onConfigure
+  onRun
 }) => (
   <Box width={1 / 2} pr={3} pb={3}>
     <Card
@@ -156,7 +144,6 @@ class Home extends React.Component {
       runDone: true,
       stopping: false
     }
-    this.onConfigure = this.onConfigure.bind(this)
     this.onRun = this.onRun.bind(this)
     this.onMessage = this.onMessage.bind(this)
     this.onKill = this.onKill.bind(this)
@@ -198,12 +185,6 @@ class Home extends React.Component {
       break
     default:
       break
-    }
-  }
-
-  onConfigure(groupName) {
-    return () => {
-      console.log('configuring', groupName)
     }
   }
 
@@ -281,7 +262,6 @@ class Home extends React.Component {
             {testList.map((t, idx) => (
               <RunTestCard
                 onRun={this.onRun(t.key)}
-                onConfigure={this.onConfigure(t.key)}
                 key={idx}
                 id={t.key}
                 {...t}
