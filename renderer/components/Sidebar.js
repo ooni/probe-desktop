@@ -14,6 +14,7 @@ import { MdWeb, MdHistory } from 'react-icons/md'
 import { FaCog } from 'react-icons/fa'
 
 import ExternalLink from './ExternalLink'
+import { version } from '../../package.json'
 
 const StyledNavItem = styled.div`
   position: relative;
@@ -126,7 +127,7 @@ export const Sidebar = ({children, router}) => (
         </Box>
         <Box mb={2}>
           <Text fontSize={12} textAlign='right' color='gray5'>
-            {process.env.npm_package_version}
+            {version}
           </Text>
         </Box>
       </Box>
