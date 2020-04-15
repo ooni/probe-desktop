@@ -81,7 +81,7 @@ const FrontCardContent = ({
       <CardContent>
         <Flex flexDirection='column' justifyContent='space-between' style={{ height: '200px'}}>
           <Text fontSize={4} fontWeight={300} m={0}>{name}</Text>
-          <Text fontSize={1}>
+          <Text fontSize={1} as='div'>
             {description}
           </Text>
           <BgIcon>{icon}</BgIcon>
