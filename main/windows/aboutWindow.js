@@ -22,8 +22,8 @@ const aboutWindow = () => {
   return win
 }
 
-const openAboutWindow = () => {
-  if (window !== null) {
+const openAboutWindow = ({getFocus}) => {
+  if (window !== null && getFocus) {
     window.focus()
     return window
   }
