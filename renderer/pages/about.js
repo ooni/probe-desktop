@@ -34,13 +34,17 @@ const UpdaterBoxContainer = styled(Flex)`
 `
 
 const UpdaterBox  = ({message, progressObj}) => {
-  const speed = formatSpeed(progressObj.bytesPerSecond * 1000)
+  let speed
+  if (progressObj.bytesPerSecond) {
+    speed = formatSpeed(progressObj.bytesPerSecond / 1000)
+  }
   return (
     <UpdaterBoxContainer flexWrap='wrap'>
       <Box width={1}>
         <Text fontWeight='bold'>{message}</Text>
       </Box>
-      <Box width={1}>
+      {speed
+      && <Box width={1}>
         <LineProgress
           percent={progressObj.percent}
           strokeColor={theme.colors.blue3}
@@ -49,9 +53,12 @@ const UpdaterBox  = ({message, progressObj}) => {
           trailWidth='2'
         />
       </Box>
-      <Box width={1}>
+      }
+      {speed
+      && <Box width={1}>
         {speed.value} {speed.unit} ({humanize.filesize(progressObj.transferred)}/{humanize.filesize(progressObj.total)})
       </Box>
+      }
     </UpdaterBoxContainer>
   )
 }

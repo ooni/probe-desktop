@@ -123,7 +123,7 @@ autoUpdater.on('checking-for-update', () => {
   sendStatusToWindow('Checking for update...')
 })
 autoUpdater.on('update-available', () => {
-  openAboutWindow({getFocus: true})
+  openAboutWindow(true)
   sendStatusToWindow('Update available.')
 })
 autoUpdater.on('update-not-available', () => {
