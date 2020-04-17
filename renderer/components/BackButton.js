@@ -7,6 +7,10 @@ import styled from 'styled-components'
 import { MdKeyboardArrowLeft } from 'react-icons/md'
 
 const StyledBackLink = styled.a`
+  /* Because this button is in the draggable header
+     without 'no-drag' the cursor:pointer isn't honored.
+     https://www.electronjs.org/docs/api/frameless-window#draggable-region */
+  -webkit-app-region: no-drag;
   color: ${props => props.theme.colors.white};
   cursor: pointer;
   &:hover {
