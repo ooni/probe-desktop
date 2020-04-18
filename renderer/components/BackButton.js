@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { withRouter } from 'next/router'
+import { useRouter } from 'next/router'
 
 import styled from 'styled-components'
 
@@ -19,12 +19,13 @@ const StyledBackLink = styled.a`
   }
 `
 
-const BackButton = withRouter(({router}) => {
+const BackButton = () => {
+  const router = useRouter()
   return (
     <StyledBackLink onClick={() => router.back()}>
       <MdKeyboardArrowLeft size={50} />
     </StyledBackLink>
   )
-})
+}
 
 export default BackButton

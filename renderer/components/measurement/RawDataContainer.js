@@ -8,7 +8,7 @@ import { FormattedMessage } from 'react-intl'
 
 // Elevating with zIndex because <Button> has zIndex:1 for some reason
 const StyledWrapper = styled(Fixed)`
-  height: 70vh;
+  height: 100vh;
   overflow-x: hidden;
   overflow-y: scroll;
   background-color: ${props => props.theme.colors.gray1};
@@ -40,8 +40,8 @@ const StyledCloseButton = styled(MdClose)`
 const RawDataContainer = ({ rawData, isOpen, onClose }) => {
 
   const props = useSpring({
-    from: { bottom: -2000 },
-    to: { bottom: isOpen ? 0 : -2000 }
+    from: { top: 2000 },
+    to: { top: isOpen ? 0 : 2000 }
   })
 
   // We wrap the json viewer so that we can render it only in client side rendering
