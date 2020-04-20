@@ -4,8 +4,8 @@ import { FormattedMessage } from 'react-intl'
 
 import ExternalLink from '../ExternalLink'
 
-const MethodologyButton = ({ href }) => (
-  <ExternalLink href={href} >
+const MethodologyButton = ({ href, ...props }) => (
+  <ExternalLink href={href} {...props}>
     <FormattedMessage id='TestResults.Details.Methodology' />
   </ExternalLink>
 )
