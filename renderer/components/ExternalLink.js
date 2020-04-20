@@ -9,8 +9,8 @@ import { openInBrowser } from './utils'
 
 const ExternalLink = ({href, color = 'blue5', children, ...props}) => (
   <Link {...props} color={color} href={href} onClick={(e) => openInBrowser(href  , e)}>
-      {children}
-      <MdOpenInNew />
+    {children}
+    <MdOpenInNew />
   </Link>
 )
 
