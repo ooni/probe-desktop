@@ -19,7 +19,7 @@ const getLocale = () => {
   // If found, use os-locale to detect user's system locale
   navigatorLang = osLocale.sync() || navigatorLang
 
-  return navigatorLang.split('-')[0]
+  return navigatorLang.split('-')[0].split('_')[0]
 }
 
 if (typeof window !== 'undefined' && window.OONITranslations) {

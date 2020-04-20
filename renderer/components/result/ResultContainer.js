@@ -41,6 +41,13 @@ const ResultOverviewContainer = styled.div`
   color: ${props => props.theme.colors.white};
 `
 
+const OverviewLabel = ({ icon, label }) => (
+  <Flex flexDirection='row' alignItems='center'>
+    <Box mr={1}>{icon}</Box>
+    <Box>{label}</Box>
+  </Flex>
+)
+
 const overviewShape = PropTypes.shape({
   countryCode: PropTypes.string.isRequired,
   networkName: PropTypes.string.isRequired,
@@ -119,23 +126,45 @@ const ResultOverview = ({
         <Divider mt={4} mb={4} />
 
         <TwoColumnTable
-          left={<Text><MdSwapVert size={20} /><FormattedMessage id='TestResults.Summary.Hero.DataUsage' /></Text>}
-          right={<Flex>
-            <HumanFilesize icon={<MdArrowUpward size={20}/>} size={dataUsageUp*1024} fontSize={20} />
-            <HumanFilesize icon={<MdArrowDownward size={20}/>} size={dataUsageDown*1024} fontSize={20} />
-          </Flex>} />
-
+          left={
+            <OverviewLabel
+              icon={<MdSwapVert size={20} />}
+              label={<FormattedMessage id='TestResults.Summary.Hero.DataUsage' />}
+            />
+          }
+          right={
+            <Flex>
+              <HumanFilesize icon={<MdArrowUpward size={20}/>} size={dataUsageUp*1024} fontSize={20} />
+              <HumanFilesize icon={<MdArrowDownward size={20}/>} size={dataUsageDown*1024} fontSize={20} />
+            </Flex>}
+        />
         <TwoColumnTable
-          left={<Text><MdTimer size={20} /><FormattedMessage id='TestResults.Summary.Hero.Runtime' /></Text>}
-          right={<Text>{runtime.toFixed(2)} s</Text>} />
-
+          left={
+            <OverviewLabel
+              icon={<MdTimer size={20} />}
+              label={<FormattedMessage id='TestResults.Summary.Hero.Runtime' />}
+            />
+          }
+          right={<Text>{runtime.toFixed(2)} s</Text>}
+        />
         <TwoColumnTable
-          left={<Text><MdFlag size={20} /><FormattedMessage id='TestResults.Summary.Hero.Country' /></Text>}
-          right={<Text>{countryCode}</Text>} />
-
+          left={
+            <OverviewLabel
+              icon={<MdFlag size={20} />}
+              label={<FormattedMessage id='TestResults.Summary.Hero.Country' />}
+            />
+          }
+          right={<Text>{countryCode}</Text>}
+        />
         <TwoColumnTable
-          left={<Text><MdPublic  size={20} /><FormattedMessage id='TestResults.Summary.Hero.Network' /></Text>}
-          right={<Text>{networkName} ({asn})</Text>} />
+          left={
+            <OverviewLabel
+              icon={<MdPublic  size={20} />}
+              label={<FormattedMessage id='TestResults.Summary.Hero.Network' />}
+            />
+          }
+          right={<Text>{networkName} ({asn})</Text>}
+        />
       </Container>
     </ResultOverviewContainer>
   )

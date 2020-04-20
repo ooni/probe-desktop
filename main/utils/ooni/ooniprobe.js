@@ -80,7 +80,6 @@ class Ooniprobe extends EventEmitter {
             console.log('failed to determine the home shortpath. Things will break with user homes which contain non-ascii characters.')
           }
         }
-        console.log(pkgJson)
         const fixedArgs = [
           '--batch',
           `--software-name=${pkgJson.name}`,
