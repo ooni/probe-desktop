@@ -11041,10 +11041,10 @@ onetime@^5.1.0:
   dependencies:
     mimic-fn "^2.1.0"
 
-ooni-components@0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/ooni-components/-/ooni-components-0.3.1.tgz#023bec7729845b4566f447d8a5232f34f6551087"
-  integrity sha512-0BPemQGG4rYql7LQhkuIuBpm5uc51+AcEWGpcThDclHOmgPD1vIWMFVzggKfxh3iAy73dSEJDWu9nnDXiGwBog==
+ooni-components@0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/ooni-components/-/ooni-components-0.3.2.tgz#38692e13388986a8b1c49fbde2f36c652019848e"
+  integrity sha512-9CAI/KDnYEbx1rl5vRHIMfQhhQJIkAWoxeEHZz1Mo1XgVg2JOVbbXELlyCAMl7LLXBWJEeVlwdhFCwIvitHQlg==
   dependencies:
     "@rebass/grid" "^6.0.0-3"
     palx "^1.0.2"
