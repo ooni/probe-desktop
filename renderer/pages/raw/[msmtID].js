@@ -4,8 +4,6 @@ import electron from 'electron'
 import Raven from 'raven-js'
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.raw')
 
-import { Container, Flex } from 'ooni-components'
-
 import Layout from '../../components/Layout'
 import Sidebar from '../../components/Sidebar'
 import LoadingOverlay from '../../components/LoadingOverlay'
@@ -35,15 +33,17 @@ const RawMeasurementData = () => {
 
   return (
     <Layout>
-      {loading && <LoadingOverlay loading={loading} />}
-
-      {rawData && (
-        <Container>
-          <Flex my={3}>
+      <Sidebar>
+        {loading && <LoadingOverlay loading={loading} />}
+        {rawData && (
+          <div>
+            <button onClick={() => router.back()}>
+              Go Back
+            </button>
             <JsonViewer src={rawData} />
-          </Flex>
-        </Container>
-      )}
+          </div>
+        )}
+      </Sidebar>
     </Layout>
   )
 }

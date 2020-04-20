@@ -7,7 +7,6 @@ const isWinOS = process.platform === 'win32'
 const windowURL = require('./windowURL')
 
 const openAboutWindow = require('./aboutWindow')
-const openRawDataWindow = require('./dataWindow')
 
 const mainWindow = () => {
   let windowHeight = 640
@@ -34,6 +33,5 @@ const mainWindow = () => {
 module.exports = {
   mainWindow,
   openAboutWindow,
-  openRawDataWindow,
   windowURL
 }
