@@ -153,6 +153,8 @@ const summaryMap = {
 
 
 class ResultRow extends React.Component {
+  //TODO This can be easily converted into a funcitonal component
+  // with useMemo hooks. Gotta figure out how exception handling works then.
   constructor (props) {
     super(props)
   }
