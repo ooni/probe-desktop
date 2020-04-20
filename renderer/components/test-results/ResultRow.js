@@ -182,7 +182,12 @@ class ResultRow extends React.Component {
         </Flex>
       )
     } catch (e) {
-      Sentry.captureException(new Error('name missing in result', e))
+      Sentry.addBreadcrumb({
+        category: 'results',
+        message: 'name key is missing in result',
+        level: Sentry.Severity.Error
+      })
+      Sentry.captureException(e)
       return null
     }
   }
@@ -215,7 +220,12 @@ class ResultRow extends React.Component {
         </Flex>
       )
     } catch (e) {
-      Sentry.captureException(new Error('start_time missing in result'))
+      Sentry.addBreadcrumb({
+        category: 'results',
+        message: 'date key is missing in result',
+        level: Sentry.Severity.Error
+      })
+      Sentry.captureException(e)
       return null
     }
   }
@@ -245,8 +255,12 @@ class ResultRow extends React.Component {
         />
       )
     } catch (e) {
-      console.error('test_keys missing in result')
-      Sentry.captureException(new Error('test_keys missing in result'))
+      Sentry.addBreadcrumb({
+        category: 'results',
+        message: 'test_keys is missing in result',
+        level: Sentry.Severity.Error
+      })
+      Sentry.captureException(e)
       return null
     }
   }

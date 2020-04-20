@@ -3,6 +3,7 @@ const { Ooniprobe } = require('./utils/ooni/ooniprobe')
 
 const log = require('electron-log')
 const debug = require('debug')('ooniprobe-desktop.main.actions')
+const Sentry = require('@sentry/electron')
 
 const hardReset = () => {
   const ooni = new Ooniprobe()
@@ -106,6 +107,11 @@ const showMeasurement = (msmtID) => {
     ooni.on('data', (data) => {
       if (data.level === 'error') {
         debug('error: ', data.message)
+        Sentry.addBreadcrumb({
+          category: 'actions',
+          message: data.message,
+          level: Sentry.Severity.Error
+        })
         reject(data.message)
         return
       }
