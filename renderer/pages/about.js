@@ -3,6 +3,10 @@ import React from 'react'
 
 import Layout from '../components/Layout'
 import FormattedMarkdownMessage from '../components/FormattedMarkdownMessage'
+import humanize from 'humanize'
+import formatSpeed from '../components/formatSpeed'
+
+import { Line as LineProgress } from 'rc-progress'
 
 import OONIHorizontalMonochromeInverted from 'ooni-components/components/svgs/logos/OONI-HorizontalMonochromeInverted.svg'
 import {
@@ -10,34 +14,52 @@ import {
   Button,
   Heading,
   Flex,
+  Text,
   Box,
-  Code
+  Code,
+  theme
 } from 'ooni-components'
-
-import { Text } from 'rebass'
 
 const { remote } = require('electron')
 const { ipcRenderer } = require('electron')
 
 import { version } from '../../package.json'
 
+
 import styled from 'styled-components'
 
-const UpdatesContainer = styled.div`
-  padding-left: 20px;
-  padding-top: 1px;
-  padding-bottom: 30px;
-  background-color: ${props => props.theme.colors.gray4};
+const UpdaterBoxContainer = styled(Flex)`
+  padding: 20px;
+  background-color: ${props => props.theme.colors.gray1};
 `
 
-const UpdateMessages = ({messages}) => {
+const UpdaterBox  = ({message, progressObj}) => {
+  let speed
+  if (progressObj.bytesPerSecond) {
+    speed = formatSpeed(progressObj.bytesPerSecond / 1000)
+  }
   return (
-    <UpdatesContainer>
-      <Heading h={3}>Auto update</Heading>
-      {messages.map((text) => (
-        <Text>{text}</Text>
-      ))}
-    </UpdatesContainer>
+    <UpdaterBoxContainer flexWrap='wrap'>
+      <Box width={1}>
+        <Text fontWeight='bold'>{message}</Text>
+      </Box>
+      {speed
+      && <Box width={1}>
+        <LineProgress
+          percent={progressObj.percent}
+          strokeColor={theme.colors.blue3}
+          strokeWidth='2'
+          trailColor={theme.colors.blue1}
+          trailWidth='2'
+        />
+      </Box>
+      }
+      {speed
+      && <Box width={1}>
+        {speed.value} {speed.unit} ({humanize.filesize(progressObj.transferred)}/{humanize.filesize(progressObj.total)})
+      </Box>
+      }
+    </UpdaterBoxContainer>
   )
 }
 
@@ -46,11 +68,18 @@ class About extends React.Component {
     super(props)
     this.state = {
       debugPaths: {},
+      progressObj: {
+        percent: 0,
+        bytesPerSecond: 0,
+        total: 0,
+        transferred: 0,
+      },
       msg: '',
-      updateMessages: []
+      updateMessage: ''
     }
     this.onReset = this.onReset.bind(this)
     this.onUpdateMessage = this.onUpdateMessage.bind(this)
+    this.onUpdateProgress = this.onUpdateProgress.bind(this)
   }
 
   onReset() {
@@ -67,6 +96,11 @@ class About extends React.Component {
       updateMessages: [...this.state.updateMessages, text]
     })
   }
+  onUpdateProgress(event, progressObj) {
+    this.setState({
+      progressObj: progressObj
+    })
+  }
 
   componentDidMount() {
     const paths = remote.require('./utils/paths')
@@ -74,17 +108,20 @@ class About extends React.Component {
       debugPaths: paths.debugGetAllPaths()
     })
     ipcRenderer.on('update-message', this.onUpdateMessage)
+    ipcRenderer.on('update-progress', this.onUpdateProgress)
 
   }
   componentWillUnmount() {
     ipcRenderer.removeListener('update-message', this.onUpdateMessage)
+    ipcRenderer.removeListener('update-progress', this.onUpdateProgress)
   }
 
   render() {
     const {
       debugPaths,
       msg,
-      updateMessages
+      updateMessage,
+      progressObj
     } = this.state
 
     return (
@@ -98,8 +135,8 @@ class About extends React.Component {
           </Box>
         </Flex>
         <Container>
-          {updateMessages.length > 0
-          && <UpdateMessages messages={updateMessages} />}
+          {updateMessage.length > 0
+          && <UpdaterBox message={updateMessage} progressObj={progressObj} />}
 
           <Text>
             <FormattedMarkdownMessage id='Settings.About.Content.Paragraph' />

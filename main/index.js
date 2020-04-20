@@ -114,10 +114,16 @@ function sendStatusToWindow(text) {
   aboutWindow.webContents.send('update-message', text)
 }
 
+function sendUpdaterProgress(progressObj) {
+  const aboutWindow = openAboutWindow()
+  aboutWindow.webContents.send('update-progress', progressObj)
+}
+
 autoUpdater.on('checking-for-update', () => {
   sendStatusToWindow('Checking for update...')
 })
 autoUpdater.on('update-available', () => {
+  openAboutWindow(true)
   sendStatusToWindow('Update available.')
 })
 autoUpdater.on('update-not-available', () => {
@@ -131,11 +137,7 @@ autoUpdater.on('error', err => {
   })
 })
 autoUpdater.on('download-progress', progressObj => {
-  let log_message = 'Download speed: ' + progressObj.bytesPerSecond
-  log_message = log_message + ' - Downloaded ' + progressObj.percent + '%'
-  log_message =
-    log_message + ' (' + progressObj.transferred + '/' + progressObj.total + ')'
-  sendStatusToWindow(log_message)
+  sendUpdaterProgress(progressObj)
 })
 autoUpdater.on('update-downloaded', () => {
   sendStatusToWindow('Update downloaded. Quitting and installing.')
