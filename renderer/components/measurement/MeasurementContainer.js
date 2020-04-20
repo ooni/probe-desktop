@@ -14,6 +14,7 @@ import { Tick } from 'ooni-components/dist/icons'
 import { MdPriorityHigh } from 'react-icons/md'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
+import electron from 'electron'
 
 import { tests } from '../nettests'
 import BackButton from '../BackButton'
@@ -153,6 +154,8 @@ const MeasurementContainer = ({ measurement, isAnomaly }) => {
   const [rawDataOpen, setRawDataOpen] = useState(false)
   const { rawData } = useRawData()
   const router = useRouter()
+  const remote = electron.remote
+
   // anomaly-ness based backgaround color, in case nettest doesn't send
   // an override in `heroBG`
   const backgroundColor = isAnomaly ? colorMap.anomaly : colorMap.reachable
@@ -216,11 +219,9 @@ const MeasurementContainer = ({ measurement, isAnomaly }) => {
               <Flex my={3}>
                 <Box mr='auto'>
                   <Button onClick={() => {
-                    router.push('/raw/[msmtID]', `/raw/${measurement.id}`)
+                    const windows = remote.require('./windows')
+                    windows.openRawDataWindow(measurement.id)
                   }}>
-                    <FormattedMessage id='TestResults.Details.RawData' />
-                  </Button>
-                  <Button onClick={() => setRawDataOpen(!rawDataOpen)}>
                     <FormattedMessage id='TestResults.Details.RawData' />
                   </Button>
                 </Box>
