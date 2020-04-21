@@ -15,7 +15,9 @@ import {
   Label,
   Checkbox,
   Input,
-  Text
+  Code,
+  Text,
+  theme
 } from 'ooni-components'
 
 import { default as pkgJson } from '../../package.json'
@@ -36,7 +38,18 @@ const LocaleString = () => {
   return (
     <FormattedMessage
       id='Settings.Language.Current'
-      values={{ lang: <code>{intl.locale}</code> }}
+      values={{ lang:
+          <Code
+            px={2}
+            py={1}
+            style={{
+              borderRadius: '10px'
+            }}
+            bg={theme.colors.gray6}
+            color='white'>
+          {intl.locale}
+          </Code> 
+      }}
     />
   )
 }
