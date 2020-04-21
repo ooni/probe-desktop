@@ -16,3 +16,5 @@ export const parseTestKeys = (testKeys) => {
   }
   return parsedTestKeys
 }
+
+export const getConfigValue = (config, optionKey) => optionKey.split('.').reduce((o,i) => o[i], config)

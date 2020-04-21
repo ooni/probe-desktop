@@ -1,10 +1,11 @@
 import electron from 'electron'
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import styled from 'styled-components'
 
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
+import { getConfigValue } from '../components/utils'
 
 import {
   Flex,
@@ -14,7 +15,9 @@ import {
   Label,
   Checkbox,
   Input,
-  Text
+  Code,
+  Text,
+  theme
 } from 'ooni-components'
 
 import { default as pkgJson } from '../../package.json'
@@ -30,7 +33,26 @@ const TopBar = styled.div`
   -webkit-app-region: drag;
 `
 
-const getConfigValue = (config, optionKey) => optionKey.split('.').reduce((o,i) => o[i], config)
+const LocaleString = () => {
+  const intl = useIntl()
+  return (
+    <FormattedMessage
+      id='Settings.Language.Current'
+      values={{ lang:
+          <Code
+            px={2}
+            py={1}
+            style={{
+              borderRadius: '10px'
+            }}
+            bg={theme.colors.gray6}
+            color='white'>
+          {intl.locale}
+          </Code> 
+      }}
+    />
+  )
+}
 
 class BooleanOption extends React.Component {
   constructor(props) {
@@ -72,7 +94,7 @@ class BooleanOption extends React.Component {
 
     const checked = getConfigValue(config, optionKey)
     return (
-      <Label>
+      <Label my={2}>
         <Checkbox checked={checked} onChange={this.handleChange} />
         {label}
       </Label>
@@ -121,7 +143,7 @@ class NumberOption extends React.Component {
 
     const value = getConfigValue(config, optionKey)
     return (
-      <Label>
+      <Label my={2}>
         <Box width={1/16}>
           <Input
             type='number'
@@ -178,36 +200,45 @@ class Settings extends React.Component {
             </TopBar>
             <Container pt={3}>
               <Heading h={4}><FormattedMessage id='Settings.Sharing.Label' /></Heading>
-              <BooleanOption
-                onConfigSet={this.reloadConfig}
-                label={<FormattedMessage id='Settings.Sharing.UploadResults' />}
-                optionKey='sharing.upload_results'
-                config={config} />
+              <Flex flexDirection='column'>
 
-              <BooleanOption
-                onConfigSet={this.reloadConfig}
-                label={<FormattedMessage id='Settings.Sharing.IncludeNetwork' />}
-                optionKey='sharing.include_asn'
-                config={config} />
+                <BooleanOption
+                  onConfigSet={this.reloadConfig}
+                  label={<FormattedMessage id='Settings.Sharing.UploadResults' />}
+                  optionKey='sharing.upload_results'
+                  config={config}
+                />
 
-              <BooleanOption
-                onConfigSet={this.reloadConfig}
-                label={<FormattedMessage id='Settings.Sharing.IncludeCountryCode' />}
-                optionKey='sharing.include_country'
-                config={config} />
+                <BooleanOption
+                  onConfigSet={this.reloadConfig}
+                  label={<FormattedMessage id='Settings.Sharing.IncludeNetwork' />}
+                  optionKey='sharing.include_asn'
+                  config={config}
+                />
 
-              <BooleanOption
-                onConfigSet={this.reloadConfig}
-                label={<FormattedMessage id='Settings.Sharing.IncludeIP' />}
-                optionKey='sharing.include_ip'
-                config={config} />
+                <BooleanOption
+                  onConfigSet={this.reloadConfig}
+                  label={<FormattedMessage id='Settings.Sharing.IncludeIP' />}
+                  optionKey='sharing.include_ip'
+                  config={config} />
 
-              <NumberOption
-                onConfigSet={this.reloadConfig}
-                label={<Text>Websites tested (0 means all)</Text>}
-                optionKey='nettests.websites_url_limit'
-                config={config} />
-              <Text pt={3}>OONI Probe Desktop v{pkgJson.version}</Text>
+                <NumberOption
+                  onConfigSet={this.reloadConfig}
+                  label={<FormattedMessage id='Settings.Websites.TestCount' />}
+                  optionKey='nettests.websites_url_limit'
+                  config={config}
+                />
+
+                <BooleanOption
+                  onConfigSet={this.reloadConfig}
+                  label={<FormattedMessage id='Settings.Advanced.CollectAnalytics' />}
+                  optionKey='advanced.collect_usage_stats'
+                  config={config}
+                />
+
+              </Flex>
+              <Text my={3}><LocaleString /></Text>
+              <Text my={3}>OONI Probe Desktop v{pkgJson.version}</Text>
             </Container>
           </Box>
         </Sidebar>
