@@ -1,23 +1,19 @@
 import React from 'react'
-
 import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
-
 import moment from 'moment'
-
 import {
   theme,
   Box,
   Flex,
   Text
 } from 'ooni-components'
-
 import Link from 'next/link'
-
 import { MdWeb, MdDone, MdClear, MdWarning } from 'react-icons/md'
+import * as Sentry from '@sentry/electron'
+
 import { testGroups } from '../nettests'
 import RightArrow from '../RightArrow'
-
 import UploadSpeed from '../UploadSpeed'
 import DownloadSpeed from '../DownloadSpeed'
 import VideoQuality from '../VideoQuality'
@@ -44,16 +40,6 @@ const RightArrowStyled = styled(RightArrow)`
     color: ${props => props.theme.colors.gray6};
   }
 `
-
-const VerticalCenter = ({children}) => {
-  return (
-    <Flex justifyContent='center' alignItems='center' style={{height: '100%'}}>
-      <Box>
-        {children}
-      </Box>
-    </Flex>
-  )
-}
 
 const SummaryContainer = styled(Flex)`
   height: 100%;
@@ -167,35 +153,45 @@ const summaryMap = {
 
 
 class ResultRow extends React.Component {
+  //TODO This can be easily converted into a funcitonal component
+  // with useMemo hooks. Gotta figure out how exception handling works then.
   constructor (props) {
     super(props)
   }
 
   renderIcon() {
-    const { name } = this.props
-
-    const group = testGroups[name]
-
-    return (
-      <Flex alignItems='center'>
-        <Box width={1/8}>
-          <ColorCode color={group.color} />
-        </Box>
-        <Box width={7/8}>
-          <Flex>
-            <Box pr={2}>
-              {React.cloneElement(
-                group.icon,
-                {size: 20, color: group.color}
-              )}
-            </Box>
-            <Box>
-              <Text color={group.color} bold>{group.name}</Text>
-            </Box>
-          </Flex>
-        </Box>
-      </Flex>
-    )
+    try {
+      const { name } = this.props
+      const group = testGroups[name]
+      return (
+        <Flex alignItems='center'>
+          <Box width={1/8}>
+            <ColorCode color={group.color} />
+          </Box>
+          <Box width={7/8}>
+            <Flex>
+              <Box pr={2}>
+                {React.cloneElement(
+                  group.icon,
+                  {size: 20, color: group.color}
+                )}
+              </Box>
+              <Box>
+                <Text color={group.color} bold>{group.name}</Text>
+              </Box>
+            </Flex>
+          </Box>
+        </Flex>
+      )
+    } catch (e) {
+      Sentry.addBreadcrumb({
+        category: 'results',
+        message: 'name key is missing in result',
+        level: Sentry.Severity.Error
+      })
+      Sentry.captureException(e)
+      return null
+    }
   }
 
   renderNetwork() {
@@ -207,44 +203,68 @@ class ResultRow extends React.Component {
 
     return (
       <Flex flexDirection='column'>
-        <Text fontWeight='bold'>{network_name}</Text>
-        <Text>AS{asn} ({network_country_code})</Text>
+        {network_name && (
+          <Text fontWeight='bold'>{network_name}</Text>
+        )}
+        <Text>{asn && `AS${asn}`} {network_country_code && `(${network_country_code})`}</Text>
       </Flex>
     )
   }
 
   renderDate() {
-    const {
-      start_time
-    } = this.props
-
-    return (
-      <Flex flexDirection='column' alignItems='center'>
-        <Text>{moment(start_time).format('HH:mm Do MMM')}</Text>
-      </Flex>
-    )
-  }
-  renderTestKeys() {
-    const {
-      name,
-      test_keys,
-      measurement_anomaly_count,
-      measurement_count,
-      is_done
-    } = this.props
-
-    const testKeys = JSON.parse(test_keys)
-    let SummaryElement = SummaryError
-    if (!is_done) {
-      SummaryElement = SummaryIncomplete
-    } else if (testKeys != null) {
-      SummaryElement = summaryMap[name]
+    try {
+      const {
+        start_time
+      } = this.props
+      return (
+        <Flex flexDirection='column' alignItems='center'>
+          <Text>{moment(start_time).format('HH:mm Do MMM')}</Text>
+        </Flex>
+      )
+    } catch (e) {
+      Sentry.addBreadcrumb({
+        category: 'results',
+        message: 'date key is missing in result',
+        level: Sentry.Severity.Error
+      })
+      Sentry.captureException(e)
+      return null
     }
+  }
 
-    return <SummaryElement
-      testKeys={testKeys}
-      anomalyCount={measurement_anomaly_count}
-      totalCount={measurement_count} />
+  renderTestKeys() {
+    try {
+      const {
+        name,
+        test_keys,
+        measurement_anomaly_count,
+        measurement_count,
+        is_done
+      } = this.props
+      const testKeys = JSON.parse(test_keys)
+      let SummaryElement = SummaryError
+      if (!is_done) {
+        SummaryElement = SummaryIncomplete
+      } else if (testKeys != null) {
+        SummaryElement = summaryMap[name]
+      }
+
+      return (
+        <SummaryElement
+          testKeys={testKeys}
+          anomalyCount={measurement_anomaly_count}
+          totalCount={measurement_count}
+        />
+      )
+    } catch (e) {
+      Sentry.addBreadcrumb({
+        category: 'results',
+        message: 'test_keys is missing in result',
+        level: Sentry.Severity.Error
+      })
+      Sentry.captureException(e)
+      return null
+    }
   }
 
   render() {
