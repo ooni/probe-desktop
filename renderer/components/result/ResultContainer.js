@@ -22,8 +22,7 @@ import {
   Text,
   Container,
   Flex,
-  Box,
-  Divider
+  Box
 } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 
@@ -117,13 +116,14 @@ const ResultOverview = ({
       </Flex>
       <Container style={{padding: '20px 60px'}}>
 
+        <Box pb={4}>
         <StatsOverview
           name={groupName}
           testKeys={testKeys}
           anomalyCount={anomalyCount}
           totalCount={totalCount}
         />
-        <Divider mt={4} mb={4} />
+        </Box>
 
         <TwoColumnTable
           left={
