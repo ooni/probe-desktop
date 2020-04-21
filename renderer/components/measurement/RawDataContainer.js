@@ -37,6 +37,12 @@ const StyledCloseButton = styled(MdClose)`
   cursor: pointer;
 `
 
+const StickyBox = styled(Box)`
+  position: sticky;
+  top: 0px;
+  z-index: 1;
+`
+
 const RawDataContainer = ({ rawData, isOpen, onClose }) => {
 
   const props = useSpring({
@@ -93,7 +99,7 @@ const RawDataContainer = ({ rawData, isOpen, onClose }) => {
   return (
     <AnimatedWrapper style={props}>
       <Flex flexDirection='column' flexWrap='wrap'>
-        <Box width={1} mb={2}>
+        <StickyBox width={1} mb={2}>
           <Flex justifyContent='space-between' alignItems='center' bg='gray3'>
             <Box mx={3}>
               <Heading h={3}>
@@ -104,7 +110,7 @@ const RawDataContainer = ({ rawData, isOpen, onClose }) => {
               <StyledCloseButton size={20} onClick={() => onClose()} />
             </Box>
           </Flex>
-        </Box>
+        </StickyBox>
         <Box width={1}>
           <StyledReactJsonContainer>
             <JsonViewer src={rawData} />

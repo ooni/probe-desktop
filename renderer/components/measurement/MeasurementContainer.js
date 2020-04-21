@@ -215,11 +215,6 @@ const MeasurementContainer = ({ measurement, isAnomaly }) => {
               </FullHeightFlex>
               <Flex my={3}>
                 <Box mr='auto'>
-                  <Button onClick={() => {
-                    router.push('/raw/[msmtID]', `/raw/${measurement.id}`)
-                  }}>
-                    <FormattedMessage id='TestResults.Details.RawData' />
-                  </Button>
                   <Button onClick={() => setRawDataOpen(!rawDataOpen)}>
                     <FormattedMessage id='TestResults.Details.RawData' />
                   </Button>
