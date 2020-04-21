@@ -18,7 +18,7 @@
     "pack:mac": "yarn run build && electron-builder --mac",
     "pack:linux": "yarn run build && electron-builder --linux",
     "probe-cli": "node scripts/download-bin.js",
-    "publish": "yarn run build && electron-builder --mac --win --linux -p always",
+    "publish": "yarn run build && electron-builder --mac --win -p always",
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
     "lint": "eslint --ignore-path .gitignore .",
     "test": "cross-env NODE_ENV=test jest --runInBand",
@@ -37,7 +37,9 @@
     ],
     "linux": {
       "target": [
-        "AppImage"
+        "deb",
+        "rpm",
+        "tar.gz"
       ],
       "category": "Network",
       "extraFiles": [
@@ -45,8 +47,7 @@
           "from": "./build/probe-cli/linux_amd64/ooniprobe",
           "to": "./resources/bin/ooniprobe"
         }
-      ],
-      "icon": "main/static/icons/app.icns"
+      ]
     },
     "win": {
       "publish": [
