@@ -1,9 +1,8 @@
 /* global require, module */
 //const withProgressBar = require('next-progressbar')
 const withSourceMaps = require('@zeit/next-source-maps')
-const withCSS = require('@zeit/next-css')
 
-module.exports = withSourceMaps(withCSS({
+module.exports = withSourceMaps({
   webpack: (config, options) => {
     config.target = 'electron-renderer'
 
@@ -34,10 +33,10 @@ module.exports = withSourceMaps(withCSS({
       '/about': { page: '/about' },
       '/home': { page: '/home' },
       '/test-results': { page: '/test-results' },
-      '/result': { page: '/result', query: { resultID: null } },
-      '/measurement': { page: '/measurement', query: { resultID: null, measurementID: null } },
+      '/result': { page: '/result' },
+      '/measurement': { page: '/measurement' },
       '/settings': { page: '/settings' },
       '/onboard': { page: '/onboard' }
     }
   }
-}))
+})

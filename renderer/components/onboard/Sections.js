@@ -105,7 +105,7 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
       </Box>
       <Box mt={3} mx='auto'>
         <NLink href='https://ooni.org/about/risks/' passHref>
-          <ExternalLink color='white'>Learn More</ExternalLink>
+          <ExternalLink color='gray3'>Learn More</ExternalLink>
         </NLink>
       </Box>
     </Flex>
@@ -128,9 +128,7 @@ const SectionWhatIsOONI = ({onNext}) => (
       </Heading>
     </Box>
     <Box width={1/2} my={3} px={4} mx='auto'>
-      <Text>
-        <FormattedMarkdownMessage id="Onboarding.WhatIsOONIProbe.Paragraph" />
-      </Text>
+      <FormattedMarkdownMessage id="Onboarding.WhatIsOONIProbe.Paragraph" />
     </Box>
     <Box mx='auto'>
       <Button inverted onClick={onNext}>

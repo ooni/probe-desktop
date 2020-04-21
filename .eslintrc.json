@@ -1,40 +1,38 @@
 {
-    "env": {
-        "browser": true,
-        "es6": true
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:jest/recommended",
+    "plugin:jest/style"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "jsx": true
     },
-    "extends": [
-      "eslint:recommended",
-      "plugin:react/recommended"
-    ],
-    "parserOptions": {
-        "ecmaFeatures": {
-            "experimentalObjectRestSpread": true,
-            "jsx": true
-        },
-        "ecmaVersion": "2017",
-        "sourceType": "module"
+    "ecmaVersion": "2017",
+    "sourceType": "module"
+  },
+  "plugins": ["react", "jest"],
+  "rules": {
+    "indent": ["error", 2],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "never"],
+    "react/prop-types": ["warn"]
+  },
+  "overrides": [
+    {
+      "files": ["test/**/*.js"],
+      "env": { "jest/globals": true }
     },
-    "plugins": [
-        "react"
-    ],
-    "rules": {
-        "indent": [
-            "error",
-            2
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "never"
-        ],
-        "react/prop-types": ["warn"]
+    {
+      "files": ["renderer/**/*.js"],
+      "env": { "browser": true }
     }
+  ]
 }

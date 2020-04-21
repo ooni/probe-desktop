@@ -24,30 +24,23 @@ import {
 } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 
-import StatBox from '../to-migrate/StatBox'
+import StatBox, { LabelBox } from '../to-migrate/StatBox'
 import VerticalDivider from '../to-migrate/VerticalDivider'
 
-const LabelBox= styled(Box)`
-  font-size: 12px;
-  text-align: center;
-`
-
-const DataUsage = ({dataUsage}) => {
+const DataUsage = ({ dataUsage }) => {
   return (
-    <Flex flexDirection='column'>
+    <Flex flexDirection='column' alignItems='center'>
       <LabelBox>
         <FormattedMessage id='TestResults.Overview.Hero.DataUsage' />
       </LabelBox>
-      <Box>
-        <Flex>
-          <Box width={1/2}>
-            <HumanFilesize icon={<MdArrowUpward size={20}/>} size={dataUsage.up*1024} />
-          </Box>
-          <Box width={1/2}>
-            <HumanFilesize icon={<MdArrowDownward size={20} />} size={dataUsage.down*1024} />
-          </Box>
-        </Flex>
-      </Box>
+      <Flex flexDirection='column'>
+        <Box>
+          <HumanFilesize fontSize={26} icon={<MdArrowUpward size={22} />} size={dataUsage.up*1024} />
+        </Box>
+        <Box>
+          <HumanFilesize fontSize={26} icon={<MdArrowDownward size={22} />} size={dataUsage.down*1024} />
+        </Box>
+      </Flex>
     </Flex>
   )
 }
@@ -161,10 +154,15 @@ const TestResultsContainer = ({results}) => {
     networkCount,
     dataUsageUp,
     dataUsageDown,
-    rows
+    rows,
+    errors,
   } = results
 
-  const byMonth = groupRowsByMonth(rows)
+  // We try to add rows which were reported as errors by probe-cli into
+  // the results. Missing fields are handled in `ResultRow`
+  const fullRows = rows.concat(errors)
+
+  const byMonth = groupRowsByMonth(fullRows)
 
   return (
     <FullWidth>
@@ -191,7 +189,8 @@ TestResultsContainer.propTypes = {
     networkCount: PropTypes.number,
     dataUsageUp: PropTypes.number,
     dataUsageDown: PropTypes.number,
-    rows: PropTypes.arrayOf(PropTypes.object)
+    rows: PropTypes.arrayOf(PropTypes.object),
+    errors: PropTypes.arrayOf(PropTypes.object)
   })
 }
 

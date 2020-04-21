@@ -1,31 +1,22 @@
 /* global require */
 import React from 'react'
-
 import styled from 'styled-components'
-
 import {
   Flex,
   Box,
   Heading,
   Text,
   Container,
-  Button,
   theme
 } from 'ooni-components'
-
-import { MdClear } from 'react-icons/md'
 import { Line as LineProgress } from 'rc-progress'
 import { FormattedMessage, useIntl } from 'react-intl'
-
-import { testGroups } from '../nettests'
-
-import { MdKeyboardArrowUp, MdKeyboardArrowDown} from 'react-icons/md'
-
+import { MdClear, MdKeyboardArrowUp, MdKeyboardArrowDown} from 'react-icons/md'
 import Lottie from 'react-lottie'
-
 import moment from 'moment'
 
-const debug = require('debug')('ooniprobe-desktop.renderer.components.home.running')
+import { testGroups } from '../nettests'
+import { StripedProgress } from './StripedProgress'
 
 const StyledRunningTest = styled.div`
   text-align: center;
@@ -61,7 +52,6 @@ const ToggleButtonContainer = styled(Flex)`
   }
 `
 
-
 const ToggleLogButton = ({open, onClick}) => {
   if (open) {
     return <ToggleButtonContainer onClick={onClick}>
@@ -92,18 +82,18 @@ const CodeLog = ({lines}) => {
 }
 
 const LogContainer = styled.div`
-position: absolute;
-bottom: 0;
-left: 0;
-width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 `
 
-const Log = ({lines, onToggleLog, open}) => {
-  return <LogContainer>
+const Log = ({lines, onToggleLog, open}) => (
+  <LogContainer>
     <ToggleLogButton onClick={onToggleLog} open={open} />
     {open && <CodeLog lines={lines} />}
   </LogContainer>
-}
+)
 
 const CloseButtonContainer = styled.div`
   color: white;
@@ -115,7 +105,19 @@ const CloseButtonContainer = styled.div`
 `
 
 //name, icon, color, description, longDescription, onClickClose, active
-const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, logLines, runningTestName, error, eta, onKill}) => {
+const RunningTest = ({
+  testGroup,
+  logOpen,
+  onToggleLog,
+  progressLine,
+  percent,
+  logLines,
+  runningTestName,
+  error,
+  eta,
+  onKill,
+  stopping
+}) => {
   const lottieOptions = {
     loop: true,
     autoplay: true,
@@ -134,46 +136,69 @@ const RunningTest = ({testGroup, logOpen, onToggleLog, progressLine, percent, lo
 
   return <StyledRunningTest>
     <Container>
-      <CloseButtonContainer>
-        <MdClear onClick={onKill} size={30} />
-      </CloseButtonContainer>
+      {stopping || (
+        <CloseButtonContainer>
+          <MdClear onClick={onKill} size={30} />
+        </CloseButtonContainer>
+      )}
       <Heading h={2}>{testGroup.name}</Heading>
       <Heading h={3}>
-        <FormattedMessage
-          id='Dashboard.Running.Running'
-          values={{
-            TestName
-          }}
-        />
+        {stopping ? (
+          <FormattedMessage
+            id='Dashboard.Running.Stopping.Title'
+            values={{
+              TestName
+            }}
+          />
+        ):(
+          <FormattedMessage
+            id='Dashboard.Running.Running'
+            values={{
+              TestName
+            }}
+          />
+        )}
       </Heading>
-      {!logOpen && lottieOptions.animationData
-        && <Lottie
+      {!logOpen && lottieOptions.animationData && (
+        <Lottie
           width={300}
           height={300}
           options={lottieOptions}
-        />}
+          isPaused={stopping}
+        />
+      )}
       {
+        // Show the group logo when animation not available
         !lottieOptions.animationData &&
         React.cloneElement(testGroup.icon, {size: 300})
       }
-      <LineProgress
-        percent={percent*100}
-        strokeColor={theme.colors.white}
-        strokeWidth='2'
-        trailColor='rgba(255,255,255,0.4)'
-        trailWidth='2'
-      />
+      {!stopping ? (
+        <LineProgress
+          percent={percent*100}
+          strokeColor={theme.colors.white}
+          strokeWidth='2'
+          trailColor='rgba(255,255,255,0.4)'
+          trailWidth='2'
+        />
+      ) : (
+        <StripedProgress />
+      )}
+      {stopping && (
+        <Text my={2}>
+          <FormattedMessage id='Dashboard.Running.Notice.Stopping' />
+        </Text>
+      )}
       {eta > 0 &&
-      <Flex justifyContent='center'>
-        <Box pr={1}>
-          <FormattedMessage id='Dashboard.Running.EstimatedTimeLeft' />
-        </Box>
-        <Box>
-          {moment.duration(eta*1000).locale(locale).humanize()}
-        </Box>
-      </Flex>
+        <Flex justifyContent='center'>
+          <Box pr={1}>
+            <FormattedMessage id='Dashboard.Running.EstimatedTimeLeft' />
+          </Box>
+          <Box>
+            {moment.duration(eta*1000).locale(locale).humanize()}
+          </Box>
+        </Flex>
       }
-      <Text>{progressLine}</Text>
+      {progressLine && <Text>{progressLine}</Text>}
     </Container>
 
     <Log lines={logLines} onToggleLog={onToggleLog} open={logOpen} />
@@ -230,7 +255,8 @@ class Running extends React.Component {
       logLines,
       eta,
       error,
-      onKill
+      onKill,
+      stopping
     } = this.props
 
     const {
@@ -251,6 +277,7 @@ class Running extends React.Component {
           testGroup={testGroup}
           logOpen={logOpen}
           onKill={onKill}
+          stopping={stopping}
           onToggleLog={this.onToggleLog}
           eta={eta}
         />

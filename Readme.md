@@ -5,7 +5,7 @@ This is the desktop implementation of OONI Probe.
 Our two primary target platforms are:
 
 - macOS
-- Windows > 7 (we may also support older versions, but not as primary tagets)
+- Windows > 7 (we may also support older versions, but not as primary targets)
 
 Moreover, since it's written in electron, we plan on also supporting Linux desktop users.
 
@@ -37,6 +37,12 @@ To build and run a development mode electron instance run:
 ```
 yarn run start
 ```
+
+To update the translations:
+* Save the strings from the canonical spreadsheet into `data/lang-en.csv`
+* Run `$ node scripts/update-translations.js`
+* Commit `data/lang-en.csv`, `lang/en.json` and `renderer/static/translations.js`
+into git
 
 To create a signed packaged app you will need to have configured the following
 environment variables:

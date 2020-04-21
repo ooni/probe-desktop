@@ -7,7 +7,7 @@ import {
   Box
 } from 'ooni-components'
 
-const LabelBox= styled(Box)`
+export const LabelBox= styled(Box)`
   font-size: 12px;
   text-align: center;
 `
@@ -19,7 +19,7 @@ const ValueBox = styled(Box)`
 `
 
 const StatBox = ({value, label, unit}) => (
-  <Flex flexDirection='column'>
+  <Flex flexDirection='column' justifyContent='space-around' style={{ height: '100%' }}>
     {label && <LabelBox>
       {label}
     </LabelBox>}

@@ -13,15 +13,17 @@ const aboutWindow = () => {
     //titleBarStyle: 'hidden-inset',
     show: false,
     backgroundColor: '#fff',
-    webPreferences: {}
+    webPreferences: {
+      nodeIntegration: true
+    }
   })
 
   win.loadURL(windowURL('about'))
   return win
 }
 
-const openAboutWindow = () => {
-  if (window !== null) {
+const openAboutWindow = (getFocus) => {
+  if (window !== null && getFocus) {
     window.focus()
     return window
   }

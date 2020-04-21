@@ -13,9 +13,10 @@ import { FormattedMessage } from 'react-intl'
 import { Tick } from 'ooni-components/dist/icons'
 import { MdPriorityHigh } from 'react-icons/md'
 import styled from 'styled-components'
+import { useRouter } from 'next/router'
+
 import { tests } from '../nettests'
 import BackButton from '../BackButton'
-
 import { WebConnectivity } from '../nettests/websites/WebConnectivity'
 import { HttpHeaderFieldManipulation } from '../nettests/middleboxes/HttpHeaderFieldManipulation'
 import { HttpInvalidRequestLine } from '../nettests/middleboxes/HttpInvalidRequestLine'
@@ -31,6 +32,7 @@ import FullHeightFlex from '../FullHeightFlex'
 import MethodologyButton from './MethodologyButton'
 import ExplorerURLButton from './ExplorerURLButton'
 import RawDataContainer from './RawDataContainer'
+import { useRawData } from '../useRawData'
 import colorMap from '../colorMap'
 
 const detailsMap = {
@@ -141,7 +143,7 @@ MeasurementDetailContainer.propTypes = {
   measurement: PropTypes.object
 }
 
-const MeasurementContainer = ({measurement, isAnomaly, rawData}) => {
+const MeasurementContainer = ({ measurement, isAnomaly }) => {
   const testName = measurement.test_name
   const startTime = measurement.start_time
   const networkName = measurement.network_name
@@ -149,7 +151,8 @@ const MeasurementContainer = ({measurement, isAnomaly, rawData}) => {
   const runtime = measurement.runtime
 
   const [rawDataOpen, setRawDataOpen] = useState(false)
-
+  const { rawData } = useRawData()
+  const router = useRouter()
   // anomaly-ness based backgaround color, in case nettest doesn't send
   // an override in `heroBG`
   const backgroundColor = isAnomaly ? colorMap.anomaly : colorMap.reachable

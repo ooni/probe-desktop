@@ -85,7 +85,6 @@ class Measurement extends React.Component {
 
   componentDidMount() {
     this.loadData()
-    this.loadRawData()
   }
 
   componentDidUpdate(prevProps) {

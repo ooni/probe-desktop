@@ -3,8 +3,8 @@
   "description": "OONI Probe Desktop app",
   "author": "Open Observatory of Network Interference (OONI) <contact@openobservatory.org>",
   "productName": "OONI Probe",
-  "version": "3.0.0-rc.5",
-  "probeVersion": "3.0.0-rc.10",
+  "version": "3.0.0-rc.7",
+  "probeVersion": "3.0.0-rc.13",
   "main": "main/index.js",
   "license": "MIT",
   "repository": "ooni/probe-desktop",
@@ -21,7 +21,7 @@
     "publish": "yarn run build && electron-builder --mac --win -p always",
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
     "lint": "eslint --ignore-path .gitignore .",
-    "test": "yarn run build",
+    "test": "cross-env NODE_ENV=test jest --runInBand",
     "postinstall": "electron-builder install-app-deps",
     "storybook": "start-storybook -p 6006"
   },
@@ -44,7 +44,7 @@
       "category": "Network",
       "extraFiles": [
         {
-          "from": "./bin/linux_amd64/ooniprobe",
+          "from": "./build/probe-cli/linux_amd64/ooniprobe",
           "to": "./resources/bin/ooniprobe"
         }
       ]
@@ -108,20 +108,23 @@
     "babel-plugin-react-intl": "^2.4.0",
     "babel-plugin-styled-components": "1.10.6",
     "chroma-js": "^2.0.6",
+    "cross-env": "^7.0.2",
     "csv-parse": "^4.4.6",
-    "electron": "3.0.1",
+    "electron": "^8.2.1",
     "electron-builder": "21.2.0",
     "electron-devtools-installer": "^2.2.4",
     "electron-notarize": "0.1.1",
     "eslint": "^4.19.1",
+    "eslint-plugin-jest": "^23.8.2",
     "eslint-plugin-react": "^7.14.3",
     "humanize": "^0.0.9",
     "icon-gen": "^2.0.0",
+    "jest": "^25.3.0",
     "moment": "^2.24.0",
     "moment-range": "^4.0.2",
-    "next": "9.0.5",
+    "next": "9.3.2",
     "next-progressbar": "^1.0.0",
-    "ooni-components": "0.3.0",
+    "ooni-components": "0.3.2",
     "prop-types": "15.7.2",
     "raven-js": "^3.27.2",
     "rc-progress": "^2.5.2",
@@ -133,6 +136,7 @@
     "react-lottie": "^1.2.3",
     "remark": "^11.0.1",
     "remark-react": "^6.0.0",
+    "spectron": "^10.0.1",
     "styled-components": "^4.4.1",
     "webpack": "4.40.2"
   },
@@ -159,6 +163,7 @@
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.15",
     "ms": "^2.1.2",
+    "os-locale": "^5.0.0",
     "react-json-view": "1.19.1",
     "react-spring": "^8.0.27",
     "react-sticky": "^6.0.3",
@@ -176,9 +181,23 @@
     "js-yaml": "3.13.1",
     "lodash": "^4.17.15",
     "rebass": "2.3.3",
+    "lottie-web": "5.6.6",
     "serialize-javascript": "^2.1.1",
     "set-value": "^2.0.1",
-    "styled-components": "3.4.10",
+    "styled-components": "^4.4.1",
     "styled-system": "3.1.6"
+  },
+  "jest": {
+    "verbose": true,
+    "roots": [
+      "<rootDir>/test"
+    ],
+    "testMatch": [
+      "**/test/**/*.e2e.js"
+    ],
+    "setupFiles": [
+      "<rootDir>/test/lib/setup.js"
+    ],
+    "testSequencer": "<rootDir>/test/lib/sequencer.js"
   }
 }

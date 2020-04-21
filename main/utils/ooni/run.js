@@ -26,8 +26,8 @@ class Runner {
         return
       }
 
-      switch(data.fields.type) {
-      case 'progress':
+      let logMessage = data.message
+      if (data.fields.type == 'progress') {
         windows.main.send('ooni', {
           key: 'ooni.run.progress',
           percentage: data.fields.percentage,
@@ -35,13 +35,12 @@ class Runner {
           message: data.message,
           testKey: data.fields.key,
         })
-        break
-      default:
-        windows.main.send('ooni', {
-          key: 'log',
-          value: data.message
-        })
+        logMessage = `${data.fields.percentage}% - ${data.message}`
       }
+      windows.main.send('ooni', {
+        key: 'log',
+        value: logMessage
+      })
     })
     log.info('Runner: calling run', testGroupName)
     return this.ooni.call(['run', testGroupName])
