@@ -146,7 +146,11 @@ autoUpdater.on('update-downloaded', () => {
 
 // Prepare the renderer once the app is ready
 app.on('ready', async () => {
-  autoUpdater.checkForUpdatesAndNotify()
+
+  // Auto update is not yet available for Linux
+  if (process.platform === 'darwin' || process.platform === 'win32') {
+    autoUpdater.checkForUpdatesAndNotify()
+  }
 
   let config
   try {
