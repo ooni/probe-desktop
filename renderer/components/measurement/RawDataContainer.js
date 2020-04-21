@@ -84,15 +84,24 @@ const RawDataContainer = ({ rawData, isOpen, onClose }) => {
     }
   })
 
+  const onClick = useCallback((event) => {
+    if (event.target.dataset.id === 'sidebar') {
+      onClose()
+    }
+  })
+
   useEffect(() => {
     if (isOpen) {
       document.addEventListener('keydown', onEscape)
+      document.addEventListener('click', onClick)
     } else {
       document.removeEventListener('keydown', onEscape)
+      document.removeEventListener('click', onClick)
     }
 
     return () => {
       document.removeEventListener('keydown', onEscape)
+      document.removeEventListener('click', onClick)
     }
   }, [isOpen])
 

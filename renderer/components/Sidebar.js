@@ -105,7 +105,7 @@ const StyledOONILogo = styled(OONILogo)`
 
 export const Sidebar = ({children, router}) => (
   <WindowContainer>
-    <SidebarContainer flexDirection='column' justifyContent='space-between'>
+    <SidebarContainer data-id='sidebar' flexDirection='column' justifyContent='space-between'>
       <Box>
         {Object.keys(navigationPaths).map((path, idx) => {
           const info = navigationPaths[path]
