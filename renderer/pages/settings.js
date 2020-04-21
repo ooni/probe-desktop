@@ -196,13 +196,6 @@ class Settings extends React.Component {
 
                 <BooleanOption
                   onConfigSet={this.reloadConfig}
-                  label={<FormattedMessage id='Settings.Sharing.IncludeCountryCode' />}
-                  optionKey='sharing.include_country'
-                  config={config}
-                />
-
-                <BooleanOption
-                  onConfigSet={this.reloadConfig}
                   label={<FormattedMessage id='Settings.Sharing.IncludeIP' />}
                   optionKey='sharing.include_ip'
                   config={config} />
