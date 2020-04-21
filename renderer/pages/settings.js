@@ -1,6 +1,6 @@
 import electron from 'electron'
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import styled from 'styled-components'
 
 import Layout from '../components/Layout'
@@ -31,6 +31,14 @@ const TopBar = styled.div`
   -webkit-app-region: drag;
 `
 
+const LocaleString = () => {
+  const intl = useIntl()
+  return (
+    <FormattedMessage id='Settings.Language.Current' values={{ lang: intl.locale }}
+      defaultMessage='Current language is {lang}'
+    />
+  )
+}
 
 class BooleanOption extends React.Component {
   constructor(props) {
@@ -202,19 +210,20 @@ class Settings extends React.Component {
 
                 <NumberOption
                   onConfigSet={this.reloadConfig}
-                  label={<Text>Websites tested (0 means all)</Text>}
+                  label={<FormattedMessage id='Settings.Websites.TestCount' />}
                   optionKey='nettests.websites_url_limit'
                   config={config}
                 />
 
                 <BooleanOption
                   onConfigSet={this.reloadConfig}
-                  label={<Text>Collect analytics data using Matomo</Text>}
+                  label={<FormattedMessage id='Settings.Advanced.CollectAnalytics' />}
                   optionKey='advanced.collect_usage_stats'
                   config={config}
                 />
 
               </Flex>
+              <Text my={3}><LocaleString /></Text>
               <Text my={3}>OONI Probe Desktop v{pkgJson.version}</Text>
             </Container>
           </Box>
