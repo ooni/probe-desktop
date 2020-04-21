@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
+import { getConfigValue } from '../components/utils'
 
 import {
   Flex,
@@ -29,7 +30,6 @@ const TopBar = styled.div`
   padding-bottom: 20px;
 `
 
-const getConfigValue = (config, optionKey) => optionKey.split('.').reduce((o,i) => o[i], config)
 
 class BooleanOption extends React.Component {
   constructor(props) {
@@ -71,7 +71,7 @@ class BooleanOption extends React.Component {
 
     const checked = getConfigValue(config, optionKey)
     return (
-      <Label>
+      <Label my={2}>
         <Checkbox checked={checked} onChange={this.handleChange} />
         {label}
       </Label>
@@ -120,7 +120,7 @@ class NumberOption extends React.Component {
 
     const value = getConfigValue(config, optionKey)
     return (
-      <Label>
+      <Label my={2}>
         <Box width={1/16}>
           <Input
             type='number'
@@ -177,36 +177,51 @@ class Settings extends React.Component {
             </TopBar>
             <Container pt={3}>
               <Heading h={4}><FormattedMessage id='Settings.Sharing.Label' /></Heading>
-              <BooleanOption
-                onConfigSet={this.reloadConfig}
-                label={<FormattedMessage id='Settings.Sharing.UploadResults' />}
-                optionKey='sharing.upload_results'
-                config={config} />
+              <Flex flexDirection='column'>
 
-              <BooleanOption
-                onConfigSet={this.reloadConfig}
-                label={<FormattedMessage id='Settings.Sharing.IncludeNetwork' />}
-                optionKey='sharing.include_asn'
-                config={config} />
+                <BooleanOption
+                  onConfigSet={this.reloadConfig}
+                  label={<FormattedMessage id='Settings.Sharing.UploadResults' />}
+                  optionKey='sharing.upload_results'
+                  config={config}
+                />
 
-              <BooleanOption
-                onConfigSet={this.reloadConfig}
-                label={<FormattedMessage id='Settings.Sharing.IncludeCountryCode' />}
-                optionKey='sharing.include_country'
-                config={config} />
+                <BooleanOption
+                  onConfigSet={this.reloadConfig}
+                  label={<FormattedMessage id='Settings.Sharing.IncludeNetwork' />}
+                  optionKey='sharing.include_asn'
+                  config={config}
+                />
 
-              <BooleanOption
-                onConfigSet={this.reloadConfig}
-                label={<FormattedMessage id='Settings.Sharing.IncludeIP' />}
-                optionKey='sharing.include_ip'
-                config={config} />
+                <BooleanOption
+                  onConfigSet={this.reloadConfig}
+                  label={<FormattedMessage id='Settings.Sharing.IncludeCountryCode' />}
+                  optionKey='sharing.include_country'
+                  config={config}
+                />
 
-              <NumberOption
-                onConfigSet={this.reloadConfig}
-                label={<Text>Websites tested (0 means all)</Text>}
-                optionKey='nettests.websites_url_limit'
-                config={config} />
-              <Text pt={3}>OONI Probe Desktop v{pkgJson.version}</Text>
+                <BooleanOption
+                  onConfigSet={this.reloadConfig}
+                  label={<FormattedMessage id='Settings.Sharing.IncludeIP' />}
+                  optionKey='sharing.include_ip'
+                  config={config} />
+
+                <NumberOption
+                  onConfigSet={this.reloadConfig}
+                  label={<Text>Websites tested (0 means all)</Text>}
+                  optionKey='nettests.websites_url_limit'
+                  config={config}
+                />
+
+                <BooleanOption
+                  onConfigSet={this.reloadConfig}
+                  label={<Text>Collect analytics data using Matomo</Text>}
+                  optionKey='advanced.collect_usage_stats'
+                  config={config}
+                />
+
+              </Flex>
+              <Text my={3}>OONI Probe Desktop v{pkgJson.version}</Text>
             </Container>
           </Box>
         </Sidebar>
