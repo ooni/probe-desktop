@@ -34,8 +34,9 @@ const TopBar = styled.div`
 const LocaleString = () => {
   const intl = useIntl()
   return (
-    <FormattedMessage id='Settings.Language.Current' values={{ lang: intl.locale }}
-      defaultMessage='Current language is {lang}'
+    <FormattedMessage
+      id='Settings.Language.Current'
+      values={{ lang: <code>{intl.locale}</code> }}
     />
   )
 }
