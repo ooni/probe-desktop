@@ -13,9 +13,10 @@ import { FormattedMessage } from 'react-intl'
 import { Tick } from 'ooni-components/dist/icons'
 import { MdPriorityHigh } from 'react-icons/md'
 import styled from 'styled-components'
+import { useRouter } from 'next/router'
+
 import { tests } from '../nettests'
 import BackButton from '../BackButton'
-
 import { WebConnectivity } from '../nettests/websites/WebConnectivity'
 import { HttpHeaderFieldManipulation } from '../nettests/middleboxes/HttpHeaderFieldManipulation'
 import { HttpInvalidRequestLine } from '../nettests/middleboxes/HttpInvalidRequestLine'
@@ -151,7 +152,7 @@ const MeasurementContainer = ({ measurement, isAnomaly }) => {
 
   const [rawDataOpen, setRawDataOpen] = useState(false)
   const { rawData } = useRawData()
-
+  const router = useRouter()
   // anomaly-ness based backgaround color, in case nettest doesn't send
   // an override in `heroBG`
   const backgroundColor = isAnomaly ? colorMap.anomaly : colorMap.reachable

@@ -8,7 +8,7 @@ import { FormattedMessage } from 'react-intl'
 
 // Elevating with zIndex because <Button> has zIndex:1 for some reason
 const StyledWrapper = styled(Fixed)`
-  height: 70vh;
+  height: 100vh;
   overflow-x: hidden;
   overflow-y: scroll;
   background-color: ${props => props.theme.colors.gray1};
@@ -37,11 +37,17 @@ const StyledCloseButton = styled(MdClose)`
   cursor: pointer;
 `
 
+const StickyBox = styled(Box)`
+  position: sticky;
+  top: 0px;
+  z-index: 1;
+`
+
 const RawDataContainer = ({ rawData, isOpen, onClose }) => {
 
   const props = useSpring({
-    from: { bottom: -2000 },
-    to: { bottom: isOpen ? 0 : -2000 }
+    from: { top: 2000 },
+    to: { top: isOpen ? 0 : 2000 }
   })
 
   // We wrap the json viewer so that we can render it only in client side rendering
@@ -78,22 +84,31 @@ const RawDataContainer = ({ rawData, isOpen, onClose }) => {
     }
   })
 
+  const onClick = useCallback((event) => {
+    if (event.target.dataset.id === 'sidebar') {
+      onClose()
+    }
+  })
+
   useEffect(() => {
     if (isOpen) {
       document.addEventListener('keydown', onEscape)
+      document.addEventListener('click', onClick)
     } else {
       document.removeEventListener('keydown', onEscape)
+      document.removeEventListener('click', onClick)
     }
 
     return () => {
       document.removeEventListener('keydown', onEscape)
+      document.removeEventListener('click', onClick)
     }
   }, [isOpen])
 
   return (
     <AnimatedWrapper style={props}>
       <Flex flexDirection='column' flexWrap='wrap'>
-        <Box width={1} mb={2}>
+        <StickyBox width={1} mb={2}>
           <Flex justifyContent='space-between' alignItems='center' bg='gray3'>
             <Box mx={3}>
               <Heading h={3}>
@@ -104,7 +119,7 @@ const RawDataContainer = ({ rawData, isOpen, onClose }) => {
               <StyledCloseButton size={20} onClick={() => onClose()} />
             </Box>
           </Flex>
-        </Box>
+        </StickyBox>
         <Box width={1}>
           <StyledReactJsonContainer>
             <JsonViewer src={rawData} />

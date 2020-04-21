@@ -27,6 +27,7 @@ const TopBar = styled.div`
   width: 100%;
   padding-top: 20px;
   padding-bottom: 20px;
+  -webkit-app-region: drag;
 `
 
 const getConfigValue = (config, optionKey) => optionKey.split('.').reduce((o,i) => o[i], config)
