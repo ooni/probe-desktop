@@ -1,7 +1,6 @@
 /* global module, require */
-const { Ooniprobe } = require('./ooniprobe')
+const { setConfig } = require('../config')
 
-module.exports = async () => {
-  const ooni = new Ooniprobe()
-  await ooni.call(['onboard', '--yes'])
+module.exports = () => {
+  return initConfigFile()
 }

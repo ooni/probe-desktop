@@ -5,7 +5,33 @@ const log = require('electron-log')
 
 const { getHomeDir } = require('./paths')
 
+const LATEST_CONFIG_VERSION = 2
+
 const OONI_CONFIG_PATH = path.join(getHomeDir(), 'config.json')
+
+const initConfigFile = async () => {
+  const config = {
+    "_version": LATEST_CONFIG_VERSION,
+    "_informed_consent": true,
+    "sharing": {
+      "include_ip": false,
+      "include_asn": true,
+      "include_country": true,
+      "upload_results": true
+    },
+    "nettests": {
+      "websites_url_limit": 0
+    },
+    "advanced": {
+      "use_domain_fronting": false,
+      "send_crash_reports": true,
+      "collect_usage_stats": true,
+      "collector_url": "",
+      "bouncer_url": "https://bouncer.ooni.io"
+    }
+  }
+  await fs.writeJson(OONI_CONFIG_PATH, config, {spaces: '  '})
+}
 
 // Utility function to set an index of an object based on dot notation.
 // Stolen from: https://stackoverflow.com/questions/6393943
@@ -40,7 +66,42 @@ const getConfig = async () => {
   return config
 }
 
+const migrationMap = {
+  '1->2': (config) => {
+    config['_version'] = 2
+    if (config['advanced']['collect_usage_stats'] === undefined) {
+      config['advanced']['collect_usage_stats'] = true
+    }
+    return config
+  }
+}
+
+const migrate = (config, currentVersion, targetVersion) => {
+  const func = migrationMap[`${currentVersion}->${targetVersion}`]
+  if (func !=== undefined) {
+    return func(config)
+  }
+  log.error(`missing migrate function from ${currentVersion}->${targetVersion}`)
+}
+
+const maybeMigrate = async () => {
+  let config = await getConfig()
+  if (config['_version'] == LATEST_CONFIG_VERSION) {
+    return
+  }
+  if (config['_version'] > LATEST_CONFIG_VERSION) {
+    log.error('config file from the future')
+    return
+  }
+  for (const ver = config['_version']; ver <= LATEST_CONFIG_VERSION; ver++) {
+    config = migrate(config, ver, ver+1)
+  }
+  await fs.writeJson(OONI_CONFIG_PATH, config, {spaces: '  '})
+}
+
 module.exports = {
+  initConfigFile,
   getConfig,
-  setConfig
+  setConfig,
+  maybeMigrate
 }

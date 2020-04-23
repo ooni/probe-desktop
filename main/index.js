@@ -172,10 +172,6 @@ app.on('ready', async () => {
     /* eslint-enable no-console */
   }
 
-  if (config._is_beta === true) {
-    // XXX do something like delete all the measurements on a fresh launch.
-  }
-
   await prepareNext('./renderer')
 
   windows = {
@@ -188,6 +184,7 @@ app.on('ready', async () => {
 
   const { wasOpenedAtLogin } = app.getLoginItemSettings()
 
+  await maybeMigrate()
   // XXX Only allow one instance of OONI Probe running
   // at the same time
   if (!wasOpenedAtLogin) {
