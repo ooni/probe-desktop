@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import {
   Flex,
@@ -6,10 +6,13 @@ import {
   Text
 } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
+import * as Sentry from '@sentry/electron'
+import log from 'electron-log'
 
 import StatusBox from '../../measurement/StatusBox'
 import formatSpeed from '../../formatSpeed'
 import performanceTestGroup from './index'
+import { useRawData } from '../../useRawData'
 
 const NDT = ({measurement, render}) => {
   const testKeys = JSON.parse(measurement.test_keys)
@@ -17,12 +20,30 @@ const NDT = ({measurement, render}) => {
     download,
     upload,
     ping,
-    server = 'Not in test_keys',
     avg_rtt,
     mss
   } = testKeys
+
   const downloadSpeed = formatSpeed(download)
   const uploadSpeed = formatSpeed(upload)
+
+  const { rawData } = useRawData()
+
+  const server = useMemo(() => {
+    try {
+      if (rawData) {
+        if (rawData.test_keys.server.hostname) {
+          return rawData.test_keys.server.hostname
+        }
+      } else {
+        return null
+      }
+    } catch (e) {
+      log.error(`error in retrieving NDT server hostname for measurement. ${e}`)
+      Sentry.captureException(e)
+    }
+  }, [rawData])
+
   const NDTHero = (
     <Box width={1}>
       <Flex flexWrap='wrap' mx={4} my={4} alignItems='center'>
@@ -47,13 +68,15 @@ const NDT = ({measurement, render}) => {
             ok={true}
           />
         </Box>
-        <Box width={1/2}>
-          <StatusBox
-            label={<FormattedMessage id='TestResults.Details.Performance.NDT.Server' />}
-            value={<Text>server</Text>}
-            ok={true}
-          />
-        </Box>
+        {server && (
+          <Box width={1/2}>
+            <StatusBox
+              label={<FormattedMessage id='TestResults.Details.Performance.NDT.Server' />}
+              value={<Text>{server}</Text>}
+              ok={true}
+            />
+          </Box>
+        )}
       </Flex>
     </Box>
   )
