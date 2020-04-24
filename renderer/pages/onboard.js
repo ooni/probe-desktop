@@ -1,5 +1,5 @@
 /* global require */
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import Router from 'next/router'
 
@@ -12,32 +12,35 @@ const SectionContainer = styled.div`
   color: ${props => props.theme.colors.white};
 `
 
-const OnboardingComplete = () => {
-  const { remote } = require('electron')
-  return remote.require('./utils/ooni/onboard')()
-}
+const Onboard = () => {
 
-const onGo = () => {
-  OnboardingComplete().then(() => {
-    Router.push('/home')
-  })
-}
+  const OnboardingComplete = useCallback(() => {
+    const { remote } = require('electron')
+    return remote.require('./utils/ooni/onboard')()
+  }, [])
 
-const onChange = () => {
-  OnboardingComplete().then(() => {
-    Router.push('/settings')
-  })
-}
+  const onGo = useCallback(() => {
+    OnboardingComplete().then(() => {
+      Router.push('/home')
+    })
+  }, [])
 
-const Onboard = () => (
-  <Layout>
-    <SectionContainer>
-      <Sections
-        onGo={onGo}
-        onChange={onChange}
-      />
-    </SectionContainer>
-  </Layout>
-)
+  const onChange = useCallback(() => {
+    OnboardingComplete().then(() => {
+      Router.push('/settings')
+    })
+  }, [])
+
+  return (
+    <Layout analytics={false}>
+      <SectionContainer>
+        <Sections
+          onGo={onGo}
+          onChange={onChange}
+        />
+      </SectionContainer>
+    </Layout>
+  )
+}
 
 export default Onboard

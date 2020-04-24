@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Provider, theme } from 'ooni-components'
 import { MatomoProvider, createInstance } from '@datapunt/matomo-tracker-react'
 
@@ -17,14 +18,19 @@ if (typeof window !== 'undefined') {
   })
 }
 
-const Layout = props => (
+const Layout = ({ children, analytics = true }) => (
   <MatomoProvider value={matomoInstance}>
     <Provider theme={theme}>
       <GlobalStyle />
-      <MatomoTracker />
-      { props.children }
+      {analytics && <MatomoTracker />}
+      {children}
     </Provider>
   </MatomoProvider>
 )
+
+Layout.propTypes = {
+  children: PropTypes.element.isRequired,
+  analytics: PropTypes.bool
+}
 
 export default withIntl(Layout)
