@@ -76,7 +76,7 @@ const editMenu = {
 let menuTemplate = [
   {
     label: app.name,
-    submenu: [{ label: 'About OONI Probe', click: () => openAboutWindow() }]
+    submenu: [{ label: 'About OONI Probe', click: () => openAboutWindow(true) }]
   },
   editMenu
 ]
