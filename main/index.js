@@ -8,7 +8,7 @@ const { autoUpdater } = require('electron-updater')
 const isDev = require('electron-is-dev')
 
 const fixPath = require('fix-path')
-const { getConfig } = require('./utils/config')
+const { getConfig, maybeMigrate } = require('./utils/config')
 const { getSentryConfig } = require('./utils/sentry')
 
 const log = require('electron-log')

@@ -78,7 +78,7 @@ const migrationMap = {
 
 const migrate = (config, currentVersion, targetVersion) => {
   const func = migrationMap[`${currentVersion}->${targetVersion}`]
-  if (func !=== undefined) {
+  if (func !== undefined) {
     return func(config)
   }
   log.error(`missing migrate function from ${currentVersion}->${targetVersion}`)
@@ -93,7 +93,7 @@ const maybeMigrate = async () => {
     log.error('config file from the future')
     return
   }
-  for (const ver = config['_version']; ver <= LATEST_CONFIG_VERSION; ver++) {
+  for (let ver = config['_version']; ver < LATEST_CONFIG_VERSION; ver++) {
     config = migrate(config, ver, ver+1)
   }
   await fs.writeJson(OONI_CONFIG_PATH, config, {spaces: '  '})

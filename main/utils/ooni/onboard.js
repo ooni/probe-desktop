@@ -1,5 +1,5 @@
 /* global module, require */
-const { setConfig } = require('../config')
+const { initConfigFile } = require('../config')
 
 module.exports = () => {
   return initConfigFile()
