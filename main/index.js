@@ -152,13 +152,6 @@ app.on('ready', async () => {
     autoUpdater.checkForUpdatesAndNotify()
   }
 
-  let config
-  try {
-    config = await getConfig()
-  } catch (err) {
-    config = {}
-  }
-
   if (isDev && process.env.NODE_ENV !== 'test') {
     const {
       default: installExtension,
@@ -185,10 +178,11 @@ app.on('ready', async () => {
   const { wasOpenedAtLogin } = app.getLoginItemSettings()
 
   await maybeMigrate()
+  const config = await getConfig()
   // XXX Only allow one instance of OONI Probe running
   // at the same time
   if (!wasOpenedAtLogin) {
-    if (config._informed_consent !== true) {
+    if (!config || (config['_informed_consent'] && config['_informed_consent'] !== true)) {
       windows.main.loadURL(windowURL('onboard'))
     }
     windows.main.once('ready-to-show', () => {

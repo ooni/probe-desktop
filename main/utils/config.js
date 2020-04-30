@@ -30,6 +30,7 @@ const initConfigFile = async () => {
       "bouncer_url": "https://bouncer.ooni.io"
     }
   }
+  await fs.ensureFile(OONI_CONFIG_PATH)
   await fs.writeJson(OONI_CONFIG_PATH, config, {spaces: '  '})
 }
 
@@ -62,8 +63,12 @@ const setConfig = async (optionKey, currentValue, newValue) => {
 }
 
 const getConfig = async () => {
-  const config = await fs.readJson(OONI_CONFIG_PATH)
-  return config
+  try {
+    const config = await fs.readJson(OONI_CONFIG_PATH)
+    return config
+  } catch (err) {
+    return null
+  }
 }
 
 const migrationMap = {
@@ -85,7 +90,12 @@ const migrate = (config, currentVersion, targetVersion) => {
 }
 
 const maybeMigrate = async () => {
-  let config = await getConfig()
+  const config = await getConfig()
+
+  if (!config) {
+    return
+  }
+
   if (config['_version'] == LATEST_CONFIG_VERSION) {
     return
   }
