@@ -93,7 +93,7 @@ class About extends React.Component {
 
   onUpdateMessage(event, text) {
     this.setState({
-      updateMessages: [...this.state.updateMessages, text]
+      updateMessage: text
     })
   }
   onUpdateProgress(event, progressObj) {

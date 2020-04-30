@@ -23,8 +23,10 @@ const aboutWindow = () => {
 }
 
 const openAboutWindow = (getFocus) => {
-  if (window !== null && getFocus) {
-    window.focus()
+  if (window !== null) {
+    if (getFocus) {
+      window.focus()
+    }
     return window
   }
 
@@ -35,7 +37,11 @@ const openAboutWindow = (getFocus) => {
   })
 
   window.once('ready-to-show', () => {
-    window.show()
+    if (getFocus) {
+      window.show()
+    } else {
+      window.showInactive()
+    }
   })
   window.setMenu(null)
 
