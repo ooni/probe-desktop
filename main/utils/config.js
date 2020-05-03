@@ -90,7 +90,7 @@ const migrate = (config, currentVersion, targetVersion) => {
 }
 
 const maybeMigrate = async () => {
-  const config = await getConfig()
+  let config = await getConfig()
 
   if (!config) {
     return
