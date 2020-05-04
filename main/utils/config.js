@@ -16,7 +16,6 @@ const initConfigFile = async () => {
     "sharing": {
       "include_ip": false,
       "include_asn": true,
-      "include_country": true,
       "upload_results": true
     },
     "nettests": {
@@ -72,11 +71,19 @@ const getConfig = async () => {
 }
 
 const migrationMap = {
+  '0->1': (config) => {
+    config['_version'] = 1
+    return config
+  },
   '1->2': (config) => {
     config['_version'] = 2
     if (config['advanced']['collect_usage_stats'] === undefined) {
       config['advanced']['collect_usage_stats'] = true
     }
+    if (config['sharing']['include_country'] === false) {
+      config['sharing']['upload_results'] = false
+    }
+    delete config['sharing']['include_country']
     return config
   }
 }
