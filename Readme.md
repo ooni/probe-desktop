@@ -71,6 +71,7 @@ the auto-update system will try to fetch the metadata associated with that tag.
 
 You can also make a build, but not publish it by running the following commands:
 ```
+yarn build
 yarn run pack:mac
 yarn run pack:win
 yarn run pack:linux
