@@ -29,6 +29,7 @@
     "appId": "org.ooni.probe-desktop",
     "productName": "OONI Probe",
     "asar": true,
+    "artifactName": "${productName}.${ext}",
     "files": [
       "**/*",
       "!bin",
@@ -37,6 +38,7 @@
     ],
     "linux": {
       "target": [
+        "AppImage",
         "deb",
         "rpm",
         "tar.gz"
