@@ -119,16 +119,11 @@ function sendUpdaterProgress(progressObj) {
   aboutWindow.webContents.send('update-progress', progressObj)
 }
 
-autoUpdater.on('checking-for-update', () => {
-  sendStatusToWindow('Checking for update...')
-})
 autoUpdater.on('update-available', () => {
   openAboutWindow(true)
   sendStatusToWindow('Update available.')
 })
-autoUpdater.on('update-not-available', () => {
-  sendStatusToWindow('Update not available.')
-})
+
 autoUpdater.on('error', err => {
   sendStatusToWindow('Error in auto-updater. ' + err)
   Sentry.withScope((scope) => {
