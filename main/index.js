@@ -8,7 +8,7 @@ const { autoUpdater } = require('electron-updater')
 const isDev = require('electron-is-dev')
 
 const fixPath = require('fix-path')
-const { getConfig, maybeMigrate } = require('./utils/config')
+const { getConfig, maybeMigrate, initConfigFile } = require('./utils/config')
 const { getSentryConfig } = require('./utils/sentry')
 
 const log = require('electron-log')
@@ -176,8 +176,15 @@ app.on('ready', async () => {
   global.windows = windows
 
   const { wasOpenedAtLogin } = app.getLoginItemSettings()
-
-  await maybeMigrate()
+  try {
+    await maybeMigrate()
+  } catch (err) {
+    Sentry.withScope((scope) => {
+      scope.setTag('context', 'config-migration')
+      Sentry.captureException(err)
+    })
+    initConfigFile()
+  }
   const config = await getConfig()
   // XXX Only allow one instance of OONI Probe running
   // at the same time
