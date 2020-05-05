@@ -119,6 +119,14 @@ function sendUpdaterProgress(progressObj) {
   aboutWindow.webContents.send('update-progress', progressObj)
 }
 
+autoUpdater.on('update-not-available', () => {
+  log.info('You are up to date')
+})
+
+autoUpdater.on('checking-for-update', () => {
+  log.info('Checking for update')
+})
+
 autoUpdater.on('update-available', () => {
   openAboutWindow(true)
   sendStatusToWindow('Update available.')
