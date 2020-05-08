@@ -117,7 +117,7 @@ const Hero = ({
               <HeroItemBox
                 width={1/2}
                 label={<FormattedMessage id='TestResults.Summary.Hero.DateAndTime' />}
-                content={moment.utc(new Date(startTime)).format('lll')}
+                content={moment(new Date(startTime)).format('lll')}
               />
               <HeroItemBox
                 width={1/2}
