@@ -19,6 +19,8 @@
     "pack:linux": "yarn run build && electron-builder --linux",
     "probe-cli": "node scripts/download-bin.js",
     "publish": "yarn run build && electron-builder --mac --win -p always",
+    "publish:mac": "yarn run build && electron-builder --mac -p always",
+    "publish:win": "yarn run build && electron-builder --win -p always",
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
     "lint": "eslint --ignore-path .gitignore .",
     "test": "cross-env NODE_ENV=test jest --runInBand",
