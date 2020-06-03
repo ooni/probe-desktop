@@ -10,7 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macOS-latest, ubuntu-18.04]
+        os: [ubuntu-18.04] # macOS-latest is disabled because of timeout issues
         node-version: [12.x]
 
     steps:
