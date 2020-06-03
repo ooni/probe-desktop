@@ -1,5 +1,13 @@
 # Changelog
 
+## OONI Probe Desktop 3.0.2 [2020-06-03]
+
+probe-cli: 3.0.1
+
+### Fixed
+
+* Critical bug in probe-cli that lead to `probe_cc` being always set to ZZ
+
 ## OONI Probe Desktop 3.0.1 [2020-05-05]
 
 probe-cli: 3.0.0
