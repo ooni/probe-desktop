@@ -192,9 +192,24 @@ app.on('ready', async () => {
   // XXX Only allow one instance of OONI Probe running
   // at the same time
   if (!wasOpenedAtLogin) {
-    if (!config || (config['_informed_consent'] && config['_informed_consent'] !== true)) {
+
+    // Initiate onboarding if informed consent is not given or not available
+    try {
+      if (!config) {
+        throw new Error('Configuration not found')
+      } else if (typeof config['_informed_consent'] === 'undefined') {
+        throw new Error('Informed consent information unavailable')
+      } else if (config['_informed_consent'] !== true) {
+        throw new Error('Informed consent not given')
+      }
+      if (config['_informed_consent'] === true) {
+        log.info('Informed consent found in config file.')
+      }
+    } catch (e) {
+      log.info(e.message)
       windows.main.loadURL(windowURL('onboard'))
     }
+
     windows.main.once('ready-to-show', () => {
       toggleWindow(null, windows.main)
     })
