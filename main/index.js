@@ -76,7 +76,9 @@ const editMenu = {
 let menuTemplate = [
   {
     label: app.name,
-    submenu: [{ label: 'About OONI Probe', click: () => openAboutWindow(true) }]
+    submenu: [
+      { label: 'About OONI Probe', click: () => openAboutWindow(true) }
+    ]
   },
   editMenu
 ]
@@ -108,15 +110,24 @@ app.on('window-all-closed', () => {
   }
 })
 
-function sendStatusToWindow(text) {
-  const aboutWindow = openAboutWindow()
+function sendStatusToWindow(text, options = {}) {
+  const aboutWindow = openAboutWindow(options['showWindow'] === true)
   log.info(text)
-  aboutWindow.webContents.send('update-message', text)
+  if (aboutWindow.isVisible()) {
+    aboutWindow.webContents.send('update-message', text)
+  } else {
+    aboutWindow.webContents.on('did-finish-load', () => {
+      aboutWindow.webContents.send('update-message', text)
+    })
+  }
 }
 
-function sendUpdaterProgress(progressObj) {
-  const aboutWindow = openAboutWindow()
-  aboutWindow.webContents.send('update-progress', progressObj)
+function sendUpdaterProgress(progressObj, options = {}) {
+  const aboutWindow = openAboutWindow(options['showWindow'] === true)
+  log.info(`Update download progress: ${progressObj.percent}`)
+  aboutWindow.webContents.on('did-finish-load', () => {
+    aboutWindow.webContents.send('update-progress', progressObj)
+  })
 }
 
 autoUpdater.on('update-not-available', () => {
@@ -128,8 +139,7 @@ autoUpdater.on('checking-for-update', () => {
 })
 
 autoUpdater.on('update-available', () => {
-  openAboutWindow(true)
-  sendStatusToWindow('Update available.')
+  sendStatusToWindow('Update available.', { showWindow: true })
 })
 
 autoUpdater.on('error', err => {
@@ -139,9 +149,11 @@ autoUpdater.on('error', err => {
     Sentry.captureException(err)
   })
 })
+
 autoUpdater.on('download-progress', progressObj => {
   sendUpdaterProgress(progressObj)
 })
+
 autoUpdater.on('update-downloaded', () => {
   sendStatusToWindow('Update downloaded. Quitting and installing.')
   autoUpdater.quitAndInstall()
