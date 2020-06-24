@@ -185,7 +185,7 @@ const RunningTest = ({
       )}
       {stopping && (
         <Text my={2}>
-          <FormattedMessage id='Dashboard.Running.Notice.Stopping' />
+          <FormattedMessage id='Dashboard.Running.Stopping.Notice' />
         </Text>
       )}
       {eta > 0 &&
