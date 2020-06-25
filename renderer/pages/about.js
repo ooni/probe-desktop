@@ -22,11 +22,14 @@ import {
 
 const { remote } = require('electron')
 const { ipcRenderer } = require('electron')
+import styled from 'styled-components'
 
 import { version } from '../../package.json'
 
-
-import styled from 'styled-components'
+const CodeWithWrap = styled(Code)`
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+`
 
 const UpdaterBoxContainer = styled(Flex)`
   padding: 20px;
@@ -160,7 +163,7 @@ class About extends React.Component {
                       <Text fontWeight='bold'>{key}</Text>
                     </Box>
                     <Box>
-                      <Code>{debugPaths[key]}</Code>
+                      <CodeWithWrap>{debugPaths[key]}</CodeWithWrap>
                     </Box>
                   </Flex>
                 )
