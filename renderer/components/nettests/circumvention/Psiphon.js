@@ -35,9 +35,14 @@ const Psiphon = ({measurement, isAnomaly, render}) => {
             <FormattedMessage id='TestResults.Details.Circumvention.Psiphon.BootstrapTime.Label.Title' />
           </Box>
           <Box>
-            <Text is='span' color='blue5' fontSize={3}>{testKeys['bootstrap_time'].toFixed(2)}</Text>
-            {' '}
-            <FormattedMessage id='TestResults.Details.Circumvention.Psiphon.BootstrapTime.Unit' />
+            <Text is='span' color='blue5' fontSize={3}>
+              <FormattedMessage
+                id='TestResults.Details.Circumvention.Psiphon.BootstrapTime.Unit'
+                values={{
+                  seconds: testKeys['bootstrap_time'].toFixed(2)
+                }}
+              />
+            </Text>
           </Box>
         </Flex>
       }
