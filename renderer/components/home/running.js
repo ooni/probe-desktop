@@ -1,5 +1,6 @@
 /* global require */
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import {
   Flex,
@@ -238,44 +239,24 @@ const ContentContainer = styled.div`
   z-index: 10;
 `
 
-class Running extends React.Component {
-  constructor(props) {
-    super(props)
+const Running = ({
+  testGroupName,
+  progressLine,
+  percent,
+  runningTestName,
+  logLines,
+  eta,
+  error,
+  onKill,
+  stopping
+}) => {
 
-    this.state = {
-      error: null,
-      logOpen: false,
-      done: true
-    }
-    this.onToggleLog = this.onToggleLog.bind(this)
-  }
+  const [logOpen, setLogOpen] = useState(false)
 
-  onToggleLog() {
-    this.setState({
-      logOpen: !this.state.logOpen
-    })
-  }
+  const testGroup = testGroups[testGroupName]
 
-  render() {
-    const {
-      testGroupName,
-      progressLine,
-      percent,
-      runningTestName,
-      logLines,
-      eta,
-      error,
-      onKill,
-      stopping
-    } = this.props
-
-    const {
-      logOpen
-    } = this.state
-
-    const testGroup = testGroups[testGroupName]
-
-    return <WindowContainer bg={testGroup.color}>
+  return (
+    <WindowContainer bg={testGroup.color}>
       <WindowDraggable bg={testGroup.color} />
       <ContentContainer color={testGroup.color}>
         <RunningTest
@@ -288,12 +269,12 @@ class Running extends React.Component {
           logOpen={logOpen}
           onKill={onKill}
           stopping={stopping}
-          onToggleLog={this.onToggleLog}
+          onToggleLog={() => setLogOpen(!logOpen)}
           eta={eta}
         />
       </ContentContainer>
     </WindowContainer>
-  }
+  )
 }
 
 Running.defaultProps = {
@@ -304,4 +285,17 @@ Running.defaultProps = {
   error: null,
   runningTestName: ''
 }
+
+Running.propTypes = {
+  testGroupName: PropTypes.string,
+  progressLine: PropTypes.string,
+  percent: PropTypes.number,
+  runningTestName: PropTypes.string,
+  logLines: PropTypes.array,
+  eta: PropTypes.number,
+  error: PropTypes.string,
+  onKill: PropTypes.func,
+  stopping: PropTypes.bool
+}
+
 export default Running
