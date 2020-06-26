@@ -1,5 +1,5 @@
 /* global require */
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import {
   Flex,
@@ -17,6 +17,7 @@ import moment from 'moment'
 
 import { testGroups } from '../nettests'
 import { StripedProgress } from './StripedProgress'
+import StopTestModal from './StopTestModal'
 
 const StyledRunningTest = styled.div`
   text-align: center;
@@ -134,13 +135,25 @@ const RunningTest = ({
   // Use the locale used by react-intl to localize the ETA label ('un minuto')
   const { locale } = useIntl()
 
+  const [showModal, setModalState] = useState(false)
+
   return <StyledRunningTest>
     <Container>
-      {stopping || (
+      {(stopping || showModal) || (
         <CloseButtonContainer>
-          <MdClear onClick={onKill} size={30} />
+          <MdClear onClick={() => setModalState(true)} size={30} />
         </CloseButtonContainer>
       )}
+
+      <StopTestModal
+        show={showModal}
+        onConfirm={() => {
+          onKill()
+          setModalState(false)
+        }}
+        onCancel={() => setModalState(false)}
+      />
+
       <Heading h={2}>{testGroup.name}</Heading>
       <Heading h={3}>
         {stopping ? (
