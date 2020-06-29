@@ -142,23 +142,20 @@ const RunningTest = ({
         </CloseButtonContainer>
       )}
       <Heading h={2}>{testGroup.name}</Heading>
-      <Heading h={3}>
-        {stopping ? (
-          <FormattedMessage
-            id='Dashboard.Running.Stopping.Title'
-            values={{
-              TestName
-            }}
-          />
-        ):(
-          <FormattedMessage
-            id='Dashboard.Running.Running'
-            values={{
-              TestName
-            }}
-          />
-        )}
-      </Heading>
+      {stopping ? (
+        <Heading h={3}>
+          <FormattedMessage id='Dashboard.Running.Stopping.Title' />
+        </Heading>
+      ):(
+        <Flex flexDirection='column'>
+          <Heading h={3}>
+            <FormattedMessage id='Dashboard.Running.Running' />
+          </Heading>
+          <Text fontSize={4}>
+            {TestName}
+          </Text>
+        </Flex>
+      )}
       {!logOpen && lottieOptions.animationData && (
         <Lottie
           width={300}

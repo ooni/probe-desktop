@@ -139,7 +139,7 @@ autoUpdater.on('checking-for-update', () => {
 })
 
 autoUpdater.on('update-available', () => {
-  sendStatusToWindow('Update available.', { showWindow: true })
+  sendStatusToWindow('A new update is available. Downloading now...', { showWindow: true })
 })
 
 autoUpdater.on('error', err => {

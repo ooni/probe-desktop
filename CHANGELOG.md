@@ -1,5 +1,26 @@
 # Changelog
 
+## OONI Probe Desktop 3.0.3 [2020-06-29]
+
+probe-cli: 3.0.3
+
+### Fixes
+* Fix missing auto update notice in about window (ooni/probe#1184)
+* Fix logic in looking for informed consent in config file (ooni/probe#1188)
+* Fix long paths in about window debug section (ooni/probe#1116)
+* Fix missing translation string in when stopping a test (ooni/probe#1204)
+* Disable pausing of animation during onboarding quiz (ooni/probe#1196)
+
+### Changes
+* Removed styling of bootstrap time unit in Psiphon measurement details
+
+### Security
+* Bump websocket-extensions from 0.1.3 to 0.1.4 [dependabot]
+
+### Dependencies
+* Bumped `electron-builder` to `22.7.0`
+* Bumped `electron-updater` to `4.3.1`
+
 ## OONI Probe Desktop 3.0.2 [2020-06-03]
 
 probe-cli: 3.0.1
@@ -11,6 +32,10 @@ probe-cli: 3.0.1
 ### Changed
 
 * Show measurements in local system timezone
+
+### Removed
+
+* Dropped macos from e2e testing matrix because it times out too often
 
 ## OONI Probe Desktop 3.0.1 [2020-05-05]
 
