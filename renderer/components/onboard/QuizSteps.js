@@ -124,6 +124,7 @@ const Animation = ({ okay, onComplete }) => {
     <Lottie
       width={400}
       height={270}
+      isClickToPauseDisabled={true}
       options={{
         loop: false,
         autoplay: true,
