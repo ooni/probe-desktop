@@ -24,6 +24,17 @@ const TopBar = styled.div`
   -webkit-app-region: drag;
 `
 
+const SectionHeading = styled(Heading)`
+  border-bottom: 1px solid ${props => props.theme.colors.gray6};
+`
+
+const Section = ({ title, children }) => (
+  <Flex flexDirection='column' my={3}>
+    <SectionHeading h={4} pb={2}>{title}</SectionHeading>
+    {children}
+  </Flex>
+)
+
 const Settings = () => {
   const [config, setConfig] = useState(null)
 
@@ -36,7 +47,7 @@ const Settings = () => {
 
   useEffect(() => {
     reloadConfig()
-  }, [])
+  }, [reloadConfig])
 
   return (
     <Layout>
@@ -49,48 +60,48 @@ const Settings = () => {
               </Box>
             </Flex>
           </TopBar>
-          {config && <Container pt={3}>
-            <Heading h={4}><FormattedMessage id='Settings.Sharing.Label' /></Heading>
-            <Flex flexDirection='column'>
-
+          <Container pt={3}>
+            <Section title={<FormattedMessage id='Settings.Sharing.Label' />}>
               <BooleanOption
                 onConfigSet={reloadConfig}
                 label={<FormattedMessage id='Settings.Sharing.UploadResults' />}
                 optionKey='sharing.upload_results'
                 config={config}
               />
-
               <BooleanOption
                 onConfigSet={reloadConfig}
                 label={<FormattedMessage id='Settings.Sharing.IncludeNetwork' />}
                 optionKey='sharing.include_asn'
                 config={config}
               />
-
               <BooleanOption
                 onConfigSet={reloadConfig}
                 label={<FormattedMessage id='Settings.Sharing.IncludeIP' />}
                 optionKey='sharing.include_ip'
-                config={config} />
-
+                config={config}
+              />
+            </Section>
+            <Section title={<FormattedMessage id='Settings.TestOptions.Label' />}>
+              <Heading h={5}><FormattedMessage id='Test.Websites.Fullname' /></Heading>
               <NumberOption
                 onConfigSet={reloadConfig}
                 label={<FormattedMessage id='Settings.Websites.TestCount' />}
                 optionKey='nettests.websites_url_limit'
                 config={config}
               />
+            </Section>
 
+            <Section title={<FormattedMessage id='Settings.Advanced.Label' />}>
               <BooleanOption
                 onConfigSet={reloadConfig}
                 label={<FormattedMessage id='Settings.Advanced.CollectAnalytics' />}
                 optionKey='advanced.collect_usage_stats'
                 config={config}
               />
-
-            </Flex>
+            </Section>
             <Text my={3}><LocaleString /></Text>
             <Text my={3}>OONI Probe Desktop v{pkgJson.version}</Text>
-          </Container>}
+          </Container>
         </Box>
       </Sidebar>
     </Layout>
