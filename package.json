@@ -119,6 +119,7 @@
     "eslint": "^4.19.1",
     "eslint-plugin-jest": "^23.8.2",
     "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^4.0.8",
     "humanize": "^0.0.9",
     "icon-gen": "^2.0.0",
     "jest": "^25.3.0",
