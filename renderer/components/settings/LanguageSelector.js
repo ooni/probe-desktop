@@ -1,22 +1,27 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useIntl } from 'react-intl'
 import { Flex, Box, Label, Select } from 'ooni-components'
 
+import { getSupportedLanguages } from '../withIntl'
+
 export const LanguageSelector = () => {
   const intl = useIntl()
-
-  // Don't render the language selector if there is no setLocale in the context
-  if (!intl.hasOwnProperty('setLocale')) {
-    return <div />
-  }
+  const supportedLanguages = getSupportedLanguages()
+  const languageOptions = useMemo(() => {
+    return supportedLanguages.map(lang => (
+      <option key={lang.code} value={lang.code}>{lang.name}</option>
+    ))
+  }, [supportedLanguages.length])
 
   return (
     <Flex flexDirection='column'>
       <Label mb={2}> Language </Label>
       <Box>
-        <Select onChange={(event) => intl.setLocale(event.target.value)}>
-          <option value='en'>English</option>
-          <option value='it'>Italiano</option>
+        <Select
+          defaultValue={intl.locale}
+          onChange={(event) => intl.setLocale(event.target.value)}
+        >
+          {languageOptions}
         </Select>
       </Box>
     </Flex>

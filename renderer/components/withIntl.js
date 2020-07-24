@@ -1,6 +1,9 @@
 /* global require */
 import osLocale from 'os-locale'
 
+const defaultLocale = 'en'
+const defaultLocaleName = 'English'
+
 export const getMessages = (locale = null) => {
   let supportedMessages = {
     en: require('../../lang/en.json')
@@ -13,7 +16,7 @@ export const getMessages = (locale = null) => {
   if (supportedMessages.hasOwnProperty(locale)) {
     const mergedMessages = Object.assign(
       {},
-      process.env.INTL_USE_FALLBACK_EN ? supportedMessages['en'] : {},
+      process.env.INTL_USE_FALLBACK_EN ? supportedMessages[defaultLocale] : {},
       supportedMessages[locale])
     return mergedMessages
   } else {
@@ -21,9 +24,21 @@ export const getMessages = (locale = null) => {
   }
 }
 
+export const getSupportedLanguages = () => {
+  if (typeof window !== 'undefined' && window.OONITranslations) {
+    const supportedLanguages = Object.entries(window.OONITranslations).map(entry => ({
+      code: entry[0],
+      name: entry[1]['Language.Name'] || entry[0]
+    }))
+    return supportedLanguages
+  } else {
+    return [{ code: defaultLocale, name: defaultLocaleName }]
+  }
+}
+
 export const getLocale = () => {
   // fallback to en
-  let navigatorLang = 'en-US'
+  let navigatorLang = defaultLocale
 
   // If available, use locale information provided by window.navigator (chrome)
   if (typeof window !== 'undefined') {
