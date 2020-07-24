@@ -11,7 +11,7 @@ export const LanguageSelector = () => {
     return supportedLanguages.map(lang => (
       <option key={lang.code} value={lang.code}>{lang.name}</option>
     ))
-  }, [supportedLanguages.length])
+  }, [supportedLanguages.length]) /* eslint-disable-line */
 
   return (
     <Flex flexDirection='column'>

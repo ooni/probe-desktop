@@ -24,7 +24,8 @@ console.log('> Wrote messages to: ./lang/en.json')
 
 const translationsMap = supportedLanguages
   .reduce((t, lang) => {
-    t[lang] = JSON.parse(readFileSync(`./lang/${lang}.json`))
+    const trimmedLocaleCode = lang.split('-')[0].split('_')[0]
+    t[trimmedLocaleCode] = JSON.parse(readFileSync(`./lang/${lang}.json`))
     return t
   }, {})
 
