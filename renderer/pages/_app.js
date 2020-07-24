@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import * as Sentry from '@sentry/node'
 import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl'
 
-import { getMessages, getLocale } from '../components/withIntl'
+import { getMessages, getLocale } from '../components/langUtils'
 
 // This is optional but highly recommended
 // since it prevents memory leak

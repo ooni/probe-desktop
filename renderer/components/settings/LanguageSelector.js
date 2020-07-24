@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { useIntl } from 'react-intl'
 import { Flex, Box, Label, Select } from 'ooni-components'
 
-import { getSupportedLanguages } from '../withIntl'
+import { getSupportedLanguages } from '../langUtils'
 
 export const LanguageSelector = () => {
   const intl = useIntl()
