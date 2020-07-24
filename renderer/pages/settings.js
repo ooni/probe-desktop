@@ -11,6 +11,7 @@ import {
 } from 'ooni-components'
 
 import { LocaleString, BooleanOption, NumberOption } from '../components/settings/widgets'
+import { LanguageSelector } from '../components/settings/LanguageSelector'
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
 import { default as pkgJson } from '../../package.json'
@@ -61,6 +62,8 @@ const Settings = () => {
             </Flex>
           </TopBar>
           <Container pt={3}>
+            <LanguageSelector />
+
             <Section title={<FormattedMessage id='Settings.Sharing.Label' />}>
               <BooleanOption
                 onConfigSet={reloadConfig}
@@ -99,7 +102,6 @@ const Settings = () => {
                 config={config}
               />
             </Section>
-            <Text my={3}><LocaleString /></Text>
             <Text my={3}>OONI Probe Desktop v{pkgJson.version}</Text>
           </Container>
         </Box>

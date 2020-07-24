@@ -1,13 +1,27 @@
 /* global require */
-import React, { Component } from 'react'
-import { IntlProvider } from 'react-intl'
 import osLocale from 'os-locale'
 
-let supportedMessages = {
-  en: require('../../lang/en.json')
+export const getMessages = (locale = null) => {
+  let supportedMessages = {
+    en: require('../../lang/en.json')
+  }
+
+  if (typeof window !== 'undefined' && window.OONITranslations) {
+    supportedMessages = window.OONITranslations
+  }
+
+  if (supportedMessages.hasOwnProperty(locale)) {
+    const mergedMessages = Object.assign(
+      {},
+      process.env.INTL_USE_FALLBACK_EN ? supportedMessages['en'] : {},
+      supportedMessages[locale])
+    return mergedMessages
+  } else {
+    return supportedMessages
+  }
 }
 
-const getLocale = () => {
+export const getLocale = () => {
   // fallback to en
   let navigatorLang = 'en-US'
 
@@ -21,30 +35,3 @@ const getLocale = () => {
 
   return navigatorLang.split('-')[0].split('_')[0]
 }
-
-if (typeof window !== 'undefined' && window.OONITranslations) {
-  supportedMessages = window.OONITranslations
-}
-
-const withIntl = Page => {
-  return class PageWithIntl extends Component {
-    render() {
-      const locale = getLocale()
-      const now = Date.now()
-
-      let messages = supportedMessages['en']
-
-      if (Object.keys(supportedMessages).indexOf(locale) > -1) {
-        messages = supportedMessages[locale]
-      }
-
-      return (
-        <IntlProvider locale={locale} messages={messages} initialNow={now}>
-          <Page {...this.props} />
-        </IntlProvider>
-      )
-    }
-  }
-}
-
-export default withIntl
