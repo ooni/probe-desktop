@@ -11,33 +11,17 @@ import {
 } from 'ooni-components'
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import { getConfigValue } from '../utils'
+import { useConfig } from './useConfig'
 
-// TODO: Refactor `handleChange` into a hook like `useConfig` or something
-
-export const BooleanOption = ({ label, optionKey, config, onConfigSet}) => {
-
-  if (config === null) {
-    return <div />
-  }
-
-  const checked = getConfigValue(config, optionKey)
+export const BooleanOption = ({ label, optionKey }) => {
+  const [checked, setConfigValue] = useConfig(optionKey)
 
   const handleChange = useCallback((event) => {
-
-    const remote = electron.remote
-    const { setConfig } = remote.require('./utils/config')
-
     const target = event.target
     const newValue = target.type === 'checkbox' ? target.checked : target.value
-    const oldValue = getConfigValue(config, optionKey)
-    setConfig(optionKey, oldValue, newValue).then(() => {
-      onConfigSet()
-    }).catch(() => {
-      log.error('inconsistency detected in config')
-      onConfigSet()
-    })
-  }, [onConfigSet, checked])
+
+    setConfigValue(newValue)
+  }, [setConfigValue])
 
   return (
     <Label my={2}>
@@ -48,28 +32,14 @@ export const BooleanOption = ({ label, optionKey, config, onConfigSet}) => {
 }
 
 
-export const NumberOption = ({ optionKey, config, label, onConfigSet}) => {
-
-  if (config === null) {
-    return <div />
-  }
-
-  const value = getConfigValue(config, optionKey)
+export const NumberOption = ({ label, optionKey}) => {
+  const [value, setConfigValue] = useConfig(optionKey)
 
   const handleChange = useCallback((event) => {
-    const remote = electron.remote
-    const { setConfig } = remote.require('./utils/config')
-
     const target = event.target
     const newValue = Number(target.value)
-    const oldValue = Number(getConfigValue(config, optionKey))
-    setConfig(optionKey, oldValue, newValue).then(() => {
-      onConfigSet()
-    }).catch(() => {
-      log.error('inconsistency detected in config')
-      onConfigSet()
-    })
-  }, [value, onConfigSet])
+    setConfigValue(newValue)
+  }, [setConfigValue])
 
   return (
     <Label my={2}>
@@ -87,25 +57,21 @@ export const NumberOption = ({ optionKey, config, label, onConfigSet}) => {
   )
 }
 
-
-export const LocaleString = () => {
-  const intl = useIntl()
-  return (
-    <FormattedMessage
-      id='Settings.Language.Current'
-      values={{ lang:
-        <Code
-          px={2}
-          py={1}
-          style={{
-            borderRadius: '10px'
-          }}
-          bg={theme.colors.gray6}
-          color='white'
-        >
-          {intl.locale}
-        </Code>
-      }}
-    />
-  )
+export const ListOption = ({ optionKey, children }) => {
+  const [list, setListValue] = useConfig(optionKey)
+  const handleChange = useCallback((event) => {
+    const code = event.target.name
+    if (event.target.checked === true) {
+      if (list.indexOf(code) === -1) {
+        const newList = [...list, code].sort()
+        setListValue(newList)
+      }
+    } else {
+      if (list.indexOf(code) > -1) {
+        const newList = list.filter(item => item !== code)
+        setListValue(newList)
+      }
+    }
+  }, [list, setListValue])
+  return children(JSON.stringify(list), handleChange)
 }

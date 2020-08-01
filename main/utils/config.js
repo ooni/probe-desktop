@@ -5,28 +5,62 @@ const log = require('electron-log')
 
 const { getHomeDir } = require('./paths')
 
-const LATEST_CONFIG_VERSION = 2
+const LATEST_CONFIG_VERSION = 3
 
 const OONI_CONFIG_PATH = path.join(getHomeDir(), 'config.json')
 
+const availableCategoriesList = [
+  'ALDR',
+  'ANON',
+  'COMM',
+  'COMT',
+  'CTRL',
+  'CULTR',
+  'DATE',
+  'ECON',
+  'ENV',
+  'FILE',
+  'GAME',
+  'GMB',
+  'GOVT',
+  'GRP',
+  'HACK',
+  'HATE',
+  'HOST',
+  'HUMR',
+  'IGO',
+  'LGBT',
+  'MILX',
+  'MMED',
+  'NEWS',
+  'POLR',
+  'PORN',
+  'PROV',
+  'PUBH',
+  'REL',
+  'SRCH',
+  'XED',
+]
+
 const initConfigFile = async () => {
   const config = {
-    "_version": LATEST_CONFIG_VERSION,
-    "_informed_consent": true,
-    "sharing": {
-      "include_ip": false,
-      "include_asn": true,
-      "upload_results": true
+    '_version': LATEST_CONFIG_VERSION,
+    '_informed_consent': true,
+    'sharing': {
+      'include_ip': false,
+      'include_asn': true,
+      'upload_results': true
     },
-    "nettests": {
-      "websites_url_limit": 0
+    'nettests': {
+      'websites_url_limit': 0,
+      'websites_enabled_category_codes': availableCategoriesList
     },
-    "advanced": {
-      "use_domain_fronting": false,
-      "send_crash_reports": true,
-      "collect_usage_stats": true,
-      "collector_url": "",
-      "bouncer_url": "https://bouncer.ooni.io"
+    'advanced': {
+      'use_domain_fronting': false,
+      'send_crash_reports': true,
+      'collect_usage_stats': true,
+      'collector_url': '',
+      'bouncer_url': 'https://bouncer.ooni.io'
     }
   }
   await fs.ensureFile(OONI_CONFIG_PATH)
@@ -52,13 +86,14 @@ const setConfig = async (optionKey, currentValue, newValue) => {
   // XXX this is not really atomic. We should ensure atomicity by proxying this
   // via probe-cli.
   const currentOldValue = optionKey.split('.').reduce((o,i) => o[i], config)
-  if (currentOldValue !== currentValue) {
+  if (JSON.stringify(currentOldValue) !== JSON.stringify(currentValue)) {
     log.info('setConfig: config file path', OONI_CONFIG_PATH)
     log.error('setConfig: inconsistent config file', currentOldValue, currentValue)
     throw Error('inconsistent config file')
   }
   setIndex(config, optionKey, newValue)
   await fs.writeJson(OONI_CONFIG_PATH, config, {spaces: '  '})
+  return config
 }
 
 const getConfig = async () => {
@@ -84,6 +119,13 @@ const migrationMap = {
       config['sharing']['upload_results'] = false
     }
     delete config['sharing']['include_country']
+    return config
+  },
+  '2->3': (config) => {
+    config['_version'] = 3
+    if (config['nettests']['websites_enabled_category_codes'] === undefined) {
+      config['nettests']['websites_enabled_category_codes'] = availableCategoriesList
+    }
     return config
   }
 }

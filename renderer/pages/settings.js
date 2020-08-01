@@ -10,8 +10,10 @@ import {
   Text,
 } from 'ooni-components'
 
-import { LocaleString, BooleanOption, NumberOption } from '../components/settings/widgets'
+import { ConfigProvider } from '../components/settings/useConfig'
+import { BooleanOption, NumberOption } from '../components/settings/widgets'
 import { LanguageSelector } from '../components/settings/LanguageSelector'
+import { WebsiteCategoriesSelector } from '../components/settings/WebsiteCategoriesSelector'
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
 import { default as pkgJson } from '../../package.json'
@@ -62,47 +64,42 @@ const Settings = () => {
             </Flex>
           </TopBar>
           <Container pt={3}>
-            <LanguageSelector />
+            <ConfigProvider>
+              <LanguageSelector />
 
-            <Section title={<FormattedMessage id='Settings.Sharing.Label' />}>
-              <BooleanOption
-                onConfigSet={reloadConfig}
-                label={<FormattedMessage id='Settings.Sharing.UploadResults' />}
-                optionKey='sharing.upload_results'
-                config={config}
-              />
-              <BooleanOption
-                onConfigSet={reloadConfig}
-                label={<FormattedMessage id='Settings.Sharing.IncludeNetwork' />}
-                optionKey='sharing.include_asn'
-                config={config}
-              />
-              <BooleanOption
-                onConfigSet={reloadConfig}
-                label={<FormattedMessage id='Settings.Sharing.IncludeIP' />}
-                optionKey='sharing.include_ip'
-                config={config}
-              />
-            </Section>
-            <Section title={<FormattedMessage id='Settings.TestOptions.Label' />}>
-              <Heading h={5}><FormattedMessage id='Test.Websites.Fullname' /></Heading>
-              <NumberOption
-                onConfigSet={reloadConfig}
-                label={<FormattedMessage id='Settings.Websites.TestCount' />}
-                optionKey='nettests.websites_url_limit'
-                config={config}
-              />
-            </Section>
+              <Section title={<FormattedMessage id='Settings.Sharing.Label' />}>
+                <BooleanOption
+                  label={<FormattedMessage id='Settings.Sharing.UploadResults' />}
+                  optionKey='sharing.upload_results'
+                />
+                <BooleanOption
+                  label={<FormattedMessage id='Settings.Sharing.IncludeNetwork' />}
+                  optionKey='sharing.include_asn'
+                />
+                <BooleanOption
+                  label={<FormattedMessage id='Settings.Sharing.IncludeIP' />}
+                  optionKey='sharing.include_ip'
+                />
+              </Section>
+              <Section title={<FormattedMessage id='Settings.TestOptions.Label' />}>
+                <Heading h={5}><FormattedMessage id='Test.Websites.Fullname' /></Heading>
+                <WebsiteCategoriesSelector />
+                <NumberOption
+                  onConfigSet={reloadConfig}
+                  label={<FormattedMessage id='Settings.Websites.TestCount' />}
+                  optionKey='nettests.websites_url_limit'
+                  config={config}
+                />
+              </Section>
 
-            <Section title={<FormattedMessage id='Settings.Advanced.Label' />}>
-              <BooleanOption
-                onConfigSet={reloadConfig}
-                label={<FormattedMessage id='Settings.Advanced.CollectAnalytics' />}
-                optionKey='advanced.collect_usage_stats'
-                config={config}
-              />
-            </Section>
-            <Text my={3}>OONI Probe Desktop v{pkgJson.version}</Text>
+              <Section title={<FormattedMessage id='Settings.Advanced.Label' />}>
+                <BooleanOption
+                  label={<FormattedMessage id='Settings.Advanced.CollectAnalytics' />}
+                  optionKey='advanced.collect_usage_stats'
+                />
+              </Section>
+              <Text my={3}>OONI Probe Desktop v{pkgJson.version}</Text>
+            </ConfigProvider>
           </Container>
         </Box>
       </Sidebar>
