@@ -26,13 +26,10 @@ export const getMessages = (locale = null) => {
 
 export const getSupportedLanguages = () => {
   if (typeof window !== 'undefined' && window.OONITranslations) {
-    const supportedLanguages = Object.entries(window.OONITranslations).map(entry => ({
-      code: entry[0],
-      name: entry[1]['Language.Name'] || entry[0]
-    }))
+    const supportedLanguages = Object.keys(window.OONITranslations)
     return supportedLanguages
   } else {
-    return [{ code: defaultLocale, name: defaultLocaleName }]
+    return [defaultLocale]
   }
 }
 

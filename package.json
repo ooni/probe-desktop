@@ -144,6 +144,7 @@
   },
   "dependencies": {
     "@datapunt/matomo-tracker-react": "^0.1.1",
+    "@formatjs/intl-displaynames": "^3.1.7",
     "@sentry/browser": "^5.12.1",
     "@sentry/electron": "^1.2.0",
     "@sentry/node": "^5.12.1",

@@ -8,10 +8,11 @@ export const LanguageSelector = () => {
   const intl = useIntl()
   const supportedLanguages = getSupportedLanguages()
   const languageOptions = useMemo(() => {
+    console.log(`Genearating langOpts again for ${intl.locale}`)
     return supportedLanguages.map(lang => (
-      <option key={lang.code} value={lang.code}>{lang.name}</option>
+      <option key={lang} value={lang}>{intl.formatDisplayName(lang)}</option>
     ))
-  }, [supportedLanguages.length]) /* eslint-disable-line */
+  }, [intl.locale]) /* eslint-disable-line */
 
   return (
     <Flex flexDirection='column'>

@@ -1,8 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import * as Sentry from '@sentry/node'
 import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl'
+import { getMessages, getLocale, getSupportedLanguages } from '../components/langUtils'
 
-import { getMessages, getLocale } from '../components/langUtils'
+// Polyfill Intl.DisplayNames to display language names in the selected language
+import '@formatjs/intl-displaynames/polyfill'
+getSupportedLanguages().forEach(lang => {
+  require(`@formatjs/intl-displaynames/locale-data/${lang}`)
+})
 
 // This is optional but highly recommended
 // since it prevents memory leak
