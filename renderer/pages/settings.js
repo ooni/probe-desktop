@@ -94,7 +94,7 @@ const Settings = () => {
 
               <Section title={<FormattedMessage id='Settings.Advanced.Label' />}>
                 <BooleanOption
-                  label={<FormattedMessage id='Settings.Advanced.CollectAnalytics' />}
+                  label={<FormattedMessage id='Settings.Privacy.CollectAnalytics' />}
                   optionKey='advanced.collect_usage_stats'
                 />
               </Section>

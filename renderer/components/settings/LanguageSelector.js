@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { useIntl } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl'
 import { Flex, Box, Label, Select } from 'ooni-components'
 
 import { getSupportedLanguages } from '../langUtils'
@@ -16,7 +16,7 @@ export const LanguageSelector = () => {
 
   return (
     <Flex flexDirection='column'>
-      <Label mb={2}> Language </Label>
+      <Label mb={2}> <FormattedMessage id='Settings.Language.Label' /></Label>
       <Box>
         <Select
           defaultValue={intl.locale}
