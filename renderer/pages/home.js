@@ -14,8 +14,6 @@ import Running from '../components/home/running'
 import { testList } from '../components/nettests'
 import StickyDraggableHeader from '../components/StickyDraggableHeader'
 
-import StopTestModal from '../components/home/StopTestModal'
-
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.dashboard')
 
 const CardContent = styled.div`
