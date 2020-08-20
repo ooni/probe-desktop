@@ -1,36 +1,40 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Flex, Box, Container, Text, Heading } from 'ooni-components'
+import { Flex, Box, Container, Text, Heading, Button, Modal } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
+import styled from 'styled-components'
 
-import { Modal, YesButton, NoButton } from '../Modal'
+const StyledModal = styled(Modal)`
+  border-radius: 8px;
+  box-shadow: 4px 4px 10px black;
+`
 
 const StopTestModal = ({ show = true, onConfirm = () => {} , onCancel = () => {} }) => {
   return (
-    <Modal show={show}>
+    <StyledModal bg='white' show={show} color='black' closeButton='right' onHideClick={onCancel}>
       <Container p={3}>
         <Flex flexDirection='column'>
           <Text textAlign='center'>
-            <Heading h={5}>
+            <Heading h={4}>
               <FormattedMessage id='Modal.InterruptTest.Title' />
             </Heading>
           </Text>
-          <Box my={2}>
+          <Box my={2} px={5}>
             <Text>
               <FormattedMessage id='Modal.InterruptTest.Paragraph' />
             </Text>
           </Box>
         </Flex>
       </Container>
-      <Flex>
-        <YesButton width={1/2} onClick={onConfirm}>
-          <FormattedMessage id='Modal.OK' />
-        </YesButton>
-        <NoButton width={1/2} onClick={onCancel}>
-          <FormattedMessage id='Modal.Cancel' />
-        </NoButton>
+      <Flex justifyContent='flex-end' my={3}>
+        <Button mx={3} width={1/3} inverted onClick={onCancel}>
+          <Text fontWeight='bold'><FormattedMessage id='Modal.Cancel' /></Text>
+        </Button>
+        <Button mx={3} width={1/3} onClick={onConfirm}>
+          <Text fontWeight='bold'><FormattedMessage id='Modal.OK' /></Text>
+        </Button>
       </Flex>
-    </Modal>
+    </StyledModal>
   )
 }
 
