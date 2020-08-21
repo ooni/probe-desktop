@@ -3,15 +3,32 @@ import PropTypes from 'prop-types'
 import { Flex, Box, Container, Text, Heading, Button, Modal } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
+import { MdClose } from 'react-icons/md'
 
 const StyledModal = styled(Modal)`
   border-radius: 8px;
   box-shadow: 4px 4px 10px black;
 `
 
+const StyledCloseButton = styled(Box)`
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  height: 28px;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: ${props => props.theme.colors.gray7};
+
+  &:hover {
+    color: ${props => props.theme.colors.black};
+  }
+`
+
 const StopTestModal = ({ show = true, onConfirm = () => {} , onCancel = () => {} }) => {
   return (
-    <StyledModal bg='white' show={show} color='black' closeButton='right' onHideClick={onCancel}>
+    <StyledModal bg='white' show={show} color='black' onHideClick={onCancel}>
+      <StyledCloseButton onClick={onCancel}><MdClose size={24} /></StyledCloseButton>
       <Container p={3}>
         <Flex flexDirection='column'>
           <Text textAlign='center'>
