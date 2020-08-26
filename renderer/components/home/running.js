@@ -1,6 +1,8 @@
 /* global require */
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import Router from 'next/router'
+import Raven from 'raven-js'
+
 import styled from 'styled-components'
 import {
   Flex,
@@ -15,6 +17,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { MdClear, MdKeyboardArrowUp, MdKeyboardArrowDown} from 'react-icons/md'
 import Lottie from 'react-lottie'
 import moment from 'moment'
+const debug = require('debug')('ooniprobe-desktop.renderer.components.home.running')
 
 import { testGroups } from '../nettests'
 import { StripedProgress } from './StripedProgress'
@@ -97,6 +100,8 @@ const Log = ({lines, onToggleLog, open}) => (
   </LogContainer>
 )
 
+const MemoizedLog = React.memo(Log)
+
 const CloseButtonContainer = styled.div`
   color: white;
   position: absolute;
@@ -105,117 +110,6 @@ const CloseButtonContainer = styled.div`
   z-index: 99999;
   cursor: pointer;
 `
-
-//name, icon, color, description, longDescription, onClickClose, active
-const RunningTest = ({
-  testGroup,
-  logOpen,
-  onToggleLog,
-  progressLine,
-  percent,
-  logLines,
-  runningTestName,
-  error,
-  eta,
-  onKill,
-  stopping
-}) => {
-  const lottieOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: testGroup['animation'] || null,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
-    }
-  }
-  let TestName = <span />
-  if (runningTestName) {
-    TestName = <FormattedMessage id={`Test.${runningTestName.split('.')[1]}.Fullname`} />
-  }
-
-  // Use the locale used by react-intl to localize the ETA label ('un minuto')
-  const { locale } = useIntl()
-
-  const [showModal, setModalState] = useState(false)
-
-  return <StyledRunningTest>
-    <Container>
-      {(stopping || showModal) || (
-        <CloseButtonContainer>
-          <MdClear onClick={() => setModalState(true)} size={30} />
-        </CloseButtonContainer>
-      )}
-
-      <StopTestModal
-        show={showModal}
-        onConfirm={() => {
-          onKill()
-          setModalState(false)
-        }}
-        onCancel={() => setModalState(false)}
-      />
-
-      <Heading h={2}>{testGroup.name}</Heading>
-      {stopping ? (
-        <Heading h={3}>
-          <FormattedMessage id='Dashboard.Running.Stopping.Title' />
-        </Heading>
-      ):(
-        <Flex flexDirection='column'>
-          <Heading h={3}>
-            <FormattedMessage id='Dashboard.Running.Running' />
-          </Heading>
-          <Text fontSize={4}>
-            {TestName}
-          </Text>
-        </Flex>
-      )}
-      {!logOpen && lottieOptions.animationData && (
-        <Lottie
-          width={300}
-          height={300}
-          options={lottieOptions}
-          isPaused={stopping}
-        />
-      )}
-      {
-        // Show the group logo when animation not available
-        !lottieOptions.animationData &&
-        React.cloneElement(testGroup.icon, {size: 300})
-      }
-      {!stopping ? (
-        <LineProgress
-          percent={percent*100}
-          strokeColor={theme.colors.white}
-          strokeWidth='2'
-          trailColor='rgba(255,255,255,0.4)'
-          trailWidth='2'
-        />
-      ) : (
-        <StripedProgress />
-      )}
-      {stopping && (
-        <Text my={2}>
-          <FormattedMessage id='Dashboard.Running.Stopping.Notice' />
-        </Text>
-      )}
-      {eta > 0 &&
-        <Flex justifyContent='center'>
-          <Box pr={1}>
-            <FormattedMessage id='Dashboard.Running.EstimatedTimeLeft' />
-          </Box>
-          <Box>
-            {moment.duration(eta*1000).locale(locale).humanize()}
-          </Box>
-        </Flex>
-      }
-      {progressLine && <Text>{progressLine}</Text>}
-    </Container>
-
-    <Log lines={logLines} onToggleLog={onToggleLog} open={logOpen} />
-    {error && <p>{error}</p>}
-  </StyledRunningTest>
-}
 
 const WindowContainer = styled.div`
   position: absolute;
@@ -239,39 +133,197 @@ const ContentContainer = styled.div`
   z-index: 10;
 `
 
-const Running = ({
-  testGroupName,
-  progressLine,
-  percent,
-  runningTestName,
-  logLines,
-  eta,
-  error,
-  onKill,
-  stopping
-}) => {
+const Title = ({ groupName }) => (
+  <Heading h={2}>{groupName}</Heading>
+)
 
+const MemoizedTitle = React.memo(Title)
+
+const Running = ({ testGroupName }) => {
   const [logOpen, setLogOpen] = useState(false)
+  const [error, setError] = useState(null)
+  const [runningTestName, setRunningTestName] = useState(null)
+  const [progressLine, setProgressLine] = useState('')
+  const [runError, setRunError] = useState(null)
+  const [logLines, setLogLines] = useState([])
+  const [percent, setPercent] = useState(0)
+  const [eta, setEta] = useState(-1)
+  const [stopped, setStopped] = useState(false)
+  const [isStopping, setIsStopping] = useState(false)
+
+  let runner = null
+
+  useEffect(() => {
+    const { ipcRenderer, remote } = require('electron')
+    ipcRenderer.on('ooni', onMessage)
+
+    debug('running', testGroupName)
+
+    const Runner = remote.require('./utils/ooni/run').Runner
+    runner = new Runner({ testGroupName })
+    runner
+      .run()
+      .then(() => {
+        setStopped(true)
+        Router.push('/test-results')
+      })
+      .catch(error => {
+        debug('error', error)
+        Raven.captureException(error, {
+          extra: { scope: 'renderer.runTest' }
+        })
+        setError(error)
+      })
+
+
+    return () => {
+      const { ipcRenderer } = require('electron')
+      ipcRenderer.removeListener('ooni', onMessage)
+    }
+  }, [])
+
+  const onToggleLog = useCallback(() => {
+    setLogOpen(!logOpen)
+  }, [logOpen])
+
+  const onMessage = useCallback((event, data) => {
+    switch (data.key) {
+    case 'ooni.run.progress':
+      setRunningTestName(data.testKey)
+      setPercent(data.percentage)
+      setEta(data.eta)
+      setProgressLine(data.message)
+      break
+    case 'error':
+      debug('error received', data)
+      setRunError(data.message)
+      setRunningTestName('')
+      break
+    case 'log':
+      debug('log received', data)
+      setLogLines(logLines.concat(data.value))
+      break
+    default:
+      break
+    }
+  }, [logLines.length, setRunningTestName, setPercent, setEta, setProgressLine, setRunError, setRunningTestName, setLogLines])
+
+  const onKill = useCallback(() => {
+    if (runner !== null && isStopping !== true) {
+      runner.kill()
+      setIsStopping(true)
+    }
+  }, [isStopping, setIsStopping, runner])
 
   const testGroup = testGroups[testGroupName]
+
+  const testName = useMemo(() => (
+    runningTestName ? (
+      <FormattedMessage id={`Test.${runningTestName.split('.')[1]}.Fullname`} />
+    ) : (
+      <span />
+    )
+  ), [runningTestName])
+
+  const lottieOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: testGroup['animation'] || null,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice'
+    }
+  }
+
+  const testGroupBackupIcon = useMemo(() => {
+    return React.cloneElement(testGroup.icon, {size: 300})
+  }, [testGroup.icon])
+
+  // Use the locale used by react-intl to localize the ETA label ('un minuto')
+  const { locale } = useIntl()
+
+  const [showModal, setModalState] = useState(false)
 
   return (
     <WindowContainer bg={testGroup.color}>
       <WindowDraggable bg={testGroup.color} />
       <ContentContainer color={testGroup.color}>
-        <RunningTest
-          progressLine={progressLine}
-          percent={percent}
-          runningTestName={runningTestName}
-          logLines={logLines}
-          error={error}
-          testGroup={testGroup}
-          logOpen={logOpen}
-          onKill={onKill}
-          stopping={stopping}
-          onToggleLog={() => setLogOpen(!logOpen)}
-          eta={eta}
-        />
+        <StyledRunningTest>
+          <Container>
+            {(isStopping || showModal) || (
+              <CloseButtonContainer>
+                <MdClear onClick={() => setModalState(true)} size={30} />
+              </CloseButtonContainer>
+            )}
+
+            <StopTestModal
+              show={showModal}
+              onConfirm={() => {
+                onKill()
+                setModalState(false)
+              }}
+              onCancel={() => setModalState(false)}
+            />
+
+            <MemoizedTitle groupName={testGroup.name} />
+
+            {isStopping ? (
+              <Heading h={3}>
+                <FormattedMessage id='Dashboard.Running.Stopping.Title' />
+              </Heading>
+            ):(
+              <Flex flexDirection='column'>
+                <Heading h={3}>
+                  <FormattedMessage id='Dashboard.Running.Running' />
+                </Heading>
+                <Text fontSize={4}>
+                  {testName}
+                </Text>
+              </Flex>
+            )}
+            {!logOpen && lottieOptions.animationData && (
+              <Lottie
+                width={300}
+                height={300}
+                options={lottieOptions}
+                isPaused={isStopping}
+              />
+            )}
+            {
+              // Show the group logo when animation not available
+              !lottieOptions.animationData && testGroupBackupIcon
+            }
+            {!isStopping ? (
+              <LineProgress
+                percent={percent*100}
+                strokeColor={theme.colors.white}
+                strokeWidth='2'
+                trailColor='rgba(255,255,255,0.4)'
+                trailWidth='2'
+              />
+            ) : (
+              <StripedProgress />
+            )}
+            {isStopping && (
+              <Text my={2}>
+                <FormattedMessage id='Dashboard.Running.Stopping.Notice' />
+              </Text>
+            )}
+            {eta > 0 &&
+              <Flex justifyContent='center'>
+                <Box pr={1}>
+                  <FormattedMessage id='Dashboard.Running.EstimatedTimeLeft' />
+                </Box>
+                <Box>
+                  {moment.duration(eta*1000).locale(locale).humanize()}
+                </Box>
+              </Flex>
+            }
+            {progressLine && <Text>{progressLine}</Text>}
+          </Container>
+
+          <MemoizedLog lines={logLines} onToggleLog={onToggleLog} open={logOpen} />
+          {error && <p>{error}</p>}
+        </StyledRunningTest>
       </ContentContainer>
     </WindowContainer>
   )
@@ -285,17 +337,4 @@ Running.defaultProps = {
   error: null,
   runningTestName: ''
 }
-
-Running.propTypes = {
-  testGroupName: PropTypes.string,
-  progressLine: PropTypes.string,
-  percent: PropTypes.number,
-  runningTestName: PropTypes.string,
-  logLines: PropTypes.array,
-  eta: PropTypes.number,
-  error: PropTypes.string,
-  onKill: PropTypes.func,
-  stopping: PropTypes.bool
-}
-
 export default Running
