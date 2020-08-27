@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { FormattedMessage } from 'react-intl'
-import Lottie from 'react-lottie'
+import Lottie from 'react-lottie-player'
 import {
   Fixed,
   Heading,
@@ -122,21 +122,14 @@ const Animation = ({ okay, onComplete }) => {
   const animationData = okay ? tickAnimation : crossAnimation
   return (
     <Lottie
-      width={400}
-      height={270}
-      isClickToPauseDisabled={true}
-      options={{
-        loop: false,
-        autoplay: true,
-        animationData: animationData,
-        rendererSettings: {
-          preserveAspectRatio: 'xMidYMid slice'
-        }
+      loop={false}
+      play={true}
+      animationData={animationData}
+      style={{width: '400px', height: '270px', alignSelf: 'center'}}
+      rendererSettings={{
+        preserveAspectRatio: 'xMidYMid slice'
       }}
-      eventListeners={[{
-        eventName: 'complete',
-        callback: () => onComplete(),
-      }]}
+      onComplete={() => onComplete()}
     />
   )
 }
