@@ -12,20 +12,10 @@ import {
   Divider,
   theme
 } from 'ooni-components'
+
+import { Modal, YesButton, NoButton } from '../Modal'
 import { default as tickAnimation } from '../../static/animations/checkMark.json'
 import { default as crossAnimation } from '../../static/animations/crossMark.json'
-
-const QuizModal = styled(Fixed)`
-  max-width: 100vw;
-  max-height: 100vh;
-  overflow: auto;
-  transform: translate(-50%, -50%);
-  box-shadow: rgba(0, 0, 0, 0.80) 0 0 0 60vmax, rgba(0, 0, 0, 0.25) 0 0 32px;
-  border-radius: 10px;
-  top: 50%;
-  left: 50%;
-  background-color: ${props => props.bg || props.theme.colors.blue5};
-`
 
 const QuizButton = styled(Box)`
   height: 50px;
@@ -46,21 +36,6 @@ const ContinueButton = styled(QuizButton)`
   background-color: ${props => props.theme.colors.gray4};
   &:hover {
     background-color: ${props => props.theme.colors.gray3};
-  }
-`
-
-
-const TrueButton = styled(QuizButton)`
-  background-color: ${props => props.theme.colors.green7};
-  &:hover {
-    background-color: ${props => props.theme.colors.green6};
-  }
-`
-
-const FalseButton = styled(QuizButton)`
-  background-color: ${props => props.theme.colors.red8};
-  &:hover {
-    background-color: ${props => props.theme.colors.red7};
   }
 `
 
@@ -100,12 +75,12 @@ const QuizQuestion = ({qNum, question, onTrue, onFalse}) => (
       </Heading>
       <Text mx={3} my={4} textAlign='center'>{question}</Text>
       <Flex>
-        <TrueButton width={1/2} onClick={onTrue}>
+        <YesButton width={1/2} onClick={onTrue}>
           <FormattedMessage id='Onboarding.PopQuiz.True' />
-        </TrueButton>
-        <FalseButton width={1/2} onClick={onFalse}>
+        </YesButton>
+        <NoButton width={1/2} onClick={onFalse}>
           <FormattedMessage id='Onboarding.PopQuiz.False' />
-        </FalseButton>
+        </NoButton>
       </Flex>
     </div>
   </Box>
@@ -233,7 +208,7 @@ class QuizSteps extends React.Component {
     }
 
     return (
-      <QuizModal bg={modalBg}>
+      <Modal show={true} bg={modalBg}>
         <Fixed top right bottom left />
         {(showOkayAnimation || showNopeAnimation) ? (
           showAnimation()
@@ -254,7 +229,7 @@ class QuizSteps extends React.Component {
             />
           )
         )}
-      </QuizModal>
+      </Modal>
     )
   }
 }
