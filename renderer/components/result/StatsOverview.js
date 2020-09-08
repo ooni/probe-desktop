@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 import VerticalDivider from '../to-migrate/VerticalDivider'
 import StatBox from '../to-migrate/StatBox'
@@ -65,9 +65,16 @@ const WebsitesStats = ({totalCount, anomalyCount}) => {
 }
 
 const IMStats = ({anomalyCount, totalCount}) => {
-  const testedCount = totalCount
-  const blockedCount = anomalyCount
-  const accessibleCount = testedCount - blockedCount
+  const intl = useIntl()
+  const unavailable = intl.formatMessage({ id: 'TestResults.NotAvailable' })
+
+  const testedCount = typeof totalCount === 'number' ? totalCount : unavailable
+  const blockedCount = typeof anomalyCount === 'number' ? anomalyCount : unavailable
+  const accessibleCount = (testedCount !== unavailable && blockedCount !== unavailable) ? (
+    testedCount - blockedCount
+  ) : (
+    unavailable
+  )
 
   let testedLabelID = addPlurality('TestResults.Summary.InstantMessaging.Hero.Tested', testedCount)
   let blockedLabelID = addPlurality('TestResults.Summary.InstantMessaging.Hero.Blocked', blockedCount)
@@ -129,34 +136,37 @@ const PerformanceStats = ({testKeys}) => {
   const upload = formatSpeed(testKeys['upload'])
   const download = formatSpeed(testKeys['download'])
   const ping = testKeys['ping']
-  const bitrate = testKeys['median_bitrate']
+  const bitrate = formatBitrate(testKeys['median_bitrate'])
+
+  const intl = useIntl()
+  const unavailable = intl.formatMessage({id: 'TestResults.NotAvailable'})
 
   return (
     <Flex style={{width: '100%'}}>
       <Box width={1/4}>
         <StatBox
-          value={formatBitrate(bitrate)}
+          value={bitrate || unavailable}
           unit={<FormattedMessage id='TestResults.Summary.Performance.Hero.Video.Quality' />}
           label={<FormattedMessage id='TestResults.Summary.Performance.Hero.Video' />} />
       </Box>
       <VerticalDivider />
       <Box width={1/4}>
         <StatBox
-          value={download.value}
+          value={download.value || unavailable}
           unit={download.unit}
           label={<FormattedMessage id='TestResults.Summary.Performance.Hero.Download' />} />
       </Box>
       <VerticalDivider />
       <Box width={1/4}>
         <StatBox
-          value={upload.value}
+          value={upload.value || unavailable}
           unit={upload.unit}
           label={<FormattedMessage id='TestResults.Summary.Performance.Hero.Upload' />} />
       </Box>
       <VerticalDivider />
       <Box width={1/4}>
         <StatBox
-          value={ping.toFixed(1)}
+          value={ping?.toFixed(1) || unavailable}
           label={<FormattedMessage id='TestResults.Summary.Performance.Hero.Ping' />}
           unit='ms'
         />
