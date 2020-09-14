@@ -144,7 +144,6 @@ const Running = ({ testGroupName }) => {
   const [error, setError] = useState(null)
   const [runningTestName, setRunningTestName] = useState(null)
   const [progressLine, setProgressLine] = useState('')
-  const [runError, setRunError] = useState(null)
   const [logLines, setLogLines] = useState([])
   const [percent, setPercent] = useState(0)
   const [eta, setEta] = useState(-1)
@@ -196,7 +195,7 @@ const Running = ({ testGroupName }) => {
       break
     case 'error':
       debug('error received', data)
-      setRunError(data.message)
+      setError(data.message)
       setRunningTestName('')
       break
     case 'log':
@@ -206,7 +205,7 @@ const Running = ({ testGroupName }) => {
     default:
       break
     }
-  }, [logLines.length, setRunningTestName, setPercent, setEta, setProgressLine, setRunError, setRunningTestName, setLogLines])
+  }, [logLines.length, setRunningTestName, setPercent, setEta, setProgressLine, setError, setRunningTestName, setLogLines])
 
   const onKill = useCallback(() => {
     if (runner !== null && isStopping !== true) {
