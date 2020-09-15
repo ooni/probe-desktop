@@ -24,7 +24,7 @@ const download = () => {
     }
     const [sum, tarPath] = line.split('  ')
     checksums[tarPath] = sum
-    const re = /^ooniprobe_v[0-9.a-z-]+_((darwin|linux|windows)_amd64).tar.gz$/
+    const re = /^ooniprobe_v[0-9.a-z-]+_((darwin|linux|windows)_amd64).(tar.gz|zip)$/
     const result = tarPath.match(re)
     if (!result) {
       throw Error(`The path '${tarPath}' does not match our expectations`)
@@ -42,6 +42,9 @@ const download = () => {
       throw Error(`Invalid checksum ${shasum} ${checksums[tarPath]}`)
     }
     console.log(`Verified ${dstDir}/${tarPath}`)
+    if (path.extname(tarPath) !== '.gz') {
+      return
+    }
     execSync(`cd ${dstDir}/${d} && tar xzf ../${tarPath}`)
   })
 }
