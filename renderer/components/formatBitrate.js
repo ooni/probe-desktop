@@ -41,6 +41,10 @@ const minimumBitrateForVideo = [
 ]
 
 const formatBitrate = (bitrate) => {
+  if (typeof bitrate !== 'number') {
+    return null
+  }
+
   let optimalQuality = minimumBitrateForVideo[0]
   minimumBitrateForVideo.forEach((rate) => {
     // Note: we use SFR rather than HFR because SFR is more common
