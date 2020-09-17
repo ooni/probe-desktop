@@ -42,8 +42,8 @@ const ResultOverviewContainer = styled.div`
 
 const OverviewLabel = ({ icon, label }) => (
   <Flex flexDirection='row' alignItems='center'>
-    <Box mr={1}>{icon}</Box>
-    <Box>{label}</Box>
+    {icon}
+    <Box ml={2}>{label}</Box>
   </Flex>
 )
 
@@ -134,7 +134,7 @@ const ResultOverview = ({
           }
           right={
             <Flex>
-              <HumanFilesize icon={<MdArrowUpward size={20}/>} size={dataUsageUp*1024} fontSize={20} />
+              <HumanFilesize mx={2} icon={<MdArrowUpward size={20}/>} size={dataUsageUp*1024} fontSize={20} />
               <HumanFilesize icon={<MdArrowDownward size={20}/>} size={dataUsageDown*1024} fontSize={20} />
             </Flex>}
         />
