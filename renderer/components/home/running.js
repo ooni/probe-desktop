@@ -13,7 +13,7 @@ import {
 import { Line as LineProgress } from 'rc-progress'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { MdClear, MdKeyboardArrowUp, MdKeyboardArrowDown} from 'react-icons/md'
-import Lottie from 'react-lottie'
+import Lottie from 'react-lottie-player'
 import moment from 'moment'
 
 import { testGroups } from '../nettests'
@@ -120,14 +120,6 @@ const RunningTest = ({
   onKill,
   stopping
 }) => {
-  const lottieOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: testGroup['animation'] || null,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
-    }
-  }
   let TestName = <span />
   if (runningTestName) {
     TestName = <FormattedMessage id={`Test.${runningTestName.split('.')[1]}.Fullname`} />
@@ -171,16 +163,21 @@ const RunningTest = ({
         </Flex>
       )}
       {!logOpen && lottieOptions.animationData && (
-        <Lottie
-          width={300}
-          height={300}
-          options={lottieOptions}
-          isPaused={stopping}
-        />
+        <Flex justifyContent='center'>
+          <Lottie
+            loop={true}
+            play={!stopping}
+            animationData={testGroup['animation'] || null}
+            style={{ width: '300px', height: '300px', alignSelf: 'center' }}
+            rendererSettings={{
+              preserveAspectRatio: 'xMidYMid slice'
+            }}
+          />
+        </Flex>
       )}
       {
         // Show the group logo when animation not available
-        !lottieOptions.animationData &&
+        !testGroup['animation'] &&
         React.cloneElement(testGroup.icon, {size: 300})
       }
       {!stopping ? (
