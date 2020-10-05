@@ -162,12 +162,12 @@ const RunningTest = ({
           </Text>
         </Flex>
       )}
-      {!logOpen && lottieOptions.animationData && (
+      {!logOpen && testGroup['animation'] && (
         <Flex justifyContent='center'>
           <Lottie
             loop={true}
             play={!stopping}
-            animationData={testGroup['animation'] || null}
+            animationData={testGroup['animation']}
             style={{ width: '300px', height: '300px', alignSelf: 'center' }}
             rendererSettings={{
               preserveAspectRatio: 'xMidYMid slice'
