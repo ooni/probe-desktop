@@ -31,11 +31,9 @@ const StopTestModal = ({ show = true, onConfirm = () => {} , onCancel = () => {}
       <StyledCloseButton onClick={onCancel}><MdClose size={24} /></StyledCloseButton>
       <Container p={3}>
         <Flex flexDirection='column'>
-          <Text textAlign='center'>
-            <Heading h={4}>
-              <FormattedMessage id='Modal.InterruptTest.Title' />
-            </Heading>
-          </Text>
+          <Heading h={4} textAlign='center'>
+            <FormattedMessage id='Modal.InterruptTest.Title' />
+          </Heading>
           <Box my={2} px={5}>
             <Text>
               <FormattedMessage id='Modal.InterruptTest.Paragraph' />
