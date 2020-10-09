@@ -120,99 +120,19 @@ const RunTestCard = (props) => {
 }
 
 const Home = () => {
-  const [error, setError] = useState(null)
-  const [runningTestName, setRunningTestName] = useState(null)
   const [runningTestGroupName, setRunningTestGroupName] = useState(null)
-  const [progressLine, setProgressLine] = useState('')
-  const [runError, setRunError] = useState(null)
-  const [logLines, setLogLines] = useState([])
-  const [percent, setPercent] = useState(0)
-  const [eta, setEta] = useState(-1)
-  const [stopped, setStopped] = useState(false)
-  const [isStopping, setIsStopping] = useState(false)
-
-  let runner = null
-
-  useEffect(() => {
-    const { ipcRenderer } = require('electron')
-    ipcRenderer.on('ooni', onMessage)
-
-    return () => {
-      const { ipcRenderer } = require('electron')
-      ipcRenderer.removeListener('ooni', onMessage)
-    }
-  }, [])
-
-  const onMessage = useCallback((event, data) => {
-    console.log(`onMesssage ${data.key}`)
-    switch (data.key) {
-    case 'ooni.run.progress':
-      console.log(`Updating progress: ${data.percentage}`)
-      setRunningTestName(data.testKey)
-      setPercent(data.percentage)
-      setEta(data.eta)
-      setProgressLine(data.message)
-      break
-    case 'error':
-      debug('error received', data)
-      setRunError(data.message)
-      setRunningTestName('')
-      break
-    case 'log':
-      debug('log received', data)
-      console.log(`Updating log: ${data.value}`)
-      setLogLines(logLines.concat(data.value))
-      break
-    default:
-      break
-    }
-  }, [])
-
-  const onKill = useCallback(() => {
-    if (runner !== null && isStopping !== true) {
-      runner.kill()
-      setIsStopping(true)
-    }
-  }, [])
 
   const onRun = useCallback((testGroupName) => {
-    const { remote } = require('electron')
     return () => {
       debug('running', testGroupName)
       setRunningTestGroupName(testGroupName)
-
-      const Runner = remote.require('./utils/ooni/run').Runner
-      runner = new Runner({ testGroupName })
-      runner
-        .run()
-        .then(() => {
-          setStopped(true)
-          Router.push('/test-results')
-        })
-        .catch(error => {
-          debug('error', error)
-          Raven.captureException(error, {
-            extra: { scope: 'renderer.runTest' }
-          })
-          setError(error)
-        })
     }
   }, [])
 
   if (runningTestGroupName) {
     return (
       <Layout>
-        <Running
-          progressLine={progressLine}
-          percent={percent}
-          eta={eta}
-          runningTestName={runningTestName}
-          logLines={logLines}
-          error={runError}
-          testGroupName={runningTestGroupName}
-          onKill={onKill}
-          stopping={isStopping}
-        />
+        <Running testGroupName={runningTestGroupName} />
       </Layout>
     )
   }
@@ -231,7 +151,6 @@ const Home = () => {
             />
           ))}
         </Flex>
-        {error && <p>Error: {error.toString()}</p>}
       </Sidebar>
     </Layout>
   )

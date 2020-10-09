@@ -1,5 +1,6 @@
 /* global require */
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import PropTypes from 'prop-types'
 import Router from 'next/router'
 import Raven from 'raven-js'
 
@@ -78,12 +79,21 @@ const ToggleLogButton = ({open, onClick}) => {
   </ToggleButtonContainer>
 }
 
+ToggleLogButton.propTypes = {
+  open: PropTypes.bool,
+  onClick: PropTypes.func
+}
+
 const CodeLog = ({lines}) => {
   return (
     <CodeLogContainer>
       <Lines>{lines.join('\n')}</Lines>
     </CodeLogContainer>
   )
+}
+
+CodeLog.propTypes = {
+  lines: PropTypes.array,
 }
 
 const LogContainer = styled.div`
@@ -100,7 +110,11 @@ const Log = ({lines, onToggleLog, open}) => (
   </LogContainer>
 )
 
-const MemoizedLog = React.memo(Log)
+Log.propTypes = {
+  lines: PropTypes.array,
+  onToggleLog: PropTypes.func,
+  open: PropTypes.bool
+}
 
 const CloseButtonContainer = styled.div`
   color: white;
@@ -136,6 +150,13 @@ const ContentContainer = styled.div`
 const Title = ({ groupName }) => (
   <Heading h={2}>{groupName}</Heading>
 )
+
+Title.propTypes = {
+  groupName: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.instanceOf(FormattedMessage)
+  ])
+}
 
 const MemoizedTitle = React.memo(Title)
 
@@ -328,12 +349,8 @@ const Running = ({ testGroupName }) => {
   )
 }
 
-Running.defaultProps = {
-  progressLine: '',
-  percent: 0,
-  eta: -1,
-  logLines: [],
-  error: null,
-  runningTestName: ''
+Running.propTypes = {
+  testGroupName: PropTypes.string.isRequired
 }
+
 export default Running
