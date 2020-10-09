@@ -221,12 +221,12 @@ const Running = ({ testGroupName }) => {
       break
     case 'log':
       debug('log received', data)
-      setLogLines(logLines.concat(data.value))
+      setLogLines(oldLogLines => [...oldLogLines, data.value])
       break
     default:
       break
     }
-  }, [logLines.length, setRunningTestName, setPercent, setEta, setProgressLine, setError, setRunningTestName, setLogLines])
+  }, [logLines, setRunningTestName, setPercent, setEta, setProgressLine, setError, setRunningTestName, setLogLines])
 
   const onKill = useCallback(() => {
     if (runner !== null && isStopping !== true) {
@@ -341,7 +341,7 @@ const Running = ({ testGroupName }) => {
             {progressLine && <Text>{progressLine}</Text>}
           </Container>
 
-          <MemoizedLog lines={logLines} onToggleLog={onToggleLog} open={logOpen} />
+          <Log lines={logLines} onToggleLog={onToggleLog} open={logOpen} />
           {error && <p>{error}</p>}
         </StyledRunningTest>
       </ContentContainer>
