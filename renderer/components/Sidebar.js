@@ -13,7 +13,6 @@ import OONILogo from 'ooni-components/components/svgs/logos/Probe-HorizontalMono
 import { MdWeb, MdHistory } from 'react-icons/md'
 import { FaCog } from 'react-icons/fa'
 
-import ExternalLink from './ExternalLink'
 import { version } from '../../package.json'
 
 const StyledNavItem = styled.div`

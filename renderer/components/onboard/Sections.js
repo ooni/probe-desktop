@@ -143,13 +143,13 @@ SectionWhatIsOONI.propTypes = {
 }
 
 const SectionDefaultSettings = ({onGo, onChange}) => (
-  <Flex flexWrap='wrap' flexDirection='column'>
-    <Box width={1}>
+  <Flex flexDirection='column'>
+    <Box>
       <Heading textAlign='center' h={1}>
         <FormattedMessage id='Onboarding.DefaultSettings.Title' />
       </Heading>
     </Box>
-    <Box width={1} px={4}>
+    <Box px={4}>
       <Flex>
         <Box width={1/2}>
           <Heading h={4}>
@@ -172,14 +172,14 @@ const SectionDefaultSettings = ({onGo, onChange}) => (
         </Box>
       </Flex>
     </Box>
-    <Box mx='auto'>
+    <Flex alignItems='center' flexDirection='column'>
       <Button inverted onClick={onGo}>
         <FormattedMessage id='Onboarding.DefaultSettings.Button.Go' />
       </Button>
       <ChangeLink onClick={onChange}>
         <FormattedMessage id='Onboarding.DefaultSettings.Button.Change' />
       </ChangeLink>
-    </Box>
+    </Flex>
   </Flex>
 )
 

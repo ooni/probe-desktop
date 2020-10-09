@@ -32,6 +32,9 @@ const download = () => {
     const d = result[1]
     const downloadURL = `${baseURL}/${tarPath}`
 
+    if (path.extname(tarPath) !== '.gz') {
+      return // we only care about downloading the .tar.gz files here
+    }
     if (existsSync(`${dstDir}/${tarPath}`) === false) {
       console.log(`Downloading ${downloadURL}`)
       execSync(`mkdir -p ${dstDir}/${d}`)
@@ -42,9 +45,6 @@ const download = () => {
       throw Error(`Invalid checksum ${shasum} ${checksums[tarPath]}`)
     }
     console.log(`Verified ${dstDir}/${tarPath}`)
-    if (path.extname(tarPath) !== '.gz') {
-      return
-    }
     execSync(`cd ${dstDir}/${d} && tar xzf ../${tarPath}`)
   })
 }
