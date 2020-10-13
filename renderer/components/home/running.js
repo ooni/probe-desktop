@@ -243,15 +243,6 @@ const Running = ({ testGroupName }) => {
     )
   ), [runningTestName])
 
-  const lottieOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: testGroup['animation'] || null,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
-    }
-  }
-
   const testGroupBackupIcon = useMemo(() => {
     return React.cloneElement(testGroup.icon, {size: 300})
   }, [testGroup.icon])
@@ -298,17 +289,22 @@ const Running = ({ testGroupName }) => {
                 </Text>
               </Flex>
             )}
-            {!logOpen && lottieOptions.animationData && (
-              <Lottie
-                width={300}
-                height={300}
-                options={lottieOptions}
-                isPaused={isStopping}
-              />
+            {!logOpen && testGroup['animation'] && (
+              <Flex justifyContent='center'>
+                <Lottie
+                  loop={true}
+                  play={!isStopping}
+                  animationData={testGroup['animation']}
+                  style={{ width: '300px', height: '300px', alignSelf: 'center' }}
+                  rendererSettings={{
+                    preserveAspectRatio: 'xMidYMid slice'
+                  }}
+                />
+              </Flex>
             )}
             {
               // Show the group logo when animation not available
-              !lottieOptions.animationData && testGroupBackupIcon
+              !testGroup['animation'] && testGroupBackupIcon
             }
             {!isStopping ? (
               <LineProgress
