@@ -1,7 +1,5 @@
 /* global require */
-import React, { useState, useCallback, useEffect } from 'react'
-import Router from 'next/router'
-import Raven from 'raven-js'
+import React, { useState, useCallback } from 'react'
 import * as chroma from 'chroma-js'
 import styled from 'styled-components'
 import { MdHelp, MdClear } from 'react-icons/md'

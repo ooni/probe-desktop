@@ -195,9 +195,7 @@ const Running = ({ testGroupName }) => {
         setError(error)
       })
 
-
     return () => {
-      const { ipcRenderer } = require('electron')
       ipcRenderer.removeListener('ooni', onMessage)
     }
   }, [])
