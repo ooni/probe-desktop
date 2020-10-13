@@ -1,7 +1,5 @@
 /* global require */
-import React from 'react'
-import Router from 'next/router'
-import Raven from 'raven-js'
+import React, { useState, useCallback } from 'react'
 import * as chroma from 'chroma-js'
 import styled from 'styled-components'
 import { MdHelp, MdClear } from 'react-icons/md'
@@ -106,173 +104,54 @@ const BackCardContent = ({ name, longDescription, color, toggleCard }) => (
   </Box>
 )
 
-class RunTestCard extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isFlipped: false
-    }
-    this.toggleCard = this.toggleCard.bind(this)
-  }
+const RunTestCard = (props) => {
+  const [isFlipped, flipCard] = useState(false)
 
-  toggleCard(idx) {
-    this.setState({ isFlipped: !this.state.isFlipped })
-  }
+  const toggleCard = useCallback(() => {
+    flipCard(!isFlipped)
+  }, [isFlipped])
 
-  render() {
-    const { isFlipped } = this.state
-
-    if (isFlipped) {
-      return <BackCardContent toggleCard={this.toggleCard} {...this.props} />
-    }
-    return <FrontCardContent toggleCard={this.toggleCard} {...this.props} />
+  if (isFlipped) {
+    return <BackCardContent toggleCard={toggleCard} {...props} />
   }
+  return <FrontCardContent toggleCard={toggleCard} {...props} />
 }
 
-class Home extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      error: null,
-      runningTestName: '',
-      runTestGroupName: null,
-      runProgressLine: '',
-      runError: null,
-      runLogLines: [],
-      runPercent: 0,
-      runEta: -1,
-      runDone: true,
-      stopping: false
-    }
-    this.onRun = this.onRun.bind(this)
-    this.onMessage = this.onMessage.bind(this)
-    this.onKill = this.onKill.bind(this)
-    this.runner = null
-  }
+const Home = () => {
+  const [runningTestGroupName, setRunningTestGroupName] = useState(null)
 
-  componentWillUnmount() {
-    const { ipcRenderer } = require('electron')
-    ipcRenderer.removeListener('ooni', this.onMessage)
-  }
-
-  componentDidMount() {
-    const { ipcRenderer } = require('electron')
-    ipcRenderer.on('ooni', this.onMessage)
-  }
-
-  onMessage(event, data) {
-    switch (data.key) {
-    case 'ooni.run.progress':
-      this.setState({
-        runPercent: data.percentage,
-        runEta: data.eta,
-        runProgressLine: data.message,
-        runningTestName: data.testKey
-      })
-      break
-    case 'error':
-      debug('error received', data)
-      this.setState({
-        runError: data.message,
-        runningTestName: ''
-      })
-      break
-    case 'log':
-      debug('log received', data)
-      this.setState({
-        runLogLines: this.state.runLogLines.concat(data.value)
-      })
-      break
-    default:
-      break
-    }
-  }
-
-  onKill() {
-    if (this.runner !== null && this.state.stopping !== true) {
-      this.runner.kill()
-      this.setState({
-        stopping: true
-      })
-    }
-  }
-
-  onRun(testGroupName) {
-    const { remote } = require('electron')
+  const onRun = useCallback((testGroupName) => {
     return () => {
       debug('running', testGroupName)
-      this.setState({
-        runningTestGroupName: testGroupName
-      })
-
-      const Runner = remote.require('./utils/ooni/run').Runner
-      this.runner = new Runner({ testGroupName })
-      this.runner
-        .run()
-        .then(() => {
-          this.setState({ done: true })
-          Router.push('/test-results')
-        })
-        .catch(error => {
-          debug('error', error)
-          Raven.captureException(error, {
-            extra: { scope: 'renderer.runTest' }
-          })
-          this.setState({ error: error })
-        })
+      setRunningTestGroupName(testGroupName)
     }
-  }
+  }, [])
 
-  render() {
-    const {
-      error,
-      runningTestGroupName,
-      runningTestName,
-      runProgressLine,
-      runPercent,
-      runEta,
-      runLogLines,
-      runError,
-      stopping
-    } = this.state
-
-    if (runningTestGroupName) {
-      return (
-        <Layout>
-          <Running
-            progressLine={runProgressLine}
-            percent={runPercent}
-            eta={runEta}
-            runningTestName={runningTestName}
-            logLines={runLogLines}
-            error={runError}
-            testGroupName={runningTestGroupName}
-            onKill={this.onKill}
-            stopping={stopping}
-          />
-        </Layout>
-      )
-    }
-
+  if (runningTestGroupName) {
     return (
       <Layout>
-        <Sidebar>
-          <StickyDraggableHeader height="40px" />
-          <Flex flexWrap="wrap" pl={3}>
-            {testList.map((t, idx) => (
-              <RunTestCard
-                onRun={this.onRun(t.key)}
-                key={idx}
-                id={t.key}
-                {...t}
-              />
-            ))}
-          </Flex>
-          {error && <p>Error: {error.toString()}</p>}
-        </Sidebar>
+        <Running testGroupName={runningTestGroupName} />
       </Layout>
     )
   }
+
+  return (
+    <Layout>
+      <Sidebar>
+        <StickyDraggableHeader height="40px" />
+        <Flex flexWrap="wrap" pl={3}>
+          {testList.map((t, idx) => (
+            <RunTestCard
+              onRun={onRun(t.key)}
+              key={idx}
+              id={t.key}
+              {...t}
+            />
+          ))}
+        </Flex>
+      </Sidebar>
+    </Layout>
+  )
 }
 
 export default Home
