@@ -1,4 +1,22 @@
 # Changelog
+## OONI Probe Desktop 3.0.4 [2020-10-14]
+
+probe-cli: 3.0.8
+
+### Fixes
+* Flickering when running a test (ooni/probe#1189)
+* Fix crash when viewing results of stopped tests (ooni/probe#1245)
+* Fix alignment of buttons in onboarding screens (ooni/probe#1138)
+* Fix spacing and alignment of result overview section (ooni/probe#1043)
+
+### Changes
+* Skip downloading `zip` archive of probe-cli in the download script (#176)
+
+### Security
+* Dependabot version bumps for `electron`, `elliptic`, `lodash`, `markdown-to-jsx`
+
+### Dependencies
+* Replace `react-lottie` with `react-lottie-player`
 
 ## OONI Probe Desktop 3.0.3 [2020-06-29]
 
