@@ -59,12 +59,14 @@ time point, dispose of the the `.p12` file using `rm -P`.
 Create a `.env` file in the root directory with the following content:
 
 ```bash
+GH_TOKEN=TOKEN
 OONI_APPLEID=your@apple.id
 OONI_APPLEIDPASS=XXXX
 OONI_TEAMID=YWCG8FZTLT
 ```
 
-where `your@apple.id` is the Apple ID you are using as part of our
+where `TOKEN` is a [personal github token](https://github.com/settings/tokens/new)
+with repository scope, `your@apple.id` is the Apple ID you are using as part of our
 team, `XXXX` is a password specific application created by visiting
 https://appleid.apple.com and logging in as `your@apple.id`, and
 `YWCG8FZTLT` is the team ID used by OONI.
@@ -91,7 +93,8 @@ Run:
 
 ```bash
 yarn install
-yarn run publish
+yarn run publish:mac
+yarn run publish:win
 ```
 
 **Important caveat** be sure to not push the tag for the upcoming release until
