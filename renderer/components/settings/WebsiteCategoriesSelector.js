@@ -13,8 +13,8 @@ import * as CategoryIcons from 'ooni-components/dist/icons'
 
 import styled from 'styled-components'
 
-import { ListOption } from './widgets'
 import { useConfig } from './useConfig'
+import StopTestModal from '../home/StopTestModal'
 
 const FlexWithBottomBorder = styled(Flex)`
   border-bottom: 1px solid ${props => props.theme.colors.gray5};
@@ -67,13 +67,30 @@ const CategoryList = ({ initialList, handleChange }) => {
 }
 
 export const WebsiteCategoriesSelector = () => {
-  const [modalOpen, setModalOpen] = useState(false)
+  const [showCategoriesModal, setShowCategoriesModal] = useState(false)
   const [categoryListInConfig, setCategoryListInConfig] = useConfig('nettests.websites_enabled_category_codes')
   const [selectedCategoryCodes, setSelectedCategoryCodes] = useState(categoryListInConfig)
+  const [showConfirmation, setShowConfirmation] = useState(false)
 
   const enabledCategoriesCount = Object.values(categoryListInConfig).reduce((count, enabled) => {
     return count + (enabled ? 1 : 0)
   }, 0)
+
+  const isNotDirty = useMemo(() => {
+    const selectedKeys = Object.keys(selectedCategoryCodes)
+    const keysInConfig = Object.keys(categoryListInConfig)
+
+    if (selectedKeys.length !== keysInConfig.length) {
+      return false
+    }
+
+    for (let key of selectedKeys) {
+      if (selectedCategoryCodes[key] !== categoryListInConfig[key]) {
+        return false
+      }
+    }
+    return true
+  }, [selectedCategoryCodes, categoryListInConfig])
 
   const collectChange = useCallback((event) => {
     setSelectedCategoryCodes({...selectedCategoryCodes, [event.target.name]: event.target.checked})
@@ -87,10 +104,25 @@ export const WebsiteCategoriesSelector = () => {
     setSelectedCategoryCodes(updatedList)
   }, [selectedCategoryCodes, setSelectedCategoryCodes])
 
-  const writeChanges = useCallback(() => {
+  const onClose = useCallback(() => {
+    if (isNotDirty) {
+      setShowCategoriesModal(false)
+    } else {
+      setShowConfirmation(true)
+    }
+  }, [setShowConfirmation, setShowCategoriesModal, isNotDirty])
+
+  const onConfirm = useCallback(() => {
     setCategoryListInConfig(selectedCategoryCodes)
-    setModalOpen(false)
-  }, [selectedCategoryCodes, setCategoryListInConfig, setModalOpen])
+    setShowConfirmation(false)
+    setShowCategoriesModal(false)
+  }, [selectedCategoryCodes, setCategoryListInConfig, setShowCategoriesModal])
+
+  const onDiscard = useCallback(() => {
+    setSelectedCategoryCodes(categoryListInConfig)
+    setShowConfirmation(false)
+    setShowCategoriesModal(false)
+  }, [categoryListInConfig, setSelectedCategoryCodes, setShowConfirmation, setShowCategoriesModal])
 
   return (
     <Flex flexDirection='column'>
@@ -104,9 +136,11 @@ export const WebsiteCategoriesSelector = () => {
         />
       </Text>
       <Box mt={1} mb={2} width={2/3}>
-        <Button fontSize={14} hollow onClick={() => setModalOpen(!modalOpen)}>Edit</Button>
+        <Button fontSize={14} hollow onClick={() => setShowCategoriesModal(!showCategoriesModal)}>
+          Edit
+        </Button>
       </Box>
-      <Modal width='60%' show={modalOpen} closeButton='right' onHideClick={() => setModalOpen(false)}>
+      <Modal width='60%' show={showCategoriesModal} closeButton='right' onHideClick={() => onClose()}>
         <Container>
           <Heading h={4} my={3} textAlign='center'>
             <FormattedMessage id='Settings.Websites.Categories.Label' />
@@ -119,12 +153,17 @@ export const WebsiteCategoriesSelector = () => {
             <Button ml={2} inverted onClick={() => selectAll(true)}>
               <strong>Select all</strong>
             </Button>
-            <Button ml={2} onClick={() => writeChanges()}>
+            <Button ml={2} disabled={isNotDirty} onClick={() => onConfirm()}>
               <strong>Done</strong>
             </Button>
           </Flex>
         </Container>
       </Modal>
+      <StopTestModal
+        show={showConfirmation}
+        onConfirm={onConfirm}
+        onCancel={() => onDiscard()}
+      />
     </Flex>
   )
 }
