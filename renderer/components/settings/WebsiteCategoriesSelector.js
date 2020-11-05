@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import {
   Flex, Box,
@@ -50,58 +50,47 @@ const StyledCategoryList = styled(Box)`
   position: relative;
 `
 
-// StyledCategoryList.displayName = 'StyledCategoryList'
-
-const GradientBottom = styled.div`
-  position: sticky;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 150px;
-  background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
-`
 // Pick category codes, names, descriptions from the intl context
-const CategoryList = () => {
-  const intl = useIntl()
-  const categoryCodeRegex = /^CategoryCode\.(.*).Name$/
-  const availableCategoryCodes = useMemo(() => Object.keys(intl.messages)
-    .filter(key => key.match(categoryCodeRegex))
-    .map(key => key.match(categoryCodeRegex)[1])
-    .sort()
-    , [])
-
+const CategoryList = ({ initialList, handleChange }) => {
   return (
-    <ListOption optionKey='nettests.websites_enabled_category_codes'>
-      {(list, handleChange) => {
-        return (
-          <StyledCategoryList>
-            {availableCategoryCodes.map(code => (
-              <CategoryEntry
-                key={code}
-                code={code}
-                enabled={list.indexOf(code) > -1}
-                handleChange={handleChange}
-              />
-            ))}
-            <GradientBottom />
-          </StyledCategoryList>
-        )
-      }}
-    </ListOption>
+    <StyledCategoryList>
+      {Object.entries(initialList).map(([code, enabled]) => (
+        <CategoryEntry
+          key={code}
+          code={code}
+          enabled={enabled}
+          handleChange={handleChange}
+        />
+      ))}
+    </StyledCategoryList>
   )
 }
 
 export const WebsiteCategoriesSelector = () => {
   const [modalOpen, setModalOpen] = useState(false)
-  const [categoryList, setCategoryList] = useConfig('nettests.websites_enabled_category_codes')
+  const [categoryListInConfig, setCategoryListInConfig] = useConfig('nettests.websites_enabled_category_codes')
+  const [selectedCategoryCodes, setSelectedCategoryCodes] = useState(categoryListInConfig)
 
-  const intl = useIntl()
-  const categoryCodeRegex = /^CategoryCode\.(.*).Name$/
-  const availableCategoryCodes = useMemo(() => Object.keys(intl.messages)
-    .filter(key => key.match(categoryCodeRegex))
-    .map(key => key.match(categoryCodeRegex)[1])
-    .sort()
-    , [])
+  const enabledCategoriesCount = Object.values(categoryListInConfig).reduce((count, enabled) => {
+    return count + (enabled ? 1 : 0)
+  }, 0)
+
+  const collectChange = useCallback((event) => {
+    setSelectedCategoryCodes({...selectedCategoryCodes, [event.target.name]: event.target.checked})
+  }, [selectedCategoryCodes, setSelectedCategoryCodes])
+
+  const selectAll = useCallback((operation) => {
+    const updatedList = Object.keys(selectedCategoryCodes).reduce((updatedList, code) => {
+      updatedList[code] = operation
+      return updatedList
+    }, {})
+    setSelectedCategoryCodes(updatedList)
+  }, [selectedCategoryCodes, setSelectedCategoryCodes])
+
+  const writeChanges = useCallback(() => {
+    setCategoryListInConfig(selectedCategoryCodes)
+    setModalOpen(false)
+  }, [selectedCategoryCodes, setCategoryListInConfig, setModalOpen])
 
   return (
     <Flex flexDirection='column'>
@@ -110,7 +99,7 @@ export const WebsiteCategoriesSelector = () => {
         <FormattedMessage
           id='Settings.Websites.Categories.Description'
           values={{
-            Count: categoryList.length
+            Count: enabledCategoriesCount
           }}
         />
       </Text>
@@ -122,15 +111,15 @@ export const WebsiteCategoriesSelector = () => {
           <Heading h={4} my={3} textAlign='center'>
             <FormattedMessage id='Settings.Websites.Categories.Label' />
           </Heading>
-          <CategoryList />
+          <CategoryList initialList={selectedCategoryCodes} handleChange={collectChange} />
           <Flex justifyContent='flex-end' my={3}>
-            <Button ml={2} inverted onClick={() => setCategoryList([])}>
+            <Button ml={2} inverted onClick={() => selectAll(false)}>
               <strong>Deselect all</strong>
             </Button>
-            <Button ml={2} inverted onClick={() => setCategoryList(availableCategoryCodes)}>
+            <Button ml={2} inverted onClick={() => selectAll(true)}>
               <strong>Select all</strong>
             </Button>
-            <Button ml={2} onClick={() => setModalOpen(false)}>
+            <Button ml={2} onClick={() => writeChanges()}>
               <strong>Done</strong>
             </Button>
           </Flex>
