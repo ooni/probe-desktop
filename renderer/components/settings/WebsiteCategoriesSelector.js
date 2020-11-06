@@ -10,11 +10,11 @@ import {
   Heading
 } from 'ooni-components'
 import * as CategoryIcons from 'ooni-components/dist/icons'
-
+import { MdClose } from 'react-icons/md'
 import styled from 'styled-components'
 
 import { useConfig } from './useConfig'
-import StopTestModal from '../home/StopTestModal'
+import ConfirmationModal, { StyledCloseButton } from '../ConfirmationModal'
 
 const FlexWithBottomBorder = styled(Flex)`
   border-bottom: 1px solid ${props => props.theme.colors.gray5};
@@ -140,7 +140,8 @@ export const WebsiteCategoriesSelector = () => {
           Edit
         </Button>
       </Box>
-      <Modal width='60%' show={showCategoriesModal} closeButton='right' onHideClick={() => onClose()}>
+      <Modal width='60%' show={showCategoriesModal}>
+        <StyledCloseButton onClick={() => onClose()}><MdClose size={24} /></StyledCloseButton>
         <Container>
           <Heading h={4} my={3} textAlign='center'>
             <FormattedMessage id='Settings.Websites.Categories.Label' />
@@ -148,22 +149,28 @@ export const WebsiteCategoriesSelector = () => {
           <CategoryList initialList={selectedCategoryCodes} handleChange={collectChange} />
           <Flex justifyContent='flex-end' my={3}>
             <Button ml={2} inverted onClick={() => selectAll(false)}>
-              <strong>Deselect all</strong>
+              <strong><FormattedMessage id='Settings.Websites.Categories.Selection.None' /></strong>
             </Button>
             <Button ml={2} inverted onClick={() => selectAll(true)}>
-              <strong>Select all</strong>
+              <strong><FormattedMessage id='Settings.Websites.Categories.Selection.All' /></strong>
             </Button>
             <Button ml={2} disabled={isNotDirty} onClick={() => onConfirm()}>
-              <strong>Done</strong>
+              <strong><FormattedMessage id='Settings.Websites.Categories.Selection.Done' /></strong>
             </Button>
           </Flex>
         </Container>
       </Modal>
-      <StopTestModal
-        show={showConfirmation}
-        onConfirm={onConfirm}
-        onCancel={() => onDiscard()}
-      />
+      {showConfirmation &&
+        <ConfirmationModal
+          show={showConfirmation}
+          title={<FormattedMessage id='Settings.Websites.Categories.Confirmation.Title' />}
+          body={<FormattedMessage id='Settings.Websites.Categories.Confirmation.Body' />}
+          confirmLabel={<FormattedMessage id='Settings.Websites.Categories.Confirmation.Label.Confirm' />}
+          cancelLabel={<FormattedMessage id='Settings.Websites.Categories.Confirmation.Label.Cancel' />}
+          onConfirm={onConfirm}
+          onCancel={() => onDiscard()}
+        />
+      }
     </Flex>
   )
 }

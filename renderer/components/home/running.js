@@ -22,7 +22,7 @@ const debug = require('debug')('ooniprobe-desktop.renderer.components.home.runni
 
 import { testGroups } from '../nettests'
 import { StripedProgress } from './StripedProgress'
-import StopTestModal from './StopTestModal'
+import StopTestModal from '../ConfirmationModal'
 
 const StyledRunningTest = styled.div`
   text-align: center;
@@ -264,14 +264,20 @@ const Running = ({ testGroupName }) => {
               </CloseButtonContainer>
             )}
 
-            <StopTestModal
-              show={showModal}
-              onConfirm={() => {
-                onKill()
-                setModalState(false)
-              }}
-              onCancel={() => setModalState(false)}
-            />
+            {showModal &&
+              <StopTestModal
+                show={showModal}
+                title={<FormattedMessage id='Modal.InterruptTest.Title' />}
+                body={<FormattedMessage id='Modal.InterruptTest.Paragraph' />}
+                confirmLabel={<FormattedMessage id='Modal.OK' />}
+                cancelLabel={<FormattedMessage id='Modal.Cancel' />}
+                onConfirm={() => {
+                  onKill()
+                  setModalState(false)
+                }}
+                onCancel={() => setModalState(false)}
+              />
+            }
 
             <MemoizedTitle groupName={testGroup.name} />
 
