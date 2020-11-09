@@ -9,38 +9,38 @@ const LATEST_CONFIG_VERSION = 3
 
 const OONI_CONFIG_PATH = path.join(getHomeDir(), 'config.json')
 
-const availableCategoriesList = {
-  'ALDR': true,
-  'ANON': true,
-  'COMM': true,
-  'COMT': true,
-  'CTRL': true,
-  'CULTR': true,
-  'DATE': true,
-  'ECON': true,
-  'ENV': true,
-  'FILE': true,
-  'GAME': true,
-  'GMB': true,
-  'GOVT': true,
-  'GRP': true,
-  'HACK': true,
-  'HATE': true,
-  'HOST': true,
-  'HUMR': true,
-  'IGO': true,
-  'LGBT': true,
-  'MILX': true,
-  'MMED': true,
-  'NEWS': true,
-  'POLR': true,
-  'PORN': true,
-  'PROV': true,
-  'PUBH': true,
-  'REL': true,
-  'SRCH': true,
-  'XED': true
-}
+const availableCategoriesList = [
+  'ALDR',
+  'ANON',
+  'COMM',
+  'COMT',
+  'CTRL',
+  'CULTR',
+  'DATE',
+  'ECON',
+  'ENV',
+  'FILE',
+  'GAME',
+  'GMB',
+  'GOVT',
+  'GRP',
+  'HACK',
+  'HATE',
+  'HOST',
+  'HUMR',
+  'IGO',
+  'LGBT',
+  'MILX',
+  'MMED',
+  'NEWS',
+  'POLR',
+  'PORN',
+  'PROV',
+  'PUBH',
+  'REL',
+  'SRCH',
+  'XED'
+]
 
 const initConfigFile = async () => {
   const config = {
@@ -162,5 +162,6 @@ module.exports = {
   initConfigFile,
   getConfig,
   setConfig,
-  maybeMigrate
+  maybeMigrate,
+  availableCategoriesList
 }

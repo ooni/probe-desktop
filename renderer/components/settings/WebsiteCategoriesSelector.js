@@ -12,6 +12,7 @@ import {
 import * as CategoryIcons from 'ooni-components/dist/icons'
 import { MdClose } from 'react-icons/md'
 import styled from 'styled-components'
+import electron from 'electron'
 
 import { useConfig } from './useConfig'
 import ConfirmationModal, { StyledCloseButton } from '../ConfirmationModal'
@@ -51,14 +52,14 @@ const StyledCategoryList = styled(Box)`
 `
 
 // Pick category codes, names, descriptions from the intl context
-const CategoryList = ({ initialList, handleChange }) => {
+const CategoryList = ({ availableCategoriesList, enabledCategories, handleChange }) => {
   return (
     <StyledCategoryList>
-      {Object.entries(initialList).map(([code, enabled]) => (
+      {availableCategoriesList.map((code) => (
         <CategoryEntry
           key={code}
           code={code}
-          enabled={enabled}
+          enabled={enabledCategories.includes(code)}
           handleChange={handleChange}
         />
       ))}
@@ -72,20 +73,20 @@ export const WebsiteCategoriesSelector = () => {
   const [selectedCategoryCodes, setSelectedCategoryCodes] = useState(categoryListInConfig)
   const [showConfirmation, setShowConfirmation] = useState(false)
 
-  const enabledCategoriesCount = Object.values(categoryListInConfig).reduce((count, enabled) => {
-    return count + (enabled ? 1 : 0)
-  }, 0)
+  // const enabledCategoriesCount = Object.values(categoryListInConfig).reduce((count, enabled) => {
+  //   return count + (enabled ? 1 : 0)
+  // }, 0)
+  const remote = electron.remote
+  const { availableCategoriesList } = remote.require('./utils/config')
+
 
   const isNotDirty = useMemo(() => {
-    const selectedKeys = Object.keys(selectedCategoryCodes)
-    const keysInConfig = Object.keys(categoryListInConfig)
-
-    if (selectedKeys.length !== keysInConfig.length) {
+    if (selectedCategoryCodes.length !== categoryListInConfig.length) {
       return false
     }
 
-    for (let key of selectedKeys) {
-      if (selectedCategoryCodes[key] !== categoryListInConfig[key]) {
+    for (let key of selectedCategoryCodes) {
+      if (categoryListInConfig.includes(key)) {
         return false
       }
     }
@@ -93,16 +94,21 @@ export const WebsiteCategoriesSelector = () => {
   }, [selectedCategoryCodes, categoryListInConfig])
 
   const collectChange = useCallback((event) => {
-    setSelectedCategoryCodes({...selectedCategoryCodes, [event.target.name]: event.target.checked})
+    if (event.target.checked === true) {
+      const categoryToAdd = event.target.name
+      setSelectedCategoryCodes(oldList => [...oldList, categoryToAdd])
+    } else {
+      setSelectedCategoryCodes(selectedCategoryCodes.filter(item => item !== event.target.name))
+    }
   }, [selectedCategoryCodes, setSelectedCategoryCodes])
 
-  const selectAll = useCallback((operation) => {
-    const updatedList = Object.keys(selectedCategoryCodes).reduce((updatedList, code) => {
-      updatedList[code] = operation
-      return updatedList
-    }, {})
-    setSelectedCategoryCodes(updatedList)
-  }, [selectedCategoryCodes, setSelectedCategoryCodes])
+  const selectAll = useCallback(() => {
+    setSelectedCategoryCodes(availableCategoriesList)
+  }, [setSelectedCategoryCodes, availableCategoriesList])
+
+  const deselectAll = useCallback(() => {
+    setSelectedCategoryCodes([])
+  }, [setSelectedCategoryCodes])
 
   const onClose = useCallback(() => {
     if (isNotDirty) {
@@ -113,7 +119,7 @@ export const WebsiteCategoriesSelector = () => {
   }, [setShowConfirmation, setShowCategoriesModal, isNotDirty])
 
   const onConfirm = useCallback(() => {
-    setCategoryListInConfig(selectedCategoryCodes)
+    setCategoryListInConfig(selectedCategoryCodes.sort())
     setShowConfirmation(false)
     setShowCategoriesModal(false)
   }, [selectedCategoryCodes, setCategoryListInConfig, setShowCategoriesModal])
@@ -131,7 +137,7 @@ export const WebsiteCategoriesSelector = () => {
         <FormattedMessage
           id='Settings.Websites.Categories.Description'
           values={{
-            Count: enabledCategoriesCount
+            Count: categoryListInConfig.length
           }}
         />
       </Text>
@@ -146,12 +152,16 @@ export const WebsiteCategoriesSelector = () => {
           <Heading h={4} my={3} textAlign='center'>
             <FormattedMessage id='Settings.Websites.Categories.Label' />
           </Heading>
-          <CategoryList initialList={selectedCategoryCodes} handleChange={collectChange} />
+          <CategoryList
+            availableCategoriesList={availableCategoriesList}
+            enabledCategories={selectedCategoryCodes}
+            handleChange={collectChange}
+          />
           <Flex justifyContent='flex-end' my={3}>
-            <Button ml={2} inverted onClick={() => selectAll(false)}>
+            <Button ml={2} inverted onClick={() => deselectAll()}>
               <strong><FormattedMessage id='Settings.Websites.Categories.Selection.None' /></strong>
             </Button>
-            <Button ml={2} inverted onClick={() => selectAll(true)}>
+            <Button ml={2} inverted onClick={() => selectAll()}>
               <strong><FormattedMessage id='Settings.Websites.Categories.Selection.All' /></strong>
             </Button>
             <Button ml={2} disabled={isNotDirty} onClick={() => onConfirm()}>
