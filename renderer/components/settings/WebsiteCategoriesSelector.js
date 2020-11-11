@@ -13,6 +13,7 @@ import * as CategoryIcons from 'ooni-components/dist/icons'
 import { MdClose } from 'react-icons/md'
 import styled from 'styled-components'
 import electron from 'electron'
+import { RemoveScroll } from 'react-remove-scroll'
 
 import { useConfig } from './useConfig'
 import ConfirmationModal, { StyledCloseButton } from '../ConfirmationModal'
@@ -146,30 +147,32 @@ export const WebsiteCategoriesSelector = () => {
           Edit
         </Button>
       </Box>
-      <Modal width='60%' show={showCategoriesModal}>
-        <StyledCloseButton onClick={() => onClose()}><MdClose size={24} /></StyledCloseButton>
-        <Container>
-          <Heading h={4} my={3} textAlign='center'>
-            <FormattedMessage id='Settings.Websites.Categories.Label' />
-          </Heading>
-          <CategoryList
-            availableCategoriesList={availableCategoriesList}
-            enabledCategories={selectedCategoryCodes}
-            handleChange={collectChange}
-          />
-          <Flex justifyContent='flex-end' my={3}>
-            <Button ml={2} inverted onClick={() => deselectAll()}>
-              <strong><FormattedMessage id='Settings.Websites.Categories.Selection.None' /></strong>
-            </Button>
-            <Button ml={2} inverted onClick={() => selectAll()}>
-              <strong><FormattedMessage id='Settings.Websites.Categories.Selection.All' /></strong>
-            </Button>
-            <Button ml={2} disabled={isNotDirty} onClick={() => onConfirm()}>
-              <strong><FormattedMessage id='Settings.Websites.Categories.Selection.Done' /></strong>
-            </Button>
-          </Flex>
-        </Container>
-      </Modal>
+      <RemoveScroll enabled={showCategoriesModal}>
+        <Modal width='60%' show={showCategoriesModal}>
+          <StyledCloseButton onClick={() => onClose()}><MdClose size={24} /></StyledCloseButton>
+          <Container>
+            <Heading h={4} my={3} textAlign='center'>
+              <FormattedMessage id='Settings.Websites.Categories.Label' />
+            </Heading>
+            <CategoryList
+              availableCategoriesList={availableCategoriesList}
+              enabledCategories={selectedCategoryCodes}
+              handleChange={collectChange}
+            />
+            <Flex justifyContent='flex-end' my={3}>
+              <Button ml={2} inverted onClick={() => deselectAll()}>
+                <strong><FormattedMessage id='Settings.Websites.Categories.Selection.None' /></strong>
+              </Button>
+              <Button ml={2} inverted onClick={() => selectAll()}>
+                <strong><FormattedMessage id='Settings.Websites.Categories.Selection.All' /></strong>
+              </Button>
+              <Button ml={2} disabled={isNotDirty} onClick={() => onConfirm()}>
+                <strong><FormattedMessage id='Settings.Websites.Categories.Selection.Done' /></strong>
+              </Button>
+            </Flex>
+          </Container>
+        </Modal>
+      </RemoveScroll>
       {showConfirmation &&
         <ConfirmationModal
           show={showConfirmation}
