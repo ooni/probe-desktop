@@ -133,7 +133,7 @@ export const WebsiteCategoriesSelector = () => {
       </Text>
       <Box mt={1} mb={2} width={2/3}>
         <Button fontSize={14} hollow onClick={() => setShowCategoriesModal(!showCategoriesModal)}>
-          Edit
+          <FormattedMessage id='Settings.Websites.Categories.Edit' />
         </Button>
       </Box>
       <RemoveScroll enabled={showCategoriesModal}>
