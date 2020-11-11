@@ -125,7 +125,7 @@ export const Sidebar = ({children, router}) => (
           <StyledOONILogo />
         </Box>
         <Box mb={2}>
-          <Text fontSize={12} textAlign='right' color='gray5'>
+          <Text fontSize={12} textAlign='right' color='gray7'>
             {version}
           </Text>
         </Box>
