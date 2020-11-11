@@ -87,7 +87,7 @@ export const WebsiteCategoriesSelector = () => {
     }
 
     for (let key of selectedCategoryCodes) {
-      if (categoryListInConfig.includes(key)) {
+      if (!categoryListInConfig.includes(key)) {
         return false
       }
     }
