@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import {
   Flex, Box,
   Label,
@@ -16,7 +16,7 @@ import electron from 'electron'
 import { RemoveScroll } from 'react-remove-scroll'
 
 import { useConfig } from './useConfig'
-import ConfirmationModal, { StyledCloseButton } from '../ConfirmationModal'
+import { StyledCloseButton } from '../ConfirmationModal'
 
 const FlexWithBottomBorder = styled(Flex)`
   border-bottom: 1px solid ${props => props.theme.colors.gray5};
@@ -72,7 +72,6 @@ export const WebsiteCategoriesSelector = () => {
   const [showCategoriesModal, setShowCategoriesModal] = useState(false)
   const [categoryListInConfig, setCategoryListInConfig] = useConfig('nettests.websites_enabled_category_codes')
   const [selectedCategoryCodes, setSelectedCategoryCodes] = useState(categoryListInConfig)
-  const [showConfirmation, setShowConfirmation] = useState(false)
 
   // const enabledCategoriesCount = Object.values(categoryListInConfig).reduce((count, enabled) => {
   //   return count + (enabled ? 1 : 0)
@@ -112,24 +111,14 @@ export const WebsiteCategoriesSelector = () => {
   }, [setSelectedCategoryCodes])
 
   const onClose = useCallback(() => {
-    if (isNotDirty) {
-      setShowCategoriesModal(false)
-    } else {
-      setShowConfirmation(true)
-    }
-  }, [setShowConfirmation, setShowCategoriesModal, isNotDirty])
+    setShowCategoriesModal(false)
+    setSelectedCategoryCodes(categoryListInConfig)
+  }, [setShowCategoriesModal, setSelectedCategoryCodes, categoryListInConfig])
 
   const onConfirm = useCallback(() => {
     setCategoryListInConfig(selectedCategoryCodes.sort())
-    setShowConfirmation(false)
     setShowCategoriesModal(false)
   }, [selectedCategoryCodes, setCategoryListInConfig, setShowCategoriesModal])
-
-  const onDiscard = useCallback(() => {
-    setSelectedCategoryCodes(categoryListInConfig)
-    setShowConfirmation(false)
-    setShowCategoriesModal(false)
-  }, [categoryListInConfig, setSelectedCategoryCodes, setShowConfirmation, setShowCategoriesModal])
 
   return (
     <Flex flexDirection='column'>
@@ -173,17 +162,6 @@ export const WebsiteCategoriesSelector = () => {
           </Container>
         </Modal>
       </RemoveScroll>
-      {showConfirmation &&
-        <ConfirmationModal
-          show={showConfirmation}
-          title={<FormattedMessage id='Settings.Websites.Categories.Confirmation.Title' />}
-          body={<FormattedMessage id='Settings.Websites.Categories.Confirmation.Body' />}
-          confirmLabel={<FormattedMessage id='Settings.Websites.Categories.Confirmation.Label.Confirm' />}
-          cancelLabel={<FormattedMessage id='Settings.Websites.Categories.Confirmation.Label.Cancel' />}
-          onConfirm={onConfirm}
-          onCancel={() => onDiscard()}
-        />
-      }
     </Flex>
   )
 }
