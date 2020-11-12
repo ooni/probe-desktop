@@ -17,9 +17,10 @@ const Card = styled(Box)`
   }
 `
 
+// Override the margin-{top,bottom} added by default in FormattedMarkdownMessage
 const CardDescription = styled(Box)`
   & p {
-    margin: 0; /* Override {margin-{top,bottom}: '32px'} on FormattedMarkdownMessage */
+    margin: 0;
   }
 `
 
@@ -43,7 +44,6 @@ const RunTestCard = ({ name, color, icon, description, onRun }) => {
             <CardDescription fontSize={1} mt={2}>{description}</CardDescription>
           </Flex>
         </Box>
-
       </Flex>
     </Card>
   )
