@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useMatomo } from '@datapunt/matomo-tracker-react'
 import electron from 'electron'
 
-import { getConfigValue } from './utils'
+import { getConfigValue } from './settings/useConfig'
 
 const MatomoTracker = () => {
 

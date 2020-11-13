@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { Provider, theme } from 'ooni-components'
 import { MatomoProvider, createInstance } from '@datapunt/matomo-tracker-react'
 
-import withIntl from './withIntl'
 import GlobalStyle from './globalStyle'
 import MatomoTracker from './MatomoTracker'
 
@@ -33,4 +32,4 @@ Layout.propTypes = {
   analytics: PropTypes.bool
 }
 
-export default withIntl(Layout)
+export default Layout

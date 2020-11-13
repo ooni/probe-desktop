@@ -1,28 +1,22 @@
+import React, { useEffect, useState, useCallback } from 'react'
 import electron from 'electron'
-import React from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
-
-import Layout from '../components/Layout'
-import Sidebar from '../components/Sidebar'
-import { getConfigValue } from '../components/utils'
-
 import {
   Flex,
   Box,
   Heading,
   Container,
-  Label,
-  Checkbox,
-  Input,
-  Code,
   Text,
-  theme
 } from 'ooni-components'
 
+import { ConfigProvider } from '../components/settings/useConfig'
+import { BooleanOption, NumberOption } from '../components/settings/widgets'
+import { LanguageSelector } from '../components/settings/LanguageSelector'
+import { WebsiteCategoriesSelector } from '../components/settings/WebsiteCategoriesSelector'
+import Layout from '../components/Layout'
+import Sidebar from '../components/Sidebar'
 import { default as pkgJson } from '../../package.json'
-
-import log from 'electron-log'
 
 const TopBar = styled.div`
   background-color: ${props => props.theme.colors.blue5};
@@ -33,218 +27,88 @@ const TopBar = styled.div`
   -webkit-app-region: drag;
 `
 
-const LocaleString = () => {
-  const intl = useIntl()
-  return (
-    <FormattedMessage
-      id='Settings.Language.Current'
-      values={{ lang:
-          <Code
-            px={2}
-            py={1}
-            style={{
-              borderRadius: '10px'
-            }}
-            bg={theme.colors.gray6}
-            color='white'>
-          {intl.locale}
-          </Code> 
-      }}
-    />
-  )
-}
+const SectionHeading = styled(Heading)`
+  border-bottom: 1px solid ${props => props.theme.colors.gray6};
+`
 
-class BooleanOption extends React.Component {
-  constructor(props) {
-    super(props)
-    this.handleChange = this.handleChange.bind(this)
-  }
+const Section = ({ title, children }) => (
+  <Flex flexDirection='column' my={3}>
+    <SectionHeading h={4} pb={2}>{title}</SectionHeading>
+    {children}
+  </Flex>
+)
 
-  handleChange(event) {
-    const {
-      optionKey,
-      config
-    } = this.props
+const Settings = () => {
+  const [config, setConfig] = useState(null)
 
-    const remote = electron.remote
-    const { setConfig } = remote.require('./utils/config')
-
-    const target = event.target
-    const newValue = target.type === 'checkbox' ? target.checked : target.value
-    const oldValue = getConfigValue(config, optionKey)
-    setConfig(optionKey, oldValue, newValue).then(() => {
-      this.props.onConfigSet()
-    }).catch(() => {
-      log.error('inconsistency detected in config')
-      this.props.onConfigSet()
-    })
-  }
-
-  render() {
-    const {
-      label,
-      optionKey,
-      config
-    } = this.props
-
-
-    if (config === null) {
-      return <div />
-    }
-
-    const checked = getConfigValue(config, optionKey)
-    return (
-      <Label my={2}>
-        <Checkbox checked={checked} onChange={this.handleChange} />
-        {label}
-      </Label>
-    )
-  }
-}
-
-
-class NumberOption extends React.Component {
-  constructor(props) {
-    super(props)
-    this.handleChange = this.handleChange.bind(this)
-  }
-
-  handleChange(event) {
-    const {
-      optionKey,
-      config
-    } = this.props
-
-    const remote = electron.remote
-    const { setConfig } = remote.require('./utils/config')
-
-    const target = event.target
-    const newValue = Number(target.value)
-    const oldValue = Number(getConfigValue(config, optionKey))
-    setConfig(optionKey, oldValue, newValue).then(() => {
-      this.props.onConfigSet()
-    }).catch(() => {
-      log.error('inconsistency detected in config')
-      this.props.onConfigSet()
-    })
-  }
-
-  render() {
-    const {
-      label,
-      optionKey,
-      config
-    } = this.props
-
-
-    if (config === null) {
-      return <div />
-    }
-
-    const value = getConfigValue(config, optionKey)
-    return (
-      <Label my={2}>
-        <Box width={1/16}>
-          <Input
-            type='number'
-            min={0}
-            max={999}
-            value={value}
-            onChange={this.handleChange}
-          />
-        </Box>
-        {label}
-      </Label>
-    )
-  }
-}
-
-class Settings extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      config: null
-    }
-    this.reloadConfig = this.reloadConfig.bind(this)
-  }
-
-  async reloadConfig() {
+  const reloadConfig = useCallback(async () => {
     const remote = electron.remote
     const { getConfig } = remote.require('./utils/config')
-
     const config = await getConfig()
-    this.setState({
-      config
-    })
-  }
+    setConfig(config)
+  }, [])
 
-  componentDidMount() {
-    this.reloadConfig()
-  }
+  useEffect(() => {
+    reloadConfig()
+  }, [reloadConfig])
 
-  render() {
-    const {
-      config
-    } = this.state
+  return (
+    <Layout>
+      <Sidebar>
+        <Box width={1}>
+          <TopBar>
+            <Flex alignItems='center'>
+              <Box pl={3}>
+                <Heading h={3}><FormattedMessage id='Settings.Title' /></Heading>
+              </Box>
+            </Flex>
+          </TopBar>
+          <Container pt={3}>
+            <ConfigProvider>
+              <LanguageSelector />
 
-    return (
-      <Layout>
-        <Sidebar>
-          <Box width={1}>
-            <TopBar>
-              <Flex alignItems='center'>
-                <Box pl={3}>
-                  <Heading h={3}><FormattedMessage id='Settings.Title' /></Heading>
-                </Box>
-              </Flex>
-            </TopBar>
-            <Container pt={3}>
-              <Heading h={4}><FormattedMessage id='Settings.Sharing.Label' /></Heading>
-              <Flex flexDirection='column'>
-
-                <BooleanOption
-                  onConfigSet={this.reloadConfig}
-                  label={<FormattedMessage id='Settings.Sharing.UploadResults' />}
-                  optionKey='sharing.upload_results'
-                  config={config}
-                />
-
-                <BooleanOption
-                  onConfigSet={this.reloadConfig}
-                  label={<FormattedMessage id='Settings.Sharing.IncludeNetwork' />}
-                  optionKey='sharing.include_asn'
-                  config={config}
-                />
-
-                <BooleanOption
-                  onConfigSet={this.reloadConfig}
-                  label={<FormattedMessage id='Settings.Sharing.IncludeIP' />}
-                  optionKey='sharing.include_ip'
-                  config={config} />
-
+              {/* Test Options */}
+              <Section title={<FormattedMessage id='Settings.TestOptions.Label' />}>
+                <Heading h={5}><FormattedMessage id='Test.Websites.Fullname' /></Heading>
+                <WebsiteCategoriesSelector />
                 <NumberOption
-                  onConfigSet={this.reloadConfig}
+                  onConfigSet={reloadConfig}
                   label={<FormattedMessage id='Settings.Websites.TestCount' />}
                   optionKey='nettests.websites_url_limit'
                   config={config}
                 />
+              </Section>
 
+              {/* Storage Usage (TODO) */}
+              
+              {/* Privacy */}
+              <Section title={<FormattedMessage id='Settings.Privacy.Label' />}>
                 <BooleanOption
-                  onConfigSet={this.reloadConfig}
-                  label={<FormattedMessage id='Settings.Advanced.CollectAnalytics' />}
+                  label={<FormattedMessage id='Settings.Privacy.CollectAnalytics' />}
                   optionKey='advanced.collect_usage_stats'
-                  config={config}
                 />
+                <BooleanOption
+                  label={<FormattedMessage id='Settings.Sharing.UploadResults' />}
+                  optionKey='sharing.upload_results'
+                />
+                <BooleanOption
+                  label={<FormattedMessage id='Settings.Sharing.IncludeNetwork' />}
+                  optionKey='sharing.include_asn'
+                />
+                <BooleanOption
+                  label={<FormattedMessage id='Settings.Sharing.IncludeIP' />}
+                  optionKey='sharing.include_ip'
+                />
+              </Section>
 
-              </Flex>
-              <Text my={3}><LocaleString /></Text>
               <Text my={3}>OONI Probe Desktop v{pkgJson.version}</Text>
-            </Container>
-          </Box>
-        </Sidebar>
-      </Layout>
-    )
-  }
+
+            </ConfigProvider>
+          </Container>
+        </Box>
+      </Sidebar>
+    </Layout>
+  )
 }
 
 export default Settings

@@ -10,7 +10,7 @@ const StyledModal = styled(Modal)`
   box-shadow: 4px 4px 10px black;
 `
 
-const StyledCloseButton = styled(Box)`
+export const StyledCloseButton = styled(Box)`
   position: absolute;
   top: 4px;
   right: 4px;
@@ -25,38 +25,50 @@ const StyledCloseButton = styled(Box)`
   }
 `
 
-const StopTestModal = ({ show = true, onConfirm = () => {} , onCancel = () => {} }) => {
+const ConfirmationModal = ({
+  show = true,
+  title,
+  body,
+  confirmLabel = 'OK',
+  cancelLabel = 'Cancel',
+  onConfirm = () => {},
+  onCancel = () => {}
+}) => {
   return (
     <StyledModal bg='white' show={show} color='black' onHideClick={onCancel}>
       <StyledCloseButton onClick={onCancel}><MdClose size={24} /></StyledCloseButton>
       <Container p={3}>
         <Flex flexDirection='column'>
           <Heading h={4} textAlign='center'>
-            <FormattedMessage id='Modal.InterruptTest.Title' />
+            {title}
           </Heading>
           <Box my={2} px={5}>
             <Text>
-              <FormattedMessage id='Modal.InterruptTest.Paragraph' />
+              {body}
             </Text>
           </Box>
         </Flex>
       </Container>
       <Flex justifyContent='flex-end' my={3}>
         <Button mx={3} width={1/3} inverted onClick={onCancel}>
-          <Text fontWeight='bold'><FormattedMessage id='Modal.Cancel' /></Text>
+          <Text fontWeight='bold'>{cancelLabel}</Text>
         </Button>
         <Button mx={3} width={1/3} onClick={onConfirm}>
-          <Text fontWeight='bold'><FormattedMessage id='Modal.OK' /></Text>
+          <Text fontWeight='bold'>{confirmLabel}</Text>
         </Button>
       </Flex>
     </StyledModal>
   )
 }
 
-StopTestModal.propTypes = {
+ConfirmationModal.propTypes = {
   show: PropTypes.bool,
+  title: PropTypes.element,
+  body: PropTypes.element,
+  confirmLabel: PropTypes.element,
+  cancelLabel: PropTypes.element,
   onConfirm: PropTypes.func.isRequired,
   onCancel: PropTypes.func
 }
 
-export default StopTestModal
+export default ConfirmationModal
