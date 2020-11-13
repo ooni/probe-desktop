@@ -24,9 +24,9 @@ const CardDescription = styled(Box)`
   }
 `
 
-const RunTestCard = ({ name, color, icon, description, onRun }) => {
+const RunTestCard = ({ name, color, icon, description, onClick }) => {
   return (
-    <Card mb={4} p={2} onClick={onRun}>
+    <Card mb={4} p={2} onClick={onClick}>
       <Flex alignItems='center'>
         <Box>
           {React.cloneElement(
@@ -51,11 +51,11 @@ const RunTestCard = ({ name, color, icon, description, onRun }) => {
 
 RunTestCard.propTypes = {
   id: PropTypes.string,
-  onRun: PropTypes.func,
-  name: PropTypes.elem,
+  onClick: PropTypes.func,
+  name: PropTypes.element,
   color: PropTypes.string,
-  icon: PropTypes.elem,
-  description: PropTypes.elem
+  icon: PropTypes.element,
+  description: PropTypes.element
 }
 
 export default RunTestCard

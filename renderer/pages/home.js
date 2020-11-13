@@ -8,24 +8,43 @@ import RunTestCard from '../components/home/RunTestCard'
 import { DashboardHeader } from '../components/home/DashboardHeader'
 import Running from '../components/home/running'
 import { testList } from '../components/nettests'
+import TestGroupInDetail from '../components/home/TestGroupInDetail'
 
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.dashboard')
 
-
 const Home = () => {
+  const [testGroupInDetail, showTestGroupDetail] = useState(null)
   const [runningTestGroupName, setRunningTestGroupName] = useState(null)
 
   const onRun = useCallback((testGroupName) => {
     return () => {
       debug('running', testGroupName)
       setRunningTestGroupName(testGroupName)
+      showTestGroupDetail(null)
     }
-  }, [setRunningTestGroupName])
+  }, [setRunningTestGroupName, showTestGroupDetail])
 
   if (runningTestGroupName !== null) {
     return (
       <Layout>
         <Running testGroupName={runningTestGroupName} />
+      </Layout>
+    )
+  } else if (testGroupInDetail !== null) {
+    return (
+      <Layout>
+        <Sidebar>
+          <TestGroupInDetail
+            testGroup={testGroupInDetail}
+            onChooseWebsites={testGroupInDetail === 'websites' ? (
+              () => alert('Show Choose Websites UI')
+            ) : (
+              null
+            )}
+            onRun={onRun(testGroupInDetail)}
+            onBack={() => showTestGroupDetail(null)}
+          />
+        </Sidebar>
       </Layout>
     )
   }
@@ -38,7 +57,7 @@ const Home = () => {
           <Flex flexDirection="column">
             {testList.map((t, idx) => (
               <RunTestCard
-                onRun={onRun(t.key)}
+                onClick={() => showTestGroupDetail(t.key)}
                 key={idx}
                 id={t.key}
                 {...t}

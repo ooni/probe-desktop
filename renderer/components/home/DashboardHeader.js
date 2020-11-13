@@ -35,7 +35,7 @@ const RunAllButton = styled(Button).attrs({
   border: 1px solid ${props => props.theme.colors.gray3};
   border-radius: 16px;
   position: relative;
-  top: -70px;
+  top: -60px;
 
   &:hover {
     box-shadow: 0px 0px 6px 1px ${props => props.theme.colors.gray7};
