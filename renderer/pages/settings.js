@@ -67,7 +67,26 @@ const Settings = () => {
             <ConfigProvider>
               <LanguageSelector />
 
-              <Section title={<FormattedMessage id='Settings.Sharing.Label' />}>
+              {/* Test Options */}
+              <Section title={<FormattedMessage id='Settings.TestOptions.Label' />}>
+                <Heading h={5}><FormattedMessage id='Test.Websites.Fullname' /></Heading>
+                <WebsiteCategoriesSelector />
+                <NumberOption
+                  onConfigSet={reloadConfig}
+                  label={<FormattedMessage id='Settings.Websites.TestCount' />}
+                  optionKey='nettests.websites_url_limit'
+                  config={config}
+                />
+              </Section>
+
+              {/* Storage Usage (TODO) */}
+              
+              {/* Privacy */}
+              <Section title={<FormattedMessage id='Settings.Privacy.Label' />}>
+                <BooleanOption
+                  label={<FormattedMessage id='Settings.Privacy.CollectAnalytics' />}
+                  optionKey='advanced.collect_usage_stats'
+                />
                 <BooleanOption
                   label={<FormattedMessage id='Settings.Sharing.UploadResults' />}
                   optionKey='sharing.upload_results'
@@ -81,24 +100,9 @@ const Settings = () => {
                   optionKey='sharing.include_ip'
                 />
               </Section>
-              <Section title={<FormattedMessage id='Settings.TestOptions.Label' />}>
-                <Heading h={5}><FormattedMessage id='Test.Websites.Fullname' /></Heading>
-                <WebsiteCategoriesSelector />
-                <NumberOption
-                  onConfigSet={reloadConfig}
-                  label={<FormattedMessage id='Settings.Websites.TestCount' />}
-                  optionKey='nettests.websites_url_limit'
-                  config={config}
-                />
-              </Section>
 
-              <Section title={<FormattedMessage id='Settings.Advanced.Label' />}>
-                <BooleanOption
-                  label={<FormattedMessage id='Settings.Privacy.CollectAnalytics' />}
-                  optionKey='advanced.collect_usage_stats'
-                />
-              </Section>
               <Text my={3}>OONI Probe Desktop v{pkgJson.version}</Text>
+
             </ConfigProvider>
           </Container>
         </Box>
