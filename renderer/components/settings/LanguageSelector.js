@@ -8,7 +8,6 @@ export const LanguageSelector = () => {
   const intl = useIntl()
   const supportedLanguages = getSupportedLanguages()
   const languageOptions = useMemo(() => {
-    console.log(`Genearating langOpts again for ${intl.locale}`)
     return supportedLanguages.map(lang => (
       <option key={lang} value={lang}>{intl.formatDisplayName(lang)}</option>
     ))
