@@ -20,7 +20,7 @@ import Lottie from 'react-lottie-player'
 import moment from 'moment'
 const debug = require('debug')('ooniprobe-desktop.renderer.components.home.running')
 
-import { testGroups } from '../nettests'
+import { testList, cliTestKeysToGroups, testGroups } from '../nettests'
 import { StripedProgress } from './StripedProgress'
 import StopTestModal from '../ConfirmationModal'
 
@@ -194,6 +194,7 @@ const Running = ({ testGroupName }) => {
   const [eta, setEta] = useState(-1)
   const [, setStopped] = useState(false)
   const [isStopping, setIsStopping] = useState(false)
+
   let runner = null
 
   useEffect(() => {
@@ -231,6 +232,13 @@ const Running = ({ testGroupName }) => {
   const onMessage = useCallback((event, data) => {
     switch (data.key) {
     case 'ooni.run.progress':
+      var currentTestGroup = cliTestKeysToGroups[data.testKey]
+      if (testGroupName !== currentTestGroup
+        && testList.findIndex(item => item.key === currentTestGroup) > -1
+      ) {
+        setTestGroupName(currentTestGroup)
+      }
+
       data.testKey && setRunningTestName(data.testKey)
       data.message && setProgressLine(data.message)
       data.percentage && setPercent(data.percentage)
@@ -257,7 +265,15 @@ const Running = ({ testGroupName }) => {
     }
   }, [isStopping, setIsStopping, runner])
 
-  const testGroup = testGroups[testGroupName]
+  const testGroup = testGroups[testGroupName in testGroups ? testGroupName : 'default']
+
+  const testName = useMemo(() => (
+    runningTestName ? (
+      <FormattedMessage id={`Test.${runningTestName.split('.')[1]}.Fullname`} />
+    ) : (
+      <span />
+    )
+  ), [runningTestName])
 
   const testGroupBackupIcon = useMemo(() => {
     return React.cloneElement(testGroup.icon, {size: 300})

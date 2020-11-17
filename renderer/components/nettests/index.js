@@ -73,3 +73,16 @@ export const testList  = ['websites', 'im', 'circumvention', 'performance', 'mid
     {size: iconSize, color: iconColor}
   )
 }))
+
+export const cliTestKeysToGroups = {
+  'nettests.WebConnectivity': 'websites',
+  'nettests.HTTPInvalidRequestLine': 'middlebox',
+  'nettests.HTTPHeaderFieldManipulation': 'middlebox',
+  'nettests.FacebookMessenger': 'im',
+  'nettests.Telegram': 'im',
+  'nettests.WhatsApp': 'im',
+  'nettests.Dash': 'performance',
+  'nettests.NDT': 'performance',
+  'nettests.Psiphon': 'circumvention',
+  'nettests.Tor': 'circumvention'
+}
