@@ -16,8 +16,9 @@ export const getMessages = (locale = null) => {
   if (supportedMessages.hasOwnProperty(locale)) {
     const mergedMessages = Object.assign(
       {},
-      process.env.INTL_USE_FALLBACK_EN ? supportedMessages[defaultLocale] : {},
-      supportedMessages[locale])
+      supportedMessages[defaultLocale],
+      supportedMessages[locale]
+    )
     return mergedMessages
   } else {
     return supportedMessages
