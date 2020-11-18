@@ -8,9 +8,11 @@ export const LanguageSelector = () => {
   const intl = useIntl()
   const supportedLanguages = getSupportedLanguages()
   const languageOptions = useMemo(() => {
-    return supportedLanguages.map(lang => (
-      <option key={lang} value={lang}>{intl.formatDisplayName(lang)}</option>
-    ))
+    return supportedLanguages
+      .sort((langA) => langA == 'en' ? -1 : 0)
+      .map(lang => (
+        <option key={lang} value={lang}>{intl.formatDisplayName(lang)}</option>
+      ))
   }, [intl.locale]) /* eslint-disable-line */
 
   return (
