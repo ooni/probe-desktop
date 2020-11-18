@@ -1,14 +1,12 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl'
-import { getMessages, getLocale, getSupportedLanguages } from '../components/langUtils'
+import { getMessages, getLocale } from '../components/langUtils'
 import { useConfig } from '../components/settings/useConfig'
 
 // Polyfill Intl.DisplayNames to display language names in the selected language
 import '@formatjs/intl-displaynames/polyfill'
-getSupportedLanguages().forEach(lang => {
-  require(`@formatjs/intl-displaynames/locale-data/${lang}`)
-})
+require('@formatjs/intl-displaynames/locale-data/en')
 
 // This is optional but highly recommended
 // since it prevents memory leak
@@ -21,11 +19,14 @@ const IntlProvider = ({ children }) => {
 
   const [activeLang, activateLang] = useState(languageConfig || systemLocale || 'en')
 
+  require(`@formatjs/intl-displaynames/locale-data/${activeLang}`)
+
   const messages = getMessages(activeLang)
 
   const intl = createIntl({ locale: activeLang, messages }, cache)
 
   const changeLocale = (locale => {
+    require(`@formatjs/intl-displaynames/locale-data/${locale}`)
     activateLang(locale)
   })
 
