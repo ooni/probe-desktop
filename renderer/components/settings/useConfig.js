@@ -33,7 +33,7 @@ export const getConfigValue = (config, optionKey) => optionKey.split('.').reduce
 
 export const useConfig = (key) => {
   const [config, setConfigContext] = useContext(ConfigContext)
-  const currentValue = getConfigValue(config, key)
+  const currentValue = config !== null ? getConfigValue(config, key) : undefined
 
   const [err, setErr] = useState(null)
   const [pending, setPending] = useState(false)
