@@ -79,8 +79,6 @@ const Settings = () => {
                 />
               </Section>
 
-              {/* Storage Usage (TODO) */}
-              
               {/* Privacy */}
               <Section title={<FormattedMessage id='Settings.Privacy.Label' />}>
                 <BooleanOption

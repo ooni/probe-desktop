@@ -1,11 +1,14 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { Flex, Box, Label, Select } from 'ooni-components'
 
 import { getSupportedLanguages } from '../langUtils'
+import { useConfig } from './useConfig'
 
 export const LanguageSelector = () => {
   const intl = useIntl()
+  const [, setLangugageConfig] = useConfig('language')
+
   const supportedLanguages = getSupportedLanguages()
   const languageOptions = useMemo(() => {
     return supportedLanguages
@@ -15,13 +18,18 @@ export const LanguageSelector = () => {
       ))
   }, [intl.locale]) /* eslint-disable-line */
 
+  const onChange = useCallback((event) => {
+    intl.setLocale(event.target.value)
+    setLangugageConfig(event.target.value)
+  }, [intl, setLangugageConfig])
+
   return (
     <Flex flexDirection='column'>
       <Label mb={2}> <FormattedMessage id='Settings.Language.Label' /></Label>
       <Box>
         <Select
           defaultValue={intl.locale}
-          onChange={(event) => intl.setLocale(event.target.value)}
+          onChange={onChange}
         >
           {languageOptions}
         </Select>
