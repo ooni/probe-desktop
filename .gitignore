@@ -16,7 +16,7 @@ npm-debug.log
 .DS_Store
 
 # development
-/ooni_home*
+/ooni_home
 cert.pem
 
 # secrets
