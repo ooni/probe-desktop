@@ -3,7 +3,7 @@
   "description": "OONI Probe Desktop app",
   "author": "Open Observatory of Network Interference (OONI) <contact@openobservatory.org>",
   "productName": "OONI Probe",
-  "version": "3.1.0",
+  "version": "3.1.1-dev",
   "probeVersion": "3.0.11",
   "main": "main/index.js",
   "license": "MIT",

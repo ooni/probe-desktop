@@ -1,4 +1,18 @@
 # Changelog
+## OONI Probe Desktop 3.1.0 [2020-11-19]
+
+probe-cli: 3.0.11
+
+### Added
+
+* Language selector to set the app's locale
+* Category code selector to enable/disable website categories to use in Web Connectivity tests
+
+### Changed
+
+* New settings screen layout
+
+
 ## OONI Probe Desktop 3.0.4 [2020-10-14]
 
 probe-cli: 3.0.8
