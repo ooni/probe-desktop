@@ -1,16 +1,12 @@
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { FormattedMessage } from 'react-intl'
 import {
-  Flex, Box,
-  Label,
+  Flex,
   Button,
-  Text,
-  Modal,
-  Container,
-  Heading
+  Text
 } from 'ooni-components'
-import styled from 'styled-components'
 import electron from 'electron'
+import humanize from 'humanize'
 import { RemoveScroll } from 'react-remove-scroll'
 
 import ConfirmationModal from '../ConfirmationModal'
@@ -18,14 +14,24 @@ import FormattedMarkdownMessage from '../FormattedMarkdownMessage'
 
 export const StorageManagement = () => {
   const [showModal, setShowModal] = useState(false)
+  const [homeDirSize, setHomeDirSize] = useState(null)
+
   const onDelete = useCallback(() => {
     alert('Deleted All Measurements')
   }, [])
+
+  useEffect(() => {
+    const remote = electron.remote
+    const { getHomeDirSize } = remote.require('./utils/paths')
+    const homeDirSize = humanize.filesize(getHomeDirSize())
+    setHomeDirSize(homeDirSize)
+  }, [])
+
   return (
     <Flex flexDirection='column'>
       <Flex my={2}>
         <Text><FormattedMessage id='Settings.Storage.Usage.Label' /></Text>
-        <Text color='gray6' ml={4}>100 MB</Text>
+        <Text color='gray6' ml={4}>{homeDirSize}</Text>
       </Flex>
       <Flex my={2}>
         <Button onClick={() => setShowModal(true)}>
