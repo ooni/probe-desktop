@@ -14,6 +14,7 @@ import { ConfigProvider } from '../components/settings/useConfig'
 import { BooleanOption, NumberOption } from '../components/settings/widgets'
 import { LanguageSelector } from '../components/settings/LanguageSelector'
 import { WebsiteCategoriesSelector } from '../components/settings/WebsiteCategoriesSelector'
+import { StorageManagement } from '../components/settings/StorageManagement'
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
 import { default as pkgJson } from '../../package.json'
@@ -77,6 +78,11 @@ const Settings = () => {
                   optionKey='nettests.websites_url_limit'
                   config={config}
                 />
+              </Section>
+
+              {/* Stoage Usage */}
+              <Section title={<FormattedMessage id='Settings.Storage.Label' />}>
+                <StorageManagement />
               </Section>
 
               {/* Privacy */}
