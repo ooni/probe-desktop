@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import { FormattedMessage } from 'react-intl'
 import {
   Flex,
@@ -8,24 +8,31 @@ import {
 import electron from 'electron'
 import humanize from 'humanize'
 import { RemoveScroll } from 'react-remove-scroll'
+import Raven from 'raven-js'
 
 import ConfirmationModal from '../ConfirmationModal'
 import FormattedMarkdownMessage from '../FormattedMarkdownMessage'
 
 export const StorageManagement = () => {
   const [showModal, setShowModal] = useState(false)
-  const [homeDirSize, setHomeDirSize] = useState(null)
+  const [refreshSizeCounter, setRefreshSizeCounter] = useState(0)
 
   const onDelete = useCallback(() => {
-    alert('Deleted All Measurements')
-  }, [])
+    const remote = electron.remote
+    const { deleteResult } = remote.require('./actions')
+    deleteResult().then(() => {
+      setRefreshSizeCounter(prev => prev + 1)
+    }).catch(err => {
+      Raven.captureException(err, {extra: {scope: 'renderer.deleteAllMeasurements'}})
+    })
+  }, [setRefreshSizeCounter])
 
-  useEffect(() => {
+  const homeDirSize = useMemo(() => {
     const remote = electron.remote
     const { getHomeDirSize } = remote.require('./utils/paths')
     const homeDirSize = humanize.filesize(getHomeDirSize())
-    setHomeDirSize(homeDirSize)
-  }, [])
+    return homeDirSize
+  }, [refreshSizeCounter]) // dependency to auto update size when counter changes
 
   return (
     <Flex flexDirection='column'>
