@@ -123,7 +123,9 @@ const migrationMap = {
   },
   '2->3': (config) => {
     config['_version'] = 3
-    if (config['nettests']['websites_enabled_category_codes'] === undefined) {
+    if (config['nettests']['websites_enabled_category_codes'] === undefined
+      || config['nettests']['websites_enabled_category_codes'] === null
+    ) {
       config['nettests']['websites_enabled_category_codes'] = availableCategoriesList
     }
     return config
