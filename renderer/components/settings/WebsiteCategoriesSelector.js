@@ -73,14 +73,16 @@ export const WebsiteCategoriesSelector = () => {
   const [categoryListInConfig, setCategoryListInConfig] = useConfig('nettests.websites_enabled_category_codes')
   const [selectedCategoryCodes, setSelectedCategoryCodes] = useState(categoryListInConfig || [])
 
-  // const enabledCategoriesCount = Object.values(categoryListInConfig).reduce((count, enabled) => {
-  //   return count + (enabled ? 1 : 0)
-  // }, 0)
   const remote = electron.remote
   const { availableCategoriesList } = remote.require('./utils/config')
 
 
   const isNotDirty = useMemo(() => {
+    // In the rare case where categoryListInConfig is initialized to null,
+    // (like described in https://github.com/ooni/probe/issues/1290)
+    // we consider the selections to be dirty even before the users makes any
+    // selection and so make it possible to write `[]` into the config
+    // replacing `null`
     if (selectedCategoryCodes?.length !== categoryListInConfig?.length) {
       return false
     }
