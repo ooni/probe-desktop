@@ -71,7 +71,7 @@ const CategoryList = ({ availableCategoriesList, enabledCategories, handleChange
 export const WebsiteCategoriesSelector = () => {
   const [showCategoriesModal, setShowCategoriesModal] = useState(false)
   const [categoryListInConfig, setCategoryListInConfig] = useConfig('nettests.websites_enabled_category_codes')
-  const [selectedCategoryCodes, setSelectedCategoryCodes] = useState(categoryListInConfig)
+  const [selectedCategoryCodes, setSelectedCategoryCodes] = useState(categoryListInConfig || [])
 
   // const enabledCategoriesCount = Object.values(categoryListInConfig).reduce((count, enabled) => {
   //   return count + (enabled ? 1 : 0)
@@ -81,7 +81,7 @@ export const WebsiteCategoriesSelector = () => {
 
 
   const isNotDirty = useMemo(() => {
-    if (selectedCategoryCodes.length !== categoryListInConfig.length) {
+    if (selectedCategoryCodes?.length !== categoryListInConfig?.length) {
       return false
     }
 
@@ -112,7 +112,7 @@ export const WebsiteCategoriesSelector = () => {
 
   const onClose = useCallback(() => {
     setShowCategoriesModal(false)
-    setSelectedCategoryCodes(categoryListInConfig)
+    setSelectedCategoryCodes(categoryListInConfig || [])
   }, [setShowCategoriesModal, setSelectedCategoryCodes, categoryListInConfig])
 
   const onConfirm = useCallback(() => {
@@ -127,7 +127,7 @@ export const WebsiteCategoriesSelector = () => {
         <FormattedMessage
           id='Settings.Websites.Categories.Description'
           values={{
-            Count: categoryListInConfig.length
+            Count: categoryListInConfig?.length || 0
           }}
         />
       </Text>
