@@ -1,5 +1,28 @@
 # OONI Probe Desktop
 
+<p align="center">
+  <a href="https://slack.openobservatory.org/">
+        <img src="https://slack.openobservatory.org/badge.svg"
+            alt="chat on Slack"></a>
+
+  <a href="https://github.com/ooni/probe/issues?q=label%3Aooni%2Fprobe-desktop">
+    <img src="https://img.shields.io/github/issues/ooni/probe/ooni/probe-desktop" alt="open issues">
+  </a>
+
+  <a href="https://twitter.com/intent/follow?screen_name=shields_io">
+    <img src="https://img.shields.io/twitter/follow/shields_io?style=social&logo=twitter"
+    alt="follow on Twitter"></a>
+</p>
+
+OONI Probe is free and open source software designed to measure internet
+censorship and other forms of network interference.
+
+[![OONI Probe Desktop](assets/OONIProbeLogo.png)](https://ooni.org)
+
+[Click here to report a bug](https://github.com/ooni/probe/issues/new)
+
+Other supported platforms: [iOS](https://github.com/ooni/probe-ios), [Desktop](https://github.com/ooni/probe-desktop), [CLI](https://github.com/ooni/probe-cli)
+
 This is the desktop implementation of OONI Probe.
 
 Our two primary target platforms are:
