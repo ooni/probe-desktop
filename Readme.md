@@ -9,8 +9,8 @@
     <img src="https://img.shields.io/github/issues/ooni/probe/ooni/probe-desktop" alt="open issues">
   </a>
 
-  <a href="https://twitter.com/intent/follow?screen_name=shields_io">
-    <img src="https://img.shields.io/twitter/follow/shields_io?style=social&logo=twitter"
+  <a href="https://twitter.com/intent/follow?screen_name=OpenObservatory">
+    <img src="https://img.shields.io/twitter/follow/OpenObservatory?style=social&logo=twitter"
     alt="follow on Twitter"></a>
 </p>
 
