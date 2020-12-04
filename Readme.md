@@ -1,5 +1,7 @@
 # OONI Probe Desktop
 
+[![OONI Probe Desktop](assets/OONIProbeLogo.png)](https://ooni.org)
+
 <p align="center">
   <a href="https://slack.openobservatory.org/">
         <img src="https://slack.openobservatory.org/badge.svg"
@@ -16,8 +18,6 @@
 
 OONI Probe is free and open source software designed to measure internet
 censorship and other forms of network interference.
-
-[![OONI Probe Desktop](assets/OONIProbeLogo.png)](https://ooni.org)
 
 [Click here to report a bug](https://github.com/ooni/probe/issues/new)
 
