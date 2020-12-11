@@ -1,18 +1,18 @@
 /* global require */
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Flex, Container } from 'ooni-components'
 
-import Layout from '../components/Layout'
-import Sidebar from '../components/Sidebar'
-import RunTestCard from '../components/home/RunTestCard'
-import { DashboardHeader } from '../components/home/DashboardHeader'
-import Running from '../components/home/running'
-import { testList, cliTestKeysToGroups } from '../components/nettests'
-import TestGroupInDetail from '../components/home/TestGroupInDetail'
+import Layout from 'components/Layout'
+import Sidebar from 'components/Sidebar'
+import RunTestCard from 'components/dashboard/RunTestCard'
+import { DashboardHeader } from 'components/dashboard/DashboardHeader'
+import Running from 'components/dashboard/running'
+import { testList } from 'components/nettests'
+import TestGroupInDetail from 'components/dashboard/TestGroupInDetail'
 
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.dashboard')
 
-const Home = () => {
+const Dashboard = () => {
   const [testGroupInDetail, showTestGroupDetail] = useState(null)
   const [runningTestGroupName, setRunningTestGroupName] = useState(null)
 
@@ -70,4 +70,4 @@ const Home = () => {
   }
 }
 
-export default Home
+export default Dashboard

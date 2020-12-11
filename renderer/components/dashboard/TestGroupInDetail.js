@@ -39,7 +39,7 @@ const TestGroupInDetail = ({ onRun, testGroup, onBack, onChooseWebsites }) => {
         setLastTestedAt(lastTested)
       }
     }).catch(err => {
-      Raven.captureException(err, {extra: {scope: 'renderer.home.testGroupDetail.listResults'}})
+      Raven.captureException(err, {extra: {scope: 'renderer.dashboard.testGroupDetail.listResults'}})
       debug('error triggered', err)
     })
   }, [])

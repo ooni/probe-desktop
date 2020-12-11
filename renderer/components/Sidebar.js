@@ -65,7 +65,7 @@ const NavItem = ({href, icon, label, currentUrl}) => {
 }
 
 const navigationPaths = {
-  '/home': {
+  '/dashboard': {
     name: <FormattedMessage id='Dashboard.Tab.Label' />,
     icon: <MdWeb size={40} />
   },

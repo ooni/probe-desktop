@@ -18,7 +18,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { MdClear, MdKeyboardArrowUp, MdKeyboardArrowDown} from 'react-icons/md'
 import Lottie from 'react-lottie-player'
 import moment from 'moment'
-const debug = require('debug')('ooniprobe-desktop.renderer.components.home.running')
+const debug = require('debug')('ooniprobe-desktop.renderer.components.dashboard.running')
 
 import { testList, cliTestKeysToGroups, testGroups } from '../nettests'
 import { StripedProgress } from './StripedProgress'
