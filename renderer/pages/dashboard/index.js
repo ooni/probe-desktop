@@ -36,11 +36,6 @@ const Dashboard = () => {
         <Sidebar>
           <TestGroupInDetail
             testGroup={testGroupInDetail}
-            onChooseWebsites={testGroupInDetail === 'websites' ? (
-              () => alert('Show Choose Websites UI')
-            ) : (
-              null
-            )}
             onRun={onRun(testGroupInDetail)}
             onBack={() => showTestGroupDetail(null)}
           />

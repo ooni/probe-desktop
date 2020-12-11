@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import electron from 'electron'
 import Raven from 'raven-js'
 import moment from 'moment'
+import { useRouter } from 'next/router'
 
 import { testGroups } from '../nettests'
 import BackButton from '../BackButton'
@@ -22,9 +23,11 @@ const BoldButton = styled(Button)`
   font-weight: bolder;
 `
 
-const TestGroupInDetail = ({ onRun, testGroup, onBack, onChooseWebsites }) => {
+const TestGroupInDetail = ({ onRun, testGroup, onBack }) => {
   const { name, icon, longDescription, color } = testGroups[testGroup]
   const [lastTestedAt, setLastTestedAt] = useState(null)
+  const router = useRouter()
+  const showChooseWebsites =  testGroup === 'websites'
 
   useEffect(() => {
     const remote = electron.remote
@@ -64,8 +67,10 @@ const TestGroupInDetail = ({ onRun, testGroup, onBack, onChooseWebsites }) => {
               <BoldButton inverted onClick={onRun} width={1/5} ml='auto'>
                 <FormattedMessage id='Dashboard.Overview.Run' />
               </BoldButton>
-              {onChooseWebsites && (
-                <BoldButton hollow inverted onClick={onChooseWebsites} ml={3}>
+              {showChooseWebsites && (
+                <BoldButton hollow inverted ml={3}
+                  onClick={() => router.push('/dashboard/websites/choose', undefined, { shallow: true })}
+                >
                   <FormattedMessage id='Dashboard.Overview.ChooseWebsites' />
                 </BoldButton>
               )}
@@ -95,7 +100,6 @@ TestGroupInDetail.propTypes = {
   testGroup: PropTypes.string.isRequired,
   onRun: PropTypes.func,
   onBack: PropTypes.func,
-  onChooseWebsites: PropTypes.func
 }
 
 export default TestGroupInDetail
