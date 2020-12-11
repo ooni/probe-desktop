@@ -131,7 +131,7 @@
     "jest": "^25.3.0",
     "moment": "^2.24.0",
     "moment-range": "^4.0.2",
-    "next": "9.3.2",
+    "next": "^10.0.3",
     "next-progressbar": "^1.0.0",
     "ooni-components": "0.3.2",
     "prop-types": "15.7.2",
