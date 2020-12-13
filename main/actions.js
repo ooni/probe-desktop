@@ -136,9 +136,48 @@ const showMeasurement = (msmtID) => {
   })
 }
 
+const deleteResult = (resultID = 0) => {
+  const ooni = new Ooniprobe()
+  // let measurement = {}
+
+  return new Promise((resolve, reject) => {
+    ooni.on('data', (data) => {
+      if (data.level === 'error') {
+        debug('error: ', data.message)
+        Sentry.addBreadcrumb({
+          category: 'actions',
+          message: data.message,
+          level: Sentry.Severity.Error
+        })
+        reject(data.message)
+        return
+      }
+
+      switch(data.fields.type) {
+      default:
+        log.error('deleteResult: extra data.fields', data.fields)
+        debug('extra data.fields', data.fields)
+        break
+      }
+    })
+
+    const idToDelete = resultID > 0 ? resultID : '--all'
+
+    ooni
+      .call(['rm', '--yes', idToDelete])
+      .then(() => {
+        debug(`Deleted result: ${idToDelete}`)
+        resolve()
+      })
+      .catch(err => reject(err))
+  })
+
+}
+
 module.exports = {
   listResults,
   listMeasurements,
   showMeasurement,
+  deleteResult,
   hardReset
 }

@@ -3,6 +3,7 @@
 // Useful issue on non-ascii path problems on windows:
 // https://github.com/nodejs/node/issues/17586
 const path = require('path')
+const fs = require('fs-extra')
 const { is } = require('electron-util')
 
 const electron = require('electron')
@@ -72,10 +73,35 @@ const debugGetAllPaths = () => ({
   'logFile': log.transports.file.findLogPath(),
 })
 
+const getDirectorySize = (dir) => {
+  var size = 0
+
+  var contents = fs.readdirSync(dir)
+
+  contents.map(file => {
+    const filePath = `${dir}/${file}`
+    const fsStat = fs.statSync(filePath)
+    if (fsStat.isDirectory()) {
+      const dirSize = getDirectorySize(filePath)
+      size += dirSize
+    } else {
+      size += fsStat.size
+    }
+  })
+  return size
+}
+
+const getHomeDirSize = () => {
+  const homeDir = getHomeDir()
+  return getDirectorySize(homeDir)
+}
+
 module.exports = {
   getBinaryPath,
   getBinaryDirectory,
   getBinarySuffix,
   getHomeDir,
-  debugGetAllPaths
+  debugGetAllPaths,
+  getDirectorySize,
+  getHomeDirSize
 }
