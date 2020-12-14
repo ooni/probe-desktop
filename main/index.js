@@ -1,7 +1,7 @@
 /* global require, process, global */
 
 // Packages
-const { app, Menu } = require('electron')
+const { app, Menu, ipcMain } = require('electron')
 const prepareNext = require('electron-next')
 const { is } = require('electron-util')
 const { autoUpdater } = require('electron-updater')
@@ -16,6 +16,7 @@ const log = require('electron-log')
 const toggleWindow = require('./windows/toggle')
 
 const { mainWindow, openAboutWindow, windowURL } = require('./windows')
+const { ipcBindingsForMain } = require('./ipcBindings')
 
 const Sentry = require('@sentry/electron')
 Sentry.init(getSentryConfig())
@@ -185,6 +186,9 @@ app.on('ready', async () => {
   windows = {
     main: mainWindow()
   }
+
+  // wire up IPC event handlers to the mainWindow
+  ipcBindingsForMain(ipcMain)
 
   Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate))
   // Make the window instances accessible from everywhere
