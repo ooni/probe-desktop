@@ -184,7 +184,7 @@ RunningTestnameLabel.propTypes = {
 
 const MemoizedTestNameLabel = React.memo(RunningTestnameLabel)
 
-const Running = ({ testGroupName }) => {
+const Running = ({ testGroupToRun, inputFile = null }) => {
   const [logOpen, setLogOpen] = useState(false)
   const [error, setError] = useState(null)
   const [runningTestName, setRunningTestName] = useState(null)
@@ -201,10 +201,11 @@ const Running = ({ testGroupName }) => {
     const { ipcRenderer, remote } = require('electron')
     ipcRenderer.on('ooni', onMessage)
 
-    debug('running', testGroupName)
-
     const Runner = remote.require('./utils/ooni/run').Runner
-    runner = new Runner({ testGroupName })
+    runner = new Runner({
+      testGroupName: testGroupToRun,
+      inputFile: inputFile
+    })
     runner
       .run()
       .then(() => {
@@ -377,7 +378,8 @@ const Running = ({ testGroupName }) => {
 }
 
 Running.propTypes = {
-  testGroupName: PropTypes.string.isRequired
+  testGroupToRun: PropTypes.string.isRequired,
+  inputFile: PropTypes.string
 }
 
 export default Running

@@ -36,7 +36,19 @@ const TestChosenWebsites = () => {
 
   useEffect(() => {
     ipcRenderer.on(inputFileResponse, (event, args) => {
-      alert('Main says file was written to: ' + args.filename)
+      router.push(
+        {
+          pathname: '/dashboard/running',
+          query: {
+            runningTestGroupName: 'websites',
+            inputFile: args.filename
+          },
+        },
+        '/dashboard/running',
+        {
+          shallow: true
+        }
+      )
     })
     // return () => {
     //   ipcRenderer.removeAllListeners

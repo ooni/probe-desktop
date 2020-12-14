@@ -1,6 +1,7 @@
 /* global require */
 import React, { useState, useCallback } from 'react'
 import { Flex, Container } from 'ooni-components'
+import { useRouter } from 'next/router'
 
 import Layout from 'components/Layout'
 import Sidebar from 'components/Sidebar'
@@ -13,16 +14,26 @@ import TestGroupInDetail from 'components/dashboard/TestGroupInDetail'
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.dashboard')
 
 const Dashboard = () => {
+  const router = useRouter()
   const [testGroupInDetail, showTestGroupDetail] = useState(null)
   const [runningTestGroupName, setRunningTestGroupName] = useState(null)
 
   const onRun = useCallback((testGroupName) => {
     return () => {
-      debug('running', testGroupName)
-      setRunningTestGroupName(testGroupName)
-      showTestGroupDetail(null)
+      router.push(
+        {
+          pathname: '/dashboard/running',
+          query: {
+            runningTestGroupName: testGroupName
+          },
+        },
+        '/dashboard/running',
+        {
+          shallow: true
+        }
+      )
     }
-  }, [setRunningTestGroupName, showTestGroupDetail])
+  }, [router, showTestGroupDetail])
 
   if (runningTestGroupName !== null) {
     return (

@@ -4,8 +4,9 @@ const log = require('electron-log')
 const { getConfig } = require('../config')
 
 class Runner {
-  constructor({testGroupName}) {
+  constructor({testGroupName, inputFile = null}) {
     this.testGroupName = testGroupName
+    this.inputFile = inputFile
     this.ooni = new Ooniprobe()
     this.maxRuntimeTimer = null
     this.etaReportInterval = null
@@ -63,7 +64,8 @@ class Runner {
   }
 
   run() {
-    const testGroupName = this.testGroupName
+    const { testGroupName, inputFile } = this
+
     windows.main.send('starting', testGroupName)
     this.ooni.on('data', (data) => {
       if (data.level == 'error') {
@@ -98,8 +100,14 @@ class Runner {
 
     this.maybeStartMaxRuntimeTimer()
 
-    log.info('Runner: calling run', testGroupName)
-    return this.ooni.call(['run', testGroupName])
+    const runParams = ['run', testGroupName]
+
+    if (testGroupName === 'websites' && inputFile) {
+      runParams.push(`--input-file=${inputFile}`)
+    }
+
+    log.info(`Runner: calling ${runParams}`)
+    return this.ooni.call(runParams)
   }
 }
 
