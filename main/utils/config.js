@@ -5,7 +5,7 @@ const log = require('electron-log')
 
 const { getHomeDir } = require('./paths')
 
-const LATEST_CONFIG_VERSION = 3
+const LATEST_CONFIG_VERSION = 4
 
 const OONI_CONFIG_PATH = path.join(getHomeDir(), 'config.json')
 
@@ -52,8 +52,9 @@ const initConfigFile = async () => {
       'upload_results': true
     },
     'nettests': {
-      'websites_url_limit': 0,
-      'websites_enabled_category_codes': availableCategoriesList
+      'websites_enabled_category_codes': availableCategoriesList,
+      'websites_enable_max_runtime': true,
+      'websites_max_runtime': 90
     },
     'advanced': {
       'use_domain_fronting': false,
@@ -127,6 +128,19 @@ const migrationMap = {
       || config['nettests']['websites_enabled_category_codes'] === null
     ) {
       config['nettests']['websites_enabled_category_codes'] = availableCategoriesList
+    }
+    return config
+  },
+  '3->4': (config) => {
+    config['_version'] = 4
+    if (config['nettests'].hasOwnProperty('websites_url_limit')) {
+      delete config['nettests']['websites_url_limit']
+    }
+    if (!config['nettests'].hasOwnProperty('websites_enable_max_runtime')) {
+      config['nettests']['websites_enable_max_runtime'] = true
+    }
+    if (!config['nettests'].hasOwnProperty('websites_max_runtime')) {
+      config['nettests']['websites_max_runtime'] = 90
     }
     return config
   }
