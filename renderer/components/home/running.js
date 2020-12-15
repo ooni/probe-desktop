@@ -193,6 +193,7 @@ const Running = ({ testGroupName }) => {
           extra: { scope: 'renderer.runTest' }
         })
         setError(error)
+        setStopped(true)
       })
 
     return () => {

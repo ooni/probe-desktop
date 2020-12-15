@@ -31,9 +31,13 @@ export const ConfigProvider = (props) => {
 
 export const getConfigValue = (config, optionKey) => optionKey.split('.').reduce((o,i) => o[i], config)
 
-export const useConfig = (key) => {
+export const useConfig = (key = null) => {
   const [config, setConfigContext] = useContext(ConfigContext)
-  const currentValue = config !== null ? getConfigValue(config, key) : undefined
+  const currentValue = config !== null
+    ? key === null
+      ? config
+      : getConfigValue(config, key)
+    : undefined
 
   const [err, setErr] = useState(null)
   const [pending, setPending] = useState(false)

@@ -10,7 +10,7 @@ import {
   Text,
 } from 'ooni-components'
 
-import { ConfigProvider } from '../components/settings/useConfig'
+import { useConfig } from '../components/settings/useConfig'
 import { BooleanOption, NumberOption } from '../components/settings/widgets'
 import { LanguageSelector } from '../components/settings/LanguageSelector'
 import { WebsiteCategoriesSelector } from '../components/settings/WebsiteCategoriesSelector'
@@ -39,19 +39,8 @@ const Section = ({ title, children }) => (
 )
 
 const Settings = () => {
-  const [config, setConfig] = useState(null)
-
-  const reloadConfig = useCallback(async () => {
-    const remote = electron.remote
-    const { getConfig } = remote.require('./utils/config')
-    const config = await getConfig()
-    setConfig(config)
-  }, [])
-
-  useEffect(() => {
-    reloadConfig()
-  }, [reloadConfig])
-
+  const [config, /*setConfig, loading, err*/] = useConfig()
+  const maxRuntimeEnabled = config['nettests']['websites_enable_max_runtime']
   return (
     <Layout>
       <Sidebar>
@@ -64,44 +53,47 @@ const Settings = () => {
             </Flex>
           </TopBar>
           <Container pt={3}>
-            <ConfigProvider>
-              <LanguageSelector />
+            <LanguageSelector />
 
-              {/* Test Options */}
-              <Section title={<FormattedMessage id='Settings.TestOptions.Label' />}>
-                <Heading h={5}><FormattedMessage id='Test.Websites.Fullname' /></Heading>
-                <WebsiteCategoriesSelector />
-                <NumberOption
-                  onConfigSet={reloadConfig}
-                  label={<FormattedMessage id='Settings.Websites.TestCount' />}
-                  optionKey='nettests.websites_url_limit'
-                  config={config}
-                />
-              </Section>
+            {/* Test Options */}
+            <Section title={<FormattedMessage id='Settings.TestOptions.Label' />}>
+              <Heading h={5}><FormattedMessage id='Test.Websites.Fullname' /></Heading>
+              <WebsiteCategoriesSelector />
+              <BooleanOption
+                label={<FormattedMessage id='Settings.Websites.MaxRuntimeEnabled' />}
+                optionKey='nettests.websites_enable_max_runtime'
+              />
+              <NumberOption
+                label={<FormattedMessage id='Settings.Websites.MaxRuntime' />}
+                optionKey='nettests.websites_max_runtime'
+                min={60}
+                max={999}
+                disabled={!maxRuntimeEnabled}
+              />
+            </Section>
 
-              {/* Privacy */}
-              <Section title={<FormattedMessage id='Settings.Privacy.Label' />}>
-                <BooleanOption
-                  label={<FormattedMessage id='Settings.Privacy.CollectAnalytics' />}
-                  optionKey='advanced.collect_usage_stats'
-                />
-                <BooleanOption
-                  label={<FormattedMessage id='Settings.Sharing.UploadResults' />}
-                  optionKey='sharing.upload_results'
-                />
-                <BooleanOption
-                  label={<FormattedMessage id='Settings.Sharing.IncludeNetwork' />}
-                  optionKey='sharing.include_asn'
-                />
-                <BooleanOption
-                  label={<FormattedMessage id='Settings.Sharing.IncludeIP' />}
-                  optionKey='sharing.include_ip'
-                />
-              </Section>
+            {/* Privacy */}
+            <Section title={<FormattedMessage id='Settings.Privacy.Label' />}>
+              <BooleanOption
+                label={<FormattedMessage id='Settings.Privacy.CollectAnalytics' />}
+                optionKey='advanced.collect_usage_stats'
+              />
+              <BooleanOption
+                label={<FormattedMessage id='Settings.Sharing.UploadResults' />}
+                optionKey='sharing.upload_results'
+              />
+              <BooleanOption
+                label={<FormattedMessage id='Settings.Sharing.IncludeNetwork' />}
+                optionKey='sharing.include_asn'
+              />
+              <BooleanOption
+                label={<FormattedMessage id='Settings.Sharing.IncludeIP' />}
+                optionKey='sharing.include_ip'
+              />
+            </Section>
 
-              <Text my={3}>OONI Probe Desktop v{pkgJson.version}</Text>
+            <Text my={3}>OONI Probe Desktop v{pkgJson.version}</Text>
 
-            </ConfigProvider>
           </Container>
         </Box>
       </Sidebar>
