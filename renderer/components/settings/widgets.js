@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   Box,
@@ -18,6 +18,12 @@ const StyledLabel = styled(Label)`
     color: ${props => props.disabled ? props.theme.colors.gray6 : 'inherited'};
     cursor: ${props => props.disabled ? 'not-allowed' : 'inherited'};
   }
+`
+
+const StyledErrorMessage = styled(Box).attrs({
+  fontSize: '10px'
+})`
+  color: ${props => props.theme.colors.red5};
 `
 
 export const BooleanOption = ({ label, optionKey, disabled = false, ...rest }) => {
@@ -50,14 +56,19 @@ BooleanOption.propTypes = {
 }
 
 export const NumberOption = ({ label, optionKey, disabled = false, ...rest}) => {
-  const [value, setConfigValue] = useConfig(optionKey)
-
+  const [configValue, setConfigValue] = useConfig(optionKey)
+  const [value, setValue] = useState(configValue)
+  const [error, setError] = useState(null)
   const handleChange = useCallback((event) => {
     const target = event.target
     if (target.validity.valid) {
       const newValue = Number(target.value)
       setConfigValue(newValue)
+      setError(null)
+    } else {
+      setError(target.validationMessage)
     }
+    setValue(Number(target.value))
   }, [setConfigValue])
 
   return (
@@ -72,6 +83,7 @@ export const NumberOption = ({ label, optionKey, disabled = false, ...rest}) => 
         />
       </Box>
       <Box mx={2}>{label}</Box>
+      {error && <StyledErrorMessage>{error}</StyledErrorMessage>}
     </StyledLabel>
   )
 }
