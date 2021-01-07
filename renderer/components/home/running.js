@@ -168,7 +168,7 @@ const Running = ({ testGroupName }) => {
   const [logLines, setLogLines] = useState([])
   const [percent, setPercent] = useState(0)
   const [eta, setEta] = useState(-1)
-  const [stopped, setStopped] = useState(false)
+  const [, setStopped] = useState(false)
   const [isStopping, setIsStopping] = useState(false)
 
   let runner = null
@@ -225,7 +225,7 @@ const Running = ({ testGroupName }) => {
     default:
       break
     }
-  }, [logLines, setRunningTestName, setPercent, setEta, setProgressLine, setError, setRunningTestName, setLogLines])
+  }, [setPercent, setEta, setProgressLine, setError, setRunningTestName, setLogLines])
 
   const onKill = useCallback(() => {
     if (runner !== null && isStopping !== true) {
