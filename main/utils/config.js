@@ -2,6 +2,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 const log = require('electron-log')
+const { ipcMain } = require('electron')
 
 const { getHomeDir } = require('./paths')
 
@@ -173,6 +174,10 @@ const maybeMigrate = async () => {
   }
   await fs.writeJson(OONI_CONFIG_PATH, config, {spaces: '  '})
 }
+
+ipcMain.handle('get-fresh-config', async () => {
+  return await getConfig()
+})
 
 module.exports = {
   initConfigFile,
