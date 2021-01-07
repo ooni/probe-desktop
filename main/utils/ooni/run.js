@@ -8,6 +8,7 @@ class Runner {
     this.testGroupName = testGroupName
     this.ooni = new Ooniprobe()
     this.maxRuntimeTimer = null
+    this.etaReportInterval = null
   }
 
   kill() {
@@ -16,6 +17,19 @@ class Runner {
     }
     log.info('Runner: terminating the ooniprobe process')
     return this.ooni.kill()
+  }
+
+  getTimeLeftInTimer() {
+    if (this.maxRuntimeTimer) {
+      const { _idleStart, _idleTimeout} = this.maxRuntimeTimer
+      const timerETA = Math.ceil(
+        (_idleStart + _idleTimeout) / 1000
+        - process.uptime()
+      )
+      return timerETA
+    } else {
+      return -1
+    }
   }
 
   async maybeStartMaxRuntimeTimer () {
@@ -29,8 +43,19 @@ class Runner {
 
       this.maxRuntimeTimer = setTimeout(() => {
         log.info('Runner: reached maximum time allowed to run test.')
+        clearInterval(this.etaReportInterval)
         this.ooni.kill()
       }, maxRunTime)
+
+      this.etaReportInterval = setInterval((maxRunTime) => {
+        const timeLeftInTimer = this.getTimeLeftInTimer()
+        const percentCompleted = (maxRunTime - timeLeftInTimer * 1000) / maxRunTime
+        windows.main.send('ooni', {
+          key: 'ooni.run.progress',
+          percentage: percentCompleted,
+          eta: timeLeftInTimer
+        })
+      }, 1000, maxRunTime)
     }
   }
 
