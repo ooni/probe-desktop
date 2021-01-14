@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react'
-import electron from 'electron'
+import { remote, ipcRenderer } from 'electron'
 
 export const ConfigContext = React.createContext([{}, () => {}])
 
@@ -9,7 +9,6 @@ export const ConfigProvider = (props) => {
 
   useEffect(() => {
     const loadConfigFromFile =  async () => {
-      const remote = electron.remote
       const { getConfig } = remote.require('./utils/config')
       const config = await getConfig()
       setState(config)
@@ -31,16 +30,24 @@ export const ConfigProvider = (props) => {
 
 export const getConfigValue = (config, optionKey) => optionKey.split('.').reduce((o,i) => o[i], config)
 
-export const useConfig = (key) => {
+export const useConfig = (key = null) => {
   const [config, setConfigContext] = useContext(ConfigContext)
-  const currentValue = config !== null ? getConfigValue(config, key) : undefined
+  if (config === null) {
+    ipcRenderer.invoke('get-fresh-config').then((config) => {
+      setConfigContext(config)
+    })
+  }
+  const currentValue = config !== null
+    ? key === null
+      ? config
+      : getConfigValue(config, key)
+    : undefined
 
   const [err, setErr] = useState(null)
   const [pending, setPending] = useState(false)
 
   const setConfigValue = useCallback((value) => {
     setPending(true)
-    const remote = electron.remote
     const { setConfig } = remote.require('./utils/config')
 
     setConfig(key, currentValue, value)
@@ -49,7 +56,7 @@ export const useConfig = (key) => {
       })
       .catch(setErr)
       .finally(() => setPending(false))
-  }, [key, setConfigContext, currentValue])
+  }, [setConfigContext, currentValue])
 
   return [
     currentValue,

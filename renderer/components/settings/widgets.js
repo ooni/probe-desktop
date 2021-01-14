@@ -1,61 +1,99 @@
-import React, { useCallback } from 'react'
-import electron from 'electron'
-import log from 'electron-log'
+import React, { useCallback, useState } from 'react'
+import PropTypes from 'prop-types'
 import {
   Box,
   Label,
   Checkbox,
   Input,
-  Code,
-  theme
+  Button
 } from 'ooni-components'
-import { FormattedMessage, useIntl } from 'react-intl'
+import styled from 'styled-components'
 
 import { useConfig } from './useConfig'
 
-export const BooleanOption = ({ label, optionKey }) => {
+const StyledLabel = styled(Label)`
+  color: ${props => props.disabled ? props.theme.colors.gray6 : 'inherited'};
+  cursor: ${props => props.disabled ? 'not-allowed' : 'inherited'};
+  & input,select,option {
+    color: ${props => props.disabled ? props.theme.colors.gray6 : 'inherited'};
+    cursor: ${props => props.disabled ? 'not-allowed' : 'inherited'};
+  }
+`
+
+const StyledErrorMessage = styled(Box).attrs({
+  fontSize: '10px'
+})`
+  color: ${props => props.theme.colors.red5};
+`
+
+export const BooleanOption = ({ label, optionKey, disabled = false, ...rest }) => {
   const [checked, setConfigValue] = useConfig(optionKey)
 
   const handleChange = useCallback((event) => {
     const target = event.target
-    const newValue = target.type === 'checkbox' ? target.checked : target.value
+    const newValue = Boolean(target.type === 'checkbox' ? target.checked : target.value)
 
     setConfigValue(newValue)
   }, [setConfigValue])
 
   return (
-    <Label my={2}>
-      <Checkbox checked={checked} onChange={handleChange} />
+    <StyledLabel my={2} disabled={disabled}>
+      <Checkbox
+        checked={checked}
+        onChange={handleChange}
+        disabled={disabled}
+        {...rest}
+      />
       {label}
-    </Label>
+    </StyledLabel>
   )
 }
 
+BooleanOption.propTypes = {
+  label: PropTypes.element,
+  disabled: PropTypes.bool,
+  optionKey: PropTypes.string.isRequired
+}
 
-export const NumberOption = ({ label, optionKey}) => {
-  const [value, setConfigValue] = useConfig(optionKey)
-
+export const NumberOption = ({ label, optionKey, disabled = false, ...rest}) => {
+  const [configValue, setConfigValue] = useConfig(optionKey)
+  const [value, setValue] = useState(configValue)
+  const [error, setError] = useState(null)
   const handleChange = useCallback((event) => {
     const target = event.target
-    const newValue = Number(target.value)
-    setConfigValue(newValue)
+    if (target.validity.valid) {
+      const newValue = Number(target.value)
+      setConfigValue(newValue)
+      setError(null)
+    } else {
+      setError(target.validationMessage)
+    }
+    setValue(Number(target.value))
   }, [setConfigValue])
 
   return (
-    <Label my={2}>
-      <Box width={1/16}>
+    <StyledLabel my={2} disabled={disabled}>
+      <Box width='3em'>
         <Input
           type='number'
-          min={0}
-          max={999}
           value={value}
           onChange={handleChange}
+          disabled={disabled}
+          {...rest}
         />
       </Box>
-      {label}
-    </Label>
+      <Box mx={2}>{label}</Box>
+      {error && <StyledErrorMessage>{error}</StyledErrorMessage>}
+    </StyledLabel>
   )
 }
+
+NumberOption.propTypes = {
+  label: PropTypes.element,
+  disabled: PropTypes.bool,
+  optionKey: PropTypes.string.isRequired
+}
+
 
 export const ListOption = ({ optionKey, children }) => {
   const [list, setListValue] = useConfig(optionKey)

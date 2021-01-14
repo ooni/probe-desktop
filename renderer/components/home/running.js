@@ -160,6 +160,30 @@ Title.propTypes = {
 
 const MemoizedTitle = React.memo(Title)
 
+const RunningTestnameLabel = ({ runningTestName }) => (
+  <React.Fragment>
+    <Heading h={3}>
+      {runningTestName ? (
+        <FormattedMessage id='Dashboard.Running.Running' />
+      ) : (
+        <FormattedMessage id='Dashboard.Running.CalculatingETA' />
+      )}
+    </Heading>
+    <Text fontSize={4}>
+      {runningTestName ? (
+        <FormattedMessage id={`Test.${runningTestName.split('.')[1]}.Fullname`} />
+      ) : (
+        <span>&nbsp;</span>
+      )}
+    </Text>
+  </React.Fragment>
+)
+RunningTestnameLabel.propTypes = {
+  runningTestName: PropTypes.string
+}
+
+const MemoizedTestNameLabel = React.memo(RunningTestnameLabel)
+
 const Running = ({ testGroupName }) => {
   const [logOpen, setLogOpen] = useState(false)
   const [error, setError] = useState(null)
@@ -168,9 +192,8 @@ const Running = ({ testGroupName }) => {
   const [logLines, setLogLines] = useState([])
   const [percent, setPercent] = useState(0)
   const [eta, setEta] = useState(-1)
-  const [stopped, setStopped] = useState(false)
+  const [, setStopped] = useState(false)
   const [isStopping, setIsStopping] = useState(false)
-
   let runner = null
 
   useEffect(() => {
@@ -193,6 +216,7 @@ const Running = ({ testGroupName }) => {
           extra: { scope: 'renderer.runTest' }
         })
         setError(error)
+        setStopped(true)
       })
 
     return () => {
@@ -207,10 +231,10 @@ const Running = ({ testGroupName }) => {
   const onMessage = useCallback((event, data) => {
     switch (data.key) {
     case 'ooni.run.progress':
-      setRunningTestName(data.testKey)
-      setPercent(data.percentage)
-      setEta(data.eta)
-      setProgressLine(data.message)
+      data.testKey && setRunningTestName(data.testKey)
+      data.message && setProgressLine(data.message)
+      data.percentage && setPercent(data.percentage)
+      data.eta && setEta(data.eta)
       break
     case 'error':
       debug('error received', data)
@@ -224,7 +248,7 @@ const Running = ({ testGroupName }) => {
     default:
       break
     }
-  }, [logLines, setRunningTestName, setPercent, setEta, setProgressLine, setError, setRunningTestName, setLogLines])
+  }, [setPercent, setEta, setProgressLine, setError, setRunningTestName, setLogLines])
 
   const onKill = useCallback(() => {
     if (runner !== null && isStopping !== true) {
@@ -234,14 +258,6 @@ const Running = ({ testGroupName }) => {
   }, [isStopping, setIsStopping, runner])
 
   const testGroup = testGroups[testGroupName]
-
-  const testName = useMemo(() => (
-    runningTestName ? (
-      <FormattedMessage id={`Test.${runningTestName.split('.')[1]}.Fullname`} />
-    ) : (
-      <span />
-    )
-  ), [runningTestName])
 
   const testGroupBackupIcon = useMemo(() => {
     return React.cloneElement(testGroup.icon, {size: 300})
@@ -281,20 +297,15 @@ const Running = ({ testGroupName }) => {
 
             <MemoizedTitle groupName={testGroup.name} />
 
-            {isStopping ? (
-              <Heading h={3}>
-                <FormattedMessage id='Dashboard.Running.Stopping.Title' />
-              </Heading>
-            ):(
-              <Flex flexDirection='column'>
+            <Flex flexDirection='column'>
+              {isStopping ? (
                 <Heading h={3}>
-                  <FormattedMessage id='Dashboard.Running.Running' />
+                  <FormattedMessage id='Dashboard.Running.Stopping.Title' />
                 </Heading>
-                <Text fontSize={4}>
-                  {testName}
-                </Text>
-              </Flex>
-            )}
+              ):(
+                <MemoizedTestNameLabel runningTestName={runningTestName} />
+              )}
+            </Flex>
             {!logOpen && testGroup['animation'] && (
               <Flex justifyContent='center'>
                 <Lottie
