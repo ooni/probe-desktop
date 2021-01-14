@@ -14,6 +14,9 @@ class Runner {
   kill() {
     if (this.maxRuntimeTimer) {
       clearTimeout(this.maxRuntimeTimer)
+      clearInterval(this.etaReportInterval)
+      this.maxRuntimeTimer = null
+      this.etaReportInterval = null
     }
     log.info('Runner: terminating the ooniprobe process')
     return this.ooni.kill()
@@ -21,15 +24,16 @@ class Runner {
 
   getTimeLeftInTimer() {
     if (this.maxRuntimeTimer) {
-      const { _idleStart, _idleTimeout} = this.maxRuntimeTimer
-      const timerETA = Math.ceil(
-        (_idleStart + _idleTimeout) / 1000
-        - process.uptime()
-      )
-      return timerETA
-    } else {
-      return -1
+      const { _idleStart, _idleTimeout, _destroyed } = this.maxRuntimeTimer
+      if (!_destroyed) {
+        const timerETA = Math.ceil(
+          (_idleStart + _idleTimeout) / 1000
+          - process.uptime()
+        )
+        return timerETA
+      }
     }
+    return -1
   }
 
   async maybeStartMaxRuntimeTimer () {
@@ -43,8 +47,7 @@ class Runner {
 
       this.maxRuntimeTimer = setTimeout(() => {
         log.info('Runner: reached maximum time allowed to run test.')
-        clearInterval(this.etaReportInterval)
-        this.ooni.kill()
+        this.kill()
       }, maxRunTime)
 
       this.etaReportInterval = setInterval((maxRunTime) => {
@@ -74,13 +77,17 @@ class Runner {
 
       let logMessage = data.message
       if (data.fields.type == 'progress') {
-        windows.main.send('ooni', {
+        const updatePacket = {
           key: 'ooni.run.progress',
-          percentage: data.fields.percentage,
-          eta: data.fields.eta,
-          message: data.message,
           testKey: data.fields.key,
-        })
+          message: data.message,
+        }
+        if (this.maxRuntimeTimer === null) {
+          updatePacket['percentage'] = data.fields.percentage
+          updatePacket['eta'] = data.fields.eta
+        }
+        windows.main.send('ooni', updatePacket)
+
         logMessage = `${data.fields.percentage}% - ${data.message}`
       }
       windows.main.send('ooni', {
