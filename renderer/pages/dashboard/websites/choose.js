@@ -1,14 +1,13 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
-import { Hero, Container, Flex, Box, Button, Input } from 'ooni-components'
+import { Hero, Container, Flex, Box } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
-import { ipcRenderer } from 'electron'
 
 import Layout from 'components/Layout'
 import Sidebar from 'components/Sidebar'
 import BackButton from 'components/BackButton'
-import { inputFileRequest, inputFileResponse } from '../../../../main/ipcBindings'
+import UrlList from 'components/dashboard/UrlList'
 
 const StyledHero = styled(Hero)`
   -webkit-app-region: drag;
@@ -26,34 +25,6 @@ const temporaryTestList = [
 
 const TestChosenWebsites = () => {
   const router = useRouter()
-  const [testList, setTestList] = useState(temporaryTestList)
-
-  const runTest = useCallback(() => {
-    // generate file
-    ipcRenderer.send(inputFileRequest, testList.join('\n'))
-    // send file to ooniprobe run websites --input-file <file-name>
-  }, [testList])
-
-  useEffect(() => {
-    ipcRenderer.on(inputFileResponse, (event, args) => {
-      router.push(
-        {
-          pathname: '/dashboard/running',
-          query: {
-            runningTestGroupName: 'websites',
-            inputFile: args.filename
-          },
-        },
-        '/dashboard/running',
-        {
-          shallow: true
-        }
-      )
-    })
-    // return () => {
-    //   ipcRenderer.removeAllListeners
-    // }
-  }, [])
 
   return (
     <Layout>
@@ -69,10 +40,7 @@ const TestChosenWebsites = () => {
           </Flex>
         </StyledHero>
         <Container>
-          {testList.map((url, idx) => <Box key={idx}>{url}</Box>)}
-          <Flex my={4}>
-            <Button onClick={() => runTest()}>Run Test</Button>
-          </Flex>
+          <UrlList incomingList={temporaryTestList} />
         </Container>
       </Sidebar>
     </Layout>

@@ -19,14 +19,14 @@ const IntlProvider = ({ children }) => {
 
   const [activeLang, activateLang] = useState(languageConfig || systemLocale || 'en')
 
-  require(`@formatjs/intl-displaynames/locale-data/${activeLang}`)
+  // require(`@formatjs/intl-displaynames/locale-data/${activeLang}`)
 
   const messages = getMessages(activeLang)
 
   const intl = createIntl({ locale: activeLang, messages }, cache)
 
   const changeLocale = (locale => {
-    require(`@formatjs/intl-displaynames/locale-data/${locale}`)
+    // require(`@formatjs/intl-displaynames/locale-data/${locale}`)
     activateLang(locale)
   })
 
