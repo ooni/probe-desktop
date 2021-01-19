@@ -52,10 +52,6 @@ const UrlList = ({ incomingList = [] }) => {
             runningTestGroupName: 'websites',
             inputFile: args.filename
           },
-        },
-        '/dashboard/running',
-        {
-          shallow: true
         }
       )
     })

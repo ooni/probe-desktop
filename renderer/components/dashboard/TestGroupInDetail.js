@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { Flex, Box, Heading, Button } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
@@ -28,6 +28,10 @@ const TestGroupInDetail = ({ onRun, testGroup, onBack }) => {
   const [lastTestedAt, setLastTestedAt] = useState(null)
   const router = useRouter()
   const showChooseWebsites =  testGroup === 'websites'
+
+  const onChooseWebsites = useCallback(() => {
+    router.push('/dashboard/websites/choose')
+  }, [router])
 
   useEffect(() => {
     const remote = electron.remote
@@ -68,9 +72,7 @@ const TestGroupInDetail = ({ onRun, testGroup, onBack }) => {
                 <FormattedMessage id='Dashboard.Overview.Run' />
               </BoldButton>
               {showChooseWebsites && (
-                <BoldButton hollow inverted ml={3}
-                  onClick={() => router.push('/dashboard/websites/choose', undefined, { shallow: true })}
-                >
+                <BoldButton hollow inverted ml={3} onClick={onChooseWebsites}>
                   <FormattedMessage id='Dashboard.Overview.ChooseWebsites' />
                 </BoldButton>
               )}

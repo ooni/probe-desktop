@@ -200,7 +200,6 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
   useEffect(() => {
     const { ipcRenderer, remote } = require('electron')
     ipcRenderer.on('ooni', onMessage)
-
     const Runner = remote.require('./utils/ooni/run').Runner
     runner = new Runner({
       testGroupName: testGroupToRun,

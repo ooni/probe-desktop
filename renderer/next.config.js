@@ -24,19 +24,4 @@ module.exports = withSourceMaps({
     }
     return config
   },
-
-  exportPathMap: () => {
-    // Let Next.js know where to find the entry page
-    // when it's exporting the static bundle for the use
-    // in the production version of your app
-    return {
-      '/about': { page: '/about' },
-      '/home': { page: '/home' },
-      '/test-results': { page: '/test-results' },
-      '/result': { page: '/result' },
-      '/measurement': { page: '/measurement' },
-      '/settings': { page: '/settings' },
-      '/onboard': { page: '/onboard' }
-    }
-  }
 })
