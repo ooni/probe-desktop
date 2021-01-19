@@ -185,6 +185,7 @@ RunningTestnameLabel.propTypes = {
 const MemoizedTestNameLabel = React.memo(RunningTestnameLabel)
 
 const Running = ({ testGroupToRun, inputFile = null }) => {
+  const [testGroupName, setTestGroupName] = useState(testGroupToRun)
   const [logOpen, setLogOpen] = useState(false)
   const [error, setError] = useState(null)
   const [runningTestName, setRunningTestName] = useState(null)
@@ -256,7 +257,7 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
     default:
       break
     }
-  }, [setPercent, setEta, setProgressLine, setError, setRunningTestName, setLogLines])
+  }, [testGroupName, setPercent, setEta, setProgressLine, setError, setRunningTestName, setLogLines])
 
   const onKill = useCallback(() => {
     if (runner !== null && isStopping !== true) {
@@ -266,14 +267,6 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
   }, [isStopping, setIsStopping, runner])
 
   const testGroup = testGroups[testGroupName in testGroups ? testGroupName : 'default']
-
-  const testName = useMemo(() => (
-    runningTestName ? (
-      <FormattedMessage id={`Test.${runningTestName.split('.')[1]}.Fullname`} />
-    ) : (
-      <span />
-    )
-  ), [runningTestName])
 
   const testGroupBackupIcon = useMemo(() => {
     return React.cloneElement(testGroup.icon, {size: 300})
