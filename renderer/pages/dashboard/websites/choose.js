@@ -17,14 +17,18 @@ const StyledHero = styled(Hero)`
   }
 `
 
-const temporaryTestList = [
-  'https://ooni.org',
-  'https://thepiratebay.org',
-  'https://explorer.ooni.org'
-]
-
 const TestChosenWebsites = () => {
   const router = useRouter()
+
+  const { testList } = router.query
+  const validTestList = Array.isArray(testList) && testList.filter((item) => {
+    try {
+      new URL(item)
+      return true
+    } catch (e) {
+      return false
+    }
+  })
 
   return (
     <Layout>
@@ -40,7 +44,7 @@ const TestChosenWebsites = () => {
           </Flex>
         </StyledHero>
         <Container>
-          <UrlList incomingList={temporaryTestList} />
+          <UrlList incomingList={validTestList} />
         </Container>
       </Sidebar>
     </Layout>

@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useReducer } from 'react'
+import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import { Flex, Box, Button } from 'ooni-components'
 import { ipcRenderer } from 'electron'
+// import debounce from 'lodash.debounce'
 
 import { inputFileRequest, inputFileResponse } from '../../../main/ipcBindings'
 import URL from './URL'
@@ -24,9 +26,16 @@ const listReducer = (list, { type, value }) => {
   }
 }
 
-const UrlList = ({ incomingList }) => {
+const init = (incomingList) => {
+  if (incomingList && Array.isArray(incomingList) && incomingList.length > 0) {
+    return incomingList
+  }
+  return ['']
+}
+
+const UrlList = ({ incomingList = [] }) => {
   const router = useRouter()
-  const [testList, dispatch] = useReducer(listReducer, incomingList)
+  const [testList, dispatch] = useReducer(listReducer, incomingList, init)
 
   const runTest = useCallback(() => {
     // generate file
@@ -50,10 +59,22 @@ const UrlList = ({ incomingList }) => {
         }
       )
     })
-    // return () => {
-    //   ipcRenderer.removeAllListeners
-    // }
+    return () => {
+      ipcRenderer.removeAllListeners(inputFileResponse)
+    }
   }, [router])
+
+  // const debouncedValidator = useMemo(
+  //   () => debounce((idx, value) => {
+  //     const error = value === 'alright' ? null : 'invalid url'
+  //     setErrors(errors => {
+  //       const updatedErrors = {...errors}
+  //       updatedErrors[`${idx}`] = error
+  //       return updatedErrors
+  //     })
+  //   }, 500),
+  //   []
+  // )
 
   const onUpdateUrl = useCallback((idx, url) => {
     dispatch({type: 'update', value: { idx, url }})
@@ -74,7 +95,7 @@ const UrlList = ({ incomingList }) => {
           <URL
             key={idx} idx={idx} url={url}
             onUpdate={onUpdateUrl}
-            onRemove={onRemoveUrl}
+            onRemove={testList.length > 1 ? onRemoveUrl : null}
           />
         ))}
       </Box>
@@ -84,11 +105,12 @@ const UrlList = ({ incomingList }) => {
       <Box my={4}>
         <Button onClick={() => runTest()}>Run Test</Button>
       </Box>
-      <Flex>
-        {testList.map((u) => <Box fontSize='12px' mx={1} key={u}> {u} </Box>)}
-      </Flex>
     </Flex>
   )
+}
+
+UrlList.propTypes = {
+  incomingList: PropTypes.arrayOf(PropTypes.string)
 }
 
 export default UrlList
