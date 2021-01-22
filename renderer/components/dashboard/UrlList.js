@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import { Flex, Box, Button } from 'ooni-components'
 import { ipcRenderer } from 'electron'
+import { FormattedMessage } from 'react-intl'
 // import debounce from 'lodash.debounce'
 
 import { inputFileRequest, inputFileResponse } from '../../../main/ipcBindings'
@@ -99,7 +100,9 @@ const UrlList = ({ incomingList = [] }) => {
         <MzAddUrlButton onClick={onAddUrl} />
       </Box>
       <Box my={4}>
-        <Button onClick={() => runTest()}>Run Test</Button>
+        <Button onClick={runTest}>
+          <FormattedMessage id='Settings.Websites.CustomURL.Run' />
+        </Button>
       </Box>
     </Flex>
   )

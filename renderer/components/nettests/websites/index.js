@@ -27,5 +27,7 @@ export default {
   icon,
   description,
   longDescription,
-  animation
+  animation,
+  estimatedSize: '~ 8 MB',
+  estimatedTimeInSec: (maxRuntime) => Number(maxRuntime) !== 0 ? 30 + maxRuntime : 3600
 }

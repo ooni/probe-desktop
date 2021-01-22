@@ -7,6 +7,8 @@ import { FormattedMessage } from 'react-intl'
 const DashBoardHeaderContainer = styled.div`
   color: white;
   text-align: center;
+  position: sticky;
+  top: 0px;
 `
 
 const DashboardHeaderBG = styled.div`

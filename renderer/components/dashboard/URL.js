@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Box, Input, Button } from 'ooni-components'
 import { MdRemoveCircle } from 'react-icons/md'
+import { FormattedMessage } from 'react-intl'
 
 const URLBox = styled(Box)`
   position: relative;
@@ -59,7 +60,9 @@ const URL = ({ idx, url, onUpdate, onRemove }) => {
         value={url}
         onChange={onChange}
       />
-      <label htmlFor={idx}>URL</label>
+      <label htmlFor={idx}>
+        <FormattedMessage id='Settings.Websites.CustomURL.URL' />
+      </label>
       {onRemove &&
         <RemoveButton onClick={onDelete}>
           <MdRemoveCircle size={32} />

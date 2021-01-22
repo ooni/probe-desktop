@@ -10,6 +10,7 @@ import { useRouter } from 'next/router'
 
 import { testGroups } from '../nettests'
 import BackButton from '../BackButton'
+import { useConfig } from '../settings/useConfig'
 
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.results')
 
@@ -23,11 +24,14 @@ const BoldButton = styled(Button)`
   font-weight: bolder;
 `
 
-const TestGroupInDetail = ({ onRun, testGroup, onBack }) => {
-  const { name, icon, longDescription, color } = testGroups[testGroup]
+const TestGroupInDetail = ({ onRun, testGroup }) => {
+  const { name, icon, longDescription, color, estimatedSize, estimatedTimeInSec } = testGroups[testGroup]
   const [lastTestedAt, setLastTestedAt] = useState(null)
   const router = useRouter()
-  const showChooseWebsites =  testGroup === 'websites'
+  const [maxRuntimeEnabled,] = useConfig('nettests.websites_enable_max_runtime')
+  const [maxRuntime,] = useConfig('nettests.websites_max_runtime')
+  const isWebsites =  testGroup === 'websites'
+  const estimatedTimeReadable = moment.duration(estimatedTimeInSec(maxRuntimeEnabled ? maxRuntime : 0), 'seconds').humanize()
 
   const onChooseWebsites = useCallback(() => {
     router.push('/dashboard/websites/choose')
@@ -55,7 +59,7 @@ const TestGroupInDetail = ({ onRun, testGroup, onBack }) => {
     <Flex flexDirection='column'>
       <Flex bg={color} color='white' py={3}>
         <Box>
-          <BackButton onBack={onBack} size={24} />
+          <BackButton />
         </Box>
         <Box>
           {React.cloneElement(icon, {
@@ -71,7 +75,7 @@ const TestGroupInDetail = ({ onRun, testGroup, onBack }) => {
               <BoldButton inverted onClick={onRun} width={1/5} ml='auto'>
                 <FormattedMessage id='Dashboard.Overview.Run' />
               </BoldButton>
-              {showChooseWebsites && (
+              {isWebsites && (
                 <BoldButton hollow inverted ml={3} onClick={onChooseWebsites}>
                   <FormattedMessage id='Dashboard.Overview.ChooseWebsites' />
                 </BoldButton>
@@ -81,7 +85,7 @@ const TestGroupInDetail = ({ onRun, testGroup, onBack }) => {
             <Flex my={2}>
               <Box mr={3}>
                 <FormattedMessage id='Dashboard.Overview.Estimated' />
-                <strong> ~XXXX MB ~xxxx s </strong>
+                <strong> {estimatedSize} ~{estimatedTimeReadable}</strong>
               </Box>
               <Box mr={3}>
                 <FormattedMessage id='Dashboard.Overview.LatestTest' />
@@ -101,7 +105,6 @@ const TestGroupInDetail = ({ onRun, testGroup, onBack }) => {
 TestGroupInDetail.propTypes = {
   testGroup: PropTypes.string.isRequired,
   onRun: PropTypes.func,
-  onBack: PropTypes.func,
 }
 
 export default TestGroupInDetail

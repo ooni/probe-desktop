@@ -36,7 +36,7 @@ const TestChosenWebsites = () => {
         <StyledHero py={3}>
           <Flex justifyContent='center' alignItems='center'>
             <Box mr='auto'>
-              <BackButton size={24} onClick={() => router.back()}/>
+              <BackButton />
             </Box>
             <Box mr='auto'>
               <FormattedMessage id='Settings.Websites.CustomURL.Title' />
