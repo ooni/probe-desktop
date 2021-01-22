@@ -3,6 +3,8 @@ const { Ooniprobe } = require('./ooniprobe')
 const log = require('electron-log')
 const { getConfig } = require('../config')
 
+const testGroupsWithMaxRuntime = ['websites', 'all']
+
 class Runner {
   constructor({testGroupName, inputFile = null}) {
     this.testGroupName = testGroupName
@@ -40,7 +42,7 @@ class Runner {
   async maybeStartMaxRuntimeTimer () {
     const config = await getConfig()
     if (
-      this.testGroupName === 'websites' &&
+      testGroupsWithMaxRuntime.includes(this.testGroupName) &&
       config['nettests']['websites_enable_max_runtime'] === true
     ) {
       const maxRunTime = Number(config['nettests']['websites_max_runtime']) * 1000

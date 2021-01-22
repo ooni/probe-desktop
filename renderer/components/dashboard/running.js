@@ -1,9 +1,9 @@
 /* global require */
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
-import Router from 'next/router'
+import { useRouter } from 'next/router'
 import Raven from 'raven-js'
-
+import { ipcRenderer } from 'electron'
 import styled from 'styled-components'
 import {
   Flex,
@@ -126,11 +126,7 @@ const CloseButtonContainer = styled.div`
 `
 
 const WindowContainer = styled.div`
-  position: absolute;
-  top: 0px;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  min-height: 100vh;
   background-color: ${props => props.bg};
 `
 
@@ -146,9 +142,12 @@ const ContentContainer = styled.div`
   width: 100%;
   z-index: 10;
 `
+ContentContainer.displayName = 'ContentContainer'
 
 const Title = ({ groupName }) => (
-  <Heading h={2}>{groupName}</Heading>
+  <Heading h={2}>
+    {groupName ? groupName : <span>&nbsp;</span>}
+  </Heading>
 )
 
 Title.propTypes = {
@@ -166,7 +165,7 @@ const RunningTestnameLabel = ({ runningTestName }) => (
       {runningTestName ? (
         <FormattedMessage id='Dashboard.Running.Running' />
       ) : (
-        <FormattedMessage id='Dashboard.Running.CalculatingETA' />
+        <span><FormattedMessage id='Dashboard.Running.PreparingTest' />...</span>
       )}
     </Heading>
     <Text fontSize={4}>
@@ -196,10 +195,12 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
   const [, setStopped] = useState(false)
   const [isStopping, setIsStopping] = useState(false)
 
+  const router = useRouter()
+
   let runner = null
 
   useEffect(() => {
-    const { ipcRenderer, remote } = require('electron')
+    const { remote } = require('electron')
     ipcRenderer.on('ooni', onMessage)
     const Runner = remote.require('./utils/ooni/run').Runner
     runner = new Runner({
@@ -210,7 +211,7 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
       .run()
       .then(() => {
         setStopped(true)
-        Router.push('/test-results')
+        router.push('/test-results')
       })
       .catch(error => {
         debug('error', error)
@@ -221,10 +222,16 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
         setStopped(true)
       })
 
+
     return () => {
       ipcRenderer.removeListener('ooni', onMessage)
     }
   }, [])
+
+  // Reset progressbar when group name changes during 'Run All'
+  useEffect(() => {
+    setPercent(0)
+  }, [testGroupName])
 
   const onToggleLog = useCallback(() => {
     setLogOpen(!logOpen)

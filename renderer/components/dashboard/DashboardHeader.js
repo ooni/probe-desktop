@@ -1,8 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Button, Text } from 'ooni-components'
+import { Button, Text, Box } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
+
+import LastTest from 'components/dashboard/LastTest'
 
 const DashBoardHeaderContainer = styled.div`
   color: white;
@@ -30,14 +32,18 @@ const Ellipse = styled.div`
   clip-path: ellipse(75% 50% at 50% 50%);
 `
 
+const RunAllContainer = styled(Box)`
+  position: relative;
+  top: -60px;
+  margin-bottom: -30px;
+`
+
 const RunAllButton = styled(Button).attrs({
   width: 2/5,
 })`
   box-shadow: 0px 0px 6px 0px ${props => props.theme.colors.gray7};
   border: 1px solid ${props => props.theme.colors.gray3};
   border-radius: 16px;
-  position: relative;
-  top: -60px;
 
   &:hover {
     box-shadow: 0px 0px 6px 1px ${props => props.theme.colors.gray7};
@@ -53,11 +59,14 @@ export const DashboardHeader = ({ onRunAll }) => (
     <DashboardHeaderBG>
       <Ellipse />
     </DashboardHeaderBG>
-    <RunAllButton inverted onClick={onRunAll} fontSize={2}>
-      <Text fontWeight='bold' fontSize={3}>
-        <FormattedMessage id='Dashboard.Overview.Run' />
-      </Text>
-    </RunAllButton>
+    <RunAllContainer>
+      <RunAllButton inverted onClick={onRunAll} fontSize={2}>
+        <Text as='span' fontWeight='bold' fontSize={3}>
+          <FormattedMessage id='Dashboard.Overview.Run' />
+        </Text>
+      </RunAllButton>
+      <LastTest testGroupName='all' pt={3} bg='WHITE'/>
+    </RunAllContainer>
   </DashBoardHeaderContainer>
 )
 

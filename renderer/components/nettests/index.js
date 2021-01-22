@@ -22,6 +22,7 @@ import ndt from './performance/NDT'
 import dash from './performance/Dash'
 import psiphon from './circumvention/Psiphon'
 import tor from './circumvention/Tor'
+import { default as animation } from '../../static/animations/loadingTests.json'
 
 const iconSize = 200
 const iconColor = theme.colors.black
@@ -33,11 +34,12 @@ export const testGroups = {
   performance,
   circumvention,
   'default': {
-    'color': theme.colors.blue5,
+    'color': theme.colors.gray7,
     'description': '',
     'longDescription': '',
-    'name': 'Default',
+    'name': '',
     'icon': <IoMdSpeedometer />,
+    animation
   }
 }
 

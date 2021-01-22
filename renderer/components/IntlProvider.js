@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl'
 import { getMessages, getLocale } from '../components/langUtils'
 import { useConfig } from '../components/settings/useConfig'
-
+import moment from 'moment'
 // Polyfill Intl.DisplayNames to display language names in the selected language
 import '@formatjs/intl-displaynames/polyfill'
 require('@formatjs/intl-displaynames/locale-data/en')
@@ -25,10 +25,12 @@ const IntlProvider = ({ children }) => {
 
   const intl = createIntl({ locale: activeLang, messages }, cache)
 
-  const changeLocale = (locale => {
+  const changeLocale = (locale) => {
     require(`@formatjs/intl-displaynames/locale-data/${locale}`)
     activateLang(locale)
-  })
+    // HACK: We strip `zh-TW` to `zh` which is not recognized by momentjs
+    moment.locale(locale === 'zh' ? 'zh-TW' : locale)
+  }
 
   // Insert method to set active Locale into the intl context
   // This will be available to components via the standard `useIntl` hook
