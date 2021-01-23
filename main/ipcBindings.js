@@ -21,20 +21,20 @@ const ipcBindingsForMain = (ipcMain) => {
 
   ipcMain.on(lastResultRequest, async (event, data) => {
     const { testGroupName } = data
+    let lastTested = null
     const results = await listResults()
     if (results.hasOwnProperty('rows') && results.rows.length > 0) {
       const filteredRows = results.rows.filter(row =>
         testGroupName !== 'all' ? row.name === testGroupName : true
       )
-      const lastTested = filteredRows.length > 0
+      lastTested = filteredRows.length > 0
         ? filteredRows[filteredRows.length - 1].start_time
         : null
-
-      event.reply(lastResultResponse, {
-        lastResult: lastTested
-      })
-
     }
+    event.reply(lastResultResponse, {
+      lastResult: lastTested
+    })
+
   })
 }
 

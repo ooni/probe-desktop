@@ -65,7 +65,7 @@ export const DashboardHeader = ({ onRunAll }) => (
           <FormattedMessage id='Dashboard.Overview.Run' />
         </Text>
       </RunAllButton>
-      <LastTest testGroupName='all' pt={3} bg='WHITE'/>
+      <LastTest testGroupName='all' pt={3} color='black' bg='WHITE'/>
     </RunAllContainer>
   </DashBoardHeaderContainer>
 )

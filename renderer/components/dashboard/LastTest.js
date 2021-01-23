@@ -31,7 +31,7 @@ const LastTest = ({ testGroupName, ...rest }) => {
   }, [onLastResultResponse])
 
   return (
-    <Box color='black' {...rest}>
+    <Box {...rest}>
       <Text as='span' mr={1}>
         <FormattedMessage id='Dashboard.Overview.LatestTest' />
       </Text> {lastTestTime}
