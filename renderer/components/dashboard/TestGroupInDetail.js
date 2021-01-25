@@ -1,18 +1,15 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { Flex, Box, Heading, Button } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
-import electron from 'electron'
-import Raven from 'raven-js'
 import moment from 'moment'
 import { useRouter } from 'next/router'
 
 import { testGroups } from '../nettests'
 import BackButton from '../BackButton'
 import { useConfig } from '../settings/useConfig'
-
-const debug = require('debug')('ooniprobe-desktop.renderer.pages.results')
+import LastTest from 'components/dashboard/LastTest'
 
 const Divider = styled(Box)`
   height: 1px;
@@ -26,7 +23,6 @@ const BoldButton = styled(Button)`
 
 const TestGroupInDetail = ({ onRun, testGroup }) => {
   const { name, icon, longDescription, color, estimatedSize, estimatedTimeInSec } = testGroups[testGroup]
-  const [lastTestedAt, setLastTestedAt] = useState(null)
   const router = useRouter()
   const [maxRuntimeEnabled,] = useConfig('nettests.websites_enable_max_runtime')
   const [maxRuntime,] = useConfig('nettests.websites_max_runtime')
@@ -36,24 +32,6 @@ const TestGroupInDetail = ({ onRun, testGroup }) => {
   const onChooseWebsites = useCallback(() => {
     router.push('/dashboard/websites/choose')
   }, [router])
-
-  useEffect(() => {
-    const remote = electron.remote
-    const { listResults } = remote.require('./actions')
-
-    listResults().then(results => {
-      if (results.hasOwnProperty('rows') && results.rows.length > 0) {
-        const filteredRows = results.rows.filter(row => row.name === testGroup)
-        const lastTested = filteredRows.length > 0
-          ? moment(filteredRows[filteredRows.length - 1].start_time).fromNow()
-          : <FormattedMessage id='Dashboard.Overview.LastRun.Never' />
-        setLastTestedAt(lastTested)
-      }
-    }).catch(err => {
-      Raven.captureException(err, {extra: {scope: 'renderer.dashboard.testGroupDetail.listResults'}})
-      debug('error triggered', err)
-    })
-  }, [])
 
   return (
     <Flex flexDirection='column'>
@@ -88,8 +66,7 @@ const TestGroupInDetail = ({ onRun, testGroup }) => {
                 <strong> {estimatedSize} ~{estimatedTimeReadable}</strong>
               </Box>
               <Box mr={3}>
-                <FormattedMessage id='Dashboard.Overview.LatestTest' />
-                <strong> {lastTestedAt} </strong>
+                <LastTest testGroupName={testGroup} />
               </Box>
             </Flex>
           </Flex>
