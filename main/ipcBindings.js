@@ -2,10 +2,14 @@ const { app } = require('electron')
 const fs = require('fs-extra')
 const { listResults } = require('./actions')
 
+// BUG: The idea *was* to use these constants across main and renderer processes
+// to wire up the IPC channels. But importing these directly from renderer
+// scripts throws this error: https://github.com/sindresorhus/electron-util/issues/27
 const inputFileRequest = 'fs.write.request'
 const inputFileResponse = 'fs.write.response'
 const lastResultRequest = 'results.last.request'
 const lastResultResponse = 'results.last.response'
+
 const ipcBindingsForMain = (ipcMain) => {
 
   ipcMain.on(inputFileRequest, async (event, data) => {

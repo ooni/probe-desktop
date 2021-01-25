@@ -5,7 +5,8 @@ import { Text, Box } from 'ooni-components'
 import { useIntl, FormattedMessage } from 'react-intl'
 import moment from 'moment'
 
-import { lastResultRequest, lastResultResponse } from '../../../main/ipcBindings'
+const lastResultRequest = 'results.last.request'
+const lastResultResponse = 'results.last.response'
 
 const LastTest = ({ testGroupName, ...rest }) => {
   const intl = useIntl()

@@ -6,7 +6,9 @@ import { ipcRenderer } from 'electron'
 import { FormattedMessage } from 'react-intl'
 // import debounce from 'lodash.debounce'
 
-import { inputFileRequest, inputFileResponse } from '../../../main/ipcBindings'
+const inputFileRequest = 'fs.write.request'
+const inputFileResponse = 'fs.write.response'
+
 import URL from './URL'
 import AddUrlButton from './AddUrlButton'
 
