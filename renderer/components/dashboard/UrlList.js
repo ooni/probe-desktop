@@ -87,6 +87,15 @@ const UrlList = ({ incomingList = [] }) => {
     dispatch({type: 'remove', value: idx })
   }, [dispatch])
 
+  const onKeyEnter = useCallback((idx) => {
+    // if pressed in the last entry, then add a new entry
+    if (idx === testList.length - 1) {
+      dispatch({ type: 'add', value: '' })
+    }
+    // else send focus to the next one
+    // .focus() needs refs which aren't passed down well by ooni-components@0.3.x
+  }, [testList.length])
+
   return (
     <Flex flexDirection='column'>
       <Box>
@@ -95,6 +104,7 @@ const UrlList = ({ incomingList = [] }) => {
             key={idx} idx={idx} url={url}
             onUpdate={onUpdateUrl}
             onRemove={testList.length > 1 ? onRemoveUrl : null}
+            onKeyEnter={onKeyEnter}
           />
         ))}
       </Box>

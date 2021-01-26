@@ -42,14 +42,18 @@ const RemoveButton = styled(Button)`
   }
 `
 
-const URL = ({ idx, url, onUpdate, onRemove }) => {
-
+const URL = ({ idx, url, onUpdate, onRemove, onKeyEnter }) => {
   const onChange = useCallback((e) => {
     onUpdate(idx, e.target.value)
   }, [onUpdate])
   const onDelete = useCallback(() => {
     onRemove(idx)
   }, [onRemove])
+  const onKeyPress = useCallback((e) => {
+    if (e.key === 'Enter') {
+      onKeyEnter(idx)
+    }
+  }, [onKeyEnter])
 
   return (
     <URLBox my={3}>
@@ -59,6 +63,7 @@ const URL = ({ idx, url, onUpdate, onRemove }) => {
         placeholder='https://'
         value={url}
         onChange={onChange}
+        onKeyPress={onKeyPress}
       />
       <label htmlFor={idx}>
         <FormattedMessage id='Settings.Websites.CustomURL.URL' />
