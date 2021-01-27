@@ -8,19 +8,15 @@ const { autoUpdater } = require('electron-updater')
 const isDev = require('electron-is-dev')
 
 const fixPath = require('fix-path')
-const { getConfig, maybeMigrate, initConfigFile } = require('./utils/config')
-const { getSentryConfig } = require('./utils/sentry')
-
+const Sentry = require('@sentry/electron')
 const log = require('electron-log')
 
-const toggleWindow = require('./windows/toggle')
-
+const { getConfig, maybeMigrate, initConfigFile } = require('./utils/config')
 const { mainWindow, openAboutWindow, windowURL } = require('./windows')
+const toggleWindow = require('./windows/toggle')
 const { ipcBindingsForMain } = require('./ipcBindings')
 
-const Sentry = require('@sentry/electron')
-Sentry.init(getSentryConfig())
-
+require('./utils/sentry')
 require('debug-to-file')
 require('electron-unhandled')()
 require('electron-debug')({
@@ -41,12 +37,6 @@ let windows = null
 app.name = 'OONI Probe'
 
 app.allowRendererProcessReuse = true
-
-// TODO verify if this code is redundant as the Sentry.init code should already
-// cover this.
-process.on('uncaughtException', error => {
-  Sentry.captureException(error)
-})
 
 // XXX currently disable starting at login. It's a bit annoying while developing.
 /*
@@ -145,10 +135,7 @@ autoUpdater.on('update-available', () => {
 
 autoUpdater.on('error', err => {
   sendStatusToWindow('Error in auto-updater. ' + err)
-  Sentry.withScope((scope) => {
-    scope.setTag('context', 'auto-updater')
-    Sentry.captureException(err)
-  })
+  throw err
 })
 
 autoUpdater.on('download-progress', progressObj => {
