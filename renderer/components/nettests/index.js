@@ -22,6 +22,7 @@ import ndt from './performance/NDT'
 import dash from './performance/Dash'
 import psiphon from './circumvention/Psiphon'
 import tor from './circumvention/Tor'
+import riseupvpn from './circumvention/RiseupVPN'
 
 const iconSize = 200
 const iconColor = theme.colors.black
@@ -56,6 +57,7 @@ export const tests = {
   dash,
   psiphon,
   tor,
+  riseupvpn,
   'default': {
     'name': 'Default',
   }

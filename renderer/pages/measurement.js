@@ -14,6 +14,9 @@ import LoadingOverlay from '../components/LoadingOverlay'
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.measurement')
 
 class Measurement extends React.Component {
+  static async getInitialProps(ctx) {
+    return ctx.query
+  }
   constructor(props) {
     super(props)
     this.state = {
