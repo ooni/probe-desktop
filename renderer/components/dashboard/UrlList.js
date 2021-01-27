@@ -47,6 +47,7 @@ const UrlList = ({ incomingList = [] }) => {
   }, [testList])
 
   useEffect(() => {
+    // TODO: on(inputFileError)
     ipcRenderer.on(inputFileResponse, (event, args) => {
       router.push(
         {

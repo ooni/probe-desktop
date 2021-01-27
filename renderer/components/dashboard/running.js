@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
-import Raven from 'raven-js'
 import { ipcRenderer } from 'electron'
 import styled from 'styled-components'
 import {
@@ -197,36 +196,42 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
 
   const router = useRouter()
 
-  let runner = null
+  // Upon load, this component sends message to the main process to
+  // launch `ooniprobe run` with ${testGroupName} and starts listening
+  // on multiple channels for updates.
+  // e.g `ooniprobe.running-test`, `ooniprobe.progress`, `ooniprobe.stopping'`
 
   useEffect(() => {
-    const { remote } = require('electron')
-    ipcRenderer.on('ooni', onMessage)
-    const Runner = remote.require('./utils/ooni/run').Runner
-    runner = new Runner({
-      testGroupName: testGroupToRun,
-      inputFile: inputFile
-    })
-    runner
-      .run()
-      .then(() => {
-        setStopped(true)
-        router.push('/test-results')
-      })
-      .catch(error => {
-        debug('error', error)
-        Raven.captureException(error, {
-          extra: { scope: 'renderer.runTest' }
-        })
-        setError(error)
-        setStopped(true)
-      })
 
+    ipcRenderer.send('ooniprobe.run', { testGroupToRun, inputFile })
+
+    ipcRenderer.on('ooni', onMessage)
+    ipcRenderer.on('ooniprobe.running-test', (_, testGroup) => {
+      setTestGroupName(testGroup)
+    })
+    ipcRenderer.on('ooniprobe.done', (_, completedTestGroup) => {
+      const logMessage = `Finished running ${completedTestGroup}`
+      setLogLines(oldLogLines => [...oldLogLines, logMessage])
+      setPercent(0)
+    })
+    ipcRenderer.on('ooniprobe.completed', () => {
+      setStopped(true)
+      router.push('/test-results')
+    })
+
+    ipcRenderer.on('ooniprobe.error', (_, error) => {
+      const logMessage = error
+      setLogLines(oldLogLines => [...oldLogLines, logMessage])
+    })
 
     return () => {
       ipcRenderer.removeListener('ooni', onMessage)
+      ipcRenderer.removeAllListeners('ooniprobe.running-test')
+      ipcRenderer.removeAllListeners('ooniprobe.done')
+      ipcRenderer.removeAllListeners('ooniprobe.error')
     }
-  }, [])
+  }, []) /* eslint-disable-line react-hooks/exhaustive-deps */
+  /* Do not add dependencies. This is componentDidMount */
 
   // Reset progressbar when group name changes during 'Run All'
   useEffect(() => {
@@ -267,11 +272,11 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
   }, [testGroupName, setPercent, setEta, setProgressLine, setError, setRunningTestName, setLogLines])
 
   const onKill = useCallback(() => {
-    if (runner !== null && isStopping !== true) {
-      runner.kill()
+    if (isStopping !== true) {
+      ipcRenderer.send('ooniprobe.stop')
       setIsStopping(true)
     }
-  }, [isStopping, setIsStopping, runner])
+  }, [isStopping, setIsStopping])
 
   const testGroup = testGroups[testGroupName in testGroups ? testGroupName : 'default']
 
