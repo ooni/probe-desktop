@@ -13,7 +13,6 @@ import { FormattedMessage } from 'react-intl'
 import { Tick } from 'ooni-components/dist/icons'
 import { MdPriorityHigh } from 'react-icons/md'
 import styled from 'styled-components'
-import { useRouter } from 'next/router'
 
 import { tests } from '../nettests'
 import BackButton from '../BackButton'
@@ -27,6 +26,7 @@ import { NDT } from '../nettests/performance/NDT'
 import { Dash } from '../nettests/performance/Dash'
 import { Psiphon } from '../nettests/circumvention/Psiphon'
 import { Tor } from '../nettests/circumvention/Tor'
+import { RiseupVPN } from '../nettests/circumvention/RiseupVPN'
 
 import FullHeightFlex from '../FullHeightFlex'
 import MethodologyButton from './MethodologyButton'
@@ -45,7 +45,8 @@ const detailsMap = {
   ndt: NDT,
   dash: Dash,
   psiphon: Psiphon,
-  tor: Tor
+  tor: Tor,
+  riseupvpn: RiseupVPN
 }
 
 const HeroItemBox = ({ label, content, ...props }) => (
@@ -152,7 +153,6 @@ const MeasurementContainer = ({ measurement, isAnomaly }) => {
 
   const [rawDataOpen, setRawDataOpen] = useState(false)
   const { rawData } = useRawData()
-  const router = useRouter()
   // anomaly-ness based backgaround color, in case nettest doesn't send
   // an override in `heroBG`
   const backgroundColor = isAnomaly ? colorMap.anomaly : colorMap.reachable
@@ -162,6 +162,7 @@ const MeasurementContainer = ({ measurement, isAnomaly }) => {
     <MeasurementDetailContainer
       isAnomaly={isAnomaly}
       measurement={measurement}
+      rawData={rawData}
       render={({
         hero,
         heroBG,

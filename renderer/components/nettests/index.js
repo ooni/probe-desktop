@@ -22,6 +22,7 @@ import ndt from './performance/NDT'
 import dash from './performance/Dash'
 import psiphon from './circumvention/Psiphon'
 import tor from './circumvention/Tor'
+import riseupvpn from './circumvention/RiseupVPN'
 import { default as animation } from '../../static/animations/loadingTests.json'
 
 const iconSize = 200
@@ -58,6 +59,7 @@ export const tests = {
   dash,
   psiphon,
   tor,
+  riseupvpn,
   'default': {
     'name': 'Default',
   }
