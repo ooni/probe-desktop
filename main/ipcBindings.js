@@ -2,7 +2,6 @@ const { app } = require('electron')
 const fs = require('fs-extra')
 const { listResults } = require('./actions')
 const { Runner } = require('./utils/ooni/run')
-const { testGroups } = require('../renderer/components/nettests')
 
 // BUG: The idea *was* to use these constants across main and renderer processes
 // to wire up the IPC channels. But importing these directly from renderer
@@ -47,11 +46,14 @@ const ipcBindingsForMain = (ipcMain) => {
 
   ipcMain.on('ooniprobe.run', async (event, { testGroupToRun, inputFile }) => {
     const sender = event.sender
+    // TODO: Should figure out a way to share this list between main and renderer
+    // Cannot import `testGroups` as-is from 'renderer/components/nettests/index.js'
+    const supportedTestGroups = ['websites', 'circumvention', 'im', 'middlebox', 'performance']
     // if testGroupToRun is `all` then iterate on a list of all runnable testGroups
     // instead of launching `ooniprobe all` to avoid the maxRuntimeTimer killing
     // tests other than `websites`
     const groupsToRun = testGroupToRun === 'all' ? (
-      Object.keys(testGroups).filter(x => x !== 'default')
+      supportedTestGroups.filter(x => x !== 'default')
     ) : (
       [testGroupToRun]
     )
