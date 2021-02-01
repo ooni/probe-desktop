@@ -23,5 +23,5 @@ export default {
   longDescription,
   animation,
   estimatedSize: '< 1 MB',
-  estimatedTimeInSec: () => 60
+  estimatedTimeInSec: () => 15
 }
