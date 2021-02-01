@@ -1,9 +1,7 @@
-import React from 'react'
-
+import React, { useCallback } from 'react'
+import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
-
 import styled from 'styled-components'
-
 import { MdKeyboardArrowLeft } from 'react-icons/md'
 
 const StyledBackLink = styled.a`
@@ -19,13 +17,21 @@ const StyledBackLink = styled.a`
   }
 `
 
-const BackButton = () => {
+const BackButton = ({ onBack, size = 50 }) => {
   const router = useRouter()
+  const routerBack = useCallback(() => {
+    router.back()
+  })
+  const onClick = onBack || routerBack
   return (
-    <StyledBackLink onClick={() => router.back()}>
-      <MdKeyboardArrowLeft size={50} />
+    <StyledBackLink onClick={onClick}>
+      <MdKeyboardArrowLeft size={size} />
     </StyledBackLink>
   )
+}
+
+BackButton.propTypes = {
+  onBack: PropTypes.func
 }
 
 export default BackButton

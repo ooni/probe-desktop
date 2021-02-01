@@ -9,7 +9,7 @@
   "license": "BSD-3-Clause",
   "repository": "ooni/probe-desktop",
   "scripts": {
-    "start": "electron -r @babel/register .",
+    "start": "electron --inspect -r @babel/register .",
     "dev": "yarn run start",
     "clean": "git clean -dffx && yarn install",
     "build": "next build renderer && next export renderer && yarn run probe-cli",
@@ -131,7 +131,7 @@
     "jest": "^25.3.0",
     "moment": "^2.24.0",
     "moment-range": "^4.0.2",
-    "next": "9.3.2",
+    "next": "^10.0.3",
     "next-progressbar": "^1.0.0",
     "ooni-components": "0.3.2",
     "prop-types": "15.7.2",

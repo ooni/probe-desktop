@@ -1,9 +1,8 @@
 /* global require */
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
-import Router from 'next/router'
-import Raven from 'raven-js'
-
+import { useRouter } from 'next/router'
+import { ipcRenderer } from 'electron'
 import styled from 'styled-components'
 import {
   Flex,
@@ -18,9 +17,9 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { MdClear, MdKeyboardArrowUp, MdKeyboardArrowDown} from 'react-icons/md'
 import Lottie from 'react-lottie-player'
 import moment from 'moment'
-const debug = require('debug')('ooniprobe-desktop.renderer.components.home.running')
+const debug = require('debug')('ooniprobe-desktop.renderer.components.dashboard.running')
 
-import { testGroups } from '../nettests'
+import { testList, cliTestKeysToGroups, testGroups } from '../nettests'
 import { StripedProgress } from './StripedProgress'
 import StopTestModal from '../ConfirmationModal'
 
@@ -126,11 +125,7 @@ const CloseButtonContainer = styled.div`
 `
 
 const WindowContainer = styled.div`
-  position: absolute;
-  top: 0px;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  min-height: 100vh;
   background-color: ${props => props.bg};
 `
 
@@ -146,9 +141,12 @@ const ContentContainer = styled.div`
   width: 100%;
   z-index: 10;
 `
+ContentContainer.displayName = 'ContentContainer'
 
 const Title = ({ groupName }) => (
-  <Heading h={2}>{groupName}</Heading>
+  <Heading h={2}>
+    {groupName ? groupName : <span>&nbsp;</span>}
+  </Heading>
 )
 
 Title.propTypes = {
@@ -166,7 +164,7 @@ const RunningTestnameLabel = ({ runningTestName }) => (
       {runningTestName ? (
         <FormattedMessage id='Dashboard.Running.Running' />
       ) : (
-        <FormattedMessage id='Dashboard.Running.CalculatingETA' />
+        <span><FormattedMessage id='Dashboard.Running.PreparingTest' />...</span>
       )}
     </Heading>
     <Text fontSize={4}>
@@ -184,7 +182,8 @@ RunningTestnameLabel.propTypes = {
 
 const MemoizedTestNameLabel = React.memo(RunningTestnameLabel)
 
-const Running = ({ testGroupName }) => {
+const Running = ({ testGroupToRun, inputFile = null }) => {
+  const [testGroupName, setTestGroupName] = useState(testGroupToRun)
   const [logOpen, setLogOpen] = useState(false)
   const [error, setError] = useState(null)
   const [runningTestName, setRunningTestName] = useState(null)
@@ -194,35 +193,50 @@ const Running = ({ testGroupName }) => {
   const [eta, setEta] = useState(-1)
   const [, setStopped] = useState(false)
   const [isStopping, setIsStopping] = useState(false)
-  let runner = null
+
+  const router = useRouter()
+
+  // Upon load, this component sends message to the main process to
+  // launch `ooniprobe run` with ${testGroupName} and starts listening
+  // on multiple channels for updates.
+  // e.g `ooniprobe.running-test`, `ooniprobe.progress`, `ooniprobe.stopping'`
 
   useEffect(() => {
-    const { ipcRenderer, remote } = require('electron')
+
+    ipcRenderer.send('ooniprobe.run', { testGroupToRun, inputFile })
+
     ipcRenderer.on('ooni', onMessage)
+    ipcRenderer.on('ooniprobe.running-test', (_, testGroup) => {
+      setTestGroupName(testGroup)
+    })
+    ipcRenderer.on('ooniprobe.done', (_, completedTestGroup) => {
+      const logMessage = `Finished running ${completedTestGroup}`
+      setLogLines(oldLogLines => [...oldLogLines, logMessage])
+      setPercent(0)
+    })
+    ipcRenderer.on('ooniprobe.completed', () => {
+      setStopped(true)
+      router.push('/test-results')
+    })
 
-    debug('running', testGroupName)
-
-    const Runner = remote.require('./utils/ooni/run').Runner
-    runner = new Runner({ testGroupName })
-    runner
-      .run()
-      .then(() => {
-        setStopped(true)
-        Router.push('/test-results')
-      })
-      .catch(error => {
-        debug('error', error)
-        Raven.captureException(error, {
-          extra: { scope: 'renderer.runTest' }
-        })
-        setError(error)
-        setStopped(true)
-      })
+    ipcRenderer.on('ooniprobe.error', (_, error) => {
+      const logMessage = error
+      setLogLines(oldLogLines => [...oldLogLines, logMessage])
+    })
 
     return () => {
       ipcRenderer.removeListener('ooni', onMessage)
+      ipcRenderer.removeAllListeners('ooniprobe.running-test')
+      ipcRenderer.removeAllListeners('ooniprobe.done')
+      ipcRenderer.removeAllListeners('ooniprobe.error')
     }
-  }, [])
+  }, []) /* eslint-disable-line react-hooks/exhaustive-deps */
+  /* Do not add dependencies. This is componentDidMount */
+
+  // Reset progressbar when group name changes during 'Run All'
+  useEffect(() => {
+    setPercent(0)
+  }, [testGroupName])
 
   const onToggleLog = useCallback(() => {
     setLogOpen(!logOpen)
@@ -231,6 +245,13 @@ const Running = ({ testGroupName }) => {
   const onMessage = useCallback((event, data) => {
     switch (data.key) {
     case 'ooni.run.progress':
+      var currentTestGroup = cliTestKeysToGroups[data.testKey]
+      if (testGroupName !== currentTestGroup
+        && testList.findIndex(item => item.key === currentTestGroup) > -1
+      ) {
+        setTestGroupName(currentTestGroup)
+      }
+
       data.testKey && setRunningTestName(data.testKey)
       data.message && setProgressLine(data.message)
       data.percentage && setPercent(data.percentage)
@@ -248,16 +269,16 @@ const Running = ({ testGroupName }) => {
     default:
       break
     }
-  }, [setPercent, setEta, setProgressLine, setError, setRunningTestName, setLogLines])
+  }, [testGroupName, setPercent, setEta, setProgressLine, setError, setRunningTestName, setLogLines])
 
   const onKill = useCallback(() => {
-    if (runner !== null && isStopping !== true) {
-      runner.kill()
+    if (isStopping !== true) {
+      ipcRenderer.send('ooniprobe.stop')
       setIsStopping(true)
     }
-  }, [isStopping, setIsStopping, runner])
+  }, [isStopping, setIsStopping])
 
-  const testGroup = testGroups[testGroupName]
+  const testGroup = testGroups[testGroupName in testGroups ? testGroupName : 'default']
 
   const testGroupBackupIcon = useMemo(() => {
     return React.cloneElement(testGroup.icon, {size: 300})
@@ -361,7 +382,8 @@ const Running = ({ testGroupName }) => {
 }
 
 Running.propTypes = {
-  testGroupName: PropTypes.string.isRequired
+  testGroupToRun: PropTypes.string.isRequired,
+  inputFile: PropTypes.string
 }
 
 export default Running

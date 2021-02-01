@@ -21,5 +21,7 @@ export default {
   icon,
   description,
   longDescription,
-  animation: animation
+  animation,
+  estimatedSize: '< 1 MB',
+  estimatedTimeInSec: () => 15
 }

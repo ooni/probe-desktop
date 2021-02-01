@@ -21,7 +21,7 @@ const Onboard = () => {
 
   const onGo = useCallback(() => {
     OnboardingComplete().then(() => {
-      Router.push('/home')
+      Router.push('/dashboard')
     })
   }, [])
 

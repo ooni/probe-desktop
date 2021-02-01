@@ -3,9 +3,12 @@ const { Ooniprobe } = require('./ooniprobe')
 const log = require('electron-log')
 const { getConfig } = require('../config')
 
+const testGroupsWithMaxRuntime = ['websites', 'all']
+
 class Runner {
-  constructor({testGroupName}) {
+  constructor({testGroupName, inputFile = null}) {
     this.testGroupName = testGroupName
+    this.inputFile = inputFile
     this.ooni = new Ooniprobe()
     this.maxRuntimeTimer = null
     this.etaReportInterval = null
@@ -39,7 +42,7 @@ class Runner {
   async maybeStartMaxRuntimeTimer () {
     const config = await getConfig()
     if (
-      this.testGroupName === 'websites' &&
+      testGroupsWithMaxRuntime.includes(this.testGroupName) &&
       config['nettests']['websites_enable_max_runtime'] === true
     ) {
       const maxRunTime = Number(config['nettests']['websites_max_runtime']) * 1000
@@ -63,7 +66,8 @@ class Runner {
   }
 
   run() {
-    const testGroupName = this.testGroupName
+    const { testGroupName, inputFile } = this
+
     windows.main.send('starting', testGroupName)
     this.ooni.on('data', (data) => {
       if (data.level == 'error') {
@@ -98,8 +102,14 @@ class Runner {
 
     this.maybeStartMaxRuntimeTimer()
 
-    log.info('Runner: calling run', testGroupName)
-    return this.ooni.call(['run', testGroupName])
+    const runParams = ['run', testGroupName]
+
+    if (testGroupName === 'websites' && inputFile) {
+      runParams.push(`--input-file=${inputFile}`)
+    }
+
+    log.info(`Runner: calling ${runParams}`)
+    return this.ooni.call(runParams)
   }
 }
 
