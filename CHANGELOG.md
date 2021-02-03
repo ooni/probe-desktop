@@ -1,4 +1,31 @@
 # Changelog
+## OONI Probe Desktop 3.2.2 [2021-02-03]
+
+probe-cli: 3.4.0
+
+### Added
+* New Dashboard screen with detailed screens for each test groups
+* Run all the supported tests together with single button
+* Ability to test custom websites inside the `Websites` card
+* Settings option to limit the websites test run time (default: 90s)
+* Add support for `RiseupVPN` test under `Circumvention` group
+
+### Removed
+* Settings option to limit the number of websites tested in each run
+
+
+## OONI Probe Desktop 3.1.1 [2020-11-24]
+
+### Fixed
+* Crash in settings screen caused by unexpected value in config.json created with probe-desktop@v3.0.0 (ooni/probe#1290)
+* This fix also unbricks any users that may have accidentally auto-updated to 3.1.0
+
+### Added
+* LICENSE file
+
+### Removed
+* Dropped translation files for unsupported locales like `id`, `sq`
+
 ## OONI Probe Desktop 3.1.0 [2020-11-19]
 
 probe-cli: 3.0.11
