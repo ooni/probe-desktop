@@ -1,8 +1,10 @@
 /* global require, module */
-//const withProgressBar = require('next-progressbar')
 const withSourceMaps = require('@zeit/next-source-maps')
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true'
+})
 
-module.exports = withSourceMaps({
+module.exports = withBundleAnalyzer(withSourceMaps({
   webpack: (config, options) => {
     config.target = 'electron-renderer'
 

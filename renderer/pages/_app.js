@@ -1,6 +1,5 @@
 import React from 'react'
 import IntlProvider from '../components/IntlProvider'
-import '../../main/utils/sentry.js'
 import { ConfigProvider } from '../components/settings/useConfig'
 
 const MyApp = ({ Component, pageProps, err }) => {
