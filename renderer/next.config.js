@@ -13,6 +13,14 @@ module.exports = withBundleAnalyzer(withSourceMaps({
       __filename: false
     }
 
+    config.plugins.push(
+      new options.webpack.DefinePlugin({
+        'process.env.NEXT_IS_SERVER': JSON.stringify(
+          options.isServer.toString()
+        )
+      })
+    )
+
     config.module.rules.push({
       test: /\.(eot|ttf|woff|woff2|otf)$/,
       use: [
