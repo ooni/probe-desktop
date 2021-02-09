@@ -34,4 +34,4 @@ module.exports = withBundleAnalyzer(withSourceMaps({
     }
     return config
   },
-})
+}))
