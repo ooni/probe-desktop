@@ -173,7 +173,7 @@ const SectionDefaultSettings = ({onGo, onChange}) => (
       </Flex>
     </Box>
     <Flex alignItems='center' flexDirection='column'>
-      <Button inverted onClick={onGo}>
+      <Button inverted onClick={onGo} data-test-id='letsgo'>
         <FormattedMessage id='Onboarding.DefaultSettings.Button.Go' />
       </Button>
       <ChangeLink onClick={onChange}>

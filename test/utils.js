@@ -12,7 +12,6 @@ const execHardReset = (app) => {
       .remote.require('./actions')
       .hardReset()
       .then(() => {
-        console.log('done')
         done()
       }, (err) => {
         console.log('err')
@@ -41,10 +40,8 @@ module.exports = {
   },
 
   async resetData(app) {
-    console.log('Resetting `$OONI_HOME`...')
     await app.client.waitUntilWindowLoaded()
     await execHardReset(app)
-    console.log('...done.')
   },
 
   async screenshotApp(app, label) {

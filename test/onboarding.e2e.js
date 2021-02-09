@@ -63,4 +63,14 @@ describe('Onboarding', function() {
     ).resolves.toBe('Default Settings')
     screenshotApp(app, 'almost-done-onboarding')
   })
+
+  it('finishes onboarding and shows dashboard', async function () {
+    await expect(app.client
+      .$('button[data-test-id=letsgo]')
+      .click()
+      .pause(10000)
+      .getText('button')
+    ).resolves.toBe('Run')
+    screenshotApp(app, 'onboarding-success')
+  })
 })
