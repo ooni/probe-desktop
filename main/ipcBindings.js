@@ -2,6 +2,7 @@ const { app } = require('electron')
 const fs = require('fs-extra')
 const { listResults } = require('./actions')
 const { Runner } = require('./utils/ooni/run')
+const onboard = require('./utils/ooni/onboard')
 
 // BUG: The idea *was* to use these constants across main and renderer processes
 // to wire up the IPC channels. But importing these directly from renderer
@@ -79,6 +80,7 @@ const ipcBindingsForMain = (ipcMain) => {
       }
     }
     sender.send('ooniprobe.completed')
+    testRunner = null
   })
 
   ipcMain.on('ooniprobe.stop', async (event) => {
@@ -90,6 +92,10 @@ const ipcBindingsForMain = (ipcMain) => {
       testRunner.kill()
       stopRequested = true
     }
+  })
+
+  ipcMain.handle('config.onboard', async (event, { optout = false }) => {
+    await onboard({ optout })
   })
 }
 

@@ -43,7 +43,12 @@ const availableCategoriesList = [
   'XED'
 ]
 
-const initConfigFile = async () => {
+const defaultOptions = {
+  optout: false
+}
+
+const initConfigFile = async (options) => {
+  const opts = Object.assign(defaultOptions, options)
   const config = {
     '_version': LATEST_CONFIG_VERSION,
     '_informed_consent': true,
@@ -59,8 +64,8 @@ const initConfigFile = async () => {
     },
     'advanced': {
       'use_domain_fronting': false,
-      'send_crash_reports': true,
-      'collect_usage_stats': true,
+      'send_crash_reports': !opts.optout,
+      'collect_usage_stats': !opts.optout,
       'collector_url': '',
       'bouncer_url': 'https://bouncer.ooni.io'
     }
