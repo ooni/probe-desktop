@@ -1,4 +1,15 @@
 # Changelog
+
+## OONI Probe Desktop 3.2.3 [2021-02-12]
+
+probe-cli: 3.5.2
+
+### Changed
+* Change default values to opt-out of crash reporting and usage analytics at the end of onboarding.
+
+### Removed
+* Settings option to share IP address in submissions
+
 ## OONI Probe Desktop 3.2.2 [2021-02-03]
 
 probe-cli: 3.4.0
