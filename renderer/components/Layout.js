@@ -5,6 +5,7 @@ import { MatomoProvider, createInstance } from '@datapunt/matomo-tracker-react'
 
 import GlobalStyle from './globalStyle'
 import MatomoTracker from './MatomoTracker'
+import { init as initSentry } from '../components/initSentry'
 
 let matomoInstance
 
@@ -17,15 +18,18 @@ if (typeof window !== 'undefined') {
   })
 }
 
-const Layout = ({ children, analytics = true }) => (
-  <MatomoProvider value={matomoInstance}>
-    <Provider theme={theme}>
-      <GlobalStyle />
-      {analytics && <MatomoTracker />}
-      {children}
-    </Provider>
-  </MatomoProvider>
-)
+const Layout = ({ children, analytics = true }) => {
+  initSentry()
+  return (
+    <MatomoProvider value={matomoInstance}>
+      <Provider theme={theme}>
+        <GlobalStyle />
+        {analytics && <MatomoTracker />}
+        {children}
+      </Provider>
+    </MatomoProvider>
+  )
+}
 
 Layout.propTypes = {
   children: PropTypes.element.isRequired,

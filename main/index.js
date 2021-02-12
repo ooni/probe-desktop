@@ -15,8 +15,11 @@ const { getConfig, maybeMigrate, initConfigFile } = require('./utils/config')
 const { mainWindow, openAboutWindow, windowURL } = require('./windows')
 const toggleWindow = require('./windows/toggle')
 const { ipcBindingsForMain } = require('./ipcBindings')
+const initializeSentry = require('./utils/sentry')
 
-require('./utils/sentry')
+// Get sentry up and running (if already)
+initializeSentry()
+
 require('debug-to-file')
 require('electron-unhandled')()
 require('electron-debug')({

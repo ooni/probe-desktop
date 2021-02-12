@@ -7,7 +7,8 @@ const MyApp = ({ Component, pageProps, err }) => {
 
   // Workaround for https://github.com/zeit/next.js/issues/8592
   const modifiedPageProps = { ...pageProps, err }
-  initSentry()
+
+  // initSentry()
 
   return (
     <ConfigProvider>
