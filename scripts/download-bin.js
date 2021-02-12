@@ -2,7 +2,8 @@
 
 const path = require('path')
 const { execSync } = require('child_process')
-const { readFileSync, existsSync } = require('fs')
+const { readFileSync, existsSync, ensureDirSync } = require('fs-extra')
+const hasha = require('hasha')
 const pkgJson = require('../package.json')
 
 const probeVersion = pkgJson['probeVersion']
@@ -14,7 +15,7 @@ const dstDir = path.join(appRoot, 'build', 'probe-cli')
 const download = () => {
   let checksums = {}
 
-  execSync(`mkdir -p ${dstDir}`)
+  ensureDirSync(dstDir)
 
   execSync(`curl -#f -L -o ${dstDir}/ooniprobe_checksums.txt ${baseURL}/ooniprobe_checksums.txt`)
   const checksumsData = readFileSync(`${dstDir}/ooniprobe_checksums.txt`)
@@ -37,10 +38,10 @@ const download = () => {
     }
     if (existsSync(`${dstDir}/${tarPath}`) === false) {
       console.log(`Downloading ${downloadURL}`)
-      execSync(`mkdir -p ${dstDir}/${d}`)
+      ensureDirSync(`${dstDir}/${d}`)
       execSync(`curl -#f -L -o ${dstDir}/${tarPath} ${downloadURL}`)
     }
-    const shasum = execSync(`shasum -a 256 ${dstDir}/${tarPath}`).toString().split(' ')[0]
+    const shasum = hasha.fromFileSync(`${dstDir}/${tarPath}`, {algorithm: 'sha256'})
     if (shasum !== checksums[tarPath]) {
       throw Error(`Invalid checksum ${shasum} ${checksums[tarPath]}`)
     }

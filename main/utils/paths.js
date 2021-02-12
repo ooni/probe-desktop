@@ -45,6 +45,9 @@ const getBinaryDirectory = () => {
     if (is.linux) {
       return path.join(getResourcesDirectory(), 'build/probe-cli/linux_amd64')
     }
+    if (is.windows) {
+      return path.join(getResourcesDirectory(), 'build/probe-cli/windows_amd64')
+    }
     throw Error('Only macos and linux development is currently supported')
   }
   return path.join(getResourcesDirectory(), 'bin')
