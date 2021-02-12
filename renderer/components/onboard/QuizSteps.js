@@ -14,8 +14,8 @@ import {
 } from 'ooni-components'
 
 import { Modal, YesButton, NoButton } from '../Modal'
-import { default as tickAnimation } from '../../static/animations/checkMark.json'
-import { default as crossAnimation } from '../../static/animations/crossMark.json'
+import { default as tickAnimation } from '../../public/static/animations/checkMark.json'
+import { default as crossAnimation } from '../../public/static/animations/crossMark.json'
 
 const QuizButton = styled(Box)`
   height: 50px;

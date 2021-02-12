@@ -23,7 +23,7 @@ import dash from './performance/Dash'
 import psiphon from './circumvention/Psiphon'
 import tor from './circumvention/Tor'
 import riseupvpn from './circumvention/RiseupVPN'
-import { default as animation } from '../../static/animations/loadingTests.json'
+import { default as animation } from '../../public/static/animations/loadingTests.json'
 
 const iconSize = 200
 const iconColor = theme.colors.black

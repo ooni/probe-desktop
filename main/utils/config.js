@@ -72,6 +72,9 @@ const initConfigFile = async (options) => {
   }
   await fs.ensureFile(OONI_CONFIG_PATH)
   await fs.writeJson(OONI_CONFIG_PATH, config, {spaces: '  '})
+
+  // Now that a config file is available, let's try to initialize Sentry again
+  require('../utils/sentry')()
 }
 
 // Utility function to set an index of an object based on dot notation.

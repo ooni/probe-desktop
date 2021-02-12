@@ -1,8 +1,10 @@
 /* global require, module */
-//const withProgressBar = require('next-progressbar')
 const withSourceMaps = require('@zeit/next-source-maps')
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true'
+})
 
-module.exports = withSourceMaps({
+module.exports = withBundleAnalyzer(withSourceMaps({
   webpack: (config, options) => {
     config.target = 'electron-renderer'
 
@@ -10,6 +12,14 @@ module.exports = withSourceMaps({
       __dirname: false,
       __filename: false
     }
+
+    config.plugins.push(
+      new options.webpack.DefinePlugin({
+        'process.env.NEXT_IS_SERVER': JSON.stringify(
+          options.isServer.toString()
+        )
+      })
+    )
 
     config.module.rules.push({
       test: /\.(eot|ttf|woff|woff2|otf)$/,
@@ -24,4 +34,4 @@ module.exports = withSourceMaps({
     }
     return config
   },
-})
+}))

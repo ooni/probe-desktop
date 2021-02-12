@@ -69,7 +69,7 @@ const debugGetAllPaths = () => ({
   'binaryDirectory': getBinaryDirectory(),
   'binarySuffix': getBinarySuffix(),
   'homeDir': getHomeDir(),
-  'logFile': log.transports.file.findLogPath(),
+  'logFile': log.transports.file.getFile().path,
 })
 
 module.exports = {

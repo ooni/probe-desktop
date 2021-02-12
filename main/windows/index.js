@@ -1,6 +1,7 @@
 /* global require, module, process */
 
 const electron = require('electron')
+const { resolve } = require('app-root-path')
 
 const isWinOS = process.platform === 'win32'
 
@@ -21,8 +22,11 @@ const mainWindow = () => {
     title: 'OONI Probe',
     titleBarStyle: 'hiddenInset',
     show: false,
+    preload: resolve('main/utils/sentry.js'),
     webPreferences: {
-      nodeIntegration: true
+      contextIsolation: false,
+      nodeIntegration: true,
+      enableRemoteModule: true
     }
   })
 
