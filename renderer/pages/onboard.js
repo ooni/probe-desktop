@@ -2,7 +2,7 @@
 import React, { useCallback } from 'react'
 
 import Router from 'next/router'
-
+import { ipcRenderer } from 'electron'
 import styled from 'styled-components'
 
 import Layout from '../components/Layout'
@@ -14,21 +14,14 @@ const SectionContainer = styled.div`
 
 const Onboard = () => {
 
-  const OnboardingComplete = useCallback(() => {
-    const { remote } = require('electron')
-    return remote.require('./utils/ooni/onboard')()
+  const onGo = useCallback(async () => {
+    await ipcRenderer.invoke('config.onboard', {})
+    Router.push('/dashboard')
   }, [])
 
-  const onGo = useCallback(() => {
-    OnboardingComplete().then(() => {
-      Router.push('/dashboard')
-    })
-  }, [])
-
-  const onChange = useCallback(() => {
-    OnboardingComplete().then(() => {
-      Router.push('/settings')
-    })
+  const onChange = useCallback(async () => {
+    await ipcRenderer.invoke('config.onboard', { optout: true })
+    Router.push('/settings')
   }, [])
 
   return (

@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react'
-import electron from 'electron'
+import PropTypes from 'prop-types'
+import React, { useMemo } from 'react'
 import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
 import {
@@ -38,9 +38,17 @@ const Section = ({ title, children }) => (
   </Flex>
 )
 
+Section.propTypes = {
+  children: PropTypes.node,
+  title: PropTypes.string
+}
+
 const Settings = () => {
   const [config, /*setConfig, loading, err*/] = useConfig()
-  const maxRuntimeEnabled = config['nettests']['websites_enable_max_runtime']
+  const maxRuntimeEnabled = useMemo(() => {
+    return config ? config.nettests.websites_enable_max_runtime : undefined
+  }, [config])
+
   return (
     <Layout>
       <Sidebar>
@@ -75,20 +83,20 @@ const Settings = () => {
             {/* Privacy */}
             <Section title={<FormattedMessage id='Settings.Privacy.Label' />}>
               <BooleanOption
-                label={<FormattedMessage id='Settings.Privacy.CollectAnalytics' />}
-                optionKey='advanced.collect_usage_stats'
-              />
-              <BooleanOption
                 label={<FormattedMessage id='Settings.Sharing.UploadResults' />}
                 optionKey='sharing.upload_results'
               />
               <BooleanOption
-                label={<FormattedMessage id='Settings.Sharing.IncludeNetwork' />}
-                optionKey='sharing.include_asn'
+                label={<FormattedMessage id='Settings.Privacy.CollectAnalytics' />}
+                optionKey='advanced.collect_usage_stats'
               />
               <BooleanOption
-                label={<FormattedMessage id='Settings.Sharing.IncludeIP' />}
-                optionKey='sharing.include_ip'
+                label={<FormattedMessage id='Settings.Privacy.SendCrashReports' />}
+                optionKey='advanced.send_crash_reports'
+              />
+              <BooleanOption
+                label={<FormattedMessage id='Settings.Sharing.IncludeNetwork' />}
+                optionKey='sharing.include_asn'
               />
             </Section>
 

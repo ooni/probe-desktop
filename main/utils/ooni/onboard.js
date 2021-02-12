@@ -1,6 +1,6 @@
 /* global module, require */
 const { initConfigFile } = require('../config')
 
-module.exports = () => {
-  return initConfigFile()
+module.exports = (opts) => {
+  return initConfigFile(opts)
 }
