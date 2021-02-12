@@ -1,11 +1,10 @@
 import * as Sentry from '@sentry/node'
 import { RewriteFrames } from '@sentry/integrations'
-// import { ipcRenderer } from 'electron'
+import { ipcRenderer } from 'electron'
 import log from 'electron-log'
 
 export const init = async () => {
   try {
-    const { ipcRenderer } = require('electron')
     const config = await ipcRenderer.invoke('get-fresh-config')
     if (config && config.hasOwnProperty('advanced')
       && config.advanced.send_crash_reports === true
