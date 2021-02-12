@@ -83,6 +83,10 @@ const Settings = () => {
             {/* Privacy */}
             <Section title={<FormattedMessage id='Settings.Privacy.Label' />}>
               <BooleanOption
+                label={<FormattedMessage id='Settings.Sharing.UploadResults' />}
+                optionKey='sharing.upload_results'
+              />
+              <BooleanOption
                 label={<FormattedMessage id='Settings.Privacy.CollectAnalytics' />}
                 optionKey='advanced.collect_usage_stats'
               />
@@ -91,16 +95,8 @@ const Settings = () => {
                 optionKey='advanced.send_crash_reports'
               />
               <BooleanOption
-                label={<FormattedMessage id='Settings.Sharing.UploadResults' />}
-                optionKey='sharing.upload_results'
-              />
-              <BooleanOption
                 label={<FormattedMessage id='Settings.Sharing.IncludeNetwork' />}
                 optionKey='sharing.include_asn'
-              />
-              <BooleanOption
-                label={<FormattedMessage id='Settings.Sharing.IncludeIP' />}
-                optionKey='sharing.include_ip'
               />
             </Section>
 
