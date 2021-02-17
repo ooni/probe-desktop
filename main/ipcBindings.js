@@ -1,4 +1,4 @@
-const { app, ipcMain, dialog } = require('electron')
+const { app } = require('electron')
 const fs = require('fs-extra')
 const { listResults } = require('./actions')
 const { Runner } = require('./utils/ooni/run')
@@ -98,17 +98,15 @@ const ipcBindingsForMain = (ipcMain) => {
     await onboard({ optout })
   })
 
-  ipcMain.on('autorun.schedule', async (event) => {
-    const { response } = await dialog.showMessageBox(event.sender, {
-      type: "question",
-      title: "Do you want OONI Probe to run automatically every day?",
-      message: "OONI Probe can run tests everyday and ...",
-      buttons: ['No', 'Yes']
+  ipcMain.on('autorun.schedule', async (event, { dialogTitle, dialogMessage, btnYes, btnNo }) => {
+    const scheduleAutorun = require('./utils/autorun/schedule')
+    scheduleAutorun({
+      targetWindow: event.sender,
+      dialogTitle,
+      dialogMessage,
+      btnYes,
+      btnNo
     })
-    if (response === 1) {
-      const task = require('./utils/scheduler/task')
-      task.create()
-    }
   })
 }
 

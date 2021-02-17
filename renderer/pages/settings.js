@@ -17,6 +17,7 @@ import { WebsiteCategoriesSelector } from '../components/settings/WebsiteCategor
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
 import { default as pkgJson } from '../../package.json'
+import SetupAutorun from '../components/settings/SetupAutorun'
 
 const TopBar = styled.div`
   background-color: ${props => props.theme.colors.blue5};
@@ -99,7 +100,10 @@ const Settings = () => {
                 optionKey='sharing.include_asn'
               />
             </Section>
-
+            {/* Privacy */}
+            <Section title={<FormattedMessage id='Settings.Autorun.Label' />}>
+              <SetupAutorun />
+            </Section>
             <Text my={3}>OONI Probe Desktop v{pkgJson.version}</Text>
 
           </Container>
