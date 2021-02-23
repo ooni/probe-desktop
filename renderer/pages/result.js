@@ -1,9 +1,9 @@
 /* global require */
+import React, { useState, useEffect } from 'react'
 import electron from 'electron'
-import React from 'react'
-import Raven from 'raven-js'
-
-import { withRouter } from 'next/router'
+import * as Sentry from '@sentry/node'
+import { useRouter } from 'next/router'
+import Debug from 'debug'
 
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
@@ -11,7 +11,7 @@ import ResultContainer from '../components/result/ResultContainer'
 import ErrorView from '../components/ErrorView'
 import LoadingOverlay from '../components/LoadingOverlay'
 
-const debug = require('debug')('ooniprobe-desktop.renderer.pages.result')
+const debug = Debug('ooniprobe-desktop.renderer.pages.result')
 
 const sortMeasurementRows = (rows) => {
   return rows.sort((a, b) => {
@@ -25,22 +25,14 @@ const sortMeasurementRows = (rows) => {
   })
 }
 
-class Result extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      loading: true,
-      resultsList: {},
-      measurementRows: [],
-      measurementSummary: {},
-      selectedMeasurement: {},
-      error: null
-    }
-    this.loadMeasurements = this.loadMeasurements.bind(this)
-    this.loadData = this.loadData.bind(this)
-  }
+const Result = () => {
+  const { query } = useRouter()
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [measurementRows, setMeasurementRows] = useState([])
+  const [measurementSummary, setMeasurementSummary] = useState({})
 
-  loadMeasurements(resultID) {
+  const loadMeasurements = (resultID) => {
     debug('listing result_id ', resultID)
     const remote = electron.remote
     const { listMeasurements } = remote.require('./actions')
@@ -49,61 +41,40 @@ class Result extends React.Component {
         rows,
         summary
       } = measurementList
-      return this.setState({
-        loading: false,
-        measurementSummary: summary,
-        measurementRows: sortMeasurementRows(rows)
-      })
+
+      setLoading(false)
+      setError(null)
+      setMeasurementSummary(summary)
+      setMeasurementRows(sortMeasurementRows(rows))
+
     }).catch(err => {
-      Raven.captureException(err, {extra: {scope: 'renderer.listMeasurements'}})
-      debug('error triggered', err)
-      return this.setState({
-        error: err
+      Sentry.withScope((scope) => {
+        scope.setTag('context', 'renderer.listMeasurements')
+        Sentry.captureException(err)
       })
+      debug('error triggered', err)
+      setError(err)
     })
   }
 
-  loadData() {
-    const { query } = this.props.router
+  useEffect(() =>{
     debug('load data with', query)
-    return this.loadMeasurements(query.resultID)
-  }
+    return loadMeasurements(query.resultID)
+  }, [query])
 
-  componentDidMount() {
-    this.loadData()
-  }
+  const { resultID } = query
+  debug('loading', resultID)
 
-  componentDidUpdate(prevProps) {
-    if (this.props.router.query !== prevProps.router.query) {
-      this.loadData()
-    }
-  }
+  return (
+    <Layout>
+      <Sidebar>
+        <LoadingOverlay loading={loading} />
+        {!loading && <ResultContainer rows={measurementRows} summary={measurementSummary} />}
+        {error && <ErrorView error={error} />}
+      </Sidebar>
+    </Layout>
+  )
 
-  render() {
-    const {
-      loading,
-      measurementRows,
-      measurementSummary,
-      error
-    } = this.state
-
-    const {
-      resultID
-    } = this.props.router.query
-
-    debug('loading', resultID)
-
-    return (
-      <Layout>
-        <Sidebar>
-          <LoadingOverlay loading={loading} />
-          {!loading && <ResultContainer rows={measurementRows} summary={measurementSummary} />}
-          {error && <ErrorView error={error} />}
-        </Sidebar>
-      </Layout>
-    )
-
-  }
 }
 
-export default withRouter(Result)
+export default Result
