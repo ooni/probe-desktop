@@ -6,6 +6,7 @@ import { MatomoProvider, createInstance } from '@datapunt/matomo-tracker-react'
 import GlobalStyle from './globalStyle'
 import MatomoTracker from './MatomoTracker'
 import { init as initSentry } from '../components/initSentry'
+import AutomaticTestModal from './AutomaticTestModal'
 
 let matomoInstance
 
@@ -26,6 +27,7 @@ const Layout = ({ children, analytics = true }) => {
         <GlobalStyle />
         {analytics && <MatomoTracker />}
         {children}
+        <AutomaticTestModal />
       </Provider>
     </MatomoProvider>
   )
