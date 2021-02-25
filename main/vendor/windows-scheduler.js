@@ -93,7 +93,7 @@ module.exports = {
             resolve(result.toString())
 
           } catch (err) {
-            reject('Task: Create error')
+            reject(`Task: Create error: ${err.message}`)
           }
         })
     })

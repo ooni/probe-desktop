@@ -1,4 +1,5 @@
 const { app } = require('electron')
+const log = require('electron-log')
 const fs = require('fs-extra')
 const { listResults } = require('./actions')
 const { Runner } = require('./utils/ooni/run')
@@ -14,6 +15,7 @@ const lastResultResponse = 'results.last.response'
 
 let testRunner = null
 let stopRequested = false
+let autorunPromptWaiting = false
 
 const ipcBindingsForMain = (ipcMain) => {
 
@@ -98,15 +100,22 @@ const ipcBindingsForMain = (ipcMain) => {
     await onboard({ optout })
   })
 
-  ipcMain.on('autorun.schedule', async (event, { dialogTitle, dialogMessage, btnYes, btnNo }) => {
+  ipcMain.handle('autorun.schedule', async () => {
     const scheduleAutorun = require('./utils/autorun/schedule')
-    scheduleAutorun({
-      targetWindow: event.sender,
-      dialogTitle,
-      dialogMessage,
-      btnYes,
-      btnNo
-    })
+    return await scheduleAutorun()
+  })
+  ipcMain.on('autorun.remind-later', async () => {
+    log.debug('Remind later')
+  })
+
+  ipcMain.on('autorun.waitAndPrompt', async (event) => {
+    if (!autorunPromptWaiting) {
+      autorunPromptWaiting = true
+      setTimeout(() => {
+        event.sender.send('autorun.showPrompt')
+        autorunPromptWaiting = false
+      }, 10000)
+    }
   })
 }
 
