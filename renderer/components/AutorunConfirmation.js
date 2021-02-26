@@ -8,7 +8,7 @@ import { ipcRenderer } from 'electron'
 import { StyledCloseButton } from './ConfirmationModal'
 import FormattedMarkdownMessage from './FormattedMarkdownMessage'
 
-const AutomaticTestingModal = ({ show, onClose }) => {
+const AutorunConfirmation = ({ show, onClose }) => {
   const onConfirm = useCallback(() => {
     ipcRenderer.invoke('autorun.schedule')
     onClose()
@@ -46,9 +46,9 @@ const AutomaticTestingModal = ({ show, onClose }) => {
   )
 }
 
-AutomaticTestingModal.propTypes = {
+AutorunConfirmation.propTypes = {
   onClose: PropTypes.func,
   show: PropTypes.bool.isRequired
 }
 
-export default AutomaticTestingModal
+export default AutorunConfirmation

@@ -99,6 +99,32 @@ module.exports = {
     })
   },
 
+  createXML: function (taskname, taskrun, xmlFile) {
+    return new Promise((resolve, reject) => {
+      try {
+        validate.create_xml_params(taskname, xmlFile)
+      } catch (err) {
+        return reject(err.message)
+      }
+
+      this.get(taskname)
+        .then(() => {
+          return reject('Task: Create error - Taskname already exists')
+        })
+        .catch(() => {
+          let command = ` /Create /TN ${taskname} /XML ${xmlFile}`
+
+          try {
+            const result = exec(command)
+            resolve(result.toString())
+
+          } catch (err) {
+            reject(`Task: Create error: ${err.message}`)
+          }
+        })
+    })
+  },
+
   update: function (taskname, taskrun, schedule, enable) {
 
     return new Promise((resolve, reject) => {
@@ -275,6 +301,16 @@ const validate = {
       error('Invalid combination: endtime require starttime')
     if (parseInt(endtime) < parseInt(starttime))
       error('Invalid combination: endtime before starttime')
+
+    return true
+  },
+
+  create_xml_params: function (taskname) {
+
+    // Mandatory
+    if (!taskname) error('Taskname is required')
+
+    if (!is_valid_taskname(taskname)) error('Invalid taskname')
 
     return true
   },

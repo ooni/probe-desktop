@@ -28,7 +28,7 @@ const Layout = ({ children, analytics = true }) => {
     ipcRenderer.on('autorun.showPrompt', showAutomaticTestPrompt)
 
     // Ask main to wait a bit and notify renderer
-    // ipcRenderer.send('autorun.waitAndPrompt')
+    ipcRenderer.send('autorun.waitAndPrompt')
 
     return () => {
       ipcRenderer.removeAllListeners('autorun.showPrompt')

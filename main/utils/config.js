@@ -44,7 +44,8 @@ const availableCategoriesList = [
 ]
 
 const defaultOptions = {
-  optout: false
+  optout: false,
+  configFilePath: OONI_CONFIG_PATH
 }
 
 const initConfigFile = async (options) => {
@@ -70,8 +71,8 @@ const initConfigFile = async (options) => {
       'bouncer_url': 'https://bouncer.ooni.io'
     }
   }
-  await fs.ensureFile(OONI_CONFIG_PATH)
-  await fs.writeJson(OONI_CONFIG_PATH, config, {spaces: '  '})
+  await fs.ensureFile(opts.configFilePath)
+  await fs.writeJson(opts.configFilePath, config, {spaces: '  '})
 
   // Now that a config file is available, let's try to initialize Sentry again
   require('../utils/sentry')()

@@ -67,11 +67,18 @@ const getHomeDir = () => {
   return path.join(userDataPath, 'ooni_home')
 }
 
+const getAutorunHomeDir = () => {
+  const homeDir = getHomeDir()
+  const autorunSuffix = 'autorun'
+  return `${homeDir}-${autorunSuffix}`
+}
+
 const debugGetAllPaths = () => ({
   'binaryPath': getBinaryPath(),
   'binaryDirectory': getBinaryDirectory(),
   'binarySuffix': getBinarySuffix(),
   'homeDir': getHomeDir(),
+  'autorunHomeDir': getAutorunHomeDir(),
   'logFile': log.transports.file.getFile().path,
 })
 
@@ -80,5 +87,6 @@ module.exports = {
   getBinaryDirectory,
   getBinarySuffix,
   getHomeDir,
+  getAutorunHomeDir,
   debugGetAllPaths
 }
