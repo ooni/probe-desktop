@@ -1,5 +1,3 @@
-/* global require, process, global */
-
 // Packages
 const { app, Menu, ipcMain } = require('electron')
 const prepareNext = require('electron-next')

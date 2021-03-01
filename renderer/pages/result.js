@@ -1,4 +1,3 @@
-/* global require */
 import React, { useState, useEffect } from 'react'
 import electron from 'electron'
 import * as Sentry from '@sentry/node'

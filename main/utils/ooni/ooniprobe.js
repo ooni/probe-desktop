@@ -1,4 +1,3 @@
-/* global require, module */
 const { EventEmitter } = require('events')
 const childProcess = require('child_process')
 const os = require('os')
