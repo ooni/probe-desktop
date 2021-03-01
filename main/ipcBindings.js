@@ -117,6 +117,15 @@ const ipcBindingsForMain = (ipcMain) => {
       }, 10000)
     }
   })
+
+  ipcMain.handle('list-results', async (event, resultID = null) => {
+    const { listResults, listMeasurements } = require('./actions')
+    if (resultID) {
+      return listMeasurements(resultID)
+    } else {
+      return listResults()
+    }
+  })
 }
 
 module.exports = {

@@ -117,12 +117,12 @@ const ResultOverview = ({
       <Container style={{padding: '20px 60px'}}>
 
         <Box pb={4}>
-        <StatsOverview
-          name={groupName}
-          testKeys={testKeys}
-          anomalyCount={anomalyCount}
-          totalCount={totalCount}
-        />
+          <StatsOverview
+            name={groupName}
+            testKeys={testKeys}
+            anomalyCount={anomalyCount}
+            totalCount={totalCount}
+          />
         </Box>
 
         <TwoColumnTable

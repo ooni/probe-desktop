@@ -1,5 +1,5 @@
 /* global require */
-import electron from 'electron'
+import { ipcRenderer } from 'electron'
 import React, { useState, useEffect } from 'react'
 import * as Sentry from '@sentry/node'
 
@@ -17,10 +17,7 @@ const TestResults = () => {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    const remote = electron.remote
-    const { listResults } = remote.require('./actions')
-
-    listResults().then(listedResults => {
+    ipcRenderer.invoke('list-results').then(listedResults => {
       setResults(listedResults)
       setLoading(false)
     }).catch(err => {

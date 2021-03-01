@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import electron from 'electron'
+import { ipcRenderer } from 'electron'
 import * as Sentry from '@sentry/node'
 import { useRouter } from 'next/router'
 import Debug from 'debug'
@@ -33,19 +33,14 @@ const Result = () => {
 
   const loadMeasurements = (resultID) => {
     debug('listing result_id ', resultID)
-    const remote = electron.remote
-    const { listMeasurements } = remote.require('./actions')
-    return listMeasurements(resultID).then(measurementList => {
+    return ipcRenderer.invoke('list-results', resultID).then(measurementList => {
       const {
         rows,
         summary
       } = measurementList
-
-      setLoading(false)
       setError(null)
       setMeasurementSummary(summary)
       setMeasurementRows(sortMeasurementRows(rows))
-
     }).catch(err => {
       Sentry.withScope((scope) => {
         scope.setTag('context', 'renderer.listMeasurements')
@@ -53,12 +48,14 @@ const Result = () => {
       })
       debug('error triggered', err)
       setError(err)
+    }).finally(() => {
+      setLoading(false)
     })
   }
 
   useEffect(() =>{
     debug('load data with', query)
-    return loadMeasurements(query.resultID)
+    loadMeasurements(query.resultID)
   }, [query])
 
   const { resultID } = query
