@@ -171,8 +171,8 @@ app.on('ready', async () => {
 
     installExtension(REACT_DEVELOPER_TOOLS)
       /* eslint-disable no-console */
-      .then(name => console.log(`Added Extension:  ${name}`))
-      .catch(err => console.log('An error occurred: ', err))
+      .then(name => log.info(`Added Extension:  ${name}`))
+      .catch(err => log.error('An error occurred: ', err))
     /* eslint-enable no-console */
   }
 

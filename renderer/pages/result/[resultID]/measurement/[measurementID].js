@@ -13,8 +13,6 @@ import LoadingOverlay from 'components/LoadingOverlay'
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.measurement')
 
 const Measurement = () => {
-
-  console.log(log.transports.ipc.level)
   const { query } = useRouter()
   const [loading, setLoading] = useState(true)
   const [measurement, setMeasurement] = useState(null)
