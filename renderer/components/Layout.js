@@ -27,9 +27,6 @@ const Layout = ({ children, analytics = true }) => {
     // Prepare to show prompt when main process signals back
     ipcRenderer.on('autorun.showPrompt', showAutomaticTestPrompt)
 
-    // Ask main to wait a bit and notify renderer
-    ipcRenderer.send('autorun.maybe-remind')
-
     return () => {
       ipcRenderer.removeAllListeners('autorun.showPrompt')
     }

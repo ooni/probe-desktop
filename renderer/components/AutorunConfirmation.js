@@ -25,20 +25,20 @@ const AutorunConfirmation = ({ show, onClose }) => {
       <StyledCloseButton onClick={onClose}><MdClose size={24} /></StyledCloseButton>
       <Container>
         <Heading h={4} my={3} textAlign='center'>
-          <FormattedMessage id='AutomaticTest.Modal.Title' />
+          <FormattedMessage id='Modal.Autorun.Modal.Title' />
         </Heading>
         <Flex>
-          <Text><FormattedMarkdownMessage id='AutomaticTest.Modal.Text' /></Text>
+          <Text><FormattedMarkdownMessage id='Modal.Autorun.Modal.Text' /></Text>
         </Flex>
         <Flex justifyContent='flex-end' my={3}>
           <Button ml={2} inverted onClick={onCancel}>
-            <strong><FormattedMessage id='AutomaticTest.Modal.Button.No' /></strong>
+            <strong><FormattedMessage id='Modal.Autorun.Modal.Button.No' /></strong>
           </Button>
           <Button ml={2} inverted onClick={onRemindLater}>
-            <strong><FormattedMessage id='AutomaticTest.Modal.Button.RemindLater' /></strong>
+            <strong><FormattedMessage id='Modal.Autorun.Modal.Button.RemindLater' /></strong>
           </Button>
           <Button ml={2} onClick={onConfirm}>
-            <strong><FormattedMessage id='AutomaticTest.Modal.Button.Yes' /></strong>
+            <strong><FormattedMessage id='Modal.Autorun.Modal.Button.Yes' /></strong>
           </Button>
         </Flex>
       </Container>
