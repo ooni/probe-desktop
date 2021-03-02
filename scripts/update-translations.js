@@ -30,5 +30,5 @@ const translationsMap = supportedLanguages
   }, {})
 
 const translationsContent = `window.OONITranslations = ${JSON.stringify(translationsMap)}`
-writeFileSync('./renderer/static/translations.js', translationsContent)
-console.log('> Wrote translations to: ./renderer/static/translations.js')
+writeFileSync('./renderer/public/static/translations.js', translationsContent)
+console.log('> Wrote translations to: ./renderer/public/static/translations.js')
