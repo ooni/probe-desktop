@@ -14,12 +14,16 @@ const { mainWindow, openAboutWindow, windowURL } = require('./windows')
 const toggleWindow = require('./windows/toggle')
 const { ipcBindingsForMain } = require('./ipcBindings')
 const initializeSentry = require('./utils/sentry')
+const store = require('./utils/store')
 
 log.transports.console.level = 'info'
 log.transports.file.level = 'debug'
 
 // Get sentry up and running (if already)
 initializeSentry()
+
+// initialize store in app.getPath('userData')/settings.json
+store.init()
 
 require('debug-to-file')
 require('electron-unhandled')()

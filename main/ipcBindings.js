@@ -4,6 +4,7 @@ const fs = require('fs-extra')
 const { listResults } = require('./actions')
 const { Runner } = require('./utils/ooni/run')
 const onboard = require('./utils/ooni/onboard')
+const store = require('./utils/store')
 
 // BUG: The idea *was* to use these constants across main and renderer processes
 // to wire up the IPC channels. But importing these directly from renderer
@@ -34,7 +35,7 @@ const ipcBindingsForMain = (ipcMain) => {
     const { testGroupName } = data
     let lastTested = null
     const results = await listResults()
-    if (results.hasOwnProperty('rows') && results.rows.length > 0) {
+    if ('rows' in results && results.rows.length > 0) {
       const filteredRows = results.rows.filter(row =>
         testGroupName !== 'all' ? row.name === testGroupName : true
       )
@@ -101,14 +102,26 @@ const ipcBindingsForMain = (ipcMain) => {
   })
 
   ipcMain.handle('autorun.schedule', async () => {
+    store.set('autorun.remind', false)
+    store.set('autorun.enabled', true)
     const scheduleAutorun = require('./utils/autorun/schedule')
-    return await scheduleAutorun()
-  })
-  ipcMain.on('autorun.remind-later', async () => {
-    log.debug('Remind later')
+    await scheduleAutorun()
+    log.debug('Autorun cancelled.')
   })
 
-  ipcMain.on('autorun.waitAndPrompt', async (event) => {
+  ipcMain.on('autorun.cancel', async () => {
+    store.set('autorun.remind', false)
+    store.set('autorun.enabled', false)
+    log.debug('Autorun cancelled.')
+  })
+
+  ipcMain.on('autorun.maybe-remind', async (event) => {
+    // check if autorun is already cancelled or enabled in preferences, then skip the reminder
+    const autorunPrefs = store.get('autorun')
+    if (autorunPrefs.remind === false || autorunPrefs.enabled === true) {
+      log.info('Skip reminding about autorun because it is already already enabled or explicitly cancelled.')
+      return
+    }
     if (!autorunPromptWaiting) {
       autorunPromptWaiting = true
       setTimeout(() => {
@@ -125,6 +138,14 @@ const ipcBindingsForMain = (ipcMain) => {
     } else {
       return listResults()
     }
+  })
+
+  ipcMain.handle('prefs.save', async (event, { key, value }) => {
+    return store.set(key, value)
+  })
+
+  ipcMain.handle('prefs.get', (event, key) => {
+    return store.get(key)
   })
 }
 

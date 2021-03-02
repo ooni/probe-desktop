@@ -20,9 +20,14 @@ const Measurement = () => {
   const [measurement, setMeasurement] = useState(null)
   const [error, setError] = useState(null)
 
+  useEffect(() => {
+    // Upon mount, wait a bit and show prompt about enabling autorun
+    ipcRenderer.send('autorun.maybe-remind')
+  }, [])
+
   const loadMeasurement = useCallback((resultID, measurementID) => {
     debug('listing result_id ', resultID)
-    return ipcRenderer.invoke('list-results', resultID).then(measurementList => {
+    ipcRenderer.invoke('list-results', resultID).then(measurementList => {
       const {
         rows
       } = measurementList

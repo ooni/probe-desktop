@@ -12,14 +12,14 @@ const AutorunConfirmation = ({ show, onClose }) => {
   const onConfirm = useCallback(() => {
     ipcRenderer.invoke('autorun.schedule')
     onClose()
-  }, [])
+  }, [onClose])
   const onRemindLater = useCallback(() => {
-    ipcRenderer.send('autorun.remind-later')
     onClose()
-  }, [])
+  }, [onClose])
   const onCancel = useCallback(() => {
+    ipcRenderer.send('autorun.cancel')
     onClose()
-  }, [])
+  }, [onClose])
   return (
     <Modal width='60%' show={show}>
       <StyledCloseButton onClick={onClose}><MdClose size={24} /></StyledCloseButton>
