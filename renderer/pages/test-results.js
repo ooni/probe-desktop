@@ -20,6 +20,8 @@ const TestResults = () => {
     ipcRenderer.invoke('list-results').then(listedResults => {
       setResults(listedResults)
       setLoading(false)
+      // Upon mount, wait a bit and show prompt about enabling autorun
+      ipcRenderer.send('autorun.maybe-remind')
     }).catch(err => {
       Sentry.captureException(err, {extra: {scope: 'renderer.listResults'}})
       debug('error triggered', err)
