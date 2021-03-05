@@ -37,7 +37,7 @@ const scheduleAutorun = () => {
     }).catch(() => {
       log.debug('Task not found. Might not have been scheduled before.')
     }).finally(() => {
-      macScheduler.create(taskId, cmdToRun).then(() => {
+      scheduler.create(taskId, cmdToRun).then(() => {
         log.debug('Task created')
         resolve()
       }).catch((e) => {

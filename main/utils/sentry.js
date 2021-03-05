@@ -20,7 +20,7 @@ const initializeSentry = async () => {
         debug: isDev,
         appName: name
       })
-      log.info('Sentry initialized in main.')
+      log.debug('Sentry initialized in main.')
     } else {
       log.debug('Crash reporting not enabled in config. Sentry not initialized in main.')
     }

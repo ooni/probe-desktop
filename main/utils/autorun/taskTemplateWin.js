@@ -17,7 +17,7 @@ const getRandomStartBoundary = () => {
   return now.toISOString().split('.')[0]
 }
 
-module.exports = ({ taskName, taskCmd, OONI_HOME_autorun }) =>
+const taskXMLTemplate = ({ taskName, taskBatchFile }) =>
 // eslint-disable-next-line indent
 `<?xml version="1.0" encoding="UTF-16"?>
 <Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
@@ -47,7 +47,7 @@ module.exports = ({ taskName, taskCmd, OONI_HOME_autorun }) =>
     <StartWhenAvailable>true</StartWhenAvailable>
     <RunOnlyIfNetworkAvailable>true</RunOnlyIfNetworkAvailable>
     <IdleSettings>
-      <StopOnIdleEnd>true</StopOnIdleEnd>
+      <StopOnIdleEnd>false</StopOnIdleEnd>
       <RestartOnIdle>false</RestartOnIdle>
     </IdleSettings>
     <AllowStartOnDemand>true</AllowStartOnDemand>
@@ -60,9 +60,19 @@ module.exports = ({ taskName, taskCmd, OONI_HOME_autorun }) =>
   </Settings>
   <Actions Context="Author">
     <Exec>
-      <Command>cmd</Command>
-      <Arguments>/c set "OONI_HOME=${OONI_HOME_autorun}" &amp; ${taskCmd}</Arguments>
+      <Command>${taskBatchFile}</Command>
     </Exec>
   </Actions>
 </Task>
 `
+
+const taskBatchTemplate = ({ taskCmd, OONI_HOME_autorun }) => `
+@echo off
+set OONI_HOME=${OONI_HOME_autorun}
+${taskCmd}
+`
+
+module.exports = {
+  taskXMLTemplate,
+  taskBatchTemplate
+}

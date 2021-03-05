@@ -100,10 +100,10 @@ module.exports = {
     })
   },
 
-  create: function (taskname, taskrun, xmlFile) {
+  create: function (taskname, taskrun) {
     return new Promise((resolve, reject) => {
       try {
-        validate.create_xml_params(taskname, xmlFile)
+        validate.create_xml_params(taskname)
       } catch (err) {
         return reject(err.message)
       }
@@ -115,26 +115,38 @@ module.exports = {
         .catch(async () => {
           const { app } = require('electron')
           const { join } = require('path')
-          const { getAutorunHomeDir } = require('../paths')
+          const { getBinaryDirectory, getAutorunHomeDir } = require('../paths')
           const { writeFile, unlink } = require('fs').promises
-          const windowsTemplate = require('./taskTemplateWin')
-          const taskXmlStr = windowsTemplate({
-            taskName: taskname,
-            taskCmd: taskrun,
-            OONI_HOME_autorun: getAutorunHomeDir()
-          })
+          const { taskXMLTemplate, taskBatchTemplate } = require('./taskTemplateWin')
+
+          const taskBatchFile = join(getBinaryDirectory(), 'ooniprobe-unattended.bat')
           const taskXmlFile = join(app.getPath('temp'), 'ooniprobe-autorun-task.xml')
-          try {
-            await writeFile(taskXmlFile, taskXmlStr)
-            log.debug(`Autorun task XML file created: ${taskXmlFile}`)
-          } catch (err) {
-            reject(err.message)
-          }
-          let command = ` /Create /TN ${taskname} /XML ${xmlFile}`
 
           try {
+            // Create batch file to run ooniprobe run unattended
+            const batchFileStr = taskBatchTemplate({
+              OONI_HOME_autorun: getAutorunHomeDir(),
+              taskCmd: taskrun
+            })
+            await writeFile(taskBatchFile, batchFileStr)
+            log.debug(`Autorun task batch file created: ${taskBatchFile}`)
+
+            // Generate xml file to schedule the task to run the batch file
+            const taskXmlStr = taskXMLTemplate({
+              taskName: taskname,
+              taskBatchFile: taskBatchFile,
+              OONI_HOME_autorun: getAutorunHomeDir()
+            })
+
+            await writeFile(taskXmlFile, taskXmlStr)
+            log.debug(`Autorun task XML file created: ${taskXmlFile}`)
+
+            let command = ` /Create /TN ${taskname} /XML ${taskXmlFile}`
+
             const result = exec(command)
+
             resolve(result.toString())
+
           } catch (err) {
             reject(`Task: Create error: ${err.message}`)
           } finally {
