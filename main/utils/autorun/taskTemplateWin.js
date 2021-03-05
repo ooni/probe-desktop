@@ -1,15 +1,10 @@
 const { is } = require('electron-util')
 
-const getRandomStartBoundary = () => {
+const getStartBoundary = () => {
   const now = new Date()
-  if (is.development) {
-    // In one minute
-    now.setMinutes(now.getMinutes() + 1)
-  } else {
-    // Choose a random hour between 9:00 and 18:00 on the next date
-    now.setDate(now.getDate() + 1)
-    now.setHours(Math.ceil(Math.random() * 9) + 9, 0, 0)
-  }
+  // In one minute
+  now.setMinutes(now.getMinutes() + 1)
+
   // use Date.toISOString() and account for timezone offset
   // StartBoundary format - YYYY-MM-DDTHH:mm:ss
   // Date.toISOString()   - YYYY-MM-DDTHH:mm:ss.sssZ
@@ -26,7 +21,7 @@ const taskXMLTemplate = ({ taskName, taskBatchFile }) =>
   </RegistrationInfo>
   <Triggers>
     <CalendarTrigger>
-      <StartBoundary>${getRandomStartBoundary()}</StartBoundary>
+      <StartBoundary>${getStartBoundary()}</StartBoundary>
       <Enabled>true</Enabled>
       <ScheduleByDay>
         <DaysInterval>1</DaysInterval>
