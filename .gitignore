@@ -17,6 +17,7 @@ npm-debug.log
 
 # development
 /ooni_home
+/ooni_home_autorun
 cert.pem
 
 # secrets

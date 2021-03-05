@@ -25,6 +25,7 @@ SOFTWARE.
 // Based on: https://github.com/AndreaFranchini/windows-scheduler/blob/master/task.js
 
 const { execSync } = require('child_process')
+const log = require('electron-log')
 
 function exec(command) {
   return execSync(`cmd /C schtasks ${command}`)
@@ -60,7 +61,7 @@ module.exports = {
     })
   },
 
-  create: function (taskname, taskrun, schedule) {
+  createWithoutXML: function (taskname, taskrun, schedule) {
 
     return new Promise((resolve, reject) => {
 
@@ -99,7 +100,7 @@ module.exports = {
     })
   },
 
-  createXML: function (taskname, taskrun, xmlFile) {
+  create: function (taskname, taskrun, xmlFile) {
     return new Promise((resolve, reject) => {
       try {
         validate.create_xml_params(taskname, xmlFile)
@@ -111,15 +112,34 @@ module.exports = {
         .then(() => {
           return reject('Task: Create error - Taskname already exists')
         })
-        .catch(() => {
+        .catch(async () => {
+          const { app } = require('electron')
+          const { join } = require('path')
+          const { getAutorunHomeDir } = require('../paths')
+          const { writeFile, unlink } = require('fs').promises
+          const windowsTemplate = require('./taskTemplateWin')
+          const taskXmlStr = windowsTemplate({
+            taskName: taskname,
+            taskCmd: taskrun,
+            OONI_HOME_autorun: getAutorunHomeDir()
+          })
+          const taskXmlFile = join(app.getPath('temp'), 'ooniprobe-autorun-task.xml')
+          try {
+            await writeFile(taskXmlFile, taskXmlStr)
+            log.debug(`Autorun task XML file created: ${taskXmlFile}`)
+          } catch (err) {
+            reject(err.message)
+          }
           let command = ` /Create /TN ${taskname} /XML ${xmlFile}`
 
           try {
             const result = exec(command)
             resolve(result.toString())
-
           } catch (err) {
             reject(`Task: Create error: ${err.message}`)
+          } finally {
+            unlink(taskXmlFile)
+            log.debug('Autorun task XML file deleted')
           }
         })
     })

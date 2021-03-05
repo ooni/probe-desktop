@@ -28,7 +28,7 @@ const AutorunConfirmation = ({ show, onClose }) => {
           <FormattedMessage id='Modal.Autorun.Modal.Title' />
         </Heading>
         <Flex>
-          <Text><FormattedMarkdownMessage id='Modal.Autorun.Modal.Text' /></Text>
+          <FormattedMarkdownMessage id='Modal.Autorun.Modal.Text' />
         </Flex>
         <Flex justifyContent='flex-end' my={3}>
           <Button ml={2} inverted onClick={onCancel}>

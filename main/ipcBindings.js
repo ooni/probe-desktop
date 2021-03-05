@@ -102,11 +102,15 @@ const ipcBindingsForMain = (ipcMain) => {
   })
 
   ipcMain.handle('autorun.schedule', async () => {
-    store.set('autorun.remind', false)
-    store.set('autorun.enabled', true)
-    const scheduleAutorun = require('./utils/autorun/schedule')
-    await scheduleAutorun()
-    log.debug('Autorun cancelled.')
+    try {
+      const { scheduleAutorun } = require('./utils/autorun/schedule')
+      await scheduleAutorun()
+      log.debug('Autorun scheduled.')
+      store.set('autorun.remind', false)
+      store.set('autorun.enabled', true)
+    } catch(e) {
+      log.error(`Autorun could not be scheduled. ${e}`)
+    }
   })
 
   ipcMain.on('autorun.cancel', async () => {

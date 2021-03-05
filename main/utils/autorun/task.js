@@ -1,49 +1,36 @@
-const { join } = require('path')
 const log = require('electron-log')
-const { app } = require('electron')
-const { getBinaryPath, getAutorunHomeDir } = require('../paths')
-const windowsScheduler = require('../../vendor/windows-scheduler')
-
+const { getBinaryPath } = require('../paths')
+const winScheduler = require('./windows-scheduler')
+const macScheduler = require('./mac-scheduler')
 const taskId = 'org.ooni.probe-desktop' // Maybe use GUID
 const pathToProbeCLI = getBinaryPath()
-const cmdToRun = `${pathToProbeCLI} run all`
+const cmdToRun = `${pathToProbeCLI} run unattended`
+
+const platforms = {
+  win32: winScheduler,
+  darwin: macScheduler
+}
+
+const scheduler = platforms[process.platform]
 
 // These task managment methods should be made platform-agnostic
 // by either using prototypes or some similar pattern
 const create = () => {
-  windowsScheduler.get(taskId).then(() => {
+  scheduler.get(taskId).then(() => {
     log.debug('Task found.')
-    windowsScheduler.delete(taskId).then(() => {
+    scheduler.delete(taskId).then(() => {
       log.debug('Task deleted.')
     }).catch(e => {
-      log.debug(`Task not deleted: ${e.message}`)
+      throw Error(`Task not deleted: ${e.message}`)
     })
   }).catch(() => {
-    log.debug('Task not found.')
+    log.debug('Task not found. Might not have been scheduled before.')
   }).finally(() => {
-    const { writeFile, unlink } = require('fs').promises
-    const windowsTemplate = require('./taskWindowsTemplate')
-    const taskXmlStr = windowsTemplate({
-      taskName: taskId,
-      taskCmd: cmdToRun,
-      OONI_HOME_autorun: getAutorunHomeDir()
+    macScheduler.create(taskId, cmdToRun).then(() => {
+      log.debug('Task created')
+    }).catch((e) => {
+      throw Error(`Task creation failed: ${e}`)
     })
-    const taskXmlFile = join(app.getPath('temp'), 'ooniprobe-autorun-task.xml')
-    try {
-      writeFile(taskXmlFile, taskXmlStr).then(() => {
-        log.debug(`Autorun task XML file created: ${taskXmlFile}`)
-        windowsScheduler.createXML(taskId, cmdToRun, taskXmlFile).then(() => {
-          log.debug('Task created')
-        }).catch((e) => {
-          log.debug(`Task creation failed: ${e}`)
-        }).finally(() => {
-          unlink(taskXmlFile)
-          log.debug('Autorun task XML file deleted')
-        })
-      })
-    } catch (e) {
-      log.debug(`Failed to create autorun task XML file: ${e.message}`)
-    }
   })
 }
 

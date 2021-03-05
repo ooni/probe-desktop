@@ -8,6 +8,8 @@ const isDev = require('electron-is-dev')
 const fixPath = require('fix-path')
 const Sentry = require('@sentry/electron')
 const log = require('electron-log')
+log.transports.console.level = isDev ? 'debug' : 'info'
+log.transports.file.level = 'debug'
 
 const { getConfig, maybeMigrate, initConfigFile } = require('./utils/config')
 const { mainWindow, openAboutWindow, windowURL } = require('./windows')
@@ -15,9 +17,6 @@ const toggleWindow = require('./windows/toggle')
 const { ipcBindingsForMain } = require('./ipcBindings')
 const initializeSentry = require('./utils/sentry')
 const store = require('./utils/store')
-
-log.transports.console.level = 'info'
-log.transports.file.level = 'debug'
 
 // Get sentry up and running (if already)
 initializeSentry()

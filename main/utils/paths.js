@@ -70,7 +70,7 @@ const getHomeDir = () => {
 const getAutorunHomeDir = () => {
   const homeDir = getHomeDir()
   const autorunSuffix = 'autorun'
-  return `${homeDir}-${autorunSuffix}`
+  return `${homeDir}_${autorunSuffix}`
 }
 
 const debugGetAllPaths = () => ({

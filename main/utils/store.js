@@ -36,7 +36,12 @@ const init = () => {
 }
 
 const get = (key) => {
-  return store.get(key)
+  try {
+    return store.get(key)
+  } catch (e) {
+    log.error(`Failed to get ${key} from store: ${e.message}`)
+    return null
+  }
 }
 
 const set = (key, value) => {
