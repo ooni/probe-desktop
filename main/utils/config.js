@@ -1,4 +1,3 @@
-/* global require, module */
 const path = require('path')
 const fs = require('fs-extra')
 const log = require('electron-log')
@@ -92,26 +91,33 @@ const setIndex = (obj, is, value) => {
   }
 }
 
+const getConfigValue = (config, optionKey) => optionKey.split('.').reduce((o,i) => o[i], config)
+
 const setConfig = async (optionKey, currentValue, newValue) => {
   const config = await getConfig()
   // XXX this is not really atomic. We should ensure atomicity by proxying this
   // via probe-cli.
-  const currentOldValue = optionKey.split('.').reduce((o,i) => o[i], config)
+  const currentOldValue = getConfigValue(config, optionKey)
   if (JSON.stringify(currentOldValue) !== JSON.stringify(currentValue)) {
-    log.info('setConfig: config file path', OONI_CONFIG_PATH)
     log.error('setConfig: inconsistent config file', currentOldValue, currentValue)
     throw Error('inconsistent config file')
   }
   setIndex(config, optionKey, newValue)
   await fs.writeJson(OONI_CONFIG_PATH, config, {spaces: '  '})
+  log.debug(`setConfig: wrote ${optionKey}: ${newValue} to config file ${OONI_CONFIG_PATH}`)
   return config
 }
 
-const getConfig = async () => {
+const getConfig = async (key = null) => {
   try {
     const config = await fs.readJson(OONI_CONFIG_PATH)
-    return config
+    if (key === null) {
+      return config
+    } else {
+      return getConfigValue(config, key)
+    }
   } catch (err) {
+    log.error(err)
     return null
   }
 }

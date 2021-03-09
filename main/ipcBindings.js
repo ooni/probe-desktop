@@ -5,6 +5,7 @@ const { listResults } = require('./actions')
 const { Runner } = require('./utils/ooni/run')
 const onboard = require('./utils/ooni/onboard')
 const store = require('./utils/store')
+const { getConfig, setConfig } = require('./utils/config')
 
 // BUG: The idea *was* to use these constants across main and renderer processes
 // to wire up the IPC channels. But importing these directly from renderer
@@ -144,13 +145,40 @@ const ipcBindingsForMain = (ipcMain) => {
     }
   })
 
-  ipcMain.handle('prefs.save', async (event, { key, value }) => {
-    return store.set(key, value)
+  ipcMain.on('prefs.save', (event, { key, value }) => {
+    try {
+      store.set(key, value)
+      event.returnValue = true
+    } catch (e) {
+      log.error(e)
+      event.returnValue = e.message
+    }
   })
 
-  ipcMain.handle('prefs.get', (event, key) => {
-    return store.get(key)
+  ipcMain.on('prefs.get', (event, key) => {
+    try {
+      const value = store.get(key)
+      log.verbose(`prefs.get ${key}: ${value}`)
+      event.returnValue = value
+    } catch(e) {
+      log.error(e)
+      event.returnValue = undefined
+    }
   })
+
+  ipcMain.handle('config.get', async (event, key) => {
+    const value = await getConfig(key)
+    log.verbose(`ipcMain: config.get ${key}: ${value}`)
+    return value
+  })
+
+  ipcMain.handle('config.set', async (event, {key, value}) => {
+    const config = await getConfig()
+    const currentValue = key.split('.').reduce((o,i) => o[i], config)
+    const newConfig = await setConfig(key, currentValue, value)
+    return newConfig
+  })
+
 }
 
 module.exports = {

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { useState, useContext, useEffect, useCallback } from 'react'
 import { remote, ipcRenderer } from 'electron'
 
@@ -28,6 +29,10 @@ export const ConfigProvider = (props) => {
   )
 }
 
+ConfigProvider.propTypes = {
+  children: PropTypes.node
+}
+
 export const getConfigValue = (config, optionKey) => optionKey.split('.').reduce((o,i) => o[i], config)
 
 export const useConfig = (key = null) => {
@@ -56,7 +61,7 @@ export const useConfig = (key = null) => {
       })
       .catch(setErr)
       .finally(() => setPending(false))
-  }, [setConfigContext, currentValue])
+  }, [setConfigContext, currentValue, key])
 
   return [
     currentValue,

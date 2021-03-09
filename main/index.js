@@ -18,6 +18,8 @@ const { ipcBindingsForMain } = require('./ipcBindings')
 const initializeSentry = require('./utils/sentry')
 const store = require('./utils/store')
 
+log.info(`Initializing ${app.name} in ${isDev? 'development': 'production'} mode.`)
+
 // Get sentry up and running (if already)
 initializeSentry()
 
@@ -35,13 +37,10 @@ require('electron-debug')({
 
 autoUpdater.logger = log
 autoUpdater.logger.transports.file.level = 'info'
-log.info('App starting...')
+
 
 // To prevent garbage collection of the windows
 let windows = null
-
-// Set the application name
-app.name = 'OONI Probe'
 
 app.allowRendererProcessReuse = true
 

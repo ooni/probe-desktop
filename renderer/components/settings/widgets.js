@@ -5,11 +5,13 @@ import {
   Label,
   Checkbox,
   Input,
-  Button
 } from 'ooni-components'
 import styled from 'styled-components'
+import log from 'electron-log'
 
 import { useConfig } from './useConfig'
+import { useStore } from './useStore'
+import { FormattedMessage } from 'react-intl'
 
 const StyledLabel = styled(Label)`
   color: ${props => props.disabled ? props.theme.colors.gray6 : 'inherited'};
@@ -112,4 +114,38 @@ export const ListOption = ({ optionKey, children }) => {
     }
   }, [list, setListValue])
   return children(JSON.stringify(list), handleChange)
+}
+
+// This widget is wired to the pesistent storage in main/utils/store.js
+export const BooleanInStore = ({ label, optionKey, disabled = false, ...rest }) => {
+  const [checked, setConfigValue, err] = useStore(optionKey)
+  err && log.error('Error in BooleanInStore: ', err)
+
+  const handleChange = useCallback((event) => {
+    const target = event.target
+    const newValue = Boolean(target.type === 'checkbox' ? target.checked : target.value)
+
+    setConfigValue(newValue)
+  }, [setConfigValue])
+
+  return (
+    <StyledLabel my={2} disabled={disabled}>
+      <Checkbox
+        checked={checked}
+        onChange={handleChange}
+        disabled={disabled}
+        {...rest}
+      />
+      {label}
+    </StyledLabel>
+  )
+}
+
+BooleanInStore.propTypes = {
+  disabled: PropTypes.bool,
+  label: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.instanceOf(FormattedMessage)
+  ]),
+  optionKey: PropTypes.string
 }

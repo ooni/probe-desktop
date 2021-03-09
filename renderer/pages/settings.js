@@ -11,13 +11,12 @@ import {
 } from 'ooni-components'
 
 import { useConfig } from '../components/settings/useConfig'
-import { BooleanOption, NumberOption } from '../components/settings/widgets'
+import { BooleanOption, NumberOption, BooleanInStore } from '../components/settings/widgets'
 import { LanguageSelector } from '../components/settings/LanguageSelector'
 import { WebsiteCategoriesSelector } from '../components/settings/WebsiteCategoriesSelector'
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
 import { default as pkgJson } from '../../package.json'
-import SetupAutorun from '../components/settings/SetupAutorun'
 
 const TopBar = styled.div`
   background-color: ${props => props.theme.colors.blue5};
@@ -101,8 +100,12 @@ const Settings = () => {
               />
             </Section>
             {/* Privacy */}
-            <Section title={<FormattedMessage id='Settings.Autorun.Label' />}>
-              <SetupAutorun />
+            <Section title={<FormattedMessage id='Settings.AutomatedTesting.Label' />}>
+              <BooleanInStore
+                label={<FormattedMessage id='Settings.AutomatedTesting.RunAutomatically' />}
+                optionKey='autorun.enabled'
+              />
+              <Text as='small'><em><FormattedMessage id='Settings.AutomatedTesting.RunAutomatically.Footer' /></em></Text>
             </Section>
             <Text my={3}>OONI Probe Desktop v{pkgJson.version}</Text>
 
