@@ -5,7 +5,7 @@ import log from 'electron-log'
 
 export const init = async () => {
   try {
-    const sendCrashReports = await ipcRenderer.invoke('config.get', 'advanced.send_crash_report')
+    const sendCrashReports = await ipcRenderer.invoke('config.get', 'advanced.send_crash_reports')
     if (sendCrashReports) {
       log.debug('Initializing Sentry in renderer...')
       if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
