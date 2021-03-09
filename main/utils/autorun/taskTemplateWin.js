@@ -12,7 +12,9 @@ const getStartBoundary = () => {
   return now.toISOString().split('.')[0]
 }
 
-const taskXMLTemplate = ({ taskName, taskBatchFile }) =>
+// This file describes the properties of the background task that runs ooniprobe.exe
+// Refer: https://docs.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-schema
+const taskXMLTemplate = ({ taskName, taskRun, cwd }) =>
 // eslint-disable-next-line indent
 `<?xml version="1.0" encoding="UTF-16"?>
 <Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
@@ -55,19 +57,32 @@ const taskXMLTemplate = ({ taskName, taskBatchFile }) =>
   </Settings>
   <Actions Context="Author">
     <Exec>
-      <Command>${taskBatchFile}</Command>
-    </Exec>
+      <Command>wscript.exe</Command>
+      <Arguments>${taskRun}</Arguments>
+      <WorkingDirectory>${cwd}</WorkingDirectory>
+  </Exec>
   </Actions>
 </Task>
 `
 
-const taskBatchTemplate = ({ taskCmd, OONI_HOME_autorun }) => `
-@echo off
+// This batch file is needed to use a different OONI_HOME for autorun
+const taskBatchTemplate = ({ taskCmd, OONI_HOME_autorun }) =>
+`@echo off
 set OONI_HOME=${OONI_HOME_autorun}
 ${taskCmd}
 `
 
+// This VBScript launches the batch file without opening a cmd.exe window
+// Based on https://superuser.com/a/198530
+const taskVBScriptTemplate = ({ taskBatchFileName = 'ooniprobe-unattended.bat' }) =>
+`Dim WinScriptHost
+Set WinScriptHost = CreateObject ("Wscript.Shell")
+WinScriptHost.Run Chr(34) & "${taskBatchFileName}" & Chr(34), 0
+Set WinScriptHost = Nothing
+`
+
 module.exports = {
   taskXMLTemplate,
-  taskBatchTemplate
+  taskBatchTemplate,
+  taskVBScriptTemplate
 }
