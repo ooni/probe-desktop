@@ -117,16 +117,17 @@ export const ListOption = ({ optionKey, children }) => {
 }
 
 // This widget is wired to the pesistent storage in main/utils/store.js
-export const BooleanInStore = ({ label, optionKey, disabled = false, ...rest }) => {
+export const BooleanInStore = ({ label, optionKey, disabled = false, onChange, ...rest }) => {
   const [checked, setConfigValue, err] = useStore(optionKey)
   err && log.error('Error in BooleanInStore: ', err)
 
   const handleChange = useCallback((event) => {
     const target = event.target
     const newValue = Boolean(target.type === 'checkbox' ? target.checked : target.value)
-
+    const changed = onChange(event)
+    console.log(`changed? ${changed}`)
     setConfigValue(newValue)
-  }, [setConfigValue])
+  }, [onChange, setConfigValue])
 
   return (
     <StyledLabel my={2} disabled={disabled}>

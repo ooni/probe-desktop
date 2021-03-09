@@ -34,8 +34,8 @@ const scheduleAutorun = () => {
       }).catch(e => {
         reject(`Task not deleted: ${e.message}`)
       })
-    }).catch(() => {
-      log.debug('Task not found. Might not have been scheduled before.')
+    }).catch((e) => {
+      log.debug(`Task not found. Might not have been scheduled before: ${e}`)
     }).finally(() => {
       scheduler.create(taskId, cmdToRun).then(() => {
         log.debug('Task created')
@@ -47,11 +47,24 @@ const scheduleAutorun = () => {
   })
 }
 
+const disableAutorun = () => {
+  return new Promise((resolve, reject) => {
+    scheduler.delete(taskId).then(() => {
+      log.debug('Task deleted')
+      resolve()
+    }).catch((e) => {
+      log.error(e)
+      reject(`Failed to disable autorun: ${e}`)
+    })
+  })
+}
+
 // TODO
 // checkIfAlreadyScheduled
 // disable()
 // UnSchedule() ?
 
 module.exports = {
-  scheduleAutorun
+  scheduleAutorun,
+  disableAutorun
 }

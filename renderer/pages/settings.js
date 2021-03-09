@@ -9,6 +9,7 @@ import {
   Container,
   Text,
 } from 'ooni-components'
+import { ipcRenderer } from 'electron'
 
 import { useConfig } from '../components/settings/useConfig'
 import { BooleanOption, NumberOption, BooleanInStore } from '../components/settings/widgets'
@@ -104,6 +105,16 @@ const Settings = () => {
               <BooleanInStore
                 label={<FormattedMessage id='Settings.AutomatedTesting.RunAutomatically' />}
                 optionKey='autorun.enabled'
+                onChange={(e) => {
+                  const updateAutorun = async () => {
+                    if (e.target.checked) {
+                      return await ipcRenderer.invoke('autorun.schedule')
+                    } else {
+                      return await ipcRenderer.invoke('autorun.disable')
+                    }
+                  }
+                  return updateAutorun()
+                }}
               />
               <Text as='small'><em><FormattedMessage id='Settings.AutomatedTesting.RunAutomatically.Footer' /></em></Text>
             </Section>

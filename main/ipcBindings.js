@@ -1,6 +1,8 @@
 const { app } = require('electron')
 const log = require('electron-log')
 const fs = require('fs-extra')
+const { is } = require('electron-util')
+
 const { listResults } = require('./actions')
 const { Runner } = require('./utils/ooni/run')
 const onboard = require('./utils/ooni/onboard')
@@ -114,6 +116,20 @@ const ipcBindingsForMain = (ipcMain) => {
     }
   })
 
+  ipcMain.handle('autorun.disable', async () => {
+    try {
+      const { disableAutorun } = require('./utils/autorun/schedule')
+      await disableAutorun()
+      log.debug('Autorun disabled.')
+      store.set('autorun.remind', false)
+      store.set('autorun.enabled', false)
+      return true
+    } catch(e) {
+      log.error(`Autorun could not be disabled. ${e}`)
+      return false
+    }
+  })
+
   ipcMain.on('autorun.cancel', async () => {
     store.set('autorun.remind', false)
     store.set('autorun.enabled', false)
@@ -121,6 +137,11 @@ const ipcBindingsForMain = (ipcMain) => {
   })
 
   ipcMain.on('autorun.maybe-remind', async (event) => {
+    // autorun is only available on mac and windows right now
+    if (!(is.windows || is.macos)) {
+      log.info('Skip reminding about autorun because it is only available in MacOS and Windows.')
+      return
+    }
     // check if autorun is already cancelled or enabled in preferences, then skip the reminder
     const autorunPrefs = store.get('autorun')
     if (autorunPrefs.remind === false || autorunPrefs.enabled === true) {
