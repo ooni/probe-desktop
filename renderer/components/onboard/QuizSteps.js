@@ -70,7 +70,7 @@ const QuizQuestion = ({qNum, question, onTrue, onFalse}) => (
         <FormattedMessage id='Onboarding.PopQuiz.Title' />
       </Heading>
       <Divider borderColor='white' />
-      <Heading textAlign='center' h={4}>
+      <Heading textAlign='center' h={4} data-test-id='pop-quiz-question'>
         <FormattedMessage id={`Onboarding.PopQuiz.${qNum}.Title`} />
       </Heading>
       <Text mx={3} my={4} textAlign='center'>{question}</Text>

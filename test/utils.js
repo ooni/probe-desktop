@@ -25,6 +25,10 @@ module.exports = {
     const app = await new Application({
       path: electronPath,
       args: [path.join(__dirname, '..')],
+      env: {
+        NODE_ENV: 'test',
+        ELECTRON_IS_DEV: false
+      },
       startTimeout: 30000,
       waitTimeout: 30000,
       chromeDriverArgs: ['–remote-debugging-port=12209']

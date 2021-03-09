@@ -4,19 +4,15 @@
 // https://github.com/nodejs/node/issues/17586
 const path = require('path')
 const { is } = require('electron-util')
-
 const electron = require('electron')
-
-const debug = require('debug')('ooniprobe-desktop.utils.binary')
 const log = require('electron-log')
 
 const getBinarySuffix = () => (process.platform === 'win32' ? '.exe' : '')
 
 const getResourcesDirectory = () => {
-  // XXX only macos development is currently supported
-  if (is.development) {
+  if (is.development || process.env.NODE_ENV === 'test') {
     const rsrcPath = path.join(__dirname, '..', '..')
-    debug('💣 development mode', rsrcPath)
+    log.debug('getResourcesDirectory', rsrcPath)
     return rsrcPath
   }
 
@@ -38,7 +34,7 @@ const getResourcesDirectory = () => {
 }
 
 const getBinaryDirectory = () => {
-  if (is.development) {
+  if (is.development || process.env.NODE_ENV === 'test') {
     if (is.macos) {
       return path.join(getResourcesDirectory(), 'build/probe-cli/darwin_amd64')
     }
@@ -61,7 +57,7 @@ const getBinaryPath = () => {
 
 const getHomeDir = () => {
   const userDataPath = (electron.app || electron.remote.app).getPath('userData')
-  if (is.development) {
+  if (is.development || process.env.NODE_ENV === 'test') {
     return path.join(getResourcesDirectory(), 'ooni_home')
   }
   return path.join(userDataPath, 'ooni_home')

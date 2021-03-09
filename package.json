@@ -25,7 +25,7 @@
     "publish:win": "yarn run build:clean && electron-builder --win -p always",
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
     "lint": "eslint --ignore-path .gitignore .",
-    "test": "cross-env NODE_ENV=test jest --runInBand",
+    "test": "jest --runInBand",
     "postinstall": "electron-builder install-app-deps",
     "storybook": "start-storybook -p 6006"
   },

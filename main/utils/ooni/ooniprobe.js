@@ -122,13 +122,13 @@ class Ooniprobe extends EventEmitter {
       })
 
       self.ooni.on('exit', code => {
-        log.debug('exited with code', code)
+        log.debug(`Running 'ooniprobe ${argv.join(' ')}' exited with code: ${code}`)
         // code === null means the process was killed
         if (code === 0 || code === null) {
           resolve()
           return
         }
-        reject(new Error('failed with code ' + code))
+        reject(new Error(`Running '${this._binaryPath} ${argv.join(' ')}' failed with exit code: ${code}`))
       })
     })
   }

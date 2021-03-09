@@ -41,7 +41,7 @@ describe('Onboarding', function() {
       .getText('h3')
     ).resolves.toBe('Pop Quiz')
     await expect(app.client
-      .getText('h4')
+      .getText('h4[data-test-id=pop-quiz-question]')
     ).resolves.toBe('Question 1/2')
   })
 
@@ -50,7 +50,7 @@ describe('Onboarding', function() {
       .$('div=True')
       .click()
       .pause(2000)
-      .getText('h4')
+      .getText('h4[data-test-id=pop-quiz-question]')
     ).resolves.toBe('Question 2/2')
   })
 
@@ -69,7 +69,7 @@ describe('Onboarding', function() {
       .$('button[data-test-id=letsgo]')
       .click()
       .pause(10000)
-      .getText('button')
+      .getText('button[data-test-id=dashboard-run-button]')
     ).resolves.toBe('Run')
     screenshotApp(app, 'onboarding-success')
   })
