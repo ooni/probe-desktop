@@ -57,7 +57,7 @@ const taskXMLTemplate = ({ taskName, taskRun, cwd }) =>
   </Settings>
   <Actions Context="Author">
     <Exec>
-      <Command>wscript.exe</Command>
+      <Command>cscript.exe</Command>
       <Arguments>${taskRun}</Arguments>
       <WorkingDirectory>${cwd}</WorkingDirectory>
   </Exec>

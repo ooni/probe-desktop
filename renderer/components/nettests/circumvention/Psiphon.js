@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
-import { Flex, Box } from 'ooni-components'
-import { Text } from 'rebass'
+import { Flex, Box, Text } from 'ooni-components'
 import { NettestPsiphon } from 'ooni-components/dist/icons'
 
 import colorMap from '../../colorMap'
@@ -20,13 +19,11 @@ const Psiphon = ({measurement, isAnomaly, render}) => {
   const PsiphonDetails = () => (
     <Box width={1}>
       <Flex my={4}>
-        <Text>
-          {isAnomaly ? (
-            <FormattedMarkdownMessage id='TestResults.Details.Circumvention.Psiphon.Blocked.Content.Paragraph' />
-          ) : (
-            <FormattedMarkdownMessage id='TestResults.Details.Circumvention.Psiphon.Reachable.Content.Paragraph' />
-          )}
-        </Text>
+        {isAnomaly ? (
+          <FormattedMarkdownMessage id='TestResults.Details.Circumvention.Psiphon.Blocked.Content.Paragraph' />
+        ) : (
+          <FormattedMarkdownMessage id='TestResults.Details.Circumvention.Psiphon.Reachable.Content.Paragraph' />
+        )}
       </Flex>
       {
         testKeys['bootstrap_time'] &&
@@ -35,7 +32,7 @@ const Psiphon = ({measurement, isAnomaly, render}) => {
             <FormattedMessage id='TestResults.Details.Circumvention.Psiphon.BootstrapTime.Label.Title' />
           </Box>
           <Box>
-            <Text is='span' color='blue5' fontSize={3}>
+            <Text color='blue5' fontSize={3}>
               <FormattedMessage
                 id='TestResults.Details.Circumvention.Psiphon.BootstrapTime.Unit'
                 values={{

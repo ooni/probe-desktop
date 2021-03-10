@@ -88,7 +88,7 @@ class Ooniprobe extends EventEmitter {
         const commandArgs = fixedArgs.concat(argv)
 
         log.info(`running "ooniprobe ${argv.join(' ')}"`)
-        log.debug('running: ', binPath, commandArgs, options)
+        log.verbose('running: ', binPath, commandArgs, options)
         self.ooni = childProcess.spawn(binPath, commandArgs, options)
       } catch (err) {
         reject(err)
@@ -105,7 +105,7 @@ class Ooniprobe extends EventEmitter {
       })
 
       self.ooni.stderr.pipe(split2()).on('data', line => {
-        log.silly('stdout: ', line.toString())
+        log.verbose('stdout: ', line.toString())
         try {
           const msg = JSON.parse(line.toString('utf8'))
           self.emit('data', msg)

@@ -132,7 +132,6 @@
     "icon-gen": "^2.0.0",
     "jest": "^25.3.0",
     "lodash": "^4.17.15",
-    "moment": "^2.24.0",
     "moment-range": "^4.0.2",
     "next": "^10.0.3",
     "ooni-components": "0.3.2",
@@ -173,6 +172,7 @@
     "electron-util": "^0.12.1",
     "fix-path": "^2.1.0",
     "fs-extra": "^8.1.0",
+    "moment": "^2.24.0",
     "split2": "^2.2.0"
   },
   "optionalDependencies": {

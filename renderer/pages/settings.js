@@ -80,7 +80,24 @@ const Settings = () => {
                 disabled={!maxRuntimeEnabled}
               />
             </Section>
-
+            {/* Autorun */}
+            <Section title={<FormattedMessage id='Settings.AutomatedTesting.Label' />}>
+              <BooleanInStore
+                label={<FormattedMessage id='Settings.AutomatedTesting.RunAutomatically' />}
+                optionKey='autorun.enabled'
+                onChange={(e) => {
+                  const updateAutorun = async () => {
+                    if (e.target.checked) {
+                      return await ipcRenderer.invoke('autorun.schedule')
+                    } else {
+                      return await ipcRenderer.invoke('autorun.disable')
+                    }
+                  }
+                  return updateAutorun()
+                }}
+              />
+              <Text as='small'><em><FormattedMessage id='Settings.AutomatedTesting.RunAutomatically.Footer' /></em></Text>
+            </Section>
             {/* Privacy */}
             <Section title={<FormattedMessage id='Settings.Privacy.Label' />}>
               <BooleanOption
@@ -99,24 +116,6 @@ const Settings = () => {
                 label={<FormattedMessage id='Settings.Sharing.IncludeNetwork' />}
                 optionKey='sharing.include_asn'
               />
-            </Section>
-            {/* Privacy */}
-            <Section title={<FormattedMessage id='Settings.AutomatedTesting.Label' />}>
-              <BooleanInStore
-                label={<FormattedMessage id='Settings.AutomatedTesting.RunAutomatically' />}
-                optionKey='autorun.enabled'
-                onChange={(e) => {
-                  const updateAutorun = async () => {
-                    if (e.target.checked) {
-                      return await ipcRenderer.invoke('autorun.schedule')
-                    } else {
-                      return await ipcRenderer.invoke('autorun.disable')
-                    }
-                  }
-                  return updateAutorun()
-                }}
-              />
-              <Text as='small'><em><FormattedMessage id='Settings.AutomatedTesting.RunAutomatically.Footer' /></em></Text>
             </Section>
             <Text my={3}>OONI Probe Desktop v{pkgJson.version}</Text>
 
