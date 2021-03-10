@@ -39,34 +39,35 @@
       "node_modules",
       "lang"
     ],
+    "publish": [
+      "github"
+    ],
     "linux": {
       "target": [
-        "deb",
-        "rpm",
-        "tar.gz"
+        "AppImage"
       ],
       "category": "Network",
-      "extraFiles": [
+      "extraResources": [
         {
           "from": "./build/probe-cli/linux_amd64/ooniprobe",
-          "to": "./resources/bin/ooniprobe"
+          "to": "./bin/ooniprobe"
         }
       ]
     },
     "win": {
-      "publish": [
-        "github"
-      ],
       "target": [
         "nsis"
       ],
-      "icon": "main/static/icons/app.ico",
-      "extraFiles": [
+      "icon": "build/icons/app.ico",
+      "extraResources": [
         {
           "from": "./build/probe-cli/windows_amd64/ooniprobe.exe",
-          "to": "./resources/bin/ooniprobe.exe"
+          "to": "./bin/ooniprobe.exe"
         }
       ]
+    },
+    "nsis": {
+      "include": "build/windows/uninstaller.nsh"
     },
     "dmg": {
       "background": "build/background.tiff",
@@ -77,19 +78,16 @@
       }
     },
     "mac": {
-      "publish": [
-        "github"
-      ],
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "./build/entitlements.mac.inherit.plist",
       "entitlementsInherit": "./build/entitlements.mac.inherit.plist",
       "category": "public.app-category.tools",
-      "icon": "main/static/icons/app.icns",
-      "extraFiles": [
+      "icon": "build/icons/app.icns",
+      "extraResources": [
         {
           "from": "./build/probe-cli/darwin_amd64/ooniprobe",
-          "to": "./Resources/bin/ooniprobe"
+          "to": "./bin/ooniprobe"
         }
       ]
     },
