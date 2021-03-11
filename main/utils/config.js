@@ -3,7 +3,7 @@ const fs = require('fs-extra')
 const log = require('electron-log')
 const { ipcMain } = require('electron')
 
-const { getHomeDir } = require('./paths')
+const { getHomeDir, getAutorunHomeDir } = require('./paths')
 
 const LATEST_CONFIG_VERSION = 4
 
@@ -105,6 +105,24 @@ const setConfig = async (optionKey, currentValue, newValue) => {
   setIndex(config, optionKey, newValue)
   await fs.writeJson(OONI_CONFIG_PATH, config, {spaces: '  '})
   log.debug(`setConfig: wrote ${optionKey}: ${newValue} to config file ${OONI_CONFIG_PATH}`)
+
+  // Sync changes to autorun configuration file
+  const autorunConfigPath = path.join(getAutorunHomeDir(), 'config.json')
+  fs.pathExists(autorunConfigPath).then(exists => {
+    if (exists) {
+      fs.writeJson(autorunConfigPath, config, { spaces: ' '})
+        .then(() => {
+          log.debug('Config file changes synced with autorun config.')
+        })
+        .catch(e => {
+          log.error(`error syncing to autorun config ${autorunConfigPath}: ${e.message}`)
+        })
+    } else {
+      log.verbose(`autorun config ${autorunConfigPath} doesn't exist. Not syncing.'`)
+    }
+  }).catch(e => {
+    log.error(`Error checking for autorun config file: ${e.message}`)
+  })
   return config
 }
 
