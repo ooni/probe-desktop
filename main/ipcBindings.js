@@ -20,6 +20,7 @@ const lastResultResponse = 'results.last.response'
 let testRunner = null
 let stopRequested = false
 let autorunPromptWaiting = false
+let autorunTaskUpdating = false
 
 const ipcBindingsForMain = (ipcMain) => {
 
@@ -105,29 +106,40 @@ const ipcBindingsForMain = (ipcMain) => {
   })
 
   ipcMain.handle('autorun.schedule', async () => {
+    if (autorunTaskUpdating) {
+      return false
+    }
+    autorunTaskUpdating = true
     try {
       const { scheduleAutorun } = require('./utils/autorun/schedule')
       await scheduleAutorun()
       log.debug('Autorun scheduled.')
       store.set('autorun.remind', false)
       store.set('autorun.enabled', true)
+      autorunTaskUpdating = false
       return true
     } catch(e) {
       log.error(`Autorun could not be scheduled. ${e}`)
+      autorunTaskUpdating = false
       return false
     }
   })
 
   ipcMain.handle('autorun.disable', async () => {
+    if (autorunTaskUpdating) {
+      return false
+    }
     try {
       const { disableAutorun } = require('./utils/autorun/schedule')
       await disableAutorun()
       log.debug('Autorun disabled.')
       store.set('autorun.remind', false)
       store.set('autorun.enabled', false)
+      autorunTaskUpdating = false
       return true
     } catch(e) {
       log.error(`Autorun could not be disabled. ${e}`)
+      autorunTaskUpdating = false
       return false
     }
   })
