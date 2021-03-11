@@ -8,9 +8,9 @@ import {
 } from 'ooni-components'
 import styled from 'styled-components'
 import log from 'electron-log'
+import { ipcRenderer } from 'electron'
 
 import { useConfig } from './useConfig'
-import { useStore } from './useStore'
 import { FormattedMessage } from 'react-intl'
 
 const StyledLabel = styled(Label)`
@@ -117,24 +117,44 @@ export const ListOption = ({ optionKey, children }) => {
 }
 
 // This widget is wired to the pesistent storage in main/utils/store.js
-export const BooleanInStore = ({ label, optionKey, disabled = false, onChange, ...rest }) => {
-  const [checked, setConfigValue, err] = useStore(optionKey)
-  err && log.error('Error in BooleanInStore: ', err)
+export const AutorunCheckbox = ({ label, optionKey, disabled = false, ...rest }) => {
+  const [checked, setChecked] = useState(ipcRenderer.sendSync('prefs.get', optionKey))
+  const [busy, setBusy] = useState(false)
 
   const handleChange = useCallback((event) => {
+    setBusy(true)
     const target = event.target
     const newValue = Boolean(target.type === 'checkbox' ? target.checked : target.value)
-    const changed = onChange(event)
-    console.log(`changed? ${changed}`)
-    setConfigValue(newValue)
-  }, [onChange, setConfigValue])
+    if (newValue === true) {
+      // Try to enable autorun
+      ipcRenderer.invoke('autorun.schedule').then(scheduled => {
+        if (scheduled) {
+          log.verbose('scheduling successful. updating checkbox UI')
+          setChecked(newValue)
+        }
+      }).finally(() => {
+        setBusy(false)
+      })
+    } else {
+      // Try to disable autorun
+      ipcRenderer.invoke('autorun.disable').then(disabled => {
+        if (disabled) {
+          log.verbose('scheduling successful. updating checkbox UI')
+          setChecked(newValue)
+        }
+      }).finally(() => {
+        setBusy(false)
+      })
+    }
+
+  }, [])
 
   return (
     <StyledLabel my={2} disabled={disabled}>
       <Checkbox
         checked={checked}
         onChange={handleChange}
-        disabled={disabled}
+        disabled={disabled || busy}
         {...rest}
       />
       {label}
@@ -142,7 +162,7 @@ export const BooleanInStore = ({ label, optionKey, disabled = false, onChange, .
   )
 }
 
-BooleanInStore.propTypes = {
+AutorunCheckbox.propTypes = {
   disabled: PropTypes.bool,
   label: PropTypes.oneOfType([
     PropTypes.string,

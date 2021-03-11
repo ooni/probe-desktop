@@ -12,7 +12,7 @@ const log = require('electron-log')
 const { getBinaryPath } = require('../paths')
 const winScheduler = require('./windows-scheduler')
 const macScheduler = require('./mac-scheduler')
-const taskId = 'org.ooni.probe-desktop' // Maybe use GUID
+const taskId = process.env.npm_package_build_appId || 'org.ooni.probe-desktop'
 const pathToProbeCLI = getBinaryPath()
 const cmdToRun = `${pathToProbeCLI} run unattended --software-name=ooniprobe-desktop-unattended`
 

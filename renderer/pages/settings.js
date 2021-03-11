@@ -9,10 +9,9 @@ import {
   Container,
   Text,
 } from 'ooni-components'
-import { ipcRenderer } from 'electron'
 
 import { useConfig } from '../components/settings/useConfig'
-import { BooleanOption, NumberOption, BooleanInStore } from '../components/settings/widgets'
+import { BooleanOption, NumberOption, AutorunCheckbox } from '../components/settings/widgets'
 import { LanguageSelector } from '../components/settings/LanguageSelector'
 import { WebsiteCategoriesSelector } from '../components/settings/WebsiteCategoriesSelector'
 import Layout from '../components/Layout'
@@ -82,19 +81,9 @@ const Settings = () => {
             </Section>
             {/* Autorun */}
             <Section title={<FormattedMessage id='Settings.AutomatedTesting.Label' />}>
-              <BooleanInStore
+              <AutorunCheckbox
                 label={<FormattedMessage id='Settings.AutomatedTesting.RunAutomatically' />}
                 optionKey='autorun.enabled'
-                onChange={(e) => {
-                  const updateAutorun = async () => {
-                    if (e.target.checked) {
-                      return await ipcRenderer.invoke('autorun.schedule')
-                    } else {
-                      return await ipcRenderer.invoke('autorun.disable')
-                    }
-                  }
-                  return updateAutorun()
-                }}
               />
               <Text as='small'><em><FormattedMessage id='Settings.AutomatedTesting.RunAutomatically.Footer' /></em></Text>
             </Section>

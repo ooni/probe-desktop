@@ -111,8 +111,10 @@ const ipcBindingsForMain = (ipcMain) => {
       log.debug('Autorun scheduled.')
       store.set('autorun.remind', false)
       store.set('autorun.enabled', true)
+      return true
     } catch(e) {
       log.error(`Autorun could not be scheduled. ${e}`)
+      return false
     }
   })
 
