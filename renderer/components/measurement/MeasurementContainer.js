@@ -27,6 +27,7 @@ import { Dash } from '../nettests/performance/Dash'
 import { Psiphon } from '../nettests/circumvention/Psiphon'
 import { Tor } from '../nettests/circumvention/Tor'
 import { RiseupVPN } from '../nettests/circumvention/RiseupVPN'
+import { Signal } from '../nettests/im/Signal'
 
 import FullHeightFlex from '../FullHeightFlex'
 import MethodologyButton from './MethodologyButton'
@@ -46,7 +47,8 @@ const detailsMap = {
   dash: Dash,
   psiphon: Psiphon,
   tor: Tor,
-  riseupvpn: RiseupVPN
+  riseupvpn: RiseupVPN,
+  signal: Signal
 }
 
 const HeroItemBox = ({ label, content, ...props }) => (

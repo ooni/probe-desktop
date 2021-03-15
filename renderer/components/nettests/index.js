@@ -23,6 +23,7 @@ import dash from './performance/Dash'
 import psiphon from './circumvention/Psiphon'
 import tor from './circumvention/Tor'
 import riseupvpn from './circumvention/RiseupVPN'
+import signal from './im/Signal'
 import { default as animation } from '../../public/static/animations/loadingTests.json'
 
 const iconSize = 200
@@ -60,6 +61,7 @@ export const tests = {
   psiphon,
   tor,
   riseupvpn,
+  signal,
   'default': {
     'name': 'Default',
   }
@@ -88,5 +90,7 @@ export const cliTestKeysToGroups = {
   'nettests.Dash': 'performance',
   'nettests.NDT': 'performance',
   'nettests.Psiphon': 'circumvention',
-  'nettests.Tor': 'circumvention'
+  'nettests.Tor': 'circumvention',
+  'nettests.RiseupVPN': 'circumvention',
+  'nettests.Signal': 'im'
 }
