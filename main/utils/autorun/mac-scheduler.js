@@ -19,12 +19,12 @@ const getTaskPlistPath = (taskname) => {
   )
 }
 
-function launchctl(command, args) {
+const launchctl = (command, args) => {
   const cmd = spawnSync('launchctl', [command, ...args])
   const error = cmd.stderr.toString().trim()
   if (error) {
-    log.error(`failure in launchctl ${command}: ${error}`)
-    throw error
+    log.debug(`failure in launchctl ${command}: exit ${cmd.status}: ${error}`)
+    throw {message: error, exit: cmd.status}
   }
   const output = cmd.stdout.toString().trim()
   log.debug(`Output of 'launchctl ${command}': ${output}`)
@@ -74,21 +74,30 @@ module.exports = {
       })
     })
   },
+
+  // To delete a task from scheduler:
+  // 1. run `launchctl bootout <service-target>
+  // Note that the above command may throw an acceptable error
+  // "Operation now in progress" if the task is already running but it usually
+  // terminates the process successfully right after it exits with code 36
+  // 2. remove the plist file in ~/Library/LaunchAgents/
   delete: function (taskname) {
     const taskPlistPath = getTaskPlistPath(taskname)
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       try {
-        launchctl('bootout', [getServiceTarget(taskname)])
-        unlink(taskPlistPath).then(() => {
-          log.debug('Deleted plist file after unloading task')
-        }).catch(e => {
-          return reject(`Failed to delete plist file after unloading task: ${e.message}`)
-        })
-        log.info('Disabled autorun task.')
-        resolve()
+        launchctl('bootout', [getServiceTarget(taskname), '2>&1'])
       } catch (e) {
-        return reject(e)
+        if(e.exit !== 0 || e.exit !== 36) {
+          log.error(`launchctl bootout failed unexpectedly: ${e.message}`)
+        }
       }
+      unlink(taskPlistPath).then(() => {
+        log.debug('Deleted plist file after unloading task')
+      }).catch(e => {
+        log.error(`Failed to delete plist file after unloading task: ${e.message}`)
+      })
+      log.info('Disabled autorun task.')
+      resolve()
     })
   }
 }

@@ -137,8 +137,8 @@ export const AutorunCheckbox = ({ label, optionKey, disabled = false, ...rest })
       })
     } else {
       // Try to disable autorun
-      ipcRenderer.invoke('autorun.disable').then(disabled => {
-        if (disabled) {
+      ipcRenderer.invoke('autorun.disable').then(success => {
+        if (success) {
           log.verbose('scheduling successful. updating checkbox UI')
           setChecked(newValue)
         }
@@ -150,7 +150,7 @@ export const AutorunCheckbox = ({ label, optionKey, disabled = false, ...rest })
   }, [])
 
   return (
-    <StyledLabel my={2} disabled={disabled}>
+    <StyledLabel my={2} disabled={disabled || busy}>
       <Checkbox
         checked={checked}
         onChange={handleChange}
