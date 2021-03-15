@@ -131,7 +131,7 @@ module.exports = {
             // Create batch file to run ooniprobe run unattended
             const batchFileStr = taskBatchTemplate({
               OONI_HOME_autorun: getAutorunHomeDir(),
-              taskCmd: taskrun
+              taskCmd: taskrun.join(' ')
             })
             await writeFile(taskBatchFilePath, batchFileStr)
             log.debug(`Autorun task batch file created: ${taskBatchFilePath}`)
@@ -150,7 +150,7 @@ module.exports = {
             await writeFile(taskXmlFilePath, taskXmlStr)
             log.debug(`Autorun task XML file created: ${taskXmlFilePath}`)
 
-            let command = ` /Create /TN ${taskname} /XML ${taskXmlFilePath}`
+            let command = ` /Create /TN ${taskname} /XML ${taskXmlFilePath} /F`
 
             const result = exec(command)
 

@@ -1,4 +1,4 @@
-module.exports = ({ taskName, taskCmd, OONI_HOME_autorun }) =>
+module.exports = ({ taskName, taskCmdArgs, OONI_HOME_autorun }) =>
 `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -16,10 +16,9 @@ module.exports = ({ taskName, taskCmd, OONI_HOME_autorun }) =>
     </dict>
     <key>ProgramArguments</key>
     <array>
-        <string>${taskCmd}</string>
+    ${taskCmdArgs.map(arg => `
+        <string>${arg}</string>`).join('')}
         <string>--log-handler=syslog</string>
-        <string>run</string>
-        <string>unattended</string>
     </array>
     <key>StartInterval</key>
     <integer>3600</integer>

@@ -5,9 +5,7 @@ const { join } = require('path')
 const os = require('os')
 const log = require('electron-log')
 
-const { getBinaryPath, getAutorunHomeDir } = require('../paths')
-
-const pathToProbeCLI = getBinaryPath()
+const { getAutorunHomeDir } = require('../paths')
 
 const domainTarget = `gui/${os.userInfo().uid}`
 const getServiceTarget = appId => `${domainTarget}/${appId}`
@@ -51,12 +49,12 @@ module.exports = {
 
     })
   },
-  create: function (taskname) {
+  create: function (taskname, cmdToRun) {
     return new Promise((resolve, reject) => {
       const plistTemplate = require('./taskTemplateMac')
       const taskPlistStr = plistTemplate({
         taskName: taskname,
-        taskCmd: pathToProbeCLI,
+        taskCmdArgs: cmdToRun,
         OONI_HOME_autorun: getAutorunHomeDir()
       })
       const taskPlistPath = getTaskPlistPath(taskname)
