@@ -1,5 +1,8 @@
 const Store = require('electron-store')
 const log = require('electron-log')
+const { join } = require('path')
+const { getBinaryDirectory } = require('./paths')
+const { existsSync, ensureFileSync } = require('fs-extra')
 
 const schema = {
   autorun: {
@@ -30,6 +33,18 @@ const init = () => {
       schema: schema,
       defaults: defaultPrefs
     })
+    const firstRunFilePath = join(getBinaryDirectory(), '.first-run')
+    log.debug(`Checking for first-run file at: ${firstRunFilePath}`)
+    if (!existsSync(firstRunFilePath)) {
+      log.info('Running first time. Reset autorun settings to prompt again')
+      store.reset('autorun')
+      try {
+        ensureFileSync(firstRunFilePath)
+        log.debug('first-run file created')
+      } catch (e) {
+        log.error(`Failed to create first-run file: ${e.message}`)
+      }
+    }
     log.info(`Initialized store in ${store.path}.`)
   }
   return store
