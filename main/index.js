@@ -20,6 +20,12 @@ const store = require('./utils/store')
 
 log.info(`Initializing ${app.name} in ${isDev? 'development': 'production'} mode.`)
 
+// Prevent a second instance from launching
+
+if (!app.requestSingleInstanceLock()) {
+  log.info('Second instance not allowed. Quitting.')
+  app.quit()
+}
 // Get sentry up and running (if already)
 initializeSentry()
 
@@ -236,5 +242,14 @@ app.on('ready', async () => {
 app.on('activate', async (event, hasVisibleWindows) => {
   if (!hasVisibleWindows) {
     await createWindow()
+  }
+})
+
+app.on('second-instance', () => {
+  if (windows.main) {
+    if (windows.main.isMinimized()) {
+      windows.main.restore()
+    }
+    windows.main.focus()
   }
 })
