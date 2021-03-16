@@ -195,7 +195,7 @@ app.on('ready', async () => {
       scope.setTag('context', 'config-migration')
       Sentry.captureException(err)
     })
-    initConfigFile()
+    await initConfigFile()
   }
   const config = await getConfig()
   // XXX Only allow one instance of OONI Probe running
