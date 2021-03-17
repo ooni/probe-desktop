@@ -1,5 +1,3 @@
-/* global require, module, process */
-
 const electron = require('electron')
 const { resolve } = require('app-root-path')
 
@@ -9,7 +7,7 @@ const windowURL = require('./windowURL')
 
 const openAboutWindow = require('./aboutWindow')
 
-const mainWindow = () => {
+const mainWindow = (url = 'dashboard') => {
   let windowHeight = 640
 
   if (isWinOS) {
@@ -29,7 +27,6 @@ const mainWindow = () => {
       enableRemoteModule: true
     }
   })
-  log.info('Loading main window.')
   win.loadURL(windowURL(url))
   return win
 }

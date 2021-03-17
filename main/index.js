@@ -47,8 +47,6 @@ autoUpdater.logger.transports.file.level = 'info'
 
 // To prevent garbage collection of the windows
 let windows = null
-// Make the window instances accessible from everywhere
-global.windows = windows
 
 app.allowRendererProcessReuse = true
 
@@ -167,6 +165,9 @@ const createWindow = async (url) => {
   windows = {
     main: mainWindow(url)
   }
+
+  // Make the window instances accessible from everywhere
+  global.windows = windows
 
   windows.main.once('ready-to-show', () => {
     toggleWindow(null, windows.main)
