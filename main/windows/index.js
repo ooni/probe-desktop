@@ -1,6 +1,7 @@
+/* global require, module, process */
+
 const electron = require('electron')
 const { resolve } = require('app-root-path')
-const log = require('electron-log')
 
 const isWinOS = process.platform === 'win32'
 
@@ -29,7 +30,7 @@ const mainWindow = () => {
     }
   })
   log.info('Loading main window.')
-  win.loadURL(windowURL('dashboard'))
+  win.loadURL(windowURL(url))
   return win
 }
 

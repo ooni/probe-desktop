@@ -12,7 +12,7 @@ log.transports.console.level = isDev ? 'debug' : 'info'
 log.transports.file.level = 'debug'
 
 const { getConfig, maybeMigrate, initConfigFile } = require('./utils/config')
-const { mainWindow, openAboutWindow, windowURL } = require('./windows')
+const { mainWindow, openAboutWindow } = require('./windows')
 const toggleWindow = require('./windows/toggle')
 const { ipcBindingsForMain } = require('./ipcBindings')
 const initializeSentry = require('./utils/sentry')
@@ -20,6 +20,12 @@ const store = require('./utils/store')
 
 log.info(`Initializing ${app.name} in ${isDev? 'development': 'production'} mode.`)
 
+// Prevent a second instance from launching
+
+if (!app.requestSingleInstanceLock()) {
+  log.info('Second instance not allowed. Quitting.')
+  app.quit()
+}
 // Get sentry up and running (if already)
 initializeSentry()
 
@@ -41,6 +47,8 @@ autoUpdater.logger.transports.file.level = 'info'
 
 // To prevent garbage collection of the windows
 let windows = null
+// Make the window instances accessible from everywhere
+global.windows = windows
 
 app.allowRendererProcessReuse = true
 
@@ -96,6 +104,8 @@ if (is.macos) {
     editMenu
   ]
 }
+
+Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate))
 
 // This set $PATH properly based on .zsrch/.bashrc/etc.
 fixPath()
@@ -153,6 +163,16 @@ autoUpdater.on('update-downloaded', () => {
   autoUpdater.quitAndInstall()
 })
 
+const createWindow = async (url) => {
+  windows = {
+    main: mainWindow(url)
+  }
+
+  windows.main.once('ready-to-show', () => {
+    toggleWindow(null, windows.main)
+  })
+}
+
 // Prepare the renderer once the app is ready
 app.on('ready', async () => {
 
@@ -161,6 +181,7 @@ app.on('ready', async () => {
     autoUpdater.checkForUpdatesAndNotify()
   }
 
+  // Setup devtools in development mode
   if (isDev && process.env.NODE_ENV !== 'test') {
     const {
       default: installExtension,
@@ -174,20 +195,13 @@ app.on('ready', async () => {
     /* eslint-enable no-console */
   }
 
+  // Start nextjs devServer or static file server in production
   await prepareNext('./renderer')
 
-  windows = {
-    main: mainWindow()
-  }
 
   // wire up IPC event handlers to the mainWindow
   ipcBindingsForMain(ipcMain)
 
-  Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate))
-  // Make the window instances accessible from everywhere
-  global.windows = windows
-
-  const { wasOpenedAtLogin } = app.getLoginItemSettings()
   try {
     await maybeMigrate()
   } catch (err) {
@@ -198,29 +212,44 @@ app.on('ready', async () => {
     await initConfigFile()
   }
   const config = await getConfig()
+
   // XXX Only allow one instance of OONI Probe running
   // at the same time
+  const { wasOpenedAtLogin } = app.getLoginItemSettings()
   if (!wasOpenedAtLogin) {
 
     // Initiate onboarding if informed consent is not given or not available
-    try {
-      if (!config) {
-        throw new Error('Configuration not found')
-      } else if (typeof config['_informed_consent'] === 'undefined') {
-        throw new Error('Informed consent information unavailable')
-      } else if (config['_informed_consent'] !== true) {
-        throw new Error('Informed consent not given')
+    if (config !== null && config['_informed_consent'] === true) {
+      log.info('Informed consent found in config file.')
+      await createWindow()
+    } else {
+      try {
+        if (!config) {
+          throw new Error('Configuration not found')
+        } else if (typeof config['_informed_consent'] === 'undefined') {
+          throw new Error('Informed consent information unavailable')
+        } else if (config['_informed_consent'] !== true) {
+          throw new Error('Informed consent not given')
+        }
+      } catch (e) {
+        log.info(e.message)
+        await createWindow('onboard')
       }
-      if (config['_informed_consent'] === true) {
-        log.info('Informed consent found in config file.')
-      }
-    } catch (e) {
-      log.info(e.message)
-      windows.main.loadURL(windowURL('onboard'))
     }
+  }
+})
 
-    windows.main.once('ready-to-show', () => {
-      toggleWindow(null, windows.main)
-    })
+app.on('activate', async (event, hasVisibleWindows) => {
+  if (!hasVisibleWindows) {
+    await createWindow()
+  }
+})
+
+app.on('second-instance', () => {
+  if (windows.main) {
+    if (windows.main.isMinimized()) {
+      windows.main.restore()
+    }
+    windows.main.focus()
   }
 })
