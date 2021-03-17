@@ -60,7 +60,7 @@ export const DashboardHeader = ({ onRunAll }) => (
       <Ellipse />
     </DashboardHeaderBG>
     <RunAllContainer>
-      <RunAllButton inverted onClick={onRunAll} fontSize={2}>
+      <RunAllButton inverted onClick={onRunAll} fontSize={2} data-test-id='dashboard-run-button'>
         <Text as='span' fontWeight='bold' fontSize={3}>
           <FormattedMessage id='Dashboard.Overview.Run' />
         </Text>

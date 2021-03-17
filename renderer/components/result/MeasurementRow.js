@@ -1,7 +1,6 @@
 import React from 'react'
-
 import Link from 'next/link'
-import { withRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import {
   theme,
   Text,
@@ -99,8 +98,8 @@ const NotUploadedNotice = () => {
   )
 }
 
-const URLRow =  ({measurement, query, isAnomaly}) => (
-  <Link href={{pathname: '/measurement', query}}>
+const URLRow = ({measurement, resultID, measurementID, isAnomaly}) => (
+  <Link href={{pathname: `/result/${resultID}/measurement/${measurementID}`, query : {isAnomaly}}}>
     <BorderedFlex>
       <Box pr={2} pl={2} width={1/8}>
         <CategoryCode code={measurement['url_category_code']} />
@@ -161,10 +160,10 @@ const TestNameIcon = ({ testName }) => {
   )
 }
 // XXX still need to show the summary in here
-const TestRow =  ({measurement, query, testKeys, isAnomaly}) => {
+const TestRow =  ({measurement, resultID, measurementID, testKeys, isAnomaly}) => {
 
   return (
-    <Link href={{pathname: '/measurement', query}}>
+    <Link href={{pathname: `/result/${resultID}/measurement/${measurementID}`, query : {isAnomaly}}}>
       <BorderedFlex alignItems='center'>
         <Box width={5/8} pl={2}>
           <Flex alignItems='center'>
@@ -206,7 +205,9 @@ const rowMap = {
   'circumvention': TestRow
 }
 
-const MeasurementRow = ({groupName, measurement, router}) => {
+const MeasurementRow = ({ groupName, measurement }) => {
+  const { query } = useRouter()
+
   if (measurement == null || groupName === 'default') {
     return <Text color={theme.colors.red8}>Error</Text>
   }
@@ -218,7 +219,7 @@ const MeasurementRow = ({groupName, measurement, router}) => {
   }
 
   // We pass in `is_anomaly` here to use in the `/measurement` page
-  const query = {...router.query, measurementID: measurement.id, isAnomaly: measurement.is_anomaly}
+  const isAnomaly = measurement.is_anomaly ?? false
 
   const RowElement = rowMap[groupName]
 
@@ -226,7 +227,15 @@ const MeasurementRow = ({groupName, measurement, router}) => {
   if (Object.keys(tests).indexOf(measurement.test_name) < 0) {
     return <div />
   }
-  return <RowElement measurement={measurement} query={query} testKeys={testKeys} isAnomaly={measurement['is_anomaly']} />
+  return (
+    <RowElement
+      measurement={measurement}
+      resultID={query.resultID}
+      measurementID={measurement.id}
+      testKeys={testKeys}
+      isAnomaly={isAnomaly}
+    />
+  )
 }
 
-export default withRouter(MeasurementRow)
+export default MeasurementRow

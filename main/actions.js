@@ -1,4 +1,3 @@
-/* global require, module */
 const { Ooniprobe } = require('./utils/ooni/ooniprobe')
 
 const log = require('electron-log')

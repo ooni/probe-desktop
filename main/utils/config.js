@@ -1,10 +1,9 @@
-/* global require, module */
 const path = require('path')
 const fs = require('fs-extra')
 const log = require('electron-log')
 const { ipcMain } = require('electron')
 
-const { getHomeDir } = require('./paths')
+const { getHomeDir, getAutorunHomeDir } = require('./paths')
 
 const LATEST_CONFIG_VERSION = 4
 
@@ -44,7 +43,8 @@ const availableCategoriesList = [
 ]
 
 const defaultOptions = {
-  optout: false
+  optout: false,
+  configFilePath: OONI_CONFIG_PATH
 }
 
 const initConfigFile = async (options) => {
@@ -70,8 +70,8 @@ const initConfigFile = async (options) => {
       'bouncer_url': 'https://bouncer.ooni.io'
     }
   }
-  await fs.ensureFile(OONI_CONFIG_PATH)
-  await fs.writeJson(OONI_CONFIG_PATH, config, {spaces: '  '})
+  await fs.ensureFile(opts.configFilePath)
+  await fs.writeJson(opts.configFilePath, config, {spaces: '  '})
 
   // Now that a config file is available, let's try to initialize Sentry again
   require('../utils/sentry')()
@@ -91,26 +91,51 @@ const setIndex = (obj, is, value) => {
   }
 }
 
+const getConfigValue = (config, optionKey) => optionKey.split('.').reduce((o,i) => o[i], config)
+
 const setConfig = async (optionKey, currentValue, newValue) => {
   const config = await getConfig()
   // XXX this is not really atomic. We should ensure atomicity by proxying this
   // via probe-cli.
-  const currentOldValue = optionKey.split('.').reduce((o,i) => o[i], config)
+  const currentOldValue = getConfigValue(config, optionKey)
   if (JSON.stringify(currentOldValue) !== JSON.stringify(currentValue)) {
-    log.info('setConfig: config file path', OONI_CONFIG_PATH)
     log.error('setConfig: inconsistent config file', currentOldValue, currentValue)
     throw Error('inconsistent config file')
   }
   setIndex(config, optionKey, newValue)
   await fs.writeJson(OONI_CONFIG_PATH, config, {spaces: '  '})
+  log.debug(`setConfig: wrote ${optionKey}: ${newValue} to config file ${OONI_CONFIG_PATH}`)
+
+  // Sync changes to autorun configuration file
+  const autorunConfigPath = path.join(getAutorunHomeDir(), 'config.json')
+  fs.pathExists(autorunConfigPath).then(exists => {
+    if (exists) {
+      fs.writeJson(autorunConfigPath, config, { spaces: ' '})
+        .then(() => {
+          log.debug('Config file changes synced with autorun config.')
+        })
+        .catch(e => {
+          log.error(`error syncing to autorun config ${autorunConfigPath}: ${e.message}`)
+        })
+    } else {
+      log.verbose(`autorun config ${autorunConfigPath} doesn't exist. Not syncing.'`)
+    }
+  }).catch(e => {
+    log.error(`Error checking for autorun config file: ${e.message}`)
+  })
   return config
 }
 
-const getConfig = async () => {
+const getConfig = async (key = null) => {
   try {
     const config = await fs.readJson(OONI_CONFIG_PATH)
-    return config
+    if (key === null) {
+      return config
+    } else {
+      return getConfigValue(config, key)
+    }
   } catch (err) {
+    log.error(err)
     return null
   }
 }

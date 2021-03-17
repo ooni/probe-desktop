@@ -5,11 +5,9 @@ import log from 'electron-log'
 
 export const init = async () => {
   try {
-    const config = await ipcRenderer.invoke('get-fresh-config')
-    if (config && config.hasOwnProperty('advanced')
-      && config.advanced.send_crash_reports === true
-    ) {
-      log.info('Initializing Sentry in renderer...')
+    const sendCrashReports = await ipcRenderer.invoke('config.get', 'advanced.send_crash_reports')
+    if (sendCrashReports) {
+      log.debug('Initializing Sentry in renderer...')
       if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
         const integrations = []
         if (process.env.NEXT_IS_SERVER === 'true') {

@@ -11,7 +11,7 @@ import {
 } from 'ooni-components'
 
 import { useConfig } from '../components/settings/useConfig'
-import { BooleanOption, NumberOption } from '../components/settings/widgets'
+import { BooleanOption, NumberOption, AutorunCheckbox } from '../components/settings/widgets'
 import { LanguageSelector } from '../components/settings/LanguageSelector'
 import { WebsiteCategoriesSelector } from '../components/settings/WebsiteCategoriesSelector'
 import Layout from '../components/Layout'
@@ -79,7 +79,14 @@ const Settings = () => {
                 disabled={!maxRuntimeEnabled}
               />
             </Section>
-
+            {/* Autorun */}
+            <Section title={<FormattedMessage id='Settings.AutomatedTesting.Label' />}>
+              <AutorunCheckbox
+                label={<FormattedMessage id='Settings.AutomatedTesting.RunAutomatically' />}
+                optionKey='autorun.enabled'
+              />
+              <Text as='small'><em><FormattedMessage id='Settings.AutomatedTesting.RunAutomatically.Footer' /></em></Text>
+            </Section>
             {/* Privacy */}
             <Section title={<FormattedMessage id='Settings.Privacy.Label' />}>
               <BooleanOption
@@ -99,7 +106,6 @@ const Settings = () => {
                 optionKey='sharing.include_asn'
               />
             </Section>
-
             <Text my={3}>OONI Probe Desktop v{pkgJson.version}</Text>
 
           </Container>

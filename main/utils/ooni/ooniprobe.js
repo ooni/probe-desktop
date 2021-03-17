@@ -1,4 +1,3 @@
-/* global require, module */
 const { EventEmitter } = require('events')
 const childProcess = require('child_process')
 const os = require('os')
@@ -41,6 +40,7 @@ class Ooniprobe extends EventEmitter {
     }
     // See https://github.com/ooni/probe-cli/pull/111 for documentation
     // concerning the design of killing ooniprobe portably
+    log.debug('closing this.ooni.stdin')
     this.ooni.stdin.end()
   }
 
@@ -77,7 +77,7 @@ class Ooniprobe extends EventEmitter {
             }
           } catch (err) {
             // eslint-disable-next-line no-console
-            console.log('failed to determine the home shortpath. Things will break with user homes which contain non-ascii characters.')
+            log.error('failed to determine the home shortpath. Things will break with user homes which contain non-ascii characters.')
           }
         }
         const fixedArgs = [
@@ -85,10 +85,11 @@ class Ooniprobe extends EventEmitter {
           `--software-name=${pkgJson.name}`,
           `--software-version=${pkgJson.version}`
         ]
-        argv = fixedArgs.concat(argv)
+        const commandArgs = fixedArgs.concat(argv)
 
-        log.info('running', binPath, argv, options)
-        self.ooni = childProcess.spawn(binPath, argv, options)
+        log.info(`running "ooniprobe ${argv.join(' ')}"`)
+        log.verbose('running: ', binPath, commandArgs, options)
+        self.ooni = childProcess.spawn(binPath, commandArgs, options)
       } catch (err) {
         reject(err)
         return
@@ -104,7 +105,7 @@ class Ooniprobe extends EventEmitter {
       })
 
       self.ooni.stderr.pipe(split2()).on('data', line => {
-        log.debug('stdout: ', line.toString())
+        log.verbose('stdout: ', line.toString())
         try {
           const msg = JSON.parse(line.toString('utf8'))
           self.emit('data', msg)
@@ -121,13 +122,13 @@ class Ooniprobe extends EventEmitter {
       })
 
       self.ooni.on('exit', code => {
-        log.info('exited with code', code)
+        log.debug(`Running 'ooniprobe ${argv.join(' ')}' exited with code: ${code}`)
         // code === null means the process was killed
         if (code === 0 || code === null) {
           resolve()
           return
         }
-        reject(new Error('failed with code ' + code))
+        reject(new Error(`Running '${this._binaryPath} ${argv.join(' ')}' failed with exit code: ${code}`))
       })
     })
   }

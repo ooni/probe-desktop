@@ -1,5 +1,3 @@
-/* global require, process, global */
-
 // Packages
 const { app, Menu, ipcMain } = require('electron')
 const prepareNext = require('electron-next')
@@ -10,15 +8,23 @@ const isDev = require('electron-is-dev')
 const fixPath = require('fix-path')
 const Sentry = require('@sentry/electron')
 const log = require('electron-log')
+log.transports.console.level = isDev ? 'debug' : 'info'
+log.transports.file.level = 'debug'
 
 const { getConfig, maybeMigrate, initConfigFile } = require('./utils/config')
 const { mainWindow, openAboutWindow, windowURL } = require('./windows')
 const toggleWindow = require('./windows/toggle')
 const { ipcBindingsForMain } = require('./ipcBindings')
 const initializeSentry = require('./utils/sentry')
+const store = require('./utils/store')
+
+log.info(`Initializing ${app.name} in ${isDev? 'development': 'production'} mode.`)
 
 // Get sentry up and running (if already)
 initializeSentry()
+
+// initialize store in app.getPath('userData')/settings.json
+store.init()
 
 require('debug-to-file')
 require('electron-unhandled')()
@@ -31,13 +37,10 @@ require('electron-debug')({
 
 autoUpdater.logger = log
 autoUpdater.logger.transports.file.level = 'info'
-log.info('App starting...')
+
 
 // To prevent garbage collection of the windows
 let windows = null
-
-// Set the application name
-app.name = 'OONI Probe'
 
 app.allowRendererProcessReuse = true
 
@@ -166,8 +169,8 @@ app.on('ready', async () => {
 
     installExtension(REACT_DEVELOPER_TOOLS)
       /* eslint-disable no-console */
-      .then(name => console.log(`Added Extension:  ${name}`))
-      .catch(err => console.log('An error occurred: ', err))
+      .then(name => log.info(`Added Extension:  ${name}`))
+      .catch(err => log.error('An error occurred: ', err))
     /* eslint-enable no-console */
   }
 
@@ -192,7 +195,7 @@ app.on('ready', async () => {
       scope.setTag('context', 'config-migration')
       Sentry.captureException(err)
     })
-    initConfigFile()
+    await initConfigFile()
   }
   const config = await getConfig()
   // XXX Only allow one instance of OONI Probe running

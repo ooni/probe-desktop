@@ -5,11 +5,13 @@ import {
   Label,
   Checkbox,
   Input,
-  Button
 } from 'ooni-components'
 import styled from 'styled-components'
+import log from 'electron-log'
+import { ipcRenderer } from 'electron'
 
 import { useConfig } from './useConfig'
+import { FormattedMessage } from 'react-intl'
 
 const StyledLabel = styled(Label)`
   color: ${props => props.disabled ? props.theme.colors.gray6 : 'inherited'};
@@ -112,4 +114,59 @@ export const ListOption = ({ optionKey, children }) => {
     }
   }, [list, setListValue])
   return children(JSON.stringify(list), handleChange)
+}
+
+// This widget is wired to the pesistent storage in main/utils/store.js
+export const AutorunCheckbox = ({ label, optionKey, disabled = false, ...rest }) => {
+  const [checked, setChecked] = useState(ipcRenderer.sendSync('prefs.get', optionKey))
+  const [busy, setBusy] = useState(false)
+
+  const handleChange = useCallback((event) => {
+    setBusy(true)
+    const target = event.target
+    const newValue = Boolean(target.type === 'checkbox' ? target.checked : target.value)
+    if (newValue === true) {
+      // Try to enable autorun
+      ipcRenderer.invoke('autorun.schedule').then(scheduled => {
+        if (scheduled) {
+          log.verbose('scheduling successful. updating checkbox UI')
+          setChecked(newValue)
+        }
+      }).finally(() => {
+        setBusy(false)
+      })
+    } else {
+      // Try to disable autorun
+      ipcRenderer.invoke('autorun.disable').then(success => {
+        if (success) {
+          log.verbose('scheduling successful. updating checkbox UI')
+          setChecked(newValue)
+        }
+      }).finally(() => {
+        setBusy(false)
+      })
+    }
+
+  }, [])
+
+  return (
+    <StyledLabel my={2} disabled={disabled || busy}>
+      <Checkbox
+        checked={checked}
+        onChange={handleChange}
+        disabled={disabled || busy}
+        {...rest}
+      />
+      {label}
+    </StyledLabel>
+  )
+}
+
+AutorunCheckbox.propTypes = {
+  disabled: PropTypes.bool,
+  label: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.instanceOf(FormattedMessage)
+  ]),
+  optionKey: PropTypes.string
 }
