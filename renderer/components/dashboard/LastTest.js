@@ -10,15 +10,12 @@ const lastResultResponse = 'results.last.response'
 
 const LastTest = ({ testGroupName, ...rest }) => {
   const intl = useIntl()
-  const [lastTestTime, setLastTestTime] = useState(null)
+  const fallback = intl.formatMessage({ id: 'Dashboard.Overview.LastRun.Never' })
+  const [lastTestTime, setLastTestTime] = useState(fallback)
   const onLastResultResponse = useCallback((event, data) => {
     const { lastResult } = data
-    const fallback = intl.formatMessage({ id: 'Dashboard.Overview.LastRun.Never' })
-
     if (lastResult) {
       setLastTestTime(moment(lastResult).fromNow(false))
-    } else {
-      setLastTestTime(fallback)
     }
   }, [intl])
 

@@ -38,18 +38,24 @@ const ipcBindingsForMain = (ipcMain) => {
   ipcMain.on(lastResultRequest, async (event, data) => {
     const { testGroupName } = data
     let lastTested = null
-    const results = await listResults()
-    if ('rows' in results && results.rows.length > 0) {
-      const filteredRows = results.rows.filter(row =>
-        testGroupName !== 'all' ? row.name === testGroupName : true
-      )
-      lastTested = filteredRows.length > 0
-        ? filteredRows[filteredRows.length - 1].start_time
-        : null
+    try {
+      const results = await listResults()
+      if ('rows' in results && results.rows.length > 0) {
+        const filteredRows = results.rows.filter(row =>
+          testGroupName !== 'all' ? row.name === testGroupName : true
+        )
+        lastTested = filteredRows.length > 0
+          ? filteredRows[filteredRows.length - 1].start_time
+          : null
+      }
+    } catch (e) {
+      log.error(e)
+    } finally {
+      log.debug(`Sending lastResultResponse: ${lastTested}`)
+      event.reply(lastResultResponse, {
+        lastResult: lastTested
+      })
     }
-    event.reply(lastResultResponse, {
-      lastResult: lastTested
-    })
   })
 
   ipcMain.on('ooniprobe.run', async (event, { testGroupToRun, inputFile }) => {
