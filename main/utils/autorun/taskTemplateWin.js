@@ -22,13 +22,14 @@ const taskXMLTemplate = ({ taskName, taskRun, cwd }) =>
     <URI>${taskName}</URI>
   </RegistrationInfo>
   <Triggers>
-    <CalendarTrigger>
+    <TimeTrigger>
+      <Repetition>
+        <Interval>PT1H</Interval>
+        <StopAtDurationEnd>false</StopAtDurationEnd>
+      </Repetition>
       <StartBoundary>${getStartBoundary()}</StartBoundary>
       <Enabled>true</Enabled>
-      <ScheduleByDay>
-        <DaysInterval>1</DaysInterval>
-      </ScheduleByDay>
-    </CalendarTrigger>
+    </TimeTrigger>
   </Triggers>
   <Principals>
     <Principal id="Author">
