@@ -6,21 +6,30 @@ const { existsSync, ensureFileSync } = require('fs-extra')
 
 const schema = {
   autorun: {
-    enabled: {
-      type: 'boolean',
-      default: false
-    },
-    remind: {
-      type: 'boolean',
-      default: true
+    type: 'object',
+    default: {},
+    properties: {
+      enabled: {
+        type: 'boolean',
+        default: false
+      },
+      remind: {
+        type: 'boolean',
+        default: true
+      },
+      backoff: {
+        type: 'number',
+        default: 1
+      },
+      nextBackoff: {
+        type: 'number',
+        default: 5,
+      },
+      timestamp: {
+        type: 'number',
+        default: 0
+      }
     }
-  }
-}
-
-const defaultPrefs = {
-  autorun: {
-    enabled: false,
-    remind: true
   }
 }
 
@@ -30,8 +39,7 @@ const init = () => {
   if (!store) {
     store = new Store({
       name: 'settings',
-      schema: schema,
-      defaults: defaultPrefs
+      schema: schema
     })
     const firstRunFilePath = join(getBinaryDirectory(), '.first-run')
     log.debug(`Checking for first-run file at: ${firstRunFilePath}`)
@@ -77,8 +85,18 @@ const set = (key, value) => {
   }
 }
 
+const reset = (...keys) => {
+  try {
+    return store.reset(keys)
+  } catch (e) {
+    log.error(`Failed to do 'reset${keys}' in store: ${e.message}`)
+    return false
+  }
+}
+
 module.exports = {
   init,
   get,
-  set
+  set,
+  reset
 }

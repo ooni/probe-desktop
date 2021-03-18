@@ -14,6 +14,7 @@ const AutorunConfirmation = ({ show, onClose }) => {
     onClose()
   }, [onClose])
   const onRemindLater = useCallback(() => {
+    ipcRenderer.send('autorun.remind-later')
     onClose()
   }, [onClose])
   const onCancel = useCallback(() => {

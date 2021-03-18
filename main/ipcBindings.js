@@ -150,6 +150,18 @@ const ipcBindingsForMain = (ipcMain) => {
     }
   })
 
+  // Wait a bit since last reminder, backing off exponentially, to show the prompt with a delay from trigger (page load)
+  const MAX_BACKOFF = 42
+  const MIN_TIME_SINCE_LAST_REMINDER = 10 * 60 * 1000
+  const SHOW_PROMPT_AFTER_DELAY = 10 * 1000
+
+  ipcMain.on('autorun.remind-later', async () => {
+    const { backoff, nextBackoff } = store.get('autorun')
+    store.set('autorun.nextBackoff', Math.min(backoff + nextBackoff, MAX_BACKOFF))
+    store.set('autorun.backoff', 0)
+    log.debug(`Autorun reminder backed off ${nextBackoff} times.`)
+  })
+
   ipcMain.on('autorun.cancel', async () => {
     store.set('autorun.remind', false)
     store.set('autorun.enabled', false)
@@ -159,21 +171,38 @@ const ipcBindingsForMain = (ipcMain) => {
   ipcMain.on('autorun.maybe-remind', async (event) => {
     // autorun is only available on mac and windows right now
     if (!(is.windows || is.macos)) {
-      log.info('Skip reminding about autorun because it is only available in MacOS and Windows.')
+      log.debug('Skip reminding about autorun because it is only available in MacOS and Windows.')
       return
     }
     // check if autorun is already cancelled or enabled in preferences, then skip the reminder
     const autorunPrefs = store.get('autorun')
     if (autorunPrefs.remind === false || autorunPrefs.enabled === true) {
-      log.info('Skip reminding about autorun because it is already already enabled or explicitly cancelled.')
+      log.debug('Skip reminding about autorun because it is already already enabled or explicitly cancelled.')
       return
     }
+
+    // Exponential back-off
+    if(autorunPrefs.backoff < autorunPrefs.nextBackoff) {
+      log.debug(`Skip autorun reminder. Backing off until ${autorunPrefs.nextBackoff - autorunPrefs.backoff} times.`)
+      store.set('autorun.backoff', autorunPrefs.backoff + 1)
+      return
+    }
+
+    // Don't remind too soon
+    const timeSinceLastReminder = Date.now() - autorunPrefs.timestamp
+    if (timeSinceLastReminder < MIN_TIME_SINCE_LAST_REMINDER) {
+      log.debug(`Skip autorun reminder. Its only been ${Math.ceil(timeSinceLastReminder/60000)} minutes.`)
+      return
+    }
+
+    // Ask renderer to show the prompt
     if (!autorunPromptWaiting) {
       autorunPromptWaiting = true
       setTimeout(() => {
         event.sender.send('autorun.showPrompt')
         autorunPromptWaiting = false
-      }, 10000)
+        store.set('autorun.timestamp', Date.now())
+      }, SHOW_PROMPT_AFTER_DELAY)
     }
   })
 
