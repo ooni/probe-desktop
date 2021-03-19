@@ -1,5 +1,21 @@
 # Changelog
 
+## OONI Probe Desktop 3.3.0 [2021-03-19]
+
+probe-cli: 3.8.0
+
+### Added
+* Feature: Schedule running all tests automatically every hour on Windows and MacOS
+
+### Fixed
+* On MacOS, clicking on dock icon with no windows open will no create a new window with dashboard view
+
+### Changed
+* *Development*: Started using more IPC and less of `electron.remote` module to facilitate upgrading to newer electron versions.
+
+### Removed
+* Settings option to share network information
+
 ## OONI Probe Desktop 3.2.3 [2021-02-12]
 
 probe-cli: 3.5.2
