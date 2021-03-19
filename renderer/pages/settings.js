@@ -101,10 +101,6 @@ const Settings = () => {
                 label={<FormattedMessage id='Settings.Privacy.SendCrashReports' />}
                 optionKey='advanced.send_crash_reports'
               />
-              <BooleanOption
-                label={<FormattedMessage id='Settings.Sharing.IncludeNetwork' />}
-                optionKey='sharing.include_asn'
-              />
             </Section>
             <Text my={3}>OONI Probe Desktop v{pkgJson.version}</Text>
 
