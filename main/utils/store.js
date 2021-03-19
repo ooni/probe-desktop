@@ -17,13 +17,13 @@ const schema = {
         type: 'boolean',
         default: true
       },
-      backoff: {
+      backoffRate: {
         type: 'number',
-        default: 1
+        default: 0
       },
-      nextBackoff: {
+      interactions: {
         type: 'number',
-        default: 5,
+        default: 1,
       },
       timestamp: {
         type: 'number',

@@ -151,15 +151,20 @@ const ipcBindingsForMain = (ipcMain) => {
   })
 
   // Wait a bit since last reminder, backing off exponentially, to show the prompt with a delay from trigger (page load)
-  const MAX_BACKOFF = 42
-  const MIN_TIME_SINCE_LAST_REMINDER = 10 * 60 * 1000
-  const SHOW_PROMPT_AFTER_DELAY = 10 * 1000
+  const SHOW_PROMPT_AFTER_DELAY = 10 * 1000 // 10 seconds
+  const A_DAY = 1 * 24 * 60 * 60 * 1000
+  const BACKOFF_TIME_MULTIPLIER = A_DAY
+  const BACKOFF_INTERACTION_MULTIPLIER = 5
+  const backoffPattern = [0, 1, 2, 3, 5]
 
   ipcMain.on('autorun.remind-later', async () => {
-    const { backoff, nextBackoff } = store.get('autorun')
-    store.set('autorun.nextBackoff', Math.min(backoff + nextBackoff, MAX_BACKOFF))
-    store.set('autorun.backoff', 0)
-    log.debug(`Autorun reminder backed off ${nextBackoff} times.`)
+    // Prepare factors to decide when to show next prompt
+    const { backoffRate } = store.get('autorun')
+    store.set('autorun.timestamp', Date.now())
+    store.set('autorun.backoffRate', Math.min(backoffRate + 1, backoffPattern.length -1))
+    store.set('autorun.interactions', 0)
+    const backOffIndex = backoffPattern[Math.min(backoffRate + 1, backoffPattern.length -1)]
+    log.debug(`Autorun reminder backed off ${backOffIndex} days or ${backOffIndex * BACKOFF_INTERACTION_MULTIPLIER} interactions\n\n`)
   })
 
   ipcMain.on('autorun.cancel', async () => {
@@ -182,16 +187,16 @@ const ipcBindingsForMain = (ipcMain) => {
     }
 
     // Exponential back-off
-    if(autorunPrefs.backoff < autorunPrefs.nextBackoff) {
-      log.debug(`Skip autorun reminder. Backing off until ${autorunPrefs.nextBackoff - autorunPrefs.backoff} times.`)
-      store.set('autorun.backoff', autorunPrefs.backoff + 1)
+    store.set('autorun.interactions', autorunPrefs.interactions + 1)
+    if(autorunPrefs.interactions + 1 < backoffPattern[autorunPrefs.backoffRate] * BACKOFF_INTERACTION_MULTIPLIER) {
+      log.debug(`Skip autorun reminder. Backing off until ${backoffPattern[autorunPrefs.backoffRate] * BACKOFF_INTERACTION_MULTIPLIER - autorunPrefs.interactions} interactions.`)
       return
     }
 
     // Don't remind too soon
     const timeSinceLastReminder = Date.now() - autorunPrefs.timestamp
-    if (timeSinceLastReminder < MIN_TIME_SINCE_LAST_REMINDER) {
-      log.debug(`Skip autorun reminder. Its only been ${Math.ceil(timeSinceLastReminder/60000)} minutes.`)
+    if (timeSinceLastReminder < backoffPattern[autorunPrefs.backoffRate] * BACKOFF_TIME_MULTIPLIER) {
+      log.debug(`Skip autorun reminder. Last reminder was ${Math.round(timeSinceLastReminder/A_DAY)} days ago.`)
       return
     }
 
@@ -201,7 +206,6 @@ const ipcBindingsForMain = (ipcMain) => {
       setTimeout(() => {
         event.sender.send('autorun.showPrompt')
         autorunPromptWaiting = false
-        store.set('autorun.timestamp', Date.now())
       }, SHOW_PROMPT_AFTER_DELAY)
     }
   })
