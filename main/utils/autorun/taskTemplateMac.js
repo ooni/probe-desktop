@@ -1,4 +1,4 @@
-module.exports = ({ taskName, taskCmdArgs, OONI_HOME_autorun }) =>
+module.exports = ({ taskName, pathToBinary, OONI_HOME_autorun }) =>
 `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -16,9 +16,11 @@ module.exports = ({ taskName, taskCmdArgs, OONI_HOME_autorun }) =>
     </dict>
     <key>ProgramArguments</key>
     <array>
-    ${taskCmdArgs.map(arg => `
+        <string>${pathToBinary}</string>
+        <string>--software-name=ooniprobe-desktop-unattended</string>
         <string>--log-handler=syslog</string>
-        <string>${arg}</string>`).join('')}
+        <string>run</string>
+        <string>unattended</string>
     </array>
     <key>StartInterval</key>
     <integer>3600</integer>

@@ -9,12 +9,9 @@ initConfigFile({ configFilePath: join(getAutorunHomeDir(), 'config.json') })
 
 
 const log = require('electron-log')
-const { getBinaryPath } = require('../paths')
 const winScheduler = require('./windows-scheduler')
 const macScheduler = require('./mac-scheduler')
 const taskId = process.env.npm_package_build_appId || 'org.ooni.probe-desktop'
-const pathToProbeCLI = getBinaryPath()
-const cmdToRun = [pathToProbeCLI, '--software-name=ooniprobe-desktop-unattended', 'run', 'unattended']
 
 const platforms = {
   win32: winScheduler,
@@ -37,7 +34,7 @@ const scheduleAutorun = () => {
     }).catch((e) => {
       log.debug(`Task not found. Might not have been scheduled before: ${e}`)
     }).finally(() => {
-      scheduler.create(taskId, cmdToRun).then(() => {
+      scheduler.create(taskId).then(() => {
         log.debug('Task created')
         resolve()
       }).catch((e) => {

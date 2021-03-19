@@ -104,7 +104,7 @@ module.exports = {
     })
   },
 
-  create: function (taskname, taskrun) {
+  create: function (taskname) {
     return new Promise((resolve, reject) => {
       try {
         validate.create_xml_params(taskname)
@@ -119,7 +119,7 @@ module.exports = {
         .catch(async () => {
           const { app } = require('electron')
           const { join } = require('path')
-          const { getBinaryDirectory, getAutorunHomeDir } = require('../paths')
+          const { getBinaryDirectory, getAutorunHomeDir, getBinaryPath } = require('../paths')
           const { writeFile, unlink } = require('fs').promises
           const { taskXMLTemplate, taskBatchTemplate, taskVBScriptTemplate } = require('./taskTemplateWin')
 
@@ -131,7 +131,7 @@ module.exports = {
             // Create batch file to run ooniprobe run unattended
             const batchFileStr = taskBatchTemplate({
               OONI_HOME_autorun: getAutorunHomeDir(),
-              taskCmd: taskrun.join(' ')
+              pathToBinary: getBinaryPath()
             })
             await writeFile(taskBatchFilePath, batchFileStr)
             log.debug(`Autorun task batch file created: ${taskBatchFilePath}`)
