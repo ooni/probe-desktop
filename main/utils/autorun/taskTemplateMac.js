@@ -17,8 +17,8 @@ module.exports = ({ taskName, taskCmdArgs, OONI_HOME_autorun }) =>
     <key>ProgramArguments</key>
     <array>
     ${taskCmdArgs.map(arg => `
-        <string>${arg}</string>`).join('')}
         <string>--log-handler=syslog</string>
+        <string>${arg}</string>`).join('')}
     </array>
     <key>StartInterval</key>
     <integer>3600</integer>

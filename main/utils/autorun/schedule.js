@@ -14,7 +14,7 @@ const winScheduler = require('./windows-scheduler')
 const macScheduler = require('./mac-scheduler')
 const taskId = process.env.npm_package_build_appId || 'org.ooni.probe-desktop'
 const pathToProbeCLI = getBinaryPath()
-const cmdToRun = [pathToProbeCLI, 'run', 'unattended', '--software-name=ooniprobe-desktop-unattended']
+const cmdToRun = [pathToProbeCLI, '--software-name=ooniprobe-desktop-unattended', 'run', 'unattended']
 
 const platforms = {
   win32: winScheduler,
