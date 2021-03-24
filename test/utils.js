@@ -53,7 +53,7 @@ module.exports = {
       const screenshotBuffer = await app.browserWindow.capturePage()
       if (screenshotBuffer) {
         const filename = path.resolve(screenshotsDir, `${label}.png`)
-        fs.writeFile(filename, screenshotBuffer)
+        fs.writeFileSync(filename, screenshotBuffer)
       }
     }
   }
