@@ -128,7 +128,7 @@
     "jest": "^25.3.0",
     "moment-range": "^4.0.2",
     "next": "^10.0.3",
-    "ooni-components": "0.3.2",
+    "ooni-components": "^0.4.2",
     "os-locale": "^5.0.0",
     "prop-types": "15.7.2",
     "raven-js": "^3.27.2",
@@ -147,7 +147,7 @@
     "remark": "^11.0.1",
     "remark-react": "^6.0.0",
     "spectron": "^10.0.1",
-    "styled-components": "^4.4.1",
+    "styled-components": "5.1.1",
     "use-clipboard-copy": "^0.1.2",
     "webpack": "4.40.2"
   },
@@ -175,12 +175,12 @@
   "resolutions": {
     "js-yaml": "3.13.1",
     "lodash": "^4.17.15",
-    "rebass": "2.3.3",
+    "rebass": "^4.0.7",
     "lottie-web": "5.6.6",
     "serialize-javascript": "^2.1.1",
     "set-value": "^2.0.1",
-    "styled-components": "^4.4.1",
-    "styled-system": "3.1.6"
+    "styled-components": "^5.2.1",
+    "styled-system": "^5.1.5"
   },
   "jest": {
     "verbose": true,
