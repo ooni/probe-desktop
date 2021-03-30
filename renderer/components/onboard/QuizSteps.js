@@ -8,11 +8,11 @@ import {
   Flex,
   Box,
   Text,
-  Divider,
+  Modal,
   theme
 } from 'ooni-components'
 
-import { Modal, YesButton, NoButton } from '../Modal'
+import { YesButton, NoButton } from '../Modal'
 import { default as tickAnimation } from '../../public/static/animations/checkMark.json'
 import { default as crossAnimation } from '../../public/static/animations/crossMark.json'
 
@@ -43,7 +43,7 @@ const QuizActually = ({text, onBack, onContinue}) => (
     <Heading textAlign='center' h={3}>
       <FormattedMessage id='Onboarding.PopQuiz.1.Wrong.Title' />
     </Heading>
-    <Divider borderColor='white' />
+    <Box as='hr' sx={{my: 3}} />
     <Text p={4}>{text}</Text>
     <Flex>
       <BackButton width={1/2} onClick={onBack}>
