@@ -1,13 +1,14 @@
 import React, { useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Flex, Box, Fixed, Heading} from 'ooni-components'
+import { Flex, Box, Heading} from 'ooni-components'
 import { useSpring, animated } from 'react-spring'
 import { MdClose } from 'react-icons/md'
 import { FormattedMessage } from 'react-intl'
 
 // Elevating with zIndex because <Button> has zIndex:1 for some reason
-const StyledWrapper = styled(Fixed)`
+const StyledWrapper = styled(Box)`
+  position: fixed;
   height: 100vh;
   overflow-x: hidden;
   overflow-y: scroll;

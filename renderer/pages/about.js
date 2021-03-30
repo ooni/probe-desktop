@@ -16,7 +16,6 @@ import {
   Flex,
   Text,
   Box,
-  Code,
   theme
 } from 'ooni-components'
 
@@ -26,7 +25,7 @@ import styled from 'styled-components'
 
 import { version } from '../../package.json'
 
-const CodeWithWrap = styled(Code)`
+const CodeWithWrap = styled.code`
   word-wrap: break-word;
   overflow-wrap: break-word;
 `

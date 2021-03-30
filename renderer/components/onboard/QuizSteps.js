@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { FormattedMessage } from 'react-intl'
 import Lottie from 'react-lottie-player'
 import {
-  Fixed,
   Heading,
   Flex,
   Box,
@@ -69,7 +68,7 @@ const QuizQuestion = ({qNum, question, onTrue, onFalse}) => (
       <Heading textAlign='center' h={3}>
         <FormattedMessage id='Onboarding.PopQuiz.Title' />
       </Heading>
-      <Divider borderColor='white' />
+      <Box as='hr' sx={{my: 3}} />
       <Heading textAlign='center' h={4} data-test-id='pop-quiz-question'>
         <FormattedMessage id={`Onboarding.PopQuiz.${qNum}.Title`} />
       </Heading>
@@ -202,7 +201,12 @@ class QuizSteps extends React.Component {
 
     return (
       <Modal show={true} bg={modalBg}>
-        <Fixed top right bottom left />
+        <Box sx={{
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0
+        }} />
         {(showOkayAnimation || showNopeAnimation) ? (
           showAnimation()
         ) : (

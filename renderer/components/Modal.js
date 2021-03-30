@@ -1,8 +1,8 @@
-import React from 'react'
-import { Fixed, Box } from 'ooni-components'
+import { Box } from 'ooni-components'
 import styled from 'styled-components'
 
-export const Modal = styled(Fixed)`
+export const Modal = styled(Box)`
+  position: fixed;
   z-index: 1001;
   max-width: 100vw;
   max-height: 100vh;
