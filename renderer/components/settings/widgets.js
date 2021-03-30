@@ -39,8 +39,10 @@ export const BooleanOption = ({ label, optionKey, disabled = false, ...rest }) =
   }, [setConfigValue])
 
   return (
-    <StyledLabel my={2} disabled={disabled}>
+    <StyledLabel my={2} disabled={disabled} alignItems='center'>
       <Checkbox
+        mr={1}
+        className='checkbox'
         checked={checked}
         onChange={handleChange}
         disabled={disabled}
@@ -150,8 +152,9 @@ export const AutorunCheckbox = ({ label, optionKey, disabled = false, ...rest })
   }, [])
 
   return (
-    <StyledLabel my={2} disabled={disabled || busy}>
+    <StyledLabel alignItems='center' my={2} disabled={disabled || busy}>
       <Checkbox
+        mr={1}
         checked={checked}
         onChange={handleChange}
         disabled={disabled || busy}

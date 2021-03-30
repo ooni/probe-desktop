@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Provider, theme } from 'ooni-components'
+import { theme } from 'ooni-components'
+import { ThemeProvider } from 'styled-components'
 import { MatomoProvider, createInstance } from '@datapunt/matomo-tracker-react'
 import { ipcRenderer } from 'electron'
 
@@ -43,12 +44,12 @@ const Layout = ({ children, analytics = true }) => {
 
   return (
     <MatomoProvider value={matomoInstance}>
-      <Provider theme={theme}>
+      <ThemeProvider theme={theme}>
         <GlobalStyle />
         {analytics && <MatomoTracker />}
         {children}
         <AutorunConfirmation show={showPrompt} onClose={hideAutomaticTestPrompt} />
-      </Provider>
+      </ThemeProvider>
     </MatomoProvider>
   )
 }

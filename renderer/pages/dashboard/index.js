@@ -1,4 +1,4 @@
-/* global require */
+/* global */
 import React from 'react'
 import { Flex, Container } from 'ooni-components'
 import { useRouter } from 'next/router'
