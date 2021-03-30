@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Flex, Box, Container, Text, Heading, Button, Modal } from 'ooni-components'
-import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
 import { MdClose } from 'react-icons/md'
 

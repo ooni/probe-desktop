@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, Container, Flex, Button, Heading, Text } from 'ooni-components'
+import { Modal, Container, Flex, Button, Heading } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 import { MdClose } from 'react-icons/md'
 import { ipcRenderer } from 'electron'

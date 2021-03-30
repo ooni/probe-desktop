@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { useState, useMemo, useCallback } from 'react'
 import { FormattedMessage } from 'react-intl'
 import {
@@ -46,6 +47,12 @@ const CategoryEntry = ({ code, enabled, handleChange }) => {
   )
 }
 
+CategoryEntry.propTypes = {
+  code: PropTypes.any,
+  enabled: PropTypes.any,
+  handleChange: PropTypes.any
+}
+
 const StyledCategoryList = styled(Box)`
   height: 60vh;
   overflow-y: scroll;
@@ -66,6 +73,12 @@ const CategoryList = ({ availableCategoriesList, enabledCategories, handleChange
       ))}
     </StyledCategoryList>
   )
+}
+
+CategoryList.propTypes = {
+  availableCategoriesList: PropTypes.arrayOf(PropTypes.string),
+  enabledCategories: PropTypes.arrayOf(PropTypes.string),
+  handleChange: PropTypes.func
 }
 
 export const WebsiteCategoriesSelector = () => {
