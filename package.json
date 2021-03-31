@@ -147,6 +147,7 @@
     "remark-react": "^6.0.0",
     "spectron": "11.0.0",
     "styled-components": "5.1.1",
+    "stylis-plugin-rtl": "^1",
     "use-clipboard-copy": "^0.1.2",
     "webpack": "4.40.2"
   },

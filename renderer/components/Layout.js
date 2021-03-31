@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { theme } from 'ooni-components'
-import { ThemeProvider } from 'styled-components'
+import { StyleSheetManager, ThemeProvider } from 'styled-components'
+import stylisRTLPlugin from 'stylis-plugin-rtl'
 import { ipcRenderer } from 'electron'
 
 import GlobalStyle from './globalStyle'
@@ -31,9 +32,11 @@ const Layout = ({ children }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      {children}
-      <AutorunConfirmation show={showPrompt} onClose={hideAutomaticTestPrompt} />
+      <StyleSheetManager stylisPlugins={[stylisRTLPlugin]}>
+        <GlobalStyle />
+        {children}
+        <AutorunConfirmation show={showPrompt} onClose={hideAutomaticTestPrompt} />
+      </StyleSheetManager>
     </ThemeProvider>
   )
 }
