@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
-import { Flex, Box, theme } from 'ooni-components'
-import { Text } from 'rebass'
+import { Flex, Box, Text, theme } from 'ooni-components'
 import { Cross, Tick, NettestTor } from 'ooni-components/dist/icons'
 import { useTable, useSortBy } from 'react-table'
 import styled from 'styled-components'
@@ -139,8 +138,6 @@ const Table = ({ columns, data }) => {
         )}
       </tbody>
     </table>
-    /* eslint-enable react/js-key */
-
   )
 }
 

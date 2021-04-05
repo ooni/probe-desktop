@@ -1,10 +1,8 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
-import { Flex, Box } from 'ooni-components'
-import { Text } from 'rebass'
-import NettestRiseupVPN from './NettestRiseupVPN'
-// import { NettestRiseupVPN } from 'ooni-components/dist/icons'
+import { Flex, Box, Text } from 'ooni-components'
+import { NettestRiseupVPN } from 'ooni-components/dist/icons'
 
 import colorMap from '../../colorMap'
 import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'

@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { Text } from 'rebass'
 import {
   Container,
   Flex,
   Box,
   Heading,
+  Text,
   Button
 } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
@@ -27,6 +27,7 @@ import { Dash } from '../nettests/performance/Dash'
 import { Psiphon } from '../nettests/circumvention/Psiphon'
 import { Tor } from '../nettests/circumvention/Tor'
 import { RiseupVPN } from '../nettests/circumvention/RiseupVPN'
+import { Signal } from '../nettests/im/Signal'
 
 import FullHeightFlex from '../FullHeightFlex'
 import MethodologyButton from './MethodologyButton'
@@ -46,7 +47,8 @@ const detailsMap = {
   dash: Dash,
   psiphon: Psiphon,
   tor: Tor,
-  riseupvpn: RiseupVPN
+  riseupvpn: RiseupVPN,
+  signal: Signal
 }
 
 const HeroItemBox = ({ label, content, ...props }) => (
@@ -202,7 +204,7 @@ const MeasurementContainer = ({ measurement, isAnomaly }) => {
             <Flex flexDirection='column' >
               <Flex my={3} alignItems='center'>
                 <Box width={1/2}>
-                  <Text fontWeight='bold' is='span'>
+                  <Text fontWeight='bold' as='span'>
                     <FormattedMessage id='TestResults.Details.Hero.Runtime' />
                   </Text>
                   : {moment.duration(runtime * 1000).seconds()}s
