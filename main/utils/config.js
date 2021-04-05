@@ -5,7 +5,7 @@ const { ipcMain } = require('electron')
 
 const { getHomeDir, getAutorunHomeDir } = require('./paths')
 
-const LATEST_CONFIG_VERSION = 4
+const LATEST_CONFIG_VERSION = 5
 
 const OONI_CONFIG_PATH = path.join(getHomeDir(), 'config.json')
 
@@ -53,8 +53,6 @@ const initConfigFile = async (options) => {
     '_version': LATEST_CONFIG_VERSION,
     '_informed_consent': true,
     'sharing': {
-      'include_ip': false,
-      'include_asn': true,
       'upload_results': true
     },
     'nettests': {
@@ -65,7 +63,6 @@ const initConfigFile = async (options) => {
     'advanced': {
       'use_domain_fronting': false,
       'send_crash_reports': !opts.optout,
-      'collect_usage_stats': !opts.optout,
       'collector_url': '',
       'bouncer_url': 'https://bouncer.ooni.io'
     }
@@ -140,7 +137,16 @@ const getConfig = async (key = null) => {
   }
 }
 
+const hasOwnProperty = (object, property) => {
+  return Object.prototype.hasOwnProperty.call(object, property)
+}
+
 const migrationMap = {
+  // Note:
+  // * Before adding a new key, ensure it doesn't already exist in the file.
+  // * Before deleting a key, ensure the key actually exists in the file.
+  // * Before switching to a new default value, ensure the previous default wasn't changed
+
   '0->1': (config) => {
     config['_version'] = 1
     return config
@@ -167,17 +173,33 @@ const migrationMap = {
   },
   '3->4': (config) => {
     config['_version'] = 4
-    if (config['nettests'].hasOwnProperty('websites_url_limit')) {
+    if (hasOwnProperty(config['nettests'], 'websites_url_limit')) {
       delete config['nettests']['websites_url_limit']
     }
-    if (!config['nettests'].hasOwnProperty('websites_enable_max_runtime')) {
+    if (!hasOwnProperty(config['nettests'], 'websites_enable_max_runtime')) {
       config['nettests']['websites_enable_max_runtime'] = true
     }
-    if (!config['nettests'].hasOwnProperty('websites_max_runtime')) {
+    if (!hasOwnProperty(config['nettests'], 'websites_max_runtime')) {
       config['nettests']['websites_max_runtime'] = 90
     }
     return config
-  }
+  },
+  '4->5': (config) => {
+    config['_version'] = 5
+    // remove advanced.collect_usage_stats
+    if (hasOwnProperty(config['advanced'], 'collect_usage_stats')) {
+      delete config['advanced']['collect_usage_stats']
+    }
+    // remove sharing.include_ip
+    if (hasOwnProperty(config['sharing'], 'include_ip')) {
+      delete config['sharing']['include_ip']
+    }
+    // remove sharing.include_asn
+    if (hasOwnProperty(config['sharing'], 'include_asn')) {
+      delete config['sharing']['include_asn']
+    }
+    return config
+  },
 }
 
 const migrate = (config, currentVersion, targetVersion) => {
@@ -202,9 +224,12 @@ const maybeMigrate = async () => {
     log.error('config file from the future')
     return
   }
+  log.info('Config file version changed. Running migrations..')
   for (let ver = config['_version']; ver < LATEST_CONFIG_VERSION; ver++) {
+    log.debug(`Migrating from ${ver} to ${ver+1}`)
     config = migrate(config, ver, ver+1)
   }
+  log.debug('Config file migration completed. Writing config file to disk.')
   await fs.writeJson(OONI_CONFIG_PATH, config, {spaces: '  '})
 }
 
