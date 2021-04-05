@@ -2,8 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Box, Text } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
-import NettestSignal from './NettestSignal'
-// import { NettestSignal } from 'ooni-components/dist/icons'
+import { NettestSignal } from 'ooni-components/dist/icons'
 
 const Signal = ({ measurement, isAnomaly, render }) => {
 
