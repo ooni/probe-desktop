@@ -13,7 +13,7 @@ const MatomoTracker = () => {
       const remote = electron.remote
       const { getConfig } = remote.require('./utils/config')
       const config = await getConfig()
-      const collectAnalytics =  getConfigValue(config, 'advanced.collect_usage_stats')
+      const collectAnalytics =  config && getConfigValue(config, 'advanced.collect_usage_stats')
       collectAnalytics && instance && instance.trackPageView()
     }
 
