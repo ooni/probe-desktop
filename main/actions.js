@@ -1,7 +1,5 @@
 const { Ooniprobe } = require('./utils/ooni/ooniprobe')
-
 const log = require('electron-log')
-const debug = require('debug')('ooniprobe-desktop.main.actions')
 const Sentry = require('@sentry/electron')
 
 const hardReset = () => {
@@ -31,7 +29,7 @@ const listMeasurements = (resultID) => {
         summary = data.fields
         break
       default:
-        debug('extra fields', data.fields)
+        log.debug('extra fields', data.fields)
       }
     })
 
@@ -39,7 +37,7 @@ const listMeasurements = (resultID) => {
     ooni
       .call(['list', resultID])
       .then(() => {
-        debug('returning list', resultID, rows, summary)
+        log.debug('returning list', resultID, rows, summary)
         resolve({
           rows,
           summary,
@@ -78,7 +76,7 @@ const listResults = () => {
         summary = data.fields
         break
       default:
-        debug('extra data.fields', data.fields)
+        log.debug('extra data.fields', data.fields)
       }
     })
 
@@ -105,7 +103,7 @@ const showMeasurement = (msmtID) => {
   return new Promise((resolve, reject) => {
     ooni.on('data', (data) => {
       if (data.level === 'error') {
-        debug('error: ', data.message)
+        log.debug('error: ', data.message)
         Sentry.addBreadcrumb({
           category: 'actions',
           message: data.message,
@@ -121,14 +119,14 @@ const showMeasurement = (msmtID) => {
         break
       default:
         log.error('showMeasurement: extra data.fields', data.fields)
-        debug('extra data.fields', data.fields)
+        log.debug('extra data.fields', data.fields)
       }
     })
 
     ooni
       .call(['show', msmtID])
       .then(() => {
-        debug(`showing measurement: ${msmtID}`)
+        log.debug(`showing measurement: ${msmtID}`)
         resolve(measurement)
       })
       .catch(err => reject(err))
