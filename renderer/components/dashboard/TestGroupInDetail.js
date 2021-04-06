@@ -21,6 +21,11 @@ const BoldButton = styled(Button)`
   font-weight: bolder;
 `
 
+const InvertedBoldButton = styled(BoldButton)`
+  color: ${props => props.theme.colors.white};
+  border-color: ${props => props.theme.colors.white};
+`
+
 const TestGroupInDetail = ({ onRun, testGroup }) => {
   const { name, icon, longDescription, color, estimatedSize, estimatedTimeInSec } = testGroups[testGroup]
   const router = useRouter()
@@ -54,9 +59,9 @@ const TestGroupInDetail = ({ onRun, testGroup }) => {
                 <FormattedMessage id='Dashboard.Overview.Run' />
               </BoldButton>
               {isWebsites && (
-                <BoldButton hollow inverted ml={3} onClick={onChooseWebsites}>
+                <InvertedBoldButton hollow ml={3} onClick={onChooseWebsites}>
                   <FormattedMessage id='Dashboard.Overview.ChooseWebsites' />
-                </BoldButton>
+                </InvertedBoldButton>
               )}
             </Flex>
             <Divider my={2} />
