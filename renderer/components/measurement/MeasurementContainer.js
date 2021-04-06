@@ -87,7 +87,6 @@ const StickyHeader = styled(Box)`
 const Hero = ({
   isAnomaly,
   bg,
-  testName,
   startTime,
   networkName,
   asn,
@@ -113,7 +112,7 @@ const Hero = ({
           <Box width={1}>
             <HeroLineItem size={60}>{heroIcon}</HeroLineItem>
             <HeroLineItem size={24} fontWeight={900}>{heroTitle}</HeroLineItem>
-            <HeroLineItem size={16}>{heroSubtitle}</HeroLineItem>
+            {heroSubtitle && <HeroLineItem size={16}>{heroSubtitle}</HeroLineItem>}
           </Box>
           <Box width={1}>
             <Flex flexWrap='wrap' alignItems='center'>
@@ -133,6 +132,18 @@ const Hero = ({
       )}
     </Flex>
   )
+}
+
+Hero.propTypes = {
+  asn: PropTypes.number,
+  bg: PropTypes.string,
+  hero: PropTypes.node,
+  heroIcon: PropTypes.node,
+  heroSubtitle: PropTypes.node,
+  heroTitle: PropTypes.node,
+  isAnomaly: PropTypes.bool,
+  networkName: PropTypes.string,
+  startTime: PropTypes.string
 }
 
 const MeasurementDetailContainer = ({ measurement, ...props }) => {
@@ -190,7 +201,6 @@ const MeasurementContainer = ({ measurement, isAnomaly }) => {
           <Hero
             isAnomaly={isAnomaly}
             bg={heroBG || backgroundColor}
-            testName={testName}
             startTime={startTime}
             networkName={networkName}
             asn={asn}
