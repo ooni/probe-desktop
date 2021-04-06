@@ -25,7 +25,7 @@ const Onboard = () => {
   }, [])
 
   return (
-    <Layout analytics={false}>
+    <Layout>
       <SectionContainer>
         <Sections
           onGo={onGo}

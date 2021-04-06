@@ -1460,18 +1460,6 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@datapunt/matomo-tracker-js@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@datapunt/matomo-tracker-js/-/matomo-tracker-js-0.1.1.tgz#629cf786624c18e48f15e9e6f138b3ecbc955de1"
-  integrity sha512-9pwfiWSokCn/5Cs1loRr9dtpzoGUPippWbUucl1XCq55vwmcWbW1nZM0Wo0ZSYA4IIm/KShXAELT6f7nPt+EqA==
-
-"@datapunt/matomo-tracker-react@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@datapunt/matomo-tracker-react/-/matomo-tracker-react-0.1.1.tgz#6b8a6e0d40f8e7fc5f677b0356729f7a994b9f00"
-  integrity sha512-KURr5+b0Pt0rp8O8FU8bB3XuesP1BhIn9+ekA6tKPPyZuDClAm0+6k7o9r6cQbHztedsEMkXfRNdMDrj5Z/x4Q==
-  dependencies:
-    "@datapunt/matomo-tracker-js" "^0.1.1"
-
 "@develar/schema-utils@~2.6.5":
   version "2.6.5"
   resolved "https://registry.yarnpkg.com/@develar/schema-utils/-/schema-utils-2.6.5.tgz#3ece22c5838402419a6e0425f85742b961d9b6c6"

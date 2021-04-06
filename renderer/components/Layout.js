@@ -2,26 +2,13 @@ import React, { useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { theme } from 'ooni-components'
 import { ThemeProvider } from 'styled-components'
-import { MatomoProvider, createInstance } from '@datapunt/matomo-tracker-react'
 import { ipcRenderer } from 'electron'
 
 import GlobalStyle from './globalStyle'
-import MatomoTracker from './MatomoTracker'
 import { init as initSentry } from '../components/initSentry'
 import AutorunConfirmation from './AutorunConfirmation'
 
-let matomoInstance
-
-if (typeof window !== 'undefined') {
-  matomoInstance = createInstance({
-    urlBase: 'https://matomo.ooni.org/',
-    siteId: 3, // optional, default value: `1`
-    trackerUrl: 'https://matomo.ooni.org/matomo.php',
-    srcUrl: 'https://matomo.ooni.org/matomo.js',
-  })
-}
-
-const Layout = ({ children, analytics = true }) => {
+const Layout = ({ children }) => {
   const [showPrompt, setShowPrompt] = useState(false)
   useEffect(() => {
     initSentry()
@@ -43,20 +30,16 @@ const Layout = ({ children, analytics = true }) => {
 
 
   return (
-    <MatomoProvider value={matomoInstance}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        {analytics && <MatomoTracker />}
-        {children}
-        <AutorunConfirmation show={showPrompt} onClose={hideAutomaticTestPrompt} />
-      </ThemeProvider>
-    </MatomoProvider>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      {children}
+      <AutorunConfirmation show={showPrompt} onClose={hideAutomaticTestPrompt} />
+    </ThemeProvider>
   )
 }
 
 Layout.propTypes = {
-  children: PropTypes.element.isRequired,
-  analytics: PropTypes.bool
+  children: PropTypes.element.isRequired
 }
 
 export default Layout

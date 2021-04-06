@@ -94,10 +94,6 @@ const Settings = () => {
                 optionKey='sharing.upload_results'
               />
               <BooleanOption
-                label={<FormattedMessage id='Settings.Privacy.CollectAnalytics' />}
-                optionKey='advanced.collect_usage_stats'
-              />
-              <BooleanOption
                 label={<FormattedMessage id='Settings.Privacy.SendCrashReports' />}
                 optionKey='advanced.send_crash_reports'
               />
