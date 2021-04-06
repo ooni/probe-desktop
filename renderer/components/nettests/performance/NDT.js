@@ -44,9 +44,9 @@ const NDT = ({measurement, render}) => {
     }
   }, [rawData])
 
-  const NDTHero = (
+  const NDTTitle = (
     <Box width={1}>
-      <Flex flexWrap='wrap' mx={4} my={4} alignItems='center'>
+      <Flex flexWrap='wrap' alignItems='center'>
         <Box width={1/2} my={3}>
           <StatusBox
             label={<FormattedMessage id='TestResults.Details.Performance.NDT.Download' />}
@@ -61,6 +61,27 @@ const NDT = ({measurement, render}) => {
             ok={true}
           />
         </Box>
+      </Flex>
+    </Box>
+  )
+
+  const NDTdetails = () => (
+    <Box width={1}>
+      <Flex alignItems='center' my={4}>
+        <Box width={1/2}>
+          <StatusBox
+            label={<FormattedMessage id='TestResults.Details.Performance.NDT.AveragePing' />}
+            value={avg_rtt}
+          />
+        </Box>
+        <Box width={1/2}>
+          <StatusBox
+            label={<FormattedMessage id='TestResults.Details.Performance.NDT.MSS' />}
+            value={mss}
+          />
+        </Box>
+      </Flex>
+      <Flex alignItems='center' my={4}>
         <Box width={1/2}>
           <StatusBox
             label={<FormattedMessage id='TestResults.Details.Performance.NDT.Ping' />}
@@ -81,31 +102,14 @@ const NDT = ({measurement, render}) => {
     </Box>
   )
 
-  const NDTetails = () => (
-    <Box width={1}>
-      <Flex flexWrap='wrap' alignItems='center' my={4}>
-        <Box width={1/2} my={4}>
-          <StatusBox
-            label={<FormattedMessage id='TestResults.Details.Performance.NDT.AveragePing' />}
-            value={avg_rtt}
-          />
-        </Box>
-        <Box width={1/2}>
-          <StatusBox
-            label={<FormattedMessage id='TestResults.Details.Performance.NDT.MSS' />}
-            value={mss}
-          />
-        </Box>
-      </Flex>
-    </Box>
-  )
-
   return (
     <div>
       {render({
-        hero: NDTHero,
+        heroIcon: <div />,
         heroBG: performanceTestGroup.color,
-        details: <NDTetails />
+        heroTitle: NDTTitle,
+        heroSubtitle: null,
+        details: <NDTdetails />
       })}
     </div>
   )
