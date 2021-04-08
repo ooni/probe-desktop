@@ -17,12 +17,19 @@ const MzAddUrlButton = React.memo(AddUrlButton)
 const listReducer = (list, { type, value }) => {
   switch (type) {
   case 'add':
-    return [...list, value]
+    return [...list, { url: value.url }]
   case 'remove':
     return list.filter((i, idx) => idx !== value)
   case 'update':
     var updatedList = [...list]
-    updatedList[value.idx] = value.url
+    var update = {...updatedList[value.idx]}
+    if (value.hasError === undefined) {
+      update.url = value.url
+    } else {
+      update.hasError = value.hasError
+      update.error = value.error
+    }
+    updatedList[value.idx] = update
     return updatedList
   default:
     return list
@@ -33,7 +40,7 @@ const init = (incomingList) => {
   if (incomingList && Array.isArray(incomingList) && incomingList.length > 0) {
     return incomingList
   }
-  return ['']
+  return [{ url: ''}]
 }
 
 const UrlList = ({ incomingList = [] }) => {
@@ -42,7 +49,7 @@ const UrlList = ({ incomingList = [] }) => {
 
   const runTest = useCallback(() => {
     // generate file
-    ipcRenderer.send(inputFileRequest, testList.join('\n'))
+    ipcRenderer.send(inputFileRequest, testList.map(x => x.url).join('\n'))
     // send file to ooniprobe run websites --input-file <file-name>
   }, [testList])
 
@@ -76,12 +83,12 @@ const UrlList = ({ incomingList = [] }) => {
   //   []
   // )
 
-  const onUpdateUrl = useCallback((idx, url) => {
-    dispatch({type: 'update', value: { idx, url }})
+  const onUpdateUrl = useCallback((idx, url, hasError, error) => {
+    dispatch({type: 'update', value: { idx, url, hasError, error }})
   }, [dispatch])
 
   const onAddUrl = useCallback((idx, url) => {
-    dispatch({type: 'add', value: url })
+    dispatch({type: 'add', value: { url } })
   }, [dispatch])
 
   const onRemoveUrl = useCallback((idx) => {
@@ -97,15 +104,20 @@ const UrlList = ({ incomingList = [] }) => {
     // .focus() needs refs which aren't passed down well by ooni-components@0.3.x
   }, [testList.length])
 
+  const notReady = testList.length === 0 || testList.reduce((acc, { hasError }) => {
+    return acc || hasError
+  }, false)
+
   return (
     <Flex flexDirection='column'>
       <Box>
-        {testList.map((url, idx) => (
+        {testList.map(({ url, error }, idx) => (
           <URL
             key={idx} idx={idx} url={url}
             onUpdate={onUpdateUrl}
             onRemove={testList.length > 1 ? onRemoveUrl : null}
             onKeyEnter={onKeyEnter}
+            error={error}
           />
         ))}
       </Box>
@@ -113,7 +125,7 @@ const UrlList = ({ incomingList = [] }) => {
         <MzAddUrlButton onClick={onAddUrl} />
       </Box>
       <Box my={4}>
-        <Button onClick={runTest}>
+        <Button onClick={runTest} disabled={notReady}>
           <FormattedMessage id='Settings.Websites.CustomURL.Run' />
         </Button>
       </Box>

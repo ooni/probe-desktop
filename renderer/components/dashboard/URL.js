@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Box, Input, Button } from 'ooni-components'
@@ -42,28 +42,76 @@ const RemoveButton = styled(Button)`
   }
 `
 
-const URL = ({ idx, url, onUpdate, onRemove, onKeyEnter }) => {
+
+const URL = ({ idx, url, error, onUpdate, onRemove, onKeyEnter }) => {
+  const [dirty, setDirty] = useState(false)
   const onChange = useCallback((e) => {
     onUpdate(idx, e.target.value)
-  }, [onUpdate])
+
+    // Also start validting one the field is dirty
+    // this lets UrlList to make the Run button active as soon as an error is fixed
+    function alsoValidate() {
+      const { hasError, error } = validateURL(e.target.value)
+      onUpdate(idx, e.target.value, hasError, error)
+    }
+
+    dirty && alsoValidate()
+  }, [idx, dirty, onUpdate, validateURL])
+
   const onDelete = useCallback(() => {
     onRemove(idx)
-  }, [onRemove])
+  }, [idx, onRemove])
+
   const onKeyPress = useCallback((e) => {
     if (e.key === 'Enter') {
       onKeyEnter(idx)
     }
-  }, [onKeyEnter])
+  }, [idx, onKeyEnter])
+
+  const onBlur = useCallback((e) => {
+    if (!dirty) {
+      setDirty(true)
+    }
+    const { hasError, error } = validateURL(e.target.value)
+    onUpdate(idx, e.target.value, hasError, error)
+  }, [idx, dirty, validateURL, onUpdate])
+
+  const validateURL = useCallback((input) => {
+    let hasError = false
+    let error = ''
+    const protocolRegex = /^(?:http)s?:\/\//i
+    // Regular expression to test for valid URLs based on
+    // https://github.com/citizenlab/test-lists/blob/master/scripts/lint-lists.py#L18
+    const inputRegex = /^(?:http)s?:\/\/(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d+)?(?:\/?|[/?]\S+)$/i
+
+    if (input.trim() === '') {
+      hasError = true
+      error = 'Cannot be empty'
+    } else if (!protocolRegex.test(input)) {
+      hasError = true
+      error = 'Has to start with https:// or http://'
+    } else if (!inputRegex.test(input)) {
+      hasError = true
+      error = 'Not a valid URL format'
+    }
+    return {
+      hasError,
+      error
+    }
+  }, [])
 
   return (
     <URLBox my={3}>
       <URLInput
         id={idx}
         name={idx}
+        spellCheck={false}
         placeholder='https://'
         value={url}
         onChange={onChange}
+        onBlur={onBlur}
         onKeyPress={onKeyPress}
+        error={error}
       />
       <label htmlFor={idx}>
         <FormattedMessage id='Settings.Websites.CustomURL.URL' />
@@ -80,6 +128,8 @@ const URL = ({ idx, url, onUpdate, onRemove, onKeyEnter }) => {
 URL.propTypes = {
   idx: PropTypes.number.isRequired,
   url: PropTypes.string,
+  error: PropTypes.string,
+  onKeyEnter: PropTypes.func,
   onUpdate: PropTypes.func,
   onRemove: PropTypes.func
 }

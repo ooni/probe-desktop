@@ -21,14 +21,14 @@ const TestChosenWebsites = () => {
   const router = useRouter()
 
   const { testList } = router.query
-  const validTestList = Array.isArray(testList) && testList.filter((item) => {
+  const validTestList = Array.isArray(testList) ? testList.filter((item) => {
     try {
       new URL(item)
       return true
     } catch (e) {
       return false
     }
-  })
+  }) : null
 
   return (
     <Layout>
