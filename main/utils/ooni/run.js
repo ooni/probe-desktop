@@ -15,14 +15,15 @@ class Runner {
   }
 
   kill() {
-    if (this.maxRuntimeTimer) {
-      clearTimeout(this.maxRuntimeTimer)
-      clearInterval(this.etaReportInterval)
-      this.maxRuntimeTimer = null
-      this.etaReportInterval = null
+    try {
+      if(process.kill(this.ooni.ooni.pid, 0)) {
+        log.info('Runner: terminating the ooniprobe process')
+        return this.ooni.kill()
+      }
+    } catch (e) {
+      log.debug(`Failed to find a running ooniprobe process to kill. code: ${e.code}`)
     }
-    log.info('Runner: terminating the ooniprobe process')
-    return this.ooni.kill()
+
   }
 
   getTimeLeftInTimer() {
@@ -98,6 +99,15 @@ class Runner {
         key: 'log',
         value: logMessage
       })
+    })
+
+    this.ooni.on('exit', (/* code */) => {
+      if (this.maxRuntimeTimer) {
+        clearTimeout(this.maxRuntimeTimer)
+        clearInterval(this.etaReportInterval)
+        this.maxRuntimeTimer = null
+        this.etaReportInterval = null
+      }
     })
 
     this.maybeStartMaxRuntimeTimer()

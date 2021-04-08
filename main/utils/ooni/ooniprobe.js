@@ -123,6 +123,7 @@ class Ooniprobe extends EventEmitter {
 
       self.ooni.on('exit', code => {
         log.debug(`Running 'ooniprobe ${argv.join(' ')}' exited with code: ${code}`)
+        self.emit('exit', code)
         // code === null means the process was killed
         if (code === 0 || code === null) {
           resolve()
