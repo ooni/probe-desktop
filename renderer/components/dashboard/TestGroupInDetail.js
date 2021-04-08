@@ -22,8 +22,12 @@ const BoldButton = styled(Button)`
 `
 
 const InvertedBoldButton = styled(BoldButton)`
-  color: ${props => props.theme.colors.white};
-  border-color: ${props => props.theme.colors.white};
+color: ${props => props.theme.colors.gray2};
+border-color: ${props => props.theme.colors.gray2};
+  &:hover:enabled {
+    color: white;
+    border-color: white;
+  }
 `
 
 const TestGroupInDetail = ({ onRun, testGroup }) => {
