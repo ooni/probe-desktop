@@ -104,8 +104,8 @@ const UrlList = ({ incomingList = [] }) => {
     // .focus() needs refs which aren't passed down well by ooni-components@0.3.x
   }, [testList.length])
 
-  const notReady = testList.length === 0 || testList.reduce((acc, { hasError }) => {
-    return acc || hasError
+  const notReady = testList[0]?.url.length === 0 || testList.reduce((acc, { hasError }) => {
+    return acc || (typeof hasError !== 'undefined' ? hasError : true)
   }, false)
 
   return (
