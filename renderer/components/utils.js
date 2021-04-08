@@ -1,4 +1,3 @@
-/* global require */
 import log from 'electron-log'
 
 export const openInBrowser = (url, event) => {
