@@ -127,7 +127,7 @@
     "jest": "^25.3.0",
     "moment-range": "^4.0.2",
     "next": "^10.0.3",
-    "ooni-components": "^0.4.5",
+    "ooni-components": "^0.4.6",
     "os-locale": "^5.0.0",
     "prop-types": "15.7.2",
     "raven-js": "^3.27.2",
