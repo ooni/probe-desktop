@@ -31,13 +31,13 @@ const Layout = ({ children }) => {
 
 
   return (
-    <ThemeProvider theme={theme}>
-      <StyleSheetManager stylisPlugins={[stylisRTLPlugin]}>
+    <StyleSheetManager stylisPlugins={[stylisRTLPlugin]}>
+      <ThemeProvider theme={theme}>
         <GlobalStyle />
         {children}
         <AutorunConfirmation show={showPrompt} onClose={hideAutomaticTestPrompt} />
-      </StyleSheetManager>
-    </ThemeProvider>
+      </ThemeProvider>
+    </StyleSheetManager>
   )
 }
 
