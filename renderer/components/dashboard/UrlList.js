@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useReducer } from 'react'
+import React, { useCallback, useEffect, useReducer, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import { Flex, Box, Button } from 'ooni-components'
 import { ipcRenderer } from 'electron'
 import { FormattedMessage } from 'react-intl'
+import isURL from 'validator/lib/isURL'
 // import debounce from 'lodash.debounce'
 
 const inputFileRequest = 'fs.write.request'
@@ -46,6 +47,26 @@ const init = (incomingList) => {
 const UrlList = ({ incomingList = [] }) => {
   const router = useRouter()
   const [testList, dispatch] = useReducer(listReducer, incomingList, init)
+  const [isError,setError] = useState(false);
+
+  // options for checking url using validator
+  let options = {
+    protocols: [
+        'http',
+        'https',
+        'ftp'
+    ],
+    require_tld: true,
+    require_protocol: true,
+    require_host: true,
+    require_valid_protocol: true,
+    allow_underscores: false,
+    host_whitelist: false,
+    host_blacklist: false,
+    allow_trailing_dot: false,
+    allow_protocol_relative_urls: false,
+    disallow_auth: false
+  }
 
   const runTest = useCallback(() => {
     // generate file
@@ -95,10 +116,14 @@ const UrlList = ({ incomingList = [] }) => {
     dispatch({type: 'remove', value: idx })
   }, [dispatch])
 
-  const onKeyEnter = useCallback((idx) => {
+  const onKeyEnter = useCallback((idx, url) => {
     // if pressed in the last entry, then add a new entry
-    if (idx === testList.length - 1) {
+    if (idx === testList.length - 1 && isURL(url, options)) {
       dispatch({ type: 'add', value: '' })
+      setError(false)
+    }
+    else{
+      setError(true)
     }
     // else send focus to the next one
     // .focus() needs refs which aren't passed down well by ooni-components@0.3.x
@@ -121,6 +146,7 @@ const UrlList = ({ incomingList = [] }) => {
           />
         ))}
       </Box>
+      {isError? <span style={{color: "red"}}>Please enter a valid URL</span>: <span> </span>}
       <Box my={4}>
         <MzAddUrlButton onClick={onAddUrl} />
       </Box>

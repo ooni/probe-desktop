@@ -64,7 +64,7 @@ const URL = ({ idx, url, error, onUpdate, onRemove, onKeyEnter }) => {
 
   const onKeyPress = useCallback((e) => {
     if (e.key === 'Enter') {
-      onKeyEnter(idx)
+      onKeyEnter(idx, e.target.value)
     }
   }, [idx, onKeyEnter])
 
@@ -111,7 +111,7 @@ const URL = ({ idx, url, error, onUpdate, onRemove, onKeyEnter }) => {
         onChange={onChange}
         onBlur={onBlur}
         onKeyPress={onKeyPress}
-        error={error}
+        // error={error}
       />
       <label htmlFor={idx}>
         <FormattedMessage id='Settings.Websites.CustomURL.URL' />
