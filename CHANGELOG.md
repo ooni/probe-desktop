@@ -1,5 +1,31 @@
 # Changelog
 
+## OONI Probe Desktop 3.4.0 [2021-04-19]
+
+probe-cli: 3.9.2
+
+### Added
+* Feature: Signal test added under the `Instant Messaging` card.
+* Choose websites screen now validates custom URLs entered by user.
+
+### Fixed
+* Fix `<Button>` styling that showed a default outline when clicked.
+* Lint warnings.
+
+### Changed
+* Upgraded `electron` to `v11.0.0`. Pinned to that version because `v11.1.0` uses `webdriverio v6` which has breaking changes to its API.
+* Updated dependencies: `ooni-components`, `styled-components`, `rebass`
+* Pin to `styled-components@v5.1.1` because 5.2.x introduces this bug: styled-components/styled-components#3273
+* Use `Modal` component from `ooni-components` instead of the forked one in the repo.
+* Moved icons for Signal and RiseupVPN tests to `ooni-comopnents`
+
+### Removed
+* Settings option for usage analytics, sharing IP and network information. Added config migration to adjust config files after update.
+* Removed integration with Matomo for analytics.
+
+### Security
+* Dependabot version bumps for `y18n`
+
 ## OONI Probe Desktop 3.3.0 [2021-03-19]
 
 probe-cli: 3.8.0
