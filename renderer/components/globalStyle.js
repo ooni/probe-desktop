@@ -14,13 +14,10 @@ const SourceCodeProRegular = '/static/fonts/SourceCodePro-Regular.woff'
 
 const GlobalStyle = createGlobalStyle`
   body, html {
+    direction: ltr; /* this is flipped by stylis-plugin-rtl */
     margin: 0;
     font-family: "Fira Sans";
     -webkit-font-smoothing: antialiased;
-  }
-
-  main, main > div {
-    min-height: 100vh;
   }
 
   @font-face {

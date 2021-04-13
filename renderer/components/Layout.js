@@ -4,10 +4,13 @@ import { theme } from 'ooni-components'
 import { StyleSheetManager, ThemeProvider } from 'styled-components'
 import stylisRTLPlugin from 'stylis-plugin-rtl'
 import { ipcRenderer } from 'electron'
+import { useIntl } from 'react-intl'
 
 import GlobalStyle from './globalStyle'
 import { init as initSentry } from '../components/initSentry'
 import AutorunConfirmation from './AutorunConfirmation'
+
+const localesWithRTL = ['ar', 'fa']
 
 const Layout = ({ children }) => {
   const [showPrompt, setShowPrompt] = useState(false)
@@ -29,9 +32,11 @@ const Layout = ({ children }) => {
     setShowPrompt(false)
   }, [setShowPrompt])
 
+  const { locale } = useIntl()
+  const isRTL = localesWithRTL.includes(locale)
 
   return (
-    <StyleSheetManager stylisPlugins={[stylisRTLPlugin]}>
+    <StyleSheetManager stylisPlugins={isRTL ? [stylisRTLPlugin] : []}>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         {children}

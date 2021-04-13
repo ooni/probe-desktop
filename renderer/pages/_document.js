@@ -23,7 +23,7 @@ class CustomDocument extends Document {
         <Head>
           {this.props.styleTags}
         </Head>
-        <body dir='rtl'>
+        <body>
           <div className='root'>
             <Main />
           </div>

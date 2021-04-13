@@ -1,7 +1,6 @@
-/* global process */
 import React from 'react'
 import styled from 'styled-components'
-import { withRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import {
   Text,
   Flex,
@@ -45,8 +44,8 @@ const ColoredStrip = styled.span`
   bottom: 0px;
 `
 
-const NavItem = ({href, icon, label, currentUrl}) => {
-  const isActive = currentUrl.pathname === href
+const NavItem = ({href, icon, label, pathName}) => {
+  const isActive = pathName === href
   return (
     <StyledNavItem isActive={isActive}>
       <Link href={href}>
@@ -79,63 +78,64 @@ const navigationPaths = {
   }
 }
 
-const WindowContainer = styled.div``
-
-const SidebarContainer = styled(Flex)`
-  padding-top: 50px;
+const SidebarContainer = styled(Box)`
   background-color: ${props => props.theme.colors.gray1};
   border-right: 1px solid ${props => props.theme.colors.gray3};
-  width: 220px;
-  height: 100%;
-  position: fixed;
-  z-index: 70;
-  top: 0;
-  left: 0;
-  /* This makes it possible to drag the window around from the side bar */
+  /* This makes it poss'ible to drag the window around from the side bar */
   -webkit-app-region: drag;
+  height: 100vh;
 `
 
-const MainContainer = styled.div`
-  margin-left: 220px;
+const MainContainer = styled(Box)`
 `
 
 const StyledOONILogo = styled(OONILogo)`
   fill: ${props => props.theme.colors.gray5};
 `
 
-export const Sidebar = ({children, router}) => (
-  <WindowContainer>
-    <SidebarContainer data-id='sidebar' flexDirection='column' justifyContent='space-between'>
-      <Box>
-        {Object.keys(navigationPaths).map((path, idx) => {
-          const info = navigationPaths[path]
-          return (
-            <NavItem
-              key={idx}
-              currentUrl={router}
-              href={path}
-              icon={info.icon}
-              label={info.name}
-            />
-          )
-        })}
-      </Box>
-      <Box pr={2}>
-        <Box pl={4}>
-          <StyledOONILogo />
-        </Box>
-        <Box mb={2}>
-          <Text fontSize={12} textAlign='right' color='gray7'>
-            {version}
-          </Text>
-        </Box>
-      </Box>
-    </SidebarContainer>
+export const Sidebar = ({ children }) => {
+  const { pathname } = useRouter()
+  return (
+    <Flex flexDirection='row'>
+      <SidebarContainer data-id='sidebar' width={1/5}>
+        <Flex flexDirection='column' justifyContent='space-between' pt='50px'
+          sx={{
+            position: 'fixed',
+            height: '100vh',
+          }}
+        >
+          <Box>
+            {Object.keys(navigationPaths).map((path, idx) => {
+              const info = navigationPaths[path]
+              return (
+                <NavItem
+                  key={idx}
+                  pathName={pathname}
+                  href={path}
+                  icon={info.icon}
+                  label={info.name}
+                />
+              )
+            })}
+          </Box>
+          <Box pr={2}>
+            <Box pl={4}>
+              <StyledOONILogo />
+            </Box>
+            <Box mb={2}>
+              <Text fontSize={12} textAlign='right' color='gray7'>
+                {version}
+              </Text>
+            </Box>
+          </Box>
+        </Flex>
+      </SidebarContainer>
 
-    <MainContainer>
-      {children}
-    </MainContainer>
+      <MainContainer width={4/5}>
+        {children}
+      </MainContainer>
 
-  </WindowContainer>
-)
-export default withRouter(Sidebar)
+    </Flex>
+  )
+}
+export default Sidebar
