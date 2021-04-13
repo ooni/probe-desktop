@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import {
@@ -12,6 +13,7 @@ import OONILogo from 'ooni-components/components/svgs/logos/Probe-HorizontalMono
 import { MdWeb, MdHistory } from 'react-icons/md'
 import { FaCog } from 'react-icons/fa'
 
+import NoRTLFlip from './NoRTLFlip'
 import { version } from '../../package.json'
 
 const StyledNavItem = styled.div`
@@ -63,6 +65,13 @@ const NavItem = ({href, icon, label, pathName}) => {
   )
 }
 
+NavItem.propTypes = {
+  href: PropTypes.string,
+  icon: PropTypes.element,
+  label: PropTypes.node,
+  pathName: PropTypes.string
+}
+
 const navigationPaths = {
   '/dashboard': {
     name: <FormattedMessage id='Dashboard.Tab.Label' />,
@@ -79,7 +88,6 @@ const navigationPaths = {
 }
 
 const SidebarContainer = styled(Box)`
-  background-color: ${props => props.theme.colors.gray1};
   border-right: 1px solid ${props => props.theme.colors.gray3};
   /* This makes it poss'ible to drag the window around from the side bar */
   -webkit-app-region: drag;
@@ -93,15 +101,15 @@ const StyledOONILogo = styled(OONILogo)`
   fill: ${props => props.theme.colors.gray5};
 `
 
-export const Sidebar = ({ children }) => {
+const Sidebar = ({ children }) => {
   const { pathname } = useRouter()
   return (
     <Flex flexDirection='row'>
       <SidebarContainer data-id='sidebar' width={1/5}>
-        <Flex flexDirection='column' justifyContent='space-between' pt='50px'
+        <Flex flexDirection='column' justifyContent='space-between' pt='50px' width={1/5} bg='gray1'
           sx={{
             position: 'fixed',
-            height: '100vh',
+            height: '100vh'
           }}
         >
           <Box>
@@ -123,9 +131,11 @@ export const Sidebar = ({ children }) => {
               <StyledOONILogo />
             </Box>
             <Box mb={2}>
-              <Text fontSize={12} textAlign='right' color='gray7'>
-                {version}
-              </Text>
+              <NoRTLFlip>
+                <Text fontSize={12} textAlign='right' color='gray7'>
+                  {version}
+                </Text>
+              </NoRTLFlip>
             </Box>
           </Box>
         </Flex>
@@ -137,5 +147,9 @@ export const Sidebar = ({ children }) => {
 
     </Flex>
   )
+}
+
+Sidebar.propTypes = {
+  children: PropTypes.element
 }
 export default Sidebar

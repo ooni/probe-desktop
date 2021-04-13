@@ -21,13 +21,18 @@ const debug = require('debug')('ooniprobe-desktop.renderer.components.dashboard.
 import { testList, cliTestKeysToGroups, testGroups } from '../nettests'
 import { StripedProgress } from './StripedProgress'
 import StopTestModal from '../ConfirmationModal'
+import NoRTLFlip from '../NoRTLFlip'
 
 const StyledRunningTest = styled.div`
   text-align: center;
   color: white;
+  /* This affects the <LineProgress> direction */
+  & .rc-progress-line  {
+    transform: scaleX(-1);
+  }
 `
 
-const CodeLogContainer = styled.div`
+const CodeLogContainer = styled(NoRTLFlip)`
   margin: 0 auto;
   width: 100%;
   height: 300px;
@@ -38,12 +43,12 @@ const CodeLogContainer = styled.div`
 `
 
 const Lines = styled(Text)`
-  padding-top: 20px;
-  padding-left: 20px;
+  padding-block-start: 20px;
+  padding-inline-start: 20px;
   color: white;
   font-family: monospace;
   white-space: pre;
-  text-align: left;
+  text-align: start;
 `
 
 const ToggleButtonContainer = styled(Flex)`
@@ -284,7 +289,7 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
   }, [testGroup.icon])
 
   // Use the locale used by react-intl to localize the ETA label ('un minuto')
-  const { locale } = useIntl()
+  const { locale, isRTL } = useIntl()
 
   const [showModal, setModalState] = useState(false)
 
@@ -332,7 +337,7 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
                   loop={true}
                   play={!isStopping}
                   animationData={testGroup['animation']}
-                  style={{ width: '300px', height: '300px', alignSelf: 'center' }}
+                  style={{ width: '300px', height: '300px', alignSelf: 'center', transform: `scaleX(${isRTL ? -1 : 1})` }}
                   rendererSettings={{
                     preserveAspectRatio: 'xMidYMid slice'
                   }}

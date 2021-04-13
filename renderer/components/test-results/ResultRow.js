@@ -36,6 +36,7 @@ const BorderedRow = styled.div`
 `
 
 const RightArrowStyled = styled(RightArrow)`
+  transform: scaleX(${props => props.theme.isRTL ? -1 : 1});
   ${BorderedRow}:hover & {
     color: ${props => props.theme.colors.gray6};
   }

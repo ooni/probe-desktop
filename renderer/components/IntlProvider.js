@@ -13,6 +13,8 @@ require('@formatjs/intl-displaynames/locale-data/en')
 // https://formatjs.io/docs/react-intl/components#rawintlprovider
 const cache = createIntlCache()
 
+const localesWithRTL = ['ar', 'fa']
+
 const IntlProvider = ({ children }) => {
   const systemLocale = getLocale()
   const [languageConfig] = useConfig('language')
@@ -35,6 +37,7 @@ const IntlProvider = ({ children }) => {
   // Insert method to set active Locale into the intl context
   // This will be available to components via the standard `useIntl` hook
   intl['setLocale'] = changeLocale
+  intl['isRTL'] = localesWithRTL.includes(activeLang)
 
   return (
     <RawIntlProvider value={intl}>

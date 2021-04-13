@@ -40,6 +40,7 @@ const BorderedFlex = styled(Flex)`
 `
 
 const RightArrowStyled = styled(RightArrow)`
+  transform: scaleX(${props => props.theme.isRTL ? -1 : 1});
   ${BorderedFlex}:hover & {
     color: ${props => props.theme.colors.gray6};
   }

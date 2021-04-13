@@ -14,10 +14,7 @@ const StyledWrapper = styled(Box)`
   overflow-y: scroll;
   background-color: ${props => props.theme.colors.gray1};
   z-index: 2;
-  left: 0;
   right: 0;
-  /* Since the sidebar has a higher z-index, this avoids an overlap with it */
-  margin-left: 220px;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -59,7 +56,10 @@ const RawDataContainer = ({ rawData, isOpen, onClose }) => {
       const {
         src
       } = this.props
+      // direction: ${props => props.theme.isRTL ? 'rtl' : 'ltr'};
       const StyledReactJsonContainer = styled.div`
+        /*! @noflip */
+        direction: ltr;
         .string-value {
           text-overflow: ellipsis;
           max-width: 800px;
@@ -107,7 +107,7 @@ const RawDataContainer = ({ rawData, isOpen, onClose }) => {
   }, [isOpen])
 
   return (
-    <AnimatedWrapper style={props}>
+    <AnimatedWrapper style={props} width={4/5}>
       <Flex flexDirection='column' flexWrap='wrap'>
         <StickyBox width={1} mb={2}>
           <Flex justifyContent='space-between' alignItems='center' bg='gray3'>

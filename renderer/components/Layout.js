@@ -10,7 +10,6 @@ import GlobalStyle from './globalStyle'
 import { init as initSentry } from '../components/initSentry'
 import AutorunConfirmation from './AutorunConfirmation'
 
-const localesWithRTL = ['ar', 'fa']
 
 const Layout = ({ children }) => {
   const [showPrompt, setShowPrompt] = useState(false)
@@ -32,12 +31,13 @@ const Layout = ({ children }) => {
     setShowPrompt(false)
   }, [setShowPrompt])
 
-  const { locale } = useIntl()
-  const isRTL = localesWithRTL.includes(locale)
+  // This flag activates the stylisRTLPlugin.
+  // It is also inserted into the theme context for any component to consume
+  const { isRTL } = useIntl()
 
   return (
     <StyleSheetManager stylisPlugins={isRTL ? [stylisRTLPlugin] : []}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={{...theme, isRTL}}>
         <GlobalStyle />
         {children}
         <AutorunConfirmation show={showPrompt} onClose={hideAutomaticTestPrompt} />
