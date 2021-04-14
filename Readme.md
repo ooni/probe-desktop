@@ -16,7 +16,7 @@
     alt="follow on Twitter"></a>
 </p>
 
-OONI Probe is free and open source software designed to measure internet
+OONI Probe is a free and open source software designed to measure internet
 censorship and other forms of network interference.
 
 [Click here to report a bug](https://github.com/ooni/probe/issues/new)
