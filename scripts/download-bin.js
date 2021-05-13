@@ -2,7 +2,7 @@
 
 const path = require('path')
 const { execSync } = require('child_process')
-const { ensureDirSync } = require('fs-extra')
+const { existsSync, ensureDirSync } = require('fs-extra')
 const pkgJson = require('../package.json')
 
 const probeVersion = pkgJson['probeVersion']
@@ -20,10 +20,16 @@ const download = () => {
     const tarballURL = `${baseURL}/${tarball}`
     const sig = `${tarball}.asc`
     const sigURL = `${tarballURL}.asc`
-    console.log(`downloading ${tarballURL}`)
-    execSync(`curl -#f -L -o ${dstDir}/${tarball} ${tarballURL}`)
-    execSync(`curl -#f -L -o ${dstDir}/${sig} ${sigURL}`)
+    if (existsSync(`${dstDir}/${tarball}`) === false) {
+      console.log(`Downloading ${tarball}`)
+      execSync(`curl -#f -L -o ${dstDir}/${tarball} ${tarballURL}`)
+    }
+    if (existsSync(`${dstDir}/${sig}`) === false) {
+      console.log(`Downloading ${sig}`)
+      execSync(`curl -#f -L -o ${dstDir}/${sig} ${sigURL}`)
+    }
     execSync(`gpg --verify ${dstDir}/${sig} ${dstDir}/${tarball}`)
+    ensureDirSync(`${dstDir}/${osarch}`)
     execSync(`cd ${dstDir}/${osarch} && tar xzf ../${tarball}`)
   }
 }
