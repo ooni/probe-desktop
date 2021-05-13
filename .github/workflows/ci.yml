@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - run: curls -fsSLO https://github.com/bassosimone.gpg
+      - run: curl -fsSLO https://github.com/bassosimone.gpg
       - run: gpg --import bassosimone.gpg
 
       - name: Setup Node.js
