@@ -15,7 +15,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - run: gpg --recv-keys 738877AA6C829F26A431C5F480B691277733D95B
+      - run: curls -fsSLO https://github.com/bassosimone.gpg
+      - run: gpg --import bassosimone.gpg
 
       - name: Setup Node.js
         uses: actions/setup-node@v1
