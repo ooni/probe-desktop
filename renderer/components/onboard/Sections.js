@@ -21,7 +21,6 @@ import { MdKeyboardArrowLeft } from 'react-icons/md'
  */
 
 import {
-  Text,
   Button,
   Box,
   Flex,
@@ -33,17 +32,6 @@ import FormattedMarkdownMessage from '../FormattedMarkdownMessage'
 import ExternalLink from '../ExternalLink'
 import Stepper from './Stepper'
 import QuizSteps from './QuizSteps'
-
-const ChangeLink = styled.a`
-  color: ${props => props.theme.colors.white};
-  cursor: pointer;
-  display: block;
-  text-align: center;
-  padding-top: 10px;
-  &:hover {
-    color: ${props => props.theme.colors.gray3};
-  }
-`
 
 const HeadsUpList = styled.li`
   margin-top: 20px;
