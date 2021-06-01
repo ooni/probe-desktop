@@ -1,4 +1,3 @@
-/* global require */
 import React, { useCallback } from 'react'
 
 import Router from 'next/router'
@@ -14,14 +13,9 @@ const SectionContainer = styled.div`
 
 const Onboard = () => {
 
-  const onGo = useCallback(async () => {
-    await ipcRenderer.invoke('config.onboard', {})
+  const onGo = useCallback(async (crashReportsOptIn) => {
+    await ipcRenderer.invoke('config.onboard', { crashReportsOptIn })
     Router.push('/dashboard')
-  }, [])
-
-  const onChange = useCallback(async () => {
-    await ipcRenderer.invoke('config.onboard', { optout: true })
-    Router.push('/settings')
   }, [])
 
   return (
@@ -29,7 +23,6 @@ const Onboard = () => {
       <SectionContainer>
         <Sections
           onGo={onGo}
-          onChange={onChange}
         />
       </SectionContainer>
     </Layout>

@@ -107,8 +107,8 @@ const ipcBindingsForMain = (ipcMain) => {
     }
   })
 
-  ipcMain.handle('config.onboard', async (event, { optout = false }) => {
-    await onboard({ optout })
+  ipcMain.handle('config.onboard', async (event, { crashReportsOptIn = false }) => {
+    await onboard({ crashReportsOptIn })
   })
 
   ipcMain.handle('autorun.schedule', async () => {

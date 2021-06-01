@@ -15,7 +15,7 @@ const lang = csvParse(readFileSync('./data/lang-en.csv'), {from: 2})
     if (messages.hasOwnProperty(id)) {
       throw new Error(`Duplicate message id: ${id}`)
     }
-    messages[id] = text
+    messages[id] = text.trim()
     return messages
   }, {})
 
