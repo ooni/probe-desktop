@@ -17,6 +17,7 @@ import { WebsiteCategoriesSelector } from '../components/settings/WebsiteCategor
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
 import { default as pkgJson } from '../../package.json'
+import FormattedMarkdownMessage from 'components/FormattedMarkdownMessage'
 
 const TopBar = styled.div`
   background-color: ${props => props.theme.colors.blue5};
@@ -85,7 +86,7 @@ const Settings = () => {
                 label={<FormattedMessage id='Settings.AutomatedTesting.RunAutomatically' />}
                 optionKey='autorun.enabled'
               />
-              <Text as='small'><em><FormattedMessage id='Settings.AutomatedTesting.RunAutomatically.Footer' /></em></Text>
+              <Text as='small'><em><FormattedMarkdownMessage id='Settings.AutomatedTesting.RunAutomatically.Footer' /></em></Text>
             </Section>
             {/* Privacy */}
             <Section title={<FormattedMessage id='Settings.Privacy.Label' />}>

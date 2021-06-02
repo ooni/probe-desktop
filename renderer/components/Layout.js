@@ -1,12 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { theme } from 'ooni-components'
-import { ThemeProvider } from 'styled-components'
+import { StyleSheetManager, ThemeProvider } from 'styled-components'
+import stylisRTLPlugin from 'stylis-plugin-rtl'
 import { ipcRenderer } from 'electron'
+import { useIntl } from 'react-intl'
 
 import GlobalStyle from './globalStyle'
 import { init as initSentry } from '../components/initSentry'
 import AutorunConfirmation from './AutorunConfirmation'
+
 
 const Layout = ({ children }) => {
   const [showPrompt, setShowPrompt] = useState(false)
@@ -28,13 +31,18 @@ const Layout = ({ children }) => {
     setShowPrompt(false)
   }, [setShowPrompt])
 
+  // This flag activates the stylisRTLPlugin.
+  // It is also inserted into the theme context for any component to consume
+  const { isRTL } = useIntl()
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      {children}
-      <AutorunConfirmation show={showPrompt} onClose={hideAutomaticTestPrompt} />
-    </ThemeProvider>
+    <StyleSheetManager stylisPlugins={isRTL ? [stylisRTLPlugin] : []}>
+      <ThemeProvider theme={{...theme, isRTL}}>
+        <GlobalStyle />
+        {children}
+        <AutorunConfirmation show={showPrompt} onClose={hideAutomaticTestPrompt} />
+      </ThemeProvider>
+    </StyleSheetManager>
   )
 }
 

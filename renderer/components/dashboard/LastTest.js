@@ -2,8 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { ipcRenderer } from 'electron'
 import { Text, Box } from 'ooni-components'
-import { useIntl, FormattedMessage } from 'react-intl'
-import moment from 'moment'
+import { useIntl, FormattedMessage, FormattedRelativeTime } from 'react-intl'
 
 const lastResultRequest = 'results.last.request'
 const lastResultResponse = 'results.last.response'
@@ -15,9 +14,10 @@ const LastTest = ({ testGroupName, ...rest }) => {
   const onLastResultResponse = useCallback((event, data) => {
     const { lastResult } = data
     if (lastResult) {
-      setLastTestTime(moment(lastResult).fromNow(false))
+      const diffInSeconds = (new Date() - new Date(lastResult)) / 1000
+      setLastTestTime(diffInSeconds)
     }
-  }, [intl])
+  }, [])
 
   useEffect(() => {
     ipcRenderer.send(lastResultRequest, { testGroupName })
@@ -26,13 +26,13 @@ const LastTest = ({ testGroupName, ...rest }) => {
     return () => {
       ipcRenderer.removeAllListeners(lastResultResponse)
     }
-  }, [onLastResultResponse])
+  }, [testGroupName, onLastResultResponse])
 
   return (
     <Box {...rest}>
       <Text as='span' mr={1}>
         <FormattedMessage id='Dashboard.Overview.LatestTest' />
-      </Text> {lastTestTime}
+      </Text> <FormattedRelativeTime value={-lastTestTime} updateIntervalInSeconds={600} />
     </Box>
   )
 }

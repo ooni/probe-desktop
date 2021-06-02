@@ -15,14 +15,19 @@ const StyledBackLink = styled.a`
     cursor: pointer;
     color: ${props => props.theme.colors.gray4};
   }
+  & > svg {
+    transform: scaleX(${props => props.theme.isRTL ? -1 : 1});
+  }
 `
 
 const BackButton = ({ onBack, size = 50 }) => {
   const router = useRouter()
   const routerBack = useCallback(() => {
     router.back()
-  })
+  }, [router])
+
   const onClick = onBack || routerBack
+
   return (
     <StyledBackLink onClick={onClick}>
       <MdKeyboardArrowLeft size={size} />
@@ -31,7 +36,8 @@ const BackButton = ({ onBack, size = 50 }) => {
 }
 
 BackButton.propTypes = {
-  onBack: PropTypes.func
+  onBack: PropTypes.func,
+  size: PropTypes.number
 }
 
 export default BackButton

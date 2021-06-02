@@ -93,7 +93,7 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
       </Box>
       <Box mt={3} mx='auto'>
         <NLink href='https://ooni.org/about/risks/' passHref>
-          <ExternalLink color='gray3'>Learn More</ExternalLink>
+          <ExternalLink color='gray3'><FormattedMessage id="Settings.About.Content.LearnMore" /></ExternalLink>
         </NLink>
       </Box>
     </Flex>
@@ -305,7 +305,7 @@ const Sections = ({ onGo }) => {
             <BackButtonContainer onClick={prevStep}>
               <Flex>
                 <Box><MdKeyboardArrowLeft size={20} /></Box>
-                <Box>Go Back</Box>
+                <Box><FormattedMessage id='Onboarding.PopQuiz.Wrong.Button.Back' /></Box>
               </Flex>
             </BackButtonContainer>
           }

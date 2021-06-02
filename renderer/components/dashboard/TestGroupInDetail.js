@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { Flex, Box, Heading, Button } from 'ooni-components'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, FormattedNumber, FormattedNumberParts } from 'react-intl'
 import styled from 'styled-components'
 import moment from 'moment'
 import { useRouter } from 'next/router'
@@ -36,7 +36,8 @@ const TestGroupInDetail = ({ onRun, testGroup }) => {
   const [maxRuntimeEnabled,] = useConfig('nettests.websites_enable_max_runtime')
   const [maxRuntime,] = useConfig('nettests.websites_max_runtime')
   const isWebsites =  testGroup === 'websites'
-  const estimatedTimeReadable = moment.duration(estimatedTimeInSec(maxRuntimeEnabled ? maxRuntime : 0), 'seconds').humanize()
+  const estimatedTime = estimatedTimeInSec(maxRuntimeEnabled ? maxRuntime : 0)
+  const [estimatedTimeValue, estimatedTimeUnit] = estimatedTime > 60 ? [estimatedTime / 60, 'minute'] : [estimatedTime, 'second']
 
   const onChooseWebsites = useCallback(() => {
     router.push('/dashboard/websites/choose')
@@ -71,8 +72,18 @@ const TestGroupInDetail = ({ onRun, testGroup }) => {
             <Divider my={2} />
             <Flex my={2}>
               <Box mr={3}>
-                <FormattedMessage id='Dashboard.Overview.Estimated' />
-                <strong> {estimatedSize} ~{estimatedTimeReadable}</strong>
+                <Flex>
+                  <FormattedMessage id='Dashboard.Overview.Estimated' />
+                  <Box fontWeight='bold' mr={2}>{estimatedSize}</Box>
+                  <Box fontWeight='bold' mr={2}>
+                    ~<FormattedNumber
+                      value={estimatedTimeValue}
+                      style='unit'
+                      unit={estimatedTimeUnit}
+                      unitDisplay='short'
+                    />
+                  </Box>
+                </Flex>
               </Box>
               <Box mr={3}>
                 <LastTest testGroupName={testGroup} />

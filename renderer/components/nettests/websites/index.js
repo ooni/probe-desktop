@@ -28,6 +28,6 @@ export default {
   description,
   longDescription,
   animation,
-  estimatedSize: '~ 8 MB',
+  estimatedSize: '~8 MB',
   estimatedTimeInSec: (maxRuntime) => Number(maxRuntime) !== 0 ? 30 + maxRuntime : 3600
 }
