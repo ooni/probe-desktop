@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { FormattedMessage } from 'react-intl'
@@ -113,122 +113,89 @@ Animation.propTypes = {
   onComplete: PropTypes.func
 }
 
-class QuizSteps extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      activeIdx: 0,
-      actuallyActive: false,
-      showOkayAnimation: false,
-      showNopeAnimation: false
-    }
-    this.nextStep = this.nextStep.bind(this)
-    this.onWrongAnswer = this.onWrongAnswer.bind(this)
-    this.onAnimatonComplete = this.onAnimatonComplete.bind(this)
-  }
+const QuizSteps = ({ questionList, actuallyList, onDone, onClose }) => {
+  const [currentStep, setCurrentStep] = useState(0)
+  const [actuallyActive, setActuallyActive] = useState(false)
+  const [showOkayAnimation, setShowOkayAnimation] = useState(false)
+  const [showNopeAnimation, setShowNopeAnimation] = useState(false)
 
-  nextStep() {
-    const { actuallyActive, activeIdx } = this.state
-    const { questionList } = this.props
-
+  const nextStep = useCallback(() => {
     // if continuing from wrong answer and all questions are answered
     const questionCount = questionList.length
-    if (actuallyActive === true && activeIdx >= (questionCount - 1)) {
-      return this.props.onDone()
+    if (actuallyActive === true && currentStep >= (questionCount - 1)) {
+      return onDone()
     }
 
+    setCurrentStep(currentStep + 1)
+    setActuallyActive(false)
     // if continuing after answering wrong, don't show okay animation
-    const showOkayAnimation = actuallyActive ? false : true
+    setShowOkayAnimation(!actuallyActive)
+  }, [actuallyActive, questionList, currentStep, onDone])
 
-    this.setState({
-      activeIdx: this.state.activeIdx + 1,
-      actuallyActive: false,
-      showOkayAnimation: showOkayAnimation
-    })
-  }
+  const onWrongAnswer = useCallback(() => {
+    setActuallyActive(true)
+    setShowNopeAnimation(true)
+  }, [])
 
-  onWrongAnswer() {
-    this.setState({
-      actuallyActive: true,
-      showNopeAnimation: true
-    })
-  }
-
-  onAnimatonComplete() {
-    const questionCount = this.props.questionList.length
-    this.setState({
-      showOkayAnimation: false,
-      showNopeAnimation: false
-    })
-    if (this.state.activeIdx >= questionCount) {
-      return this.props.onDone()
+  const onAnimatonComplete = useCallback(() => {
+    const questionCount = questionList.length
+    setShowOkayAnimation(false)
+    setShowNopeAnimation(false)
+    if (currentStep >= questionCount) {
+      return onDone()
     }
+  }, [currentStep, onDone, questionList.length])
+
+
+  const qNum = currentStep + 1,
+    questionText = questionList[currentStep],
+    actuallyText = actuallyList[currentStep]
+
+  const showAnimation = () => (
+    <Animation
+      okay={showOkayAnimation === true && showNopeAnimation === false}
+      onComplete={() => onAnimatonComplete()}
+    />
+  )
+
+  let modalBg = theme.colors.blue5
+  if (showOkayAnimation) {
+    modalBg = theme.colors.green7
+  } else if (showNopeAnimation) {
+    modalBg = theme.colors.red8
+  } else if (actuallyActive) {
+    modalBg = theme.colors.gray7
   }
 
-  render() {
-    const {
-      questionList,
-      actuallyList,
-      onClose
-    } = this.props
-
-    const {
-      showOkayAnimation,
-      showNopeAnimation,
-      actuallyActive,
-      activeIdx
-    } = this.state
-
-    const qNum = activeIdx + 1,
-      questionText = questionList[activeIdx],
-      actuallyText = actuallyList[activeIdx]
-
-    const showAnimation = () => (
-      <Animation
-        okay={showOkayAnimation === true && showNopeAnimation === false}
-        onComplete={() => this.onAnimatonComplete()}
-      />
-    )
-
-    let modalBg = theme.colors.blue5
-    if (showOkayAnimation) {
-      modalBg = theme.colors.green7
-    } else if (showNopeAnimation) {
-      modalBg = theme.colors.red8
-    } else if (actuallyActive) {
-      modalBg = theme.colors.gray7
-    }
-
-    return (
-      <Modal show={true} bg={modalBg}>
-        <Box sx={{
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0
-        }} />
-        {(showOkayAnimation || showNopeAnimation) ? (
-          showAnimation()
+  return (
+    <Modal show={true} bg={modalBg}>
+      <Box sx={{
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0
+      }} />
+      {(showOkayAnimation || showNopeAnimation) ? (
+        showAnimation()
+      ) : (
+        !actuallyActive ? (
+          <QuizQuestion
+            qNum={qNum}
+            question={questionText}
+            actually={actuallyText}
+            onTrue={nextStep}
+            onFalse={onWrongAnswer}
+          />
         ) : (
-          !actuallyActive ? (
-            <QuizQuestion
-              qNum={qNum}
-              question={questionText}
-              actually={actuallyText}
-              onTrue={this.nextStep}
-              onFalse={this.onWrongAnswer}
-            />
-          ) : (
-            <QuizActually
-              text={actuallyText}
-              onContinue={this.nextStep}
-              onBack={onClose}
-            />
-          )
-        )}
-      </Modal>
-    )
-  }
+          <QuizActually
+            text={actuallyText}
+            onContinue={nextStep}
+            onBack={onClose}
+          />
+        )
+      )}
+    </Modal>
+  )
 }
 
 QuizSteps.propTypes = {

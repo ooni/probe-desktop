@@ -43,11 +43,17 @@ const availableCategoriesList = [
 ]
 
 const defaultOptions = {
-  optout: false,
+  crashReportsOptIn: false,
   configFilePath: OONI_CONFIG_PATH
 }
 
-const initConfigFile = async (options) => {
+/**
+ * Initialize config file
+ * @param {Object} [options] - Options to  prepare config file before writing to disk
+ * @param {string} [options.configFilePath] - path to custom config file to use instead of generating here
+ * @param {boolean} [options.crashReportsOptIn] - whether to opt-in to crash reporting
+ */
+const initConfigFile = async (options = {}) => {
   const opts = Object.assign(defaultOptions, options)
   const config = {
     '_version': LATEST_CONFIG_VERSION,
@@ -62,7 +68,7 @@ const initConfigFile = async (options) => {
     },
     'advanced': {
       'use_domain_fronting': false,
-      'send_crash_reports': !opts.optout,
+      'send_crash_reports': opts.crashReportsOptIn,
       'collector_url': '',
       'bouncer_url': 'https://bouncer.ooni.io'
     }

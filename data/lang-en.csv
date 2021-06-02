@@ -8,14 +8,14 @@ Are websites and social media apps blocked? Is your internet connection unusuall
 Run OONI Probe to find out!",,,
 Onboarding.WhatIsOONIProbe.GotIt,Got It,,,
 Onboarding.ThingsToKnow.Title,Heads-up!,,,
-Onboarding.ThingsToKnow.Bullet.1,OONI data is openly published and will include your network information.,,,
+Onboarding.ThingsToKnow.Bullet.1,OONI data is openly published and will include your network information. ,,,
 Onboarding.ThingsToKnow.Bullet.2,Anyone monitoring your internet activity (e.g. government or ISP) will see that you are running OONI Probe.,,,
 Onboarding.ThingsToKnow.Bullet.3,You might test banned websites (but you can choose which sites to test).,,,
 Onboarding.ThingsToKnow.Button,I understand,14,,
 Onboarding.ThingsToKnow.LearnMore,Learn more,,,
 Onboarding.PopQuiz.Title,Pop Quiz,,,
-Onboarding.PopQuiz.True,True,12,,
-Onboarding.PopQuiz.False,False,12,,
+Onboarding.PopQuiz.True,True ,12,,
+Onboarding.PopQuiz.False,False ,12,,
 Onboarding.PopQuiz.Wrong.Button.Back,Go back,12,,
 Onboarding.PopQuiz.Wrong.Button.Continue,Continue,12,,
 Onboarding.PopQuiz.1.Title,Question 1/2,,,
@@ -26,14 +26,20 @@ Onboarding.PopQuiz.2.Title,Question 2/2,,,
 Onboarding.PopQuiz.2.Question,"Every time I run OONI Probe, the network data I collect will automatically get published.",,,
 Onboarding.PopQuiz.2.Wrong.Title,Warning,,,
 Onboarding.PopQuiz.2.Wrong.Paragraph,"To increase transparency of internet censorship, the network data of all OONI Probe users is automatically published (unless they opt-out in the settings).",,,
+Onboarding.Crash.Title,Crash Reporting,,,
+Onboarding.Crash.Paragraph,"To improve OONI Probe we would like to collect anonymous crash reports when the app does not work properly.
+
+Would you like to opt-in to submitting crash reports to the OONI development team?",,,
+Onboarding.Crash.Button.Yes,Yes,,,
+Onboarding.Crash.Button.No,No,,,
 Onboarding.DefaultSettings.Title,Default Settings,,,
 Onboarding.DefaultSettings.Header,We collect and publish:,,,
 Onboarding.DefaultSettings.Bullet.1,Country code (e.g. IT for Italy),,,
 Onboarding.DefaultSettings.Bullet.2,Network information (including Autonomous System Number),,,
 Onboarding.DefaultSettings.Bullet.3,Time & date of testing,,,
-Onboarding.DefaultSettings.Paragraph,"We do our best not to publish your IP address or any other potentially personally-identifiable information.
+Onboarding.DefaultSettings.Paragraph,"We do our best not to publish your IP address or any other potentially personally identifiable information.
 
-Learn more through [OONI's Data Policy](https://ooni.io/about/data-policy/).",,,
+Learn more through [OONI's Data Policy](https://ooni.org/about/data-policy/).",,,
 Onboarding.DefaultSettings.Paragraph.1,"By tapping ""OK"", you will share crash reports to help us improve OONI Probe. ",,,
 Onboarding.DefaultSettings.Button.Go,Let's go,12,,
 Onboarding.DefaultSettings.Button.Change,Change defaults,25,,
@@ -51,12 +57,12 @@ Dashboard.Running.PreparingTest,Preparing test,,,
 Dashboard.Running.CalculatingETA,Calculating ETA,,,
 Dashboard.Running.ShowLog,Show Log,,,
 Dashboard.Running.CloseLog,Close Log,,,
-Dashboard.Running.Stopping.Title,Stopping test...,,,
-Dashboard.Running.Stopping.Notice,"Finishing the currently pending tests, please wait...",,,
+Dashboard.Running.Stopping.Title,Stopping test…,,,
+Dashboard.Running.Stopping.Notice,"Finishing the currently pending tests, please wait…",,,
 Dashboard.Card.Subtitle,Tap card for more,,FALSE,
 Dashboard.Card.Seconds,~{{seconds}}s,,FALSE,
 Dashboard.Websites.Card.Description,Test the blocking of websites,,,
-Dashboard.Websites.Overview.Paragraph,"Check whether websites are blocked using OONI's [Web Connectivity test](https://ooni.io/nettest/web-connectivity/).
+Dashboard.Websites.Overview.Paragraph,"Check whether websites are blocked using OONI's [Web Connectivity test](https://ooni.org/nettest/web-connectivity/).
 
 Every time you tap Run, you test different websites from the Citizen Lab's [global](https://github.com/citizenlab/test-lists/blob/master/lists/global.csv) and [country-specific](https://github.com/citizenlab/test-lists/tree/master/lists) test lists.
 
@@ -64,8 +70,8 @@ To test the sites of your choice, tap the Choose websites button or select categ
 
 This test measures whether websites are blocked by means of DNS tampering, TCP/IP blocking or by a transparent HTTP proxy.
 
-Your results will be published on [OONI Explorer](https://explorer.ooni.io/world/) and [OONI API](https://api.ooni.io/).",,,
-Dashboard.Websites.Overview.Paragraph.Desktop,"Check whether websites are blocked using OONI's [Web Connectivity test](https://ooni.io/nettest/web-connectivity/).
+Your results will be published on [OONI Explorer](https://explorer.ooni.org/world/) and [OONI API](https://api.ooni.io/).",,,
+Dashboard.Websites.Overview.Paragraph.Desktop,"Check whether websites are blocked using OONI's [Web Connectivity test](https://ooni.org/nettest/web-connectivity/).
 
 You will test the websites included in the Citizen Lab's [global](https://github.com/citizenlab/test-lists/blob/master/lists/global.csv) and [country-specific](https://github.com/citizenlab/test-lists/tree/master/lists) test lists.
 
@@ -73,13 +79,13 @@ This test measures whether websites are blocked by means of DNS tampering, TCP/I
 
 Your results will be published on [OONI Explorer](https://explorer.ooni.org/) and [OONI API](https://api.ooni.io/).",,,
 Dashboard.Performance.Card.Description,Test your network speed and performance,,,
-Dashboard.Performance.Overview.Paragraph,"Measure the speed and performance of your network using the [NDT](https://ooni.io/nettest/ndt/) test.
+Dashboard.Performance.Overview.Paragraph,"Measure the speed and performance of your network using the [NDT](https://ooni.org/nettest/ndt/) test.
 
-Measure video streaming performance using the [DASH](https://ooni.io/nettest/dash/) test.
+Measure video streaming performance using the [DASH](https://ooni.org/nettest/dash/) test.
 
 These tests consume data depending on your network speed.
 
-Your results will be published on [OONI Explorer](https://explorer.ooni.io/world/) and [OONI API](https://api.ooni.io/).
+Your results will be published on [OONI Explorer](https://explorer.ooni.org/world/) and [OONI API](https://api.ooni.io/).
 
 Disclaimer: These tests rely on third party servers. We therefore cannot guarantee that your IP address will not be collected.",,,
 Dashboard.Performance.Overview.Paragraph.Updated,"By running the tests in this card, you will:
@@ -96,19 +102,22 @@ Your test results will be published on [OONI Explorer](https://explorer.ooni.org
 Dashboard.Middleboxes.Card.Description,Detect middleboxes in your network,,DEPRECATED,
 Dashboard.Middleboxes.Overview.Paragraph,"Internet Service Providers often use network appliances (middleboxes) for various networking purposes (such as caching). Sometimes these middleboxes are used to implement internet censorship and/or surveillance.
 
-Find middleboxes in your network using OONI's [HTTP Invalid Request Line](https://ooni.io/nettest/http-invalid-request-line/) and [HTTP Header Field Manipulation](https://ooni.io/nettest/http-header-field-manipulation/) tests.
+Find middleboxes in your network using OONI's [HTTP Invalid Request Line](https://ooni.org/nettest/http-invalid-request-line/) and [HTTP Header Field Manipulation](https://ooni.org/nettest/http-header-field-manipulation/) tests.
 
-Your results will be published on [OONI Explorer](https://explorer.ooni.io/world/) and [OONI API](https://api.ooni.io/).",,DEPRECATED,
+Your results will be published on [OONI Explorer](https://explorer.ooni.org/world/) and [OONI API](https://api.ooni.io/).",,DEPRECATED,
 Dashboard.InstantMessaging.Card.Description,Test the blocking of instant messaging apps,,,
 Dashboard.InstantMessaging.Overview.Paragraph,"Check whether [WhatsApp](https://ooni.org/nettest/whatsapp/), [Facebook Messenger](https://ooni.org/nettest/facebook-messenger/), [Telegram](https://ooni.org/nettest/telegram/), and [Signal](https://ooni.org/nettest/signal) are blocked.
 
-Your results will be published on [OONI Explorer](https://explorer.ooni.io/world/) and [OONI API](https://api.ooni.io/).",,,
+Your results will be published on [OONI Explorer](https://explorer.ooni.org/world/) and [OONI API](https://api.ooni.io/).",,,
 Dashboard.Circumvention.Card.Description,Test the blocking of censorship circumvention tools,,,
-Dashboard.Circumvention.Overview.Paragraph,"Check whether [Psiphon](https://ooni.io/nettest/psiphon/), [Tor](https://ooni.io/nettest/tor/) or [RiseupVPN](https://ooni.io/nettest/riseupvpn/) are blocked.
+Dashboard.Circumvention.Overview.Paragraph,"Check whether [Psiphon](https://ooni.org/nettest/psiphon/), [Tor](https://ooni.org/nettest/tor/) or [RiseupVPN](https://ooni.org/nettest/riseupvpn/) are blocked.
 
 Your results will be published on [OONI Explorer](https://explorer.ooni.org/) and [OONI API](https://api.ooni.io/).",,,
-Dashboard.Experimental.Card.Description,Run experimental nettests,,,
-Dashboard.Experimental.Overview.Paragraph,Run experimental nettests,,,
+Dashboard.Experimental.Card.Description,Run new experimental tests,,,
+Dashboard.Experimental.Overview.Paragraph,"Run the following new experimental tests developed by the OONI team:
+{{experimental_test_list}}
+
+Your results will be published on [OONI Explorer](https://explorer.ooni.org/) and [OONI API](https://api.ooni.io/).",,,
 TestResults.Gbps,Gbit/s,,,
 TestResults.Mbps,Mbit/s,,,
 TestResults.Kbps,kbit/s,,,
@@ -127,6 +136,7 @@ TestResults.Overview.FilterTests.MiddleBoxes,Middleboxes,,DEPRECATED,
 TestResults.Overview.FilterTests.Performance,Performance,,,
 TestResults.Overview.FilterTests.InstantMessaging,Instant Messaging,,,
 TestResults.Overview.FilterTests.Circumvention,Circumvention,,,
+TestResults.Overview.FilterTests.Experimental,Experimental,,,
 TestResults.Overview.NoTestsHaveBeenRun,No tests have been run yet. Try running one!,,,
 TestResults.Overview.Websites.Blocked.Singular,{{Count}} blocked,23,,
 TestResults.Overview.Websites.Blocked.Plural,{{Count}} blocked,23,,
@@ -248,13 +258,13 @@ TestResults.Details.InstantMessaging.Signal.LikelyBlocked.Content.Paragraph,Sign
 TestResults.Details.InstantMessaging.Signal.Reachable.Hero.Title,Working,,,
 TestResults.Details.InstantMessaging.Signal.Reachable.Content.Paragraph,This test successfully connected to Signal's endpoints.,,,
 TestResults.Details.Middleboxes.HTTPInvalidRequestLine.NotFound.Hero.Title,No middleboxes detected,,,
-TestResults.Details.Middleboxes.HTTPInvalidRequestLine.NotFound.Content.Paragraph,No network anomaly was detected when communicating with our servers.,,,
+TestResults.Details.Middleboxes.HTTPInvalidRequestLine.NotFound.Content.Paragraph,No network anomaly was detected when communicating with our servers. ,,,
 TestResults.Details.Middleboxes.HTTPInvalidRequestLine.Found.Hero.Title,Network tampering,,,
 TestResults.Details.Middleboxes.HTTPInvalidRequestLine.Found.Content.Paragraph,"Network traffic was manipulated when contacting our control servers.
 
 This means that there may be a middlebox in your network, which could be responsible for censorship and/or surveillance.",,,
 TestResults.Details.Middleboxes.HTTPHeaderFieldManipulation.NotFound.Hero.Title,No middleboxes detected,,,
-TestResults.Details.Middleboxes.HTTPHeaderFieldManipulation.NotFound.Content.Paragraph,No network anomaly was detected when communicating with our servers.,,,
+TestResults.Details.Middleboxes.HTTPHeaderFieldManipulation.NotFound.Content.Paragraph,No network anomaly was detected when communicating with our servers. ,,,
 TestResults.Details.Middleboxes.HTTPHeaderFieldManipulation.Found.Hero.Title,Network tampering,,,
 TestResults.Details.Middleboxes.HTTPHeaderFieldManipulation.Found.Content.Paragraph,"Network traffic was manipulated when contacting our control servers.
 
@@ -304,6 +314,7 @@ TestResults.Overview.Circumvention.RiseupVPN.Api.Blocked,Blocked,,,
 TestResults.Overview.Circumvention.RiseupVPN.Blocked.Singular,{{Count}} blocked,,,
 TestResults.Overview.Circumvention.RiseupVPN.Blocked.Plural,{{Count}} blocked,,,
 TestResults.Details.Circumvention.RiseupVPN.Reachable.Okay,OK,,,
+TestResults.Details.Experimental.Hero.Title,This is an experimental test.,,,
 Feed.Tab.Label,Feed,,,
 Feed.Title,Feed,,,
 Modal.OK,OK,,,
@@ -328,7 +339,7 @@ Modal.ResultsNotUploaded.Uploading,Uploading {{testNumber}} ...,,,
 Toast.ResultsUploaded,Upload successful,,,
 Modal.DisplayFailureLog,Display failure log,,,
 Modal.EnableNotifications.Title,Get updates on internet censorship,,,
-Modal.EnableNotifications.Paragraph,Interested in running OONI Probe tests during emergent censorship events? Enable notifications to receive a message when we hear of internet censorship near you!,,,
+Modal.EnableNotifications.Paragraph,Interested in running OONI Probe tests during emergent censorship events? Enable notifications to receive a message when we hear of internet censorship near you.,,,
 Modal.EnableGPS,"To improve the accuracy of tests, we need GPS permissions. OONI will only collect an approximation of your GPS position.",,,
 Modal.DoYouWantToDeleteAllTests,Do you want to delete all test results?,,,
 Modal.DoYouWantToDeleteThisTest,Do you want to delete this test?,,,
@@ -396,7 +407,9 @@ Settings.AutomatedTesting.RunAutomatically.Number,Number of automated tests: {{t
 Settings.AutomatedTesting.RunAutomatically.DateLast,Last automated test: {{testDate}}.,,,
 Settings.AutomatedTesting.RunAutomatically.WiFiOnly,Only on WiFi,,NEW,
 Settings.AutomatedTesting.RunAutomatically.ChargingOnly,Only while charging,,,
-Settings.AutomatedTesting.RunAutomatically.Footer,"By enabling automatic testing, OONI Probe tests will run automatically multiple times per day. Your test results will automatically get published on OONI Explorer: https://explorer.ooni.org/",,,
+Settings.AutomatedTesting.RunAutomatically.Footer,"By enabling automatic testing, OONI Probe tests will run automatically multiple times per day. Your test results will automatically get published on [OONI Explorer](https://explorer.ooni.org/)
+
+Important: If you have a VPN enabled, OONI Probe will not run tests automatically. Please turn off your VPN for automated OONI Probe testing. [Learn more](https://ooni.org/support/faq/#can-i-run-ooni-probe-over-a-vpn)",,,
 Settings.Sharing.Label,Sharing,,FALSE,
 Settings.Sharing.UploadResults,Automatically Publish Results,,,
 Settings.Sharing.UploadResultsManually,Manual Result Upload,,FALSE,
@@ -404,7 +417,7 @@ Settings.Sharing.IncludeNetwork,Include Network Info,,FALSE,
 Settings.Sharing.GPS,Include approximate geo-location,,FALSE,
 Settings.Sharing.IncludeIP,Include my IP address,,FALSE,
 Settings.Sharing.IncludeCountryCode,Include Country Code,,FALSE,
-Settings.Sharing.IncludeCountryCode.PopUp,This information (e.g. IT for Italy) is required to identify which country the measurements are collected from. Are you sure you want to disable this option?,,FALSE,
+Settings.Sharing.IncludeCountryCode.PopUp,This information (e.g. IT for Italy) is required to identify which country the measurements are collected from. Are you sure you want to disable this option? ,,FALSE,
 Settings.Sharing.Footer,"By publishing results, you are increasing transparency of network interference and supporting the OONI community. 
 
 Network information (i.e. Autonomous System Number) is required for identifying Internet Service Providers.",,FALSE,
@@ -415,6 +428,21 @@ Settings.Advanced.Label,Advanced,,,
 Settings.DarkMode.Label,Dark Mode,,,
 Settings.Advanced.DebugLogs,Debug logs,,,
 Settings.Advanced.UseDomainFronting,Always use domain fronting,,,
+Settings.Proxy.Label,OONI backend proxy,,,
+Settings.Proxy.Enabled,Proxy,,,
+Settings.Proxy.None,None,,,
+Settings.Proxy.Psiphon,Psiphon,,,
+Settings.Proxy.Custom,Custom Proxy,,,
+Settings.Proxy.Custom.Value,Custom Proxy URL,,,
+Settings.Proxy.Custom.Protocol,Custom proxy protocol,,,
+Settings.Proxy.Custom.Connection,Connection,,,
+Settings.Proxy.Custom.Hostname,Hostname,,,
+Settings.Proxy.Custom.Port,Port,,,
+Settings.Proxy.Custom.Credentials,Credentials (optional),,,
+Settings.Proxy.Custom.Username,Username,,,
+Settings.Proxy.Custom.Password,Password,,,
+Settings.Proxy.Psiphon.Over.Custom,Use Psiphon over custom proxy,,,
+Settings.Proxy.Footer,"Are you unable to use OONI Probe? Try enabling [Psiphon](https://psiphon.ca/) to circumvent potential OONI Probe blocking. Alternatively, you can use a custom proxy. ",,,
 Settings.Websites.MaxRuntimeEnabled,Limit test duration,,,
 Settings.Websites.MaxRuntime,Test duration,,,
 Settings.Websites.Categories.Label,Website categories to test,,,
@@ -459,7 +487,7 @@ Settings.Storage.Label,Storage usage,,FALSE,Yes
 Settings.Storage.Usage.Label,Storage used,,,Yes
 Settings.Storage.Delete,Delete,,FALSE,Yes
 Settings.Storage.Clear,Clear,,TRUE,
-Settings.Storage.Confirmation.Paragraph,You are about to delete all OONI measurements from your device. If uploaded they will still be available on [OONI Explorer](https://explorer.ooni.org),,FALSE,Yes
+Settings.Storage.Confirmation.Paragraph,"You are about to delete all OONI measurements from your device. If uploaded, they will still be available on [OONI Explorer](https://explorer.ooni.org)",,FALSE,Yes
 Notification.FinishedRunning,Finished running,,,
 Notification.StopTest,Stop test,,TRUE,
 OONIBrowser.TryMirror,Try mirror,,,
@@ -476,7 +504,7 @@ OONIRun.Update,Update,,,
 OONIRun.Close,Close,,,
 OONIRun.InvalidParameter,Invalid parameter,,,
 OONIRun.InvalidParameter.Msg,The OONI Run link is either malformed or your app is out of date.,,,
-OONIRun.RandomSamplingOfURLs,You will test a random sample of websites.,,,
+OONIRun.RandomSamplingOfURLs,You will test a random sample of websites. ,,,
 OONIRun.TestRunningError,Please wait for the test to finish running before tapping on an OONI Run link.,,,
 CategoryCode.ALDR.Name,Drugs & Alcohol,,,
 CategoryCode.REL.Name,Religion,,,

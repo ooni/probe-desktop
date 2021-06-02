@@ -60,17 +60,34 @@ describe('Onboarding', function() {
       .click()
       .pause(2000)
       .getText('h1')
+    ).resolves.toBe('Crash Reporting')
+  })
+
+  it('allows opting in to crash reporting', async function() {
+    await expect(app.client
+      .$('button=Yes')
+      .click()
+      .pause(2000)
+      .getText('h1')
     ).resolves.toBe('Default Settings')
-    screenshotApp(app, 'almost-done-onboarding')
   })
 
   it('finishes onboarding and shows dashboard', async function () {
     await expect(app.client
-      .$('button[data-test-id=letsgo]')
-      .click()
-      .pause(10000)
+      .click('button[data-test-id=letsgo]')
+      .pause(1000)
       .getText('button[data-test-id=dashboard-run-button]')
     ).resolves.toBe('Run')
     screenshotApp(app, 'onboarding-success')
+  })
+
+  it('confirm crash reporting is enabled in settings', async function () {
+    await expect(app.client
+      .click('div=Settings')
+      .getText('h3')
+    ).resolves.toBe('Settings')
+    await expect(app.client
+      .isSelected('[data-test-id="advanced.send_crash_reports"]')
+    ).resolves.toBe(true)
   })
 })

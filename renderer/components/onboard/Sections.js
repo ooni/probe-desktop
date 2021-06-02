@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { FormattedMessage } from 'react-intl'
@@ -21,7 +21,6 @@ import { MdKeyboardArrowLeft } from 'react-icons/md'
  */
 
 import {
-  Text,
   Button,
   Box,
   Flex,
@@ -33,17 +32,6 @@ import FormattedMarkdownMessage from '../FormattedMarkdownMessage'
 import ExternalLink from '../ExternalLink'
 import Stepper from './Stepper'
 import QuizSteps from './QuizSteps'
-
-const ChangeLink = styled.a`
-  color: ${props => props.theme.colors.white};
-  cursor: pointer;
-  display: block;
-  text-align: center;
-  padding-top: 10px;
-  &:hover {
-    color: ${props => props.theme.colors.gray3};
-  }
-`
 
 const HeadsUpList = styled.li`
   margin-top: 20px;
@@ -142,7 +130,36 @@ SectionWhatIsOONI.propTypes = {
   onNext: PropTypes.func
 }
 
-const SectionDefaultSettings = ({onGo, onChange}) => (
+const NoButton = styled(Button)`
+  color: white;
+  border-color: white;
+  &:hover:enabled {
+    border-color: ${props => props.theme.colors.gray0};
+  }
+`
+
+const SectionCrashReporting = ({ onOptIn, onOptOut }) => (
+  <Flex flexDirection='column' alignItems='center'>
+    <Box>
+      <Heading h={1}>
+        <FormattedMessage id='Onboarding.Crash.Title' />
+      </Heading>
+    </Box>
+    <Box width={1/2} my={3} px={4}>
+      <FormattedMarkdownMessage id='Onboarding.Crash.Paragraph' />
+    </Box>
+    <Flex flexDirection='row' alignItems='center' justifyContent='center' my={4}>
+      <NoButton mx={2} hollow onClick={onOptOut}><FormattedMessage id='Onboarding.Crash.Button.No' /></NoButton>
+      <Button mx={2} inverted onClick={onOptIn}><FormattedMessage id='Onboarding.Crash.Button.Yes' /></Button>
+    </Flex>
+  </Flex>
+)
+SectionCrashReporting.propTypes = {
+  onOptIn: PropTypes.func,
+  onOptOut: PropTypes.func
+}
+
+const SectionDefaultSettings = ({ onGo }) => (
   <Flex flexDirection='column'>
     <Box>
       <Heading textAlign='center' h={1}>
@@ -176,9 +193,6 @@ const SectionDefaultSettings = ({onGo, onChange}) => (
       <Button inverted onClick={onGo} data-test-id='letsgo'>
         <FormattedMessage id='Onboarding.DefaultSettings.Button.Go' />
       </Button>
-      <ChangeLink onClick={onChange}>
-        <FormattedMessage id='Onboarding.DefaultSettings.Button.Change' />
-      </ChangeLink>
     </Flex>
   </Flex>
 )
@@ -198,134 +212,115 @@ const BackButtonContainer = styled.div`
   }
 `
 
-const numSteps = 3
+const numSteps = 4
 
-class Sections extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      activeIdx: 0,
-      quizComplete: false,
-      quizActive: false
-    }
-    this.nextStep = this.nextStep.bind(this)
-    this.prevStep = this.prevStep.bind(this)
-    this.onQuizComplete = this.onQuizComplete.bind(this)
-    this.toggleQuiz = this.toggleQuiz.bind(this)
-  }
+const onboardingBGs = [
+  '/static/images/onboarding_0.svg',
+  '/static/images/onboarding_1.svg',
+  '/static/images/onboarding_2.svg',
+  '/static/images/onboarding_2.svg'
+]
 
-  toggleQuiz() {
-    this.setState({
-      quizActive: !this.state.quizActive
-    })
-  }
+const Sections = ({ onGo }) => {
+  const [activeSection, setActiveSection] = useState(0)
+  const [quizComplete, setQuizComplete] = useState(false)
+  const [quizActive, setQuizActive] = useState(false)
+  const [crashReportsOptIn, setOptIn] = useState(false)
 
-  onQuizComplete() {
-    this.setState({
-      quizComplete: true,
-      activeIdx: this.state.activeIdx + 1
-    })
-  }
+  const toggleQuiz = useCallback(() => {
+    setQuizActive(quizActive => !quizActive)
+  }, [setQuizActive])
 
-  nextStep() {
-    if (this.state.activeStep >= numSteps) {
+  const onQuizComplete = useCallback(() => {
+    setQuizComplete(true)
+    setActiveSection(activeIdx => activeIdx + 1)
+  }, [setQuizComplete, setActiveSection])
+
+  const nextStep = useCallback(() => {
+    if (activeSection >= numSteps) {
       return
     }
 
-    this.setState({
-      activeIdx: this.state.activeIdx + 1
-    })
-  }
+    setActiveSection(activeSection + 1)
+  }, [activeSection, setActiveSection ])
 
-  prevStep() {
-    if (this.state.activeIdx <= 0) {
+  const prevStep = useCallback(() => {
+    if (activeSection <= 0) {
       return
     }
 
-    this.setState({
-      activeIdx: this.state.activeIdx - 1
-    })
-  }
+    setActiveSection(activeSection - 1)
+  }, [activeSection, setActiveSection ])
 
-  render() {
-    const {
-      activeIdx,
-      quizComplete,
-      quizActive
-    } = this.state
+  return (
+    <OnboardBG
+      img={onboardingBGs[activeSection]}
+      // last onboarding screen needs a darker background
+      bgColor={activeSection === 3 ? '#001a33' : '#002b54'}
+      flexDirection='column'
+      justifyContent='flex-end'
+      flex='0 1'
+    >
+      <TopBar />
+      <Flex flexWrap='wrap' justifyContent='center' alignItems='center'>
+        <Box width={1}>
+          {activeSection === 0 &&
+            <SectionWhatIsOONI
+              onNext={nextStep}
+            />
+          }
 
-    const {
-      onGo,
-      onChange
-    } = this.props
+          {activeSection === 1 &&
+            <SectionThingsToKnow
+              onQuizComplete={onQuizComplete}
+              quizComplete={quizComplete}
+              quizActive={quizActive}
+              toggleQuiz={toggleQuiz}
+              onPrevious={prevStep}
+              onNext={nextStep}
+            />
+          }
+          {activeSection === 2 &&
+            <SectionCrashReporting
+              onOptIn={() => {
+                setOptIn(true)
+                nextStep()
+              }}
+              onOptOut={() => {
+                setOptIn(false)
+                nextStep()
+              }}
+            />
+          }
 
-    const onboardingBGs = [
-      '/static/images/onboarding_0.svg',
-      '/static/images/onboarding_1.svg',
-      '/static/images/onboarding_2.svg'
-    ]
+          {activeSection === 3 &&
+            <SectionDefaultSettings
+              onGo={() => onGo(crashReportsOptIn)}
+            />
+          }
+        </Box>
 
-    return (
-      <OnboardBG
-        img={onboardingBGs[activeIdx]}
-        // last onboarding screen needs a darker background
-        bgColor={activeIdx === 2 ? '#001a33' : '#002b54'}
-        flexDirection='column'
-        justifyContent='flex-end'
-        flex='0 1'
-      >
-        <TopBar />
-        <Flex flexWrap='wrap' justifyContent='center' alignItems='center'>
-          <Box width={1}>
-            {activeIdx === 0 &&
-              <SectionWhatIsOONI
-                onNext={this.nextStep}
-              />
-            }
+        <Box width={1}>
+          {activeSection !== 0 &&
+            <BackButtonContainer onClick={prevStep}>
+              <Flex>
+                <Box><MdKeyboardArrowLeft size={20} /></Box>
+                <Box>Go Back</Box>
+              </Flex>
+            </BackButtonContainer>
+          }
+        </Box>
 
-            {activeIdx === 1 &&
-              <SectionThingsToKnow
-                onQuizComplete={this.onQuizComplete}
-                quizComplete={quizComplete}
-                quizActive={quizActive}
-                toggleQuiz={this.toggleQuiz}
-
-                onPrevious={this.prevStep}
-                onNext={this.nextStep}
-              />
-            }
-
-            {activeIdx === 2 &&
-              <SectionDefaultSettings
-                onGo={onGo}
-                onChange={onChange}
-              />
-            }
-          </Box>
-
-          <Box width={1}>
-            {activeIdx !== 0 &&
-              <BackButtonContainer onClick={this.prevStep}>
-                <Flex>
-                  <Box><MdKeyboardArrowLeft size={20} /></Box>
-                  <Box>Go Back</Box>
-                </Flex>
-              </BackButtonContainer>
-            }
-          </Box>
-
-          <Box width={1} my={4}>
-            <Stepper activeIdx={activeIdx} />
-          </Box>
-        </Flex>
-      </OnboardBG>
-    )
-  }
+        <Box width={1} my={4}>
+          <Stepper activeIdx={activeSection} />
+        </Box>
+      </Flex>
+    </OnboardBG>
+  )
 }
 
 Sections.propTypes = {
   onGo: PropTypes.func,
-  onChange: PropTypes.func
 }
 
 export default Sections
