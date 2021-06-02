@@ -1,4 +1,3 @@
-/* global require */
 import React from 'react'
 
 import Layout from '../components/Layout'
@@ -150,7 +149,7 @@ class About extends React.Component {
               <Button onClick={this.onReset}>Hard reset</Button>
             </Box>
           </Flex>
-          <Flex flexDirection='column' my={2}>
+          <Flex flexDirection='column' my={2} dir='ltr'>
             <Box>
               <Heading textAlign='center' h={4}>Debug information</Heading>
             </Box>

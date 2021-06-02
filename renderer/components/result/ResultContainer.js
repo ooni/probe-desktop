@@ -24,7 +24,7 @@ import {
   Flex,
   Box
 } from 'ooni-components'
-import { FormattedMessage } from 'react-intl'
+import { FormattedDate, FormattedMessage, FormattedNumber } from 'react-intl'
 
 import { testGroups } from '../nettests'
 
@@ -86,7 +86,7 @@ const ResultOverview = ({
             <BackButton />
           </Box>
           <Box>
-            <Heading center h={4}>{startTime && moment(startTime).format('lll')}</Heading>
+            <Heading center h={4}>{startTime && <FormattedDate value={startTime} />}</Heading>
           </Box>
           <Box ml='auto' mr={2}>
             <Flex>
@@ -145,7 +145,14 @@ const ResultOverview = ({
               label={<FormattedMessage id='TestResults.Summary.Hero.Runtime' />}
             />
           }
-          right={<Text>{runtime.toFixed(2)} s</Text>}
+          right={<Text>
+            <FormattedNumber
+              value={Number(runtime).toFixed(2)}
+              style='unit'
+              unit='second'
+              unitDisplay='narrow'
+            />
+          </Text>}
         />
         <TwoColumnTable
           left={

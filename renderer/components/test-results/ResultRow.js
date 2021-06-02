@@ -1,7 +1,6 @@
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedDate, FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
-import moment from 'moment'
 import {
   theme,
   Box,
@@ -151,8 +150,6 @@ const summaryMap = {
   'circumvention': CircumventionSummary
 }
 
-
-
 class ResultRow extends React.Component {
   //TODO This can be easily converted into a funcitonal component
   // with useMemo hooks. Gotta figure out how exception handling works then.
@@ -219,7 +216,11 @@ class ResultRow extends React.Component {
       } = this.props
       return (
         <Flex flexDirection='column' alignItems='center'>
-          <Text>{moment(start_time).format('HH:mm Do MMM')}</Text>
+          <Text>
+            <FormattedDate value={start_time} dateStyle='long'/>
+            {' '}
+            <FormattedDate value={start_time} timeStyle='short' />
+          </Text>
         </Flex>
       )
     } catch (e) {

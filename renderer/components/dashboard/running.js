@@ -28,7 +28,7 @@ const StyledRunningTest = styled.div`
   color: white;
   /* This affects the <LineProgress> direction */
   & .rc-progress-line  {
-    transform: scaleX(-1);
+    transform: scaleX(${props => props.isRTL ? -1 : 1});
   }
 `
 
@@ -297,7 +297,7 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
     <WindowContainer bg={testGroup.color}>
       <WindowDraggable bg={testGroup.color} />
       <ContentContainer color={testGroup.color}>
-        <StyledRunningTest>
+        <StyledRunningTest isRTL={isRTL}>
           <Container>
             {(isStopping || showModal) || (
               <CloseButtonContainer>

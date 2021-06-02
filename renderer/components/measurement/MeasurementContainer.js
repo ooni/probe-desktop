@@ -9,7 +9,7 @@ import {
   Text,
   Button
 } from 'ooni-components'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, FormattedNumber } from 'react-intl'
 import { Tick } from 'ooni-components/dist/icons'
 import { MdPriorityHigh } from 'react-icons/md'
 import styled from 'styled-components'
@@ -217,7 +217,7 @@ const MeasurementContainer = ({ measurement, isAnomaly }) => {
                   <Text fontWeight='bold' as='span'>
                     <FormattedMessage id='TestResults.Details.Hero.Runtime' />
                   </Text>
-                  : {moment.duration(runtime * 1000).seconds()}s
+                  : <FormattedNumber value={Number(runtime).toFixed(1)} style='unit' unit='second' unitDisplay='narrow' />
                 </Box>
                 <Box ml='auto'>
                   <MethodologyButton href={tests[testName].methodology} />
