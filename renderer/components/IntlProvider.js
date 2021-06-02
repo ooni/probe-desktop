@@ -13,7 +13,30 @@ require('@formatjs/intl-displaynames/locale-data/en')
 // https://formatjs.io/docs/react-intl/components#rawintlprovider
 const cache = createIntlCache()
 
-const localesWithRTL = ['ar', 'fa']
+// All possible languages with RTL scripts
+// Based on: https://github.com/shadiabuhilal/rtl-detect/blob/2eed8a33276461a24e7033d1d3a115ee64aee3f5/lib/rtl-detect.js#L138
+// https://en.wikipedia.org/wiki/Script_(Unicode)
+const localesWithRTL = [
+  'ae',	  /* Avestan */
+  'ar',   /* 'العربية', Arabic */
+  'arc',  /* Aramaic */
+  'bcc',  /* 'بلوچی مکرانی', Southern Balochi */
+  'bqi',  /* 'بختياري', Bakthiari */
+  'ckb',  /* 'Soranî / کوردی', Sorani */
+  'dv',   /* Dhivehi */
+  'fa',   /* 'فارسی', Persian */
+  'glk',  /* 'گیلکی', Gilaki */
+  'he',   /* 'עברית', Hebrew */
+  'ku',   /* 'Kurdî / كوردی', Kurdish */
+  'mzn',  /* 'مازِرونی', Mazanderani */
+  'nqo',  /* N'Ko */
+  'pnb',  /* 'پنجابی', Western Punjabi */
+  'ps',   /* 'پښتو', Pashto, */
+  'sd',   /* 'سنڌي', Sindhi */
+  'ug',   /* 'Uyghurche / ئۇيغۇرچە', Uyghur */
+  'ur',   /* 'اردو', Urdu */
+  'yi'    /* 'ייִדיש', Yiddish */
+]
 
 const IntlProvider = ({ children }) => {
   const systemLocale = getLocale()
