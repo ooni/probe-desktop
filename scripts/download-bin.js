@@ -13,7 +13,7 @@ const dstDir = path.join(appRoot, 'build', 'probe-cli')
 
 const download = () => {
   ensureDirSync(dstDir)
-  const osarchlist = ["darwin_amd64", "linux_amd64", "windows_amd64"]
+  const osarchlist = ['darwin_amd64', 'linux_amd64', 'windows_amd64']
   for (let i = 0; i < osarchlist.length; i += 1) {
     const osarch = osarchlist[i]
     const tarball = `ooniprobe_${osarch}.tar.gz`
@@ -28,7 +28,11 @@ const download = () => {
       console.log(`Downloading ${sig}`)
       execSync(`curl -#f -L -o ${dstDir}/${sig} ${sigURL}`)
     }
-    execSync(`gpg --verify ${dstDir}/${sig} ${dstDir}/${tarball}`)
+    try {
+      execSync(`gpg --quiet --verify ${dstDir}/${sig} ${dstDir}/${tarball}`)
+    } catch (e) {
+      console.error(`Signature verification failure: ${e}`)
+    }
     ensureDirSync(`${dstDir}/${osarch}`)
     execSync(`cd ${dstDir}/${osarch} && tar xzf ../${tarball}`)
   }
