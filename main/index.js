@@ -43,7 +43,7 @@ require('electron-debug')({
 
 autoUpdater.logger = log
 autoUpdater.logger.transports.file.level = 'info'
-
+autoUpdater.autoDownload = false
 
 // To prevent garbage collection of the windows
 let windows = null
@@ -148,8 +148,8 @@ autoUpdater.on('update-available', () => {
 })
 
 autoUpdater.on('error', err => {
-  sendStatusToWindow('Error in auto-updater. ' + err)
-  throw err
+  sendStatusToWindow('Unable to check for updates. Please visit https://ooni.org/ to get the latest version.')
+  log.error(err)
 })
 
 autoUpdater.on('download-progress', progressObj => {
@@ -161,6 +161,50 @@ autoUpdater.on('update-downloaded', () => {
   autoUpdater.quitAndInstall()
 })
 
+// Instead of calling autoUpdater.checkForUpdatesAndNotify(), we separate the
+// check and download actions to avoid uncatchable exceptions triggered by connectivity problems.
+// See ooni/probe#1318
+// From https://github.com/electron-userland/electron-builder/issues/2398#issuecomment-413117520
+function checkForUpdates() {
+  autoUpdater.checkForUpdates().then((info) => {
+    if (autoUpdater.updateAvailable) {
+      downloadUpdate(info.cancellationToken)
+    } else {
+      log.info('Update not available')
+    }
+  }).catch((error) => {
+    if (isNetworkError(error)) {
+      log.info('Network Error')
+    } else {
+      log.info('Unknown Error')
+      log.info(error == null ? 'unknown' : (error.stack || error).toString())
+    }
+  })
+}
+
+function downloadUpdate(cancellationToken) {
+  autoUpdater.downloadUpdate(cancellationToken).then(() => {
+    setImmediate(() => autoUpdater.quitAndInstall())
+  }).catch((error) => {
+    if (isNetworkError(error)) {
+      log.info('Network Error')
+    } else {
+      log.info('Unknown Error')
+      log.info(error == null ? 'unknown' : (error.stack || error).toString())
+    }
+  })
+}
+
+function isNetworkError(errorObject) {
+  return (
+    errorObject.message === 'net::ERR_INTERNET_DISCONNECTED' ||
+    errorObject.message === 'net::ERR_PROXY_CONNECTION_FAILED' ||
+    errorObject.message === 'net::ERR_CONNECTION_RESET' ||
+    errorObject.message === 'net::ERR_CONNECTION_CLOSE' ||
+    errorObject.message === 'net::ERR_NAME_NOT_RESOLVED' ||
+    errorObject.message === 'net::ERR_CONNECTION_TIMED_OUT'
+  )
+}
 const createWindow = async (url) => {
   windows = {
     main: mainWindow(url)
@@ -179,7 +223,7 @@ app.on('ready', async () => {
 
   // Auto update is not yet available for Linux
   if (process.platform === 'darwin' || process.platform === 'win32') {
-    autoUpdater.checkForUpdatesAndNotify()
+    checkForUpdates()
   }
 
   // Setup devtools in development mode
