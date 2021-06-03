@@ -219,6 +219,11 @@ const ipcBindingsForMain = (ipcMain) => {
     }
   })
 
+  ipcMain.handle('show-measurement', async (event, msmtID) => {
+    const { showMeasurement } = require('./actions')
+    return await showMeasurement(msmtID)
+  })
+
   ipcMain.on('prefs.save', (event, { key, value }) => {
     try {
       store.set(key, value)
@@ -246,11 +251,32 @@ const ipcBindingsForMain = (ipcMain) => {
     return value
   })
 
-  ipcMain.handle('config.set', async (event, {key, value}) => {
-    const config = await getConfig()
-    const currentValue = key.split('.').reduce((o,i) => o[i], config)
+  ipcMain.handle('config.set', async (event, key, currentValue, value) => {
+    // const config = await getConfig()
+    // const currentValue = key.split('.').reduce((o,i) => o[i], config)
     const newConfig = await setConfig(key, currentValue, value)
     return newConfig
+  })
+
+  ipcMain.handle('reset', async () => {
+    const { hardReset } = require('./actions')
+    try {
+      await hardReset()
+      return true
+    } catch (e) {
+      log.error(`Hard reset failed: ${e.message}`)
+      return false
+    }
+  })
+
+  ipcMain.on('debugGetAllPaths', (event) => {
+    const { debugGetAllPaths } = require('./utils/paths')
+    event.returnValue = debugGetAllPaths()
+  })
+
+  ipcMain.on('config.categories', (event) => {
+    const { availableCategoriesList } = require('./utils/config')
+    event.returnValue = availableCategoriesList
   })
 
 }

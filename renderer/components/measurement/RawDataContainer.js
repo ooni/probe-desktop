@@ -123,7 +123,7 @@ const RawDataContainer = ({ rawData, isOpen, onClose }) => {
         </StickyBox>
         <Box width={1}>
           <StyledReactJsonContainer>
-            <JsonViewer src={rawData} />
+            {rawData && <JsonViewer src={rawData} />}
           </StyledReactJsonContainer>
         </Box>
       </Flex>
