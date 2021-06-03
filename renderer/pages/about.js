@@ -1,5 +1,4 @@
 import React from 'react'
-
 import Layout from '../components/Layout'
 import FormattedMarkdownMessage from '../components/FormattedMarkdownMessage'
 import humanize from 'humanize'
@@ -84,11 +83,12 @@ class About extends React.Component {
   }
 
   onReset() {
-    const { hardReset } = remote.require('./actions')
-    hardReset().then(() => {
-      this.setState({
-        msg: 'Successfully reset OONI Probe. Please close and re-open the application.'
-      })
+    ipcRenderer.invoke('reset').then((success) => {
+      if (success) {
+        this.setState({
+          msg: 'Successfully reset OONI Probe. Please close and re-open the application.'
+        })
+      }
     })
   }
 
@@ -104,9 +104,9 @@ class About extends React.Component {
   }
 
   componentDidMount() {
-    const paths = remote.require('./utils/paths')
+    const paths = ipcRenderer.sendSync('debugGetAllPaths')
     this.setState({
-      debugPaths: paths.debugGetAllPaths()
+      debugPaths: paths
     })
     ipcRenderer.on('update-message', this.onUpdateMessage)
     ipcRenderer.on('update-progress', this.onUpdateProgress)
