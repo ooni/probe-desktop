@@ -189,19 +189,5 @@
     "set-value": "^2.0.1",
     "styled-components": "5.1.1",
     "styled-system": "^5.1.5"
-  },
-  "jest": {
-    "verbose": true,
-    "roots": [
-      "<rootDir>/test"
-    ],
-    "testMatch": [
-      "**/test/**/*.e2e.js",
-      "**/test/**/*.test.js"
-    ],
-    "setupFiles": [
-      "<rootDir>/test/lib/setup.js"
-    ],
-    "testSequencer": "<rootDir>/test/lib/sequencer.js"
   }
 }
