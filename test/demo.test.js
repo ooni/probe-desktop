@@ -2,7 +2,6 @@
  * @jest-environment jsdom
  */
 
-import "jest-styled-components";
 import { screen, render } from "@testing-library/react";
 import { theme } from "ooni-components";
 import { ThemeProvider } from "styled-components";
@@ -14,24 +13,22 @@ import Sections from "../renderer/components/onboard/Sections";
 const renderWithReactIntl = (component, locale, messages) => {
     return render(
         <IntlProvider locale={locale} messages={messages}>
-            {component}
+            { component }
         </IntlProvider>
     );
 };
 
-const Component1 = () => {
+const ThemedComponent = ({ Component }) => {
     return (
         <ThemeProvider theme={theme}>
-            <Sections />
+            <Component />
         </ThemeProvider>
     );
 };
 
 describe("Demo block", () => {
-    test("random", async () => {
-        // expect(2+2).toBe(4)
-        renderWithReactIntl(<Component1 />, "en", English);
-        screen.getByText(/Your app for measuring internet censorshidsfsdfp/i);
-        // expect(2+2).toBe(3)
+    test("Testing if Sections is correctly mounted", async () => {
+        renderWithReactIntl(<ThemedComponent Component={ Sections } />, "en", English);
+        screen.getByText(/Your app for measuring internet censorship/i);
     });
 });
