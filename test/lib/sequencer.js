@@ -8,6 +8,7 @@ class CustomSequencer extends TestSequencer {
     // The listed test files will be processed in this order
     // Other `*.e2e.js` files will be picked after these in no specific order
     const orderPath = [
+      'demo',
       'onboarding',
       'sidebar',
       'dashboard'
