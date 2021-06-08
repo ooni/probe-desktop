@@ -26,6 +26,8 @@
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
     "lint": "eslint --ignore-path .gitignore .",
     "test": "jest --runInBand",
+    "test:unit": "jest --testRegex 'test.js'",
+    "test:e2e": "jest --runInBand",
     "postinstall": "electron-builder install-app-deps",
     "storybook": "start-storybook -p 6006"
   },

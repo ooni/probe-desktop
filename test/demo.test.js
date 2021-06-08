@@ -10,25 +10,19 @@ import English from "../lang/en.json";
 
 import Sections from "../renderer/components/onboard/Sections";
 
-const renderWithReactIntl = (component, locale, messages) => {
+const renderComponent = (component, locale, messages) => {
     return render(
         <IntlProvider locale={locale} messages={messages}>
-            { component }
+            <ThemeProvider theme={theme}>
+                { component }
+            </ThemeProvider>
         </IntlProvider>
     );
 };
 
-const ThemedComponent = ({ Component }) => {
-    return (
-        <ThemeProvider theme={theme}>
-            <Component />
-        </ThemeProvider>
-    );
-};
-
 describe("Demo block", () => {
-    test("Testing if Sections is correctly mounted", async () => {
-        renderWithReactIntl(<ThemedComponent Component={ Sections } />, "en", English);
+    test("Sections is correctly mounted", async () => {
+        renderComponent(<Sections />, "en", English);
         screen.getByText(/Your app for measuring internet censorship/i);
     });
 });
