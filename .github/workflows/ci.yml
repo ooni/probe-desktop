@@ -44,6 +44,6 @@ jobs:
       - name: Integration Tests
         uses: GabrielBB/xvfb-action@v1.0
         with:
-          run: yarn test
+          run: yarn test:e2e
         env:
           LANG: en # By default LANG seems to be set to "C" which isn't handled
