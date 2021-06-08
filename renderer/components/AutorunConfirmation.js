@@ -33,13 +33,13 @@ const AutorunConfirmation = ({ show, onClose }) => {
         </Flex>
         <Flex justifyContent='flex-end' my={3}>
           <Button ml={2} inverted onClick={onCancel}>
-            <strong><FormattedMessage id='Modal.Autorun.Modal.Button.No' /></strong>
+            <strong><FormattedMessage id='Modal.NoThanks' /></strong>
           </Button>
           <Button ml={2} inverted onClick={onRemindLater}>
             <strong><FormattedMessage id='Modal.Autorun.Modal.Button.RemindLater' /></strong>
           </Button>
           <Button ml={2} onClick={onConfirm}>
-            <strong><FormattedMessage id='Modal.Autorun.Modal.Button.Yes' /></strong>
+            <strong><FormattedMessage id='Modal.SoundsGreat' /></strong>
           </Button>
         </Flex>
       </Container>
