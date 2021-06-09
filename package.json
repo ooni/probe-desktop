@@ -25,7 +25,8 @@
     "publish:win": "yarn run build:clean && electron-builder --win -p always",
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o main/static/icons -r -m ico,icns",
     "lint": "eslint --ignore-path .gitignore .",
-    "test": "jest --runInBand",
+    "test:unit": "jest -c test/lib/jest.config.js",
+    "test:e2e": "jest -c test/lib/jest.config.js --testRegex 'e2e.js' --runInBand",
     "postinstall": "electron-builder install-app-deps",
     "storybook": "start-storybook -p 6006"
   },
@@ -106,7 +107,11 @@
     "@storybook/addon-links": "5.2.1",
     "@storybook/addon-storysource": "5.2.1",
     "@storybook/react": "5.2.1",
+    "@testing-library/dom": "^7.31.2",
+    "@testing-library/jest-dom": "^5.13.0",
+    "@testing-library/react": "^11.2.7",
     "@zeit/next-source-maps": "^0.0.3",
+    "babel-jest": "^27.0.2",
     "babel-plugin-inline-react-svg": "1.1.0",
     "babel-plugin-react-intl": "^2.4.0",
     "babel-plugin-styled-components": "1.10.6",
@@ -125,6 +130,10 @@
     "humanize": "^0.0.9",
     "icon-gen": "^2.0.0",
     "jest": "^25.3.0",
+    "jest-canvas-mock": "^2.3.1",
+    "jest-css-modules-transform": "^4.2.1",
+    "jest-dom": "^4.0.0",
+    "jest-styled-components": "^7.0.4",
     "moment-range": "^4.0.2",
     "next": "^10.0.3",
     "ooni-components": "^0.4.6",
@@ -183,16 +192,6 @@
     "styled-system": "^5.1.5"
   },
   "jest": {
-    "verbose": true,
-    "roots": [
-      "<rootDir>/test"
-    ],
-    "testMatch": [
-      "**/test/**/*.e2e.js"
-    ],
-    "setupFiles": [
-      "<rootDir>/test/lib/setup.js"
-    ],
-    "testSequencer": "<rootDir>/test/lib/sequencer.js"
+    "testTimeout": "30000"
   }
 }
