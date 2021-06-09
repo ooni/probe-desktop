@@ -10,7 +10,7 @@
  
  import Sections from "../Sections";
  
- const renderComponent = (component, locale, messages) => {
+ const renderComponent = (component, locale='en', messages=English) => {
      return render(
          <IntlProvider locale={locale} messages={messages}>
              <ThemeProvider theme={theme}>
@@ -22,7 +22,7 @@
  
  describe("Rendering Sections", () => {
      test("Sections is correctly mounted", async () => {
-         renderComponent(<Sections />, "en", English);
+         renderComponent(<Sections />);
          screen.getByText(/Your app for measuring internet censorship/i);
      });
  });

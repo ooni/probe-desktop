@@ -41,6 +41,9 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: Unit Tests
+        run: yarn test:unit
+
       - name: Integration Tests
         uses: GabrielBB/xvfb-action@v1.0
         with:
