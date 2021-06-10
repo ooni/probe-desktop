@@ -19,6 +19,9 @@ const renderComponent = (component, locale = "en", messages = English) => {
   );
 };
 
+const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
+
+
 describe("Tests for Screen 1 of Sections component", () => {
   afterAll(() => {
     cleanup()
@@ -35,30 +38,20 @@ describe("Tests for Screen 1 of Sections component", () => {
       .toJSON();
     expect(component).toMatchSnapshot();
   });
-  test("Loads the next page", async () => {
+  test("Brings up the next screen", async () => {
     renderComponent(<Sections />);
     const gotItButton = screen.getByRole('button', { name: English['Onboarding.WhatIsOONIProbe.GotIt'] })
     fireEvent.click(gotItButton)
     const page2Title = await screen.findByRole('heading', { name: English['Onboarding.ThingsToKnow.Title'] })
     expect(page2Title).toBeInTheDocument()
   });
-  //  test("Sections is correctly mounted", async () => {
-  //      screen.getByText(/Your app for measuring internet censorship/i);
-  //      const gotItButton = screen.getByRole('button', { name: /Got it/i })
-  //      fireEvent.click(gotItButton)
-  //      const headsUp = await screen.findByText(/Heads-Up/i)
-  //      expect(headsUp).toBeInTheDocument()
-  //     // renderComponent(<HeadsUp />)
-  //  });
-  //  test("I understand", async () => {
-  //     // screen.getByText(/I understand/i);
-  //     console.log(English['General.AppName'])
-  // //     const gotItButton = screen.getByRole('button', { name: /Got it/i })
-  // //     fireEvent.click(gotItButton)
-  // //     const headsUp = await screen.findByText(/Heads-Up/i)
-  // //     expect(headsUp).toBeInTheDocument()
-  // //    // renderComponent(<HeadsUp />)
-  // });
+  test("CSS styles of elements are correct", async () => {
+    renderComponent(<Sections />);
+    const gotItButton = screen.getByRole('button', { name: English['Onboarding.WhatIsOONIProbe.GotIt'] })
+    const gotItButtonStyles = global.getComputedStyle(gotItButton)
+    expect(rgb2hex(gotItButtonStyles.backgroundColor)).toMatch(theme.colors.white)
+    expect(rgb2hex(gotItButtonStyles.color)).toMatch(theme.colors.primary)
+  })
 });
 
 describe("Tests for Screen 2 of Sections component", () => {
@@ -86,5 +79,17 @@ describe("Tests for Screen 2 of Sections component", () => {
     fireEvent.click(goBackButton)
     const page1Title = await screen.findByRole('heading', { name: English['Onboarding.WhatIsOONIProbe.Title'] })
     expect(page1Title).toBeInTheDocument()
+  })
+  test("Clicking on 'I Understand' brings up Pop Quiz", async () => {
+    const mainButton = screen.getByRole('button', { name: English['Onboarding.ThingsToKnow.Button'] })
+    fireEvent.click(mainButton)
+    const quizTitle = await screen.findByRole('heading', { name: English['Onboarding.PopQuiz.Title'] })
+    expect(quizTitle).toBeInTheDocument()
+  })
+  test("CSS styles of elements are correct", async () => {
+    const mainButton = screen.getByRole('button', { name: English['Onboarding.ThingsToKnow.Button'] })
+    const mainButtonStyles = global.getComputedStyle(mainButton)
+    expect(rgb2hex(mainButtonStyles.backgroundColor)).toMatch(theme.colors.white)
+    expect(rgb2hex(mainButtonStyles.color)).toMatch(theme.colors.primary)
   })
 })
