@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tests from Stepper component With active index 0 1`] = `"[object Object]"`;
+
+exports[`Tests from Stepper component With active index 1 1`] = `"[object Object]"`;
+
+exports[`Tests from Stepper component With active index 2 1`] = `"[object Object]"`;

@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { screen, render, fireEvent, findByText, findByRole, cleanup } from "@testing-library/react";
+import { screen, render, fireEvent, cleanup } from "@testing-library/react";
 import { theme } from "ooni-components";
 import { ThemeProvider } from "styled-components";
 import { IntlProvider } from "react-intl";
@@ -63,7 +63,7 @@ describe("Tests for Screen 2 of Sections component", () => {
   afterEach(() => {
     cleanup()
   })
-  test("Screen 2 renders correctly", async () => {
+  test("Screen 2 renders content correctly", async () => {
     const page2Title = screen.getByRole('heading', { name: English['Onboarding.ThingsToKnow.Title'] })
     const mainButton = screen.getByRole('button', { name: English['Onboarding.ThingsToKnow.Button'] })
     const goBackButton = screen.getByText(English['Onboarding.PopQuiz.Wrong.Button.Back'])
