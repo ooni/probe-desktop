@@ -1,0 +1,330 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tests for Screen 1 of Sections component Matches snapshot 1`] = `
+.c3 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  width: 100%;
+}
+
+.c5 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  width: 100%;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.c6 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  line-height: 1.5;
+  font-weight: 300;
+  -webkit-letter-spacing: -1px;
+  -moz-letter-spacing: -1px;
+  -ms-letter-spacing: -1px;
+  letter-spacing: -1px;
+  font-size: 48px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.c7 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  width: 50%;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  padding-left: 32px;
+  padding-right: 32px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.c8 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.c9 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: inline-block;
+  text-align: center;
+  line-height: inherit;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  font-size: inherit;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  color: #f8f9fa;
+  background-color: #0588cb;
+  border: 0;
+  border-radius: 4px;
+  display: inline-block;
+  padding-left: 32px;
+  padding-right: 32px;
+  text-transform: capitalize;
+  text-align: center;
+  -webkit-letter-spacing: 0.5px;
+  -moz-letter-spacing: 0.5px;
+  -ms-letter-spacing: 0.5px;
+  letter-spacing: 0.5px;
+  vertical-align: middle;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-transition: .2s ease-out;
+  transition: .2s ease-out;
+  outline: 0;
+  color: #0588cb;
+  background-color: #f8f9fa;
+  border-radius: 20px;
+  border-width: 2px;
+  font-size: 16px;
+}
+
+.c9:hover:enabled {
+  background-color: #f1f3f5;
+}
+
+.c9:enabled {
+  cursor: pointer;
+}
+
+.c10 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  width: 100%;
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+.c2 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c4 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c11 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c12 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  background-color: #f8f9fa;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+}
+
+.c14 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  background-color: #0588cb;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+}
+
+.c13 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  background-color: #0588cb;
+  width: 50px;
+  height: 3px;
+}
+
+.c1 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 50px;
+  background-color: transparent;
+  color: #f8f9fa;
+  -webkit-app-region: drag;
+}
+
+.c0 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  -webkit-flex: 0 1;
+  -ms-flex: 0 1;
+  flex: 0 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background: no-repeat url(/static/images/onboarding_0.svg);
+  background-color: #002b54;
+  background-size: contain;
+  height: 100vh;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  />
+  <div
+    className="c2"
+  >
+    <div
+      className="c3"
+      width={1}
+    >
+      <div
+        className="c4"
+      >
+        <div
+          className="c5"
+          width={1}
+        >
+          <h1
+            className="c6"
+          >
+            What is OONI Probe?
+          </h1>
+        </div>
+        <div
+          className="c7"
+          width={0.5}
+        >
+          <p>
+            Your app for measuring internet censorship. 
+          </p>
+          
+
+          <p>
+            Are websites and social media apps blocked? Is your internet connection unusually slow?
+          </p>
+          
+
+          <p>
+            Run OONI Probe to find out!
+          </p>
+        </div>
+        <div
+          className="c8"
+        >
+          <button
+            className="c9"
+            fontSize={1}
+            onClick={[Function]}
+          >
+            Got It
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c3"
+      width={1}
+    />
+    <div
+      className="c10"
+      width={1}
+    >
+      <div
+        className="c11"
+      >
+        <div
+          className="c12"
+        />
+        <div
+          className="c13"
+        />
+        <div
+          className="c14"
+        />
+        <div
+          className="c13"
+        />
+        <div
+          className="c14"
+        />
+        <div
+          className="c13"
+        />
+        <div
+          className="c14"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
