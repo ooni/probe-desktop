@@ -6,7 +6,6 @@ import { screen, render, fireEvent, cleanup } from "@testing-library/react";
 import { theme } from "ooni-components";
 import { ThemeProvider } from "styled-components";
 import { IntlProvider, FormattedMessage } from "react-intl";
-import renderer from "react-test-renderer";
 import English from "../../../../lang/en.json";
 
 import QuizSteps from "../QuizSteps";
@@ -41,6 +40,10 @@ describe("Tests for QuizSteps", () => {
     )
   })
 
+  afterEach(() => {
+    onQuizComplete.mockClear()
+  })
+
   test("User Story with correct answers", async () => {
     const yesButton1 = screen.getByText(English['Onboarding.PopQuiz.True'])
     fireEvent.click(yesButton1)
@@ -50,10 +53,34 @@ describe("Tests for QuizSteps", () => {
       expect(heading).toBeInTheDocument()
       fireEvent.click(yesButton2)
       resolve()
-    }, 1500))
+    }, 1650))
     await new Promise(resolve => setTimeout(() => {
       expect(onQuizComplete).toHaveBeenCalledTimes(1)
       resolve()
-    }, 1500))
+    }, 1650))
+  });
+
+  test("User Story with incorrect answers", async () => {
+    const falseButton1 = screen.getByText(English['Onboarding.PopQuiz.False'])
+    fireEvent.click(falseButton1)
+    await new Promise(resolve => setTimeout(() => {
+      const warningParagraph = screen.getByText(English['Onboarding.PopQuiz.1.Wrong.Paragraph'])
+      const continueButton = screen.getByText(English['Onboarding.PopQuiz.Wrong.Button.Continue'])
+      expect(warningParagraph).toBeInTheDocument()
+      fireEvent.click(continueButton)
+      resolve()
+    }, 1650))
+    const quizHeading2 = await screen.findByText(English['Onboarding.PopQuiz.2.Title'])
+    expect(quizHeading2).toBeInTheDocument()
+    const falseButton2 = screen.getByText(English['Onboarding.PopQuiz.False'])
+    fireEvent.click(falseButton2)
+    await new Promise(resolve => setTimeout(() => {
+      const warningParagraph = screen.getByText(English['Onboarding.PopQuiz.2.Wrong.Paragraph'])
+      const continueButton = screen.getByText(English['Onboarding.PopQuiz.Wrong.Button.Continue'])
+      expect(warningParagraph).toBeInTheDocument()
+      fireEvent.click(continueButton)
+      expect(onQuizComplete).toHaveBeenCalledTimes(1)
+      resolve()
+    }, 1650))
   });
 });
