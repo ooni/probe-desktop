@@ -96,6 +96,7 @@ const Animation = ({ okay, onComplete }) => {
   const animationData = okay ? tickAnimation : crossAnimation
   return (
     <Lottie
+      data-testid='lottie-player'
       loop={false}
       play={true}
       animationData={animationData}
