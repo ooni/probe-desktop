@@ -96,7 +96,7 @@ const Animation = ({ okay, onComplete }) => {
   const animationData = okay ? tickAnimation : crossAnimation
   return (
     <Lottie
-      data-testid='lottie-player'
+      data-testid='quiz-steps-animation'
       loop={false}
       play={true}
       animationData={animationData}
@@ -169,7 +169,7 @@ const QuizSteps = ({ questionList, actuallyList, onDone, onClose }) => {
   }
 
   return (
-    <Modal show={true} bg={modalBg}>
+    <Modal show={true} bg={modalBg} data-testid='quiz-steps-modal'>
       <Box sx={{
         top: 0,
         bottom: 0,

@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { screen, render, fireEvent, cleanup } from "@testing-library/react";
+import { screen, render, fireEvent, cleanup, waitForElementToBeRemoved } from "@testing-library/react";
 import { theme } from "ooni-components";
 import { ThemeProvider } from "styled-components";
 import { IntlProvider } from "react-intl";
@@ -91,5 +91,43 @@ describe("Tests for Screen 2 of Sections component", () => {
     const mainButtonStyles = global.getComputedStyle(mainButton)
     expect(rgb2hex(mainButtonStyles.backgroundColor)).toMatch(theme.colors.white)
     expect(rgb2hex(mainButtonStyles.color)).toMatch(theme.colors.primary)
+  })
+})
+
+describe('Tests for Screens 3 and Screen 4 of Sections component', () => {
+  test('Screen 3 and Screen 4 render correctly', async () => {
+    
+    const onGo = jest.fn()
+    renderComponent(<Sections onGo={ onGo } />);
+
+    const gotItButton = screen.getByRole('button', { name: English['Onboarding.WhatIsOONIProbe.GotIt'] })
+    fireEvent.click(gotItButton)
+
+    const screen2Button = screen.getByRole('button', { name: English['Onboarding.ThingsToKnow.Button'] })
+    fireEvent.click(screen2Button)
+
+    const yesButton1 = screen.getByText(English["Onboarding.PopQuiz.True"]);
+    fireEvent.click(yesButton1);
+
+    const lottiePlayerFirst = screen.getByTestId("quiz-steps-animation");
+    await waitForElementToBeRemoved(lottiePlayerFirst, { timeout: 2000 });
+
+    const yesButton2 = screen.getByText(English["Onboarding.PopQuiz.True"]);
+    fireEvent.click(yesButton2);
+
+    const lottiePlayerSecond = screen.getByTestId("quiz-steps-animation");
+    await waitForElementToBeRemoved(lottiePlayerSecond, { timeout: 2000 });
+
+    const warningTitle = await screen.findByText(English['Onboarding.Crash.Title'])
+    expect(warningTitle).toBeInTheDocument()
+    const yesButton = screen.getByText(English['Onboarding.Crash.Button.Yes'])
+    fireEvent.click(yesButton)
+
+    const defaultSettingsTitle = await screen.findByText(English['Onboarding.DefaultSettings.Title'])
+    expect(defaultSettingsTitle).toBeInTheDocument()
+    const letsGoButton = screen.getByText(English['Onboarding.DefaultSettings.Button.Go'])
+    fireEvent.click(letsGoButton)
+
+    expect(onGo).toHaveBeenCalledTimes(1)
   })
 })
