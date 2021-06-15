@@ -1,13 +1,8 @@
-import React from 'react'
-
+import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-
 import styled from 'styled-components'
-
-// XXX replace this with the correct icon
-import HumanFilesize from '../HumanFilesize'
-
+import Sticky from 'react-stickynode'
 import {
   MdArrowUpward,
   MdArrowDownward,
@@ -16,7 +11,6 @@ import {
   MdSwapVert,
   MdPublic
 } from 'react-icons/md'
-
 import {
   Heading,
   Text,
@@ -26,19 +20,12 @@ import {
 } from 'ooni-components'
 import { FormattedDate, FormattedMessage, FormattedNumber } from 'react-intl'
 
+import HumanFilesize from '../HumanFilesize'
 import { testGroups } from '../nettests'
-
 import StatsOverview from './StatsOverview'
 import MeasurementRow from './MeasurementRow'
 import BackButton from '../BackButton'
 import TwoColumnTable from '../TwoColumnTable'
-import { StickyContainer, Sticky } from 'react-sticky'
-
-const ResultOverviewContainer = styled.div`
-  position: relative;
-  width: 100%;
-  color: ${props => props.theme.colors.white};
-`
 
 const OverviewLabel = ({ icon, label }) => (
   <Flex flexDirection='row' alignItems='center'>
@@ -59,12 +46,10 @@ const overviewShape = PropTypes.shape({
   startTime: PropTypes.string
 })
 
-// XXX groupName is also passed in
 const ResultOverview = ({
   groupName,
   testKeys,
   overview,
-  isSticky
 }) => {
   const {
     anomalyCount,
@@ -77,35 +62,9 @@ const ResultOverview = ({
     countryCode,
     asn
   } = overview
-
-  if (isSticky) {
-    return (
-      <ResultOverviewContainer>
-        <Flex justifyContent='center' alignItems='center'>
-          <Box>
-            <BackButton />
-          </Box>
-          <Box>
-            <Heading center h={4}>{startTime && <FormattedDate value={startTime} />}</Heading>
-          </Box>
-          <Box ml='auto' mr={2}>
-            <Flex>
-              <Box>
-              </Box>
-              <Box>
-                <Text><MdPublic  size={20} /> {networkName} (AS{asn})</Text>
-              </Box>
-              <Box>
-                <Text><MdFlag size={20} /> {countryCode}</Text>
-              </Box>
-            </Flex>
-          </Box>
-        </Flex>
-      </ResultOverviewContainer>
-    )
-  }
+  
   return (
-    <ResultOverviewContainer>
+    <>
       <Flex justifyContent='center' alignItems='center'>
         <Box>
           <BackButton />
@@ -115,7 +74,6 @@ const ResultOverview = ({
         </Box>
       </Flex>
       <Container style={{padding: '20px 60px'}}>
-
         <Box pb={4}>
           <StatsOverview
             name={groupName}
@@ -124,7 +82,6 @@ const ResultOverview = ({
             totalCount={totalCount}
           />
         </Box>
-
         <TwoColumnTable
           left={
             <OverviewLabel
@@ -173,7 +130,7 @@ const ResultOverview = ({
           right={<Text>{networkName} ({asn})</Text>}
         />
       </Container>
-    </ResultOverviewContainer>
+    </>
   )
 }
 
@@ -182,6 +139,39 @@ ResultOverview.propTypes = {
   testKeys: PropTypes.object,
   groupName: PropTypes.string,
   isSticky: PropTypes.bool
+}
+
+const FadeInFlex = styled(Flex)`
+  opacity: ${props => props.isSticky ? 1 : 0};
+  height: ${props => props.isSticky ? '50px' : 0};
+  transition-duration: 0.2s;
+`
+
+const ResultOverviewCollapsed = ({ overview, ...rest }) => {
+  const {
+    startTime,
+    networkName,
+    countryCode,
+    asn
+  } = overview
+  return (
+    <FadeInFlex justifyContent='center' alignItems='center' {...rest}>
+      <Box>
+        <BackButton />
+      </Box>
+      <Box>
+        <Heading center h={4}>{startTime && <FormattedDate value={startTime} />}</Heading>
+      </Box>
+      <Flex alignItems='center' ml='auto'>
+        <MdPublic size={20} />
+        <Text mx={1}>{networkName} (AS{asn})</Text>
+      </Flex>
+      <Flex alignItems='center' mx={2}>
+        <MdFlag size={20} />
+        <Text mx={1}>{countryCode}</Text>
+      </Flex>
+    </FadeInFlex>
+  )
 }
 
 const MeasurementList = ({groupName, measurements}) => {
@@ -234,28 +224,30 @@ const HeaderContent = styled(Box)`
 `
 
 const ResultContainer = ({ rows, summary }) => {
+  const [isSticky, setIsSticky] = useState(false)
   const overviewProps = mapOverviewProps(rows, summary)
+  
+  const handleStateChange = useCallback(({ status }) => {
+    switch(status) {
+    case Sticky.STATUS_FIXED:
+      setIsSticky(true)
+      break
+    case Sticky.STATUS_ORIGINAL:
+      setIsSticky(false)
+      break
+    }
+  }, [])
+
   return (
-    <StickyContainer>
-      <Sticky topOffset={100}>
-        {({
-          style,
-          isSticky
-        }) => {
-          return (
-            <HeaderContent
-              bg={overviewProps.group.color}
-              style={style}>
-              <ResultOverview
-                isSticky={isSticky}
-                {...overviewProps}
-              />
-            </HeaderContent>
-          )
-        }}
-      </Sticky>
+    <>
+      <HeaderContent bg={overviewProps.group.color}>
+        <ResultOverview {...overviewProps} />
+        <Sticky enabled={true} onStateChange={handleStateChange} innerZ={1}>
+          <ResultOverviewCollapsed isSticky={isSticky} bg={overviewProps.group.color} overview={overviewProps.overview} />
+        </Sticky>
+      </HeaderContent>
       <MeasurementList groupName={overviewProps.groupName} group={overviewProps.group} measurements={rows} />
-    </StickyContainer>
+    </>
   )
 }
 

@@ -112,10 +112,8 @@ const URLRow = ({measurement, resultID, measurementID, isAnomaly}) => (
       <Box width={1/8} h={1}>
         <Status notok={isAnomaly} />
       </Box>
-      <Box width={1/8} style={{marginLeft: 'auto'}}>
-        <VerticalCenter>
-          <RightArrowStyled />
-        </VerticalCenter>
+      <Box ml='auto' mr={3}>
+        <RightArrowStyled />
       </Box>
     </BorderedFlex>
   </Link>
