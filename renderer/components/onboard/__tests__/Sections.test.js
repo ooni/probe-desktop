@@ -96,7 +96,7 @@ describe("Tests for Screen 2 of Sections component", () => {
 
 describe('Tests for Screens 3 and Screen 4 of Sections component', () => {
   test('Screen 3 and Screen 4 render correctly', async () => {
-    
+
     const onGo = jest.fn()
     renderComponent(<Sections onGo={ onGo } />);
 
@@ -114,12 +114,15 @@ describe('Tests for Screens 3 and Screen 4 of Sections component', () => {
 
     const yesButton2 = screen.getByText(English["Onboarding.PopQuiz.True"]);
     fireEvent.click(yesButton2);
-
+    
     const lottiePlayerSecond = screen.getByTestId("quiz-steps-animation");
     await waitForElementToBeRemoved(lottiePlayerSecond, { timeout: 2000 });
-
-    const warningTitle = await screen.findByText(English['Onboarding.Crash.Title'])
-    expect(warningTitle).toBeInTheDocument()
+    
+    const popQuizTitle = screen.queryByText(English['Onboarding.PopQuiz.Title'])
+    expect(popQuizTitle).not.toBeInTheDocument()
+    
+    const crashInfoTitle = await screen.findByText(English['Onboarding.Crash.Title'])
+    expect(crashInfoTitle).toBeInTheDocument()
     const yesButton = screen.getByText(English['Onboarding.Crash.Button.Yes'])
     fireEvent.click(yesButton)
 
