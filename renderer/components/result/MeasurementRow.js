@@ -9,7 +9,6 @@ import {
 } from 'ooni-components'
 import { FormattedMessage, useIntl } from 'react-intl'
 import {
-  Cross,
   Tick
 } from 'ooni-components/dist/icons'
 
@@ -63,15 +62,12 @@ const formatURL = (url) => {
   return url
 }
 
-const Status = ({notok, warning}) => {
+const Status = ({ notok }) => {
   if (notok === false) {
     return <Tick size={30} color={theme.colors.green7} />
   }
   if (notok === true) {
-    if (warning === true) {
-      return <MdPriorityHigh size={30} color={theme.colors.yellow8} />
-    }
-    return <Cross size={30} color={theme.colors.red8} />
+    return <MdPriorityHigh size={30} color={theme.colors.yellow8} />
   }
 
   return <Text color={theme.colors.red8}>Error ({notok})</Text>
@@ -112,10 +108,8 @@ const URLRow = ({measurement, resultID, measurementID, isAnomaly}) => (
       <Box width={1/8} h={1}>
         <Status notok={isAnomaly} />
       </Box>
-      <Box width={1/8} style={{marginLeft: 'auto'}}>
-        <VerticalCenter>
-          <RightArrowStyled />
-        </VerticalCenter>
+      <Box ml='auto' mr={3}>
+        <RightArrowStyled />
       </Box>
     </BorderedFlex>
   </Link>
