@@ -166,6 +166,9 @@ autoUpdater.on('update-downloaded', () => {
 // See ooni/probe#1318
 // From https://github.com/electron-userland/electron-builder/issues/2398#issuecomment-413117520
 function checkForUpdates() {
+  // Skip checking updates in dev mode
+  if (isDev) return
+
   autoUpdater.checkForUpdates().then((info) => {
     if (autoUpdater.updateAvailable) {
       downloadUpdate(info.cancellationToken)
