@@ -56,7 +56,7 @@ describe('Tests for Sidebar component', () => {
       renderComponent(
         <NavItem
           key={idx}
-          pathName="/dashboard"
+          pathName='/dashboard'
           href={path}
           icon={info.icon}
           label={info.name}
