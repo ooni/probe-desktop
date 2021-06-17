@@ -1,8 +1,25 @@
 # Changelog
 
+## OONI Probe Desktop 3.5.1 [2021-06-17]
+
+probe-cli: 3.10.0-beta.3
+
+### Changed
+
+- Updated translations for Arabic, Persian and couple of other languages
+
+### Fixed
+
+- Fixed scrolling issues with measurement list screen
+
+### Security
+
+- Dependabot version bumps for a bunch of indirect dependencies
+
+
 ## OONI Probe Desktop 3.5.0 [2021-06-03]
 
-probe-cli: 3.10.0
+probe-cli: 3.10.0-beta.3
 
 ### Added
 
