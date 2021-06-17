@@ -3,7 +3,7 @@
  */
 
 import React from 'react'
-import { screen, render } from '@testing-library/react'
+import { screen, render, fireEvent } from '@testing-library/react'
 import { theme } from 'ooni-components'
 import { ThemeProvider } from 'styled-components'
 import { IntlProvider } from 'react-intl'
@@ -23,6 +23,9 @@ describe('Tests for DashboardHeader', () => {
   const onRunTest = jest.fn()
   test('Run button is rendered and triggers the test', async () => {
     renderComponent(<DashboardHeader onRunAll={onRunTest('all')}/>)
-    expect(screen.getByText(/Run/i)).toBeInTheDocument()
+    const runButton = screen.getByText(English['Dashboard.Overview.Run'])
+    expect(runButton).toBeInTheDocument()
+    fireEvent.click(runButton)
+    expect(onRunTest).toHaveBeenCalledTimes(1)
   })
 })
