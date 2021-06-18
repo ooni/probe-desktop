@@ -1,5 +1,3 @@
-/* global require, module, process, __dirname */
-
 // Useful issue on non-ascii path problems on windows:
 // https://github.com/nodejs/node/issues/17586
 const path = require('path')
@@ -16,7 +14,7 @@ const getResourcesDirectory = () => {
     return rsrcPath
   }
 
-  const appPath = (electron.app || electron.remote.app).getPath('exe')
+  const appPath = electron.app.getPath('exe')
 
   if (is.macos) {
     return path.join(appPath, '../../Resources')
@@ -56,7 +54,7 @@ const getBinaryPath = () => {
 }
 
 const getHomeDir = () => {
-  const userDataPath = (electron.app || electron.remote.app).getPath('userData')
+  const userDataPath = electron.app.getPath('userData')
   if (is.development || process.env.NODE_ENV === 'test') {
     return path.join(getResourcesDirectory(), 'ooni_home')
   }

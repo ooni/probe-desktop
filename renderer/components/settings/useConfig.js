@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { useState, useContext, useEffect, useCallback } from 'react'
-import { remote, ipcRenderer } from 'electron'
+import { ipcRenderer } from 'electron'
 
 export const ConfigContext = React.createContext([{}, () => {}])
 

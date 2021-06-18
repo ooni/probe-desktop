@@ -14,7 +14,7 @@ export const LanguageSelector = () => {
     return supportedLanguages
       .sort((langA) => langA == 'en' ? -1 : 0)
       .map(lang => (
-        <option key={lang} value={lang}>{intl.formatDisplayName(lang)}</option>
+        <option key={lang} value={lang}>{intl.formatDisplayName(lang, { type: 'language' })}</option>
       ))
   }, [intl.locale]) /* eslint-disable-line */
 
