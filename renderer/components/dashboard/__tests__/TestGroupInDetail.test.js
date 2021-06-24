@@ -3,18 +3,24 @@
  */
 
 import React, { useState, createContext } from 'react'
-import { screen, render, waitFor } from '@testing-library/react'
+import PropTypes from 'prop-types'
 import { theme } from 'ooni-components'
 import { ThemeProvider } from 'styled-components'
-import { IntlProvider } from 'react-intl'
-import English from '../../../../lang/en.json'
+import { IntlProvider, createIntl, createIntlCache } from 'react-intl'
 import TestGroupInDetail from '../TestGroupInDetail'
+import { screen, render, waitFor } from '@testing-library/react'
+import English from '../../../../lang/en.json'
 import fs from 'fs-extra'
 import path from 'path'
+import { testGroups } from '../../nettests'
 
+// For Using Intl formatting outside React Hooks
+const cache = createIntlCache()
+const intl = createIntl({ locale: 'en-US', messages: English }, cache)
+
+
+// For mocking ConfigProvider and useConfig.js
 const ConfigContext = createContext([{}, () => {}])
-
-let config
 let mockConfig
 
 const getConfig = async (key = null) => {
@@ -22,12 +28,12 @@ const getConfig = async (key = null) => {
     const configRaw = fs.readFileSync(
       path.join(__dirname, '../../../../ooni_home/config.json')
     )
-    config = JSON.parse(configRaw)
     mockConfig = JSON.parse(configRaw)
     if (key === null) {
-      return config
+      console.log('mockConfig: ', mockConfig)
+      return mockConfig
     } else {
-      return getConfigValue(config, key)
+      return getConfigValue(mockConfig, key)
     }
   } catch (err) {
     console.log('error in func', err)
@@ -48,38 +54,17 @@ const ConfigProvider = (props) => {
   )
 }
 
+ConfigProvider.propTypes = {
+  children: PropTypes.node,
+}
+
 jest.mock('../../settings/useConfig', () => {
   return {
     getConfigValue: jest.fn((config, optionKey) =>
       optionKey.split('.').reduce((o, i) => o[i], config)
     ),
-    useConfig: jest.fn((key = null) => {
-      // const [config, setConfigContext] = useContext(ConfigContext)
-      const config1 = mockConfig
-      // if (config === null) {
-      //   ipcRenderer.invoke('get-fresh-config').then((config) => {
-      //     setConfigContext(config)
-      //   })
-      // }
-
-      const currentValue = config1
-
-      // const [err, setErr] = useState(null)
-      // const [pending, setPending] = useState(false)
-
-      // const setConfigValue = useCallback((value) => {
-      //   setPending(true)
-      //   const { setConfig } = remote.require('./utils/config')
-
-      //   setConfig(key, currentValue, value)
-      //     .then((result) => {
-      //       setConfigContext(result)
-      //     })
-      //     .catch(setErr)
-      //     .finally(() => setPending(false))
-      // }, [setConfigContext, currentValue, key])
-
-      return [currentValue]
+    useConfig: jest.fn(() => {
+      return [mockConfig]
     }),
   }
 })
@@ -94,10 +79,30 @@ const renderComponent = (component, locale = 'en', messages = English) => {
   )
 }
 
+const getEstimatedSizeAndTime = testGroup => {
+  const { estimatedSize, estimatedTimeInSec } = testGroups[testGroup]
+  const estimatedTime = estimatedTimeInSec(0)
+  const [estimatedTimeValue, estimatedTimeUnit] =
+    estimatedTime > 60
+      ? [estimatedTime / 60, 'minute']
+      : [estimatedTime, 'second']
+  const formattedEstimatedTime = intl.formatNumber(estimatedTimeValue, {
+    style: 'unit',
+    unit: estimatedTimeUnit,
+    unitDisplay: 'short',
+  })
+  return [estimatedSize, formattedEstimatedTime]
+}
+
 describe('Test if TestGroupInDetail component is correctly mounted', () => {
   const runTest = jest.fn()
   test('Component renders correctly for IM', async () => {
-    renderComponent(<TestGroupInDetail testGroup="im" onRun={runTest} />)
+    const testGroup = 'im'
+    renderComponent(<TestGroupInDetail testGroup={ testGroup } onRun={runTest} />)
+
+    const [estimatedSize, estimatedTime] = getEstimatedSizeAndTime(testGroup)
+
+    console.log('Estimated size and time: ', estimatedSize, estimatedTime)
     await waitFor(
       () =>
         screen.findByRole('heading', {

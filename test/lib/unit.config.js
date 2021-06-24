@@ -7,5 +7,6 @@ module.exports = {
   testSequencer: '<rootDir>/test/lib/sequencer.js',
   moduleNameMapper: {
     'electron': '<rootDir>/test/mocks/electronMock.js',
+    // '../../renderer/components/settings/useConfig.js': '<rootDir>/test/mocks/useConfigMock.js',
   },
 }
