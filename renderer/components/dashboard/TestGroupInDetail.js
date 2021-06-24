@@ -1,15 +1,14 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { Flex, Box, Heading, Button } from 'ooni-components'
-import { FormattedMessage, FormattedNumber, FormattedNumberParts } from 'react-intl'
+import { FormattedMessage, FormattedNumber } from 'react-intl'
 import styled from 'styled-components'
-import moment from 'moment'
 import { useRouter } from 'next/router'
 
 import { testGroups } from '../nettests'
 import BackButton from '../BackButton'
 import { useConfig } from '../settings/useConfig'
-import LastTest from 'components/dashboard/LastTest'
+import LastTest from './LastTest'
 
 const Divider = styled(Box)`
   height: 1px;
