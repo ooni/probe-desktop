@@ -8,7 +8,7 @@ import { theme } from 'ooni-components'
 import { ThemeProvider } from 'styled-components'
 import { IntlProvider, createIntl, createIntlCache } from 'react-intl'
 import TestGroupInDetail from '../TestGroupInDetail'
-import { screen, render, waitFor } from '@testing-library/react'
+import { screen, render, waitFor, fireEvent, cleanup } from '@testing-library/react'
 import English from '../../../../lang/en.json'
 import fs from 'fs-extra'
 import path from 'path'
@@ -96,13 +96,16 @@ const getEstimatedSizeAndTime = testGroup => {
 
 describe('Test if TestGroupInDetail component is correctly mounted', () => {
   const runTest = jest.fn()
+  afterAll(() => {
+    cleanup()
+    runTest.mockClear()
+  })
   test('Component renders correctly for IM', async () => {
     const testGroup = 'im'
-    renderComponent(<TestGroupInDetail testGroup={ testGroup } onRun={runTest} />)
+    
+    renderComponent(<TestGroupInDetail testGroup={ testGroup } onRun={() => runTest(testGroup)} />)
 
     const [estimatedSize, estimatedTime] = getEstimatedSizeAndTime(testGroup)
-
-    console.log('Estimated size and time: ', estimatedSize, estimatedTime)
     await waitFor(
       () =>
         screen.findByRole('heading', {
@@ -110,6 +113,14 @@ describe('Test if TestGroupInDetail component is correctly mounted', () => {
         }),
       { timeout: 3000 }
     )
-    expect(2).toBe(2)
+    const size = screen.getByText(estimatedSize)
+    const time = screen.getByText('~' + estimatedTime)
+    expect(size).toBeInTheDocument()
+    expect(time).toBeInTheDocument()
+
+    const runButton = screen.getByRole('button', { name: English['Dashboard.Overview.Run'] })
+    fireEvent.click(runButton)
+    expect(runTest).toHaveBeenCalledTimes(1)
+    expect(runTest).toHaveBeenCalledWith(testGroup)
   })
 })
