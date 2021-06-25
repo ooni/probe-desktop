@@ -68,7 +68,7 @@ jest.mock('../../settings/useConfig', () => {
   }
 })
 
-// Mocking useRouter()
+// Mocking useRouter().push()
 const mockRouterPush = jest.fn()
 jest.mock('next/router', () => ({
   useRouter() {

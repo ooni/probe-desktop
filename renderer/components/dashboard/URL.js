@@ -45,6 +45,31 @@ const RemoveButton = styled(Button)`
 
 const URL = ({ idx, url, error, onUpdate, onRemove, onKeyEnter }) => {
   const [dirty, setDirty] = useState(false)
+
+  const validateURL = useCallback((input) => {
+    let hasError = false
+    let error = ''
+    const protocolRegex = /^(?:http)s?:\/\//i
+    // Regular expression to test for valid URLs based on
+    // https://github.com/citizenlab/test-lists/blob/master/scripts/lint-lists.py#L18
+    const inputRegex = /^(?:http)s?:\/\/(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d+)?(?:\/?|[/?]\S+)$/i
+
+    if (input.trim() === '') {
+      hasError = true
+      error = 'Cannot be empty'
+    } else if (!protocolRegex.test(input)) {
+      hasError = true
+      error = 'Has to start with https:// or http://'
+    } else if (!inputRegex.test(input)) {
+      hasError = true
+      error = 'Not a valid URL format'
+    }
+    return {
+      hasError,
+      error
+    }
+  }, [])
+
   const onChange = useCallback((e) => {
     onUpdate(idx, e.target.value)
 
@@ -76,30 +101,6 @@ const URL = ({ idx, url, error, onUpdate, onRemove, onKeyEnter }) => {
     onUpdate(idx, e.target.value, hasError, error)
   }, [idx, dirty, validateURL, onUpdate])
 
-  const validateURL = useCallback((input) => {
-    let hasError = false
-    let error = ''
-    const protocolRegex = /^(?:http)s?:\/\//i
-    // Regular expression to test for valid URLs based on
-    // https://github.com/citizenlab/test-lists/blob/master/scripts/lint-lists.py#L18
-    const inputRegex = /^(?:http)s?:\/\/(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d+)?(?:\/?|[/?]\S+)$/i
-
-    if (input.trim() === '') {
-      hasError = true
-      error = 'Cannot be empty'
-    } else if (!protocolRegex.test(input)) {
-      hasError = true
-      error = 'Has to start with https:// or http://'
-    } else if (!inputRegex.test(input)) {
-      hasError = true
-      error = 'Not a valid URL format'
-    }
-    return {
-      hasError,
-      error
-    }
-  }, [])
-
   return (
     <URLBox my={3}>
       <URLInput
@@ -112,6 +113,7 @@ const URL = ({ idx, url, error, onUpdate, onRemove, onKeyEnter }) => {
         onBlur={onBlur}
         onKeyPress={onKeyPress}
         error={error}
+        data-testid='url-input'
       />
       <label htmlFor={idx}>
         <FormattedMessage id='Settings.Websites.CustomURL.URL' />
