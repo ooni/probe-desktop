@@ -6,7 +6,7 @@ import React from 'react'
 import { theme } from 'ooni-components'
 import { ThemeProvider } from 'styled-components'
 import { IntlProvider } from 'react-intl'
-import { screen, render, fireEvent, cleanup } from '@testing-library/react'
+import { screen, render, fireEvent, cleanup, waitFor } from '@testing-library/react'
 import English from '../../../../lang/en.json'
 
 import UrlList from '../UrlList'
@@ -61,5 +61,53 @@ describe('Tests for UrlList.js', () => {
       name: English['Settings.Websites.CustomURL.Run'],
     })
     expect(runButton).toBeDisabled()
+  })
+  test('Added URL can be removed', async () => {
+    const urlInputBox = screen.getByRole('textbox')
+    fireEvent.change(urlInputBox, {
+      target: { value: 'https://www.twitter.com' },
+    })
+    const addURLButton = screen.getByRole('button', {
+      name: English['Settings.Websites.CustomURL.Add'],
+      bubbles: true,
+    })
+    fireEvent.click(addURLButton)
+    const newUrlInputBox = screen.getAllByRole('textbox')[1]
+    fireEvent.change(newUrlInputBox, {
+      target: { value: 'https://www.facebook.com' },
+    })
+    const removeFirstURL = screen.getByTestId('urlRemove0')
+    const removeSecondURL = screen.getByTestId('urlRemove1')
+    fireEvent.click(removeSecondURL)
+    expect(removeFirstURL).not.toBeInTheDocument()
+    const urlInputBoxes = screen.getAllByRole('textbox')
+    expect(urlInputBoxes).toHaveLength(1)
+  })
+  test('Custom websites test is triggered on entering a valid URL', async () => {
+    const urlInputBox = screen.getByRole('textbox')
+    fireEvent.change(urlInputBox, {
+      target: { value: 'https://www.twitter.com' },
+    })
+    const addURLButton = screen.getByRole('button', {
+      name: English['Settings.Websites.CustomURL.Add'],
+      bubbles: true,
+    })
+    fireEvent.click(addURLButton)
+    const newUrlInputBox = screen.getAllByRole('textbox')[1]
+    fireEvent.change(newUrlInputBox, {
+      target: { value: 'https://www.facebook.com' },
+    })
+    fireEvent.keyDown(newUrlInputBox, {
+      key: 'Tab',
+      code: 9,
+      charCode: 9
+    })
+    const runButton = screen.getByRole('button', {
+      name: English['Settings.Websites.CustomURL.Run'],
+    })
+    expect(runButton).not.toBeDisabled()
+    fireEvent.click(runButton)
+    expect(mockRouterPush).toHaveBeenCalledWith('/dashboard/running')
+    expect(2).toBe(2)
   })
 })
