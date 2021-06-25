@@ -30,7 +30,6 @@ const getConfig = async (key = null) => {
     )
     mockConfig = JSON.parse(configRaw)
     if (key === null) {
-      console.log('mockConfig: ', mockConfig)
       return mockConfig
     } else {
       return getConfigValue(mockConfig, key)
@@ -69,6 +68,16 @@ jest.mock('../../settings/useConfig', () => {
   }
 })
 
+// Mocking useRouter()
+const mockRouterPush = jest.fn()
+jest.mock('next/router', () => ({
+  useRouter() {
+    return {
+      push: mockRouterPush
+    }
+  },
+}))
+
 const renderComponent = (component, locale = 'en', messages = English) => {
   return render(
     <ConfigProvider>
@@ -94,9 +103,9 @@ const getEstimatedSizeAndTime = testGroup => {
   return [estimatedSize, formattedEstimatedTime]
 }
 
-describe('Test if TestGroupInDetail component is correctly mounted', () => {
+describe('Test if TestGroupInDetail component is correctly rendered', () => {
   const runTest = jest.fn()
-  afterAll(() => {
+  afterEach(() => {
     cleanup()
     runTest.mockClear()
   })
@@ -122,5 +131,114 @@ describe('Test if TestGroupInDetail component is correctly mounted', () => {
     fireEvent.click(runButton)
     expect(runTest).toHaveBeenCalledTimes(1)
     expect(runTest).toHaveBeenCalledWith(testGroup)
+  })
+  test('Component renders correctly for Circumvention', async () => {
+    const testGroup = 'circumvention'
+    
+    renderComponent(<TestGroupInDetail testGroup={ testGroup } onRun={() => runTest(testGroup)} />)
+
+    const [estimatedSize, estimatedTime] = getEstimatedSizeAndTime(testGroup)
+    await waitFor(
+      () =>
+        screen.findByRole('heading', {
+          name: English['Test.Circumvention.Fullname'],
+        }),
+      { timeout: 3000 }
+    )
+    const size = screen.getByText(estimatedSize)
+    const time = screen.getByText('~' + estimatedTime)
+    expect(size).toBeInTheDocument()
+    expect(time).toBeInTheDocument()
+
+    const runButton = screen.getByRole('button', { name: English['Dashboard.Overview.Run'] })
+    fireEvent.click(runButton)
+    expect(runTest).toHaveBeenCalledTimes(1)
+    expect(runTest).toHaveBeenCalledWith(testGroup)
+  })
+  test('Component renders correctly for Performance', async () => {
+    const testGroup = 'performance'
+    
+    renderComponent(<TestGroupInDetail testGroup={ testGroup } onRun={() => runTest(testGroup)} />)
+
+    const [estimatedSize, estimatedTime] = getEstimatedSizeAndTime(testGroup)
+    await waitFor(
+      () =>
+        screen.findByRole('heading', {
+          name: English['Test.Performance.Fullname'],
+        }),
+      { timeout: 3000 }
+    )
+    const size = screen.getByText(estimatedSize)
+    const time = screen.getByText('~' + estimatedTime)
+    expect(size).toBeInTheDocument()
+    expect(time).toBeInTheDocument()
+
+    const runButton = screen.getByRole('button', { name: English['Dashboard.Overview.Run'] })
+    fireEvent.click(runButton)
+    expect(runTest).toHaveBeenCalledTimes(1)
+    expect(runTest).toHaveBeenCalledWith(testGroup)
+  })
+  test('Component renders correctly for Middleboxes', async () => {
+    const testGroup = 'middlebox'
+    
+    renderComponent(<TestGroupInDetail testGroup={ testGroup } onRun={() => runTest(testGroup)} />)
+
+    const [estimatedSize, estimatedTime] = getEstimatedSizeAndTime(testGroup)
+    await waitFor(
+      () =>
+        screen.findByRole('heading', {
+          name: English['Test.Middleboxes.Fullname'],
+        }),
+      { timeout: 3000 }
+    )
+    const size = screen.getByText(estimatedSize)
+    const time = screen.getByText('~' + estimatedTime)
+    expect(size).toBeInTheDocument()
+    expect(time).toBeInTheDocument()
+
+    const runButton = screen.getByRole('button', { name: English['Dashboard.Overview.Run'] })
+    fireEvent.click(runButton)
+    expect(runTest).toHaveBeenCalledTimes(1)
+    expect(runTest).toHaveBeenCalledWith(testGroup)
+  })
+})
+
+
+describe('TestGroupInDetail is correctly rendered for Website test', () => {
+  const runTest = jest.fn()
+  afterEach(() => {
+    cleanup()
+    runTest.mockClear()
+  })
+  test('Component renders correctly for Websites', async () => {
+    const testGroup = 'websites'
+    
+    renderComponent(<TestGroupInDetail testGroup={ testGroup } onRun={() => runTest(testGroup)} />)
+
+    const [estimatedSize] = getEstimatedSizeAndTime(testGroup)
+    await waitFor(
+      () =>
+        screen.findByRole('heading', {
+          name: English['Test.Websites.Fullname'],
+        }),
+      { timeout: 3000 }
+    )
+    const size = screen.getByText(estimatedSize)
+    // This doesn't work for Website tests. Although in dev mode, the estimated time
+    // displayed is ~ 60 min, in jest render the same comes out to be ~ NaN min
+    // The reason being for some reason `estimatedTime` gives out an object instead of
+    // the expected value of 3600
+    // const time = screen.getByText('~' + estimatedTime)
+    expect(size).toBeInTheDocument()
+
+    const runButton = screen.getByRole('button', { name: English['Dashboard.Overview.Run'] })
+    fireEvent.click(runButton)
+    expect(runTest).toHaveBeenCalledTimes(1)
+    expect(runTest).toHaveBeenCalledWith(testGroup)
+
+    const chooseButton = screen.getByRole('button', { name: English['Dashboard.Overview.ChooseWebsites'] })
+    fireEvent.click(chooseButton, { button: 0 })
+    expect(mockRouterPush).toHaveBeenCalledTimes(1)
+    expect(mockRouterPush).toHaveBeenCalledWith('/dashboard/websites/choose')
   })
 })
