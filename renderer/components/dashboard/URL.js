@@ -108,7 +108,7 @@ const URL = ({ idx, url, error, onUpdate, onRemove, onKeyEnter }) => {
         name={idx}
         spellCheck={false}
         placeholder='https://'
-        value={url}
+        value={url || ''}
         onChange={onChange}
         onBlur={onBlur}
         onKeyPress={onKeyPress}
@@ -119,7 +119,7 @@ const URL = ({ idx, url, error, onUpdate, onRemove, onKeyEnter }) => {
         <FormattedMessage id='Settings.Websites.CustomURL.URL' />
       </label>
       {onRemove &&
-        <RemoveButton onClick={onDelete}>
+        <RemoveButton onClick={onDelete} data-testid={`urlRemove${idx}`}>
           <MdRemoveCircle size={32} />
         </RemoveButton>
       }
