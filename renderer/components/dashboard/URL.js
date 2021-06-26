@@ -45,36 +45,6 @@ const RemoveButton = styled(Button)`
 
 const URL = ({ idx, url, error, onUpdate, onRemove, onKeyEnter }) => {
   const [dirty, setDirty] = useState(false)
-  const onChange = useCallback((e) => {
-    onUpdate(idx, e.target.value)
-
-    // Also start validting one the field is dirty
-    // this lets UrlList to make the Run button active as soon as an error is fixed
-    function alsoValidate() {
-      const { hasError, error } = validateURL(e.target.value)
-      onUpdate(idx, e.target.value, hasError, error)
-    }
-
-    dirty && alsoValidate()
-  }, [idx, dirty, onUpdate, validateURL])
-
-  const onDelete = useCallback(() => {
-    onRemove(idx)
-  }, [idx, onRemove])
-
-  const onKeyPress = useCallback((e) => {
-    if (e.key === 'Enter') {
-      onKeyEnter(idx)
-    }
-  }, [idx, onKeyEnter])
-
-  const onBlur = useCallback((e) => {
-    if (!dirty) {
-      setDirty(true)
-    }
-    const { hasError, error } = validateURL(e.target.value)
-    onUpdate(idx, e.target.value, hasError, error)
-  }, [idx, dirty, validateURL, onUpdate])
 
   const validateURL = useCallback((input) => {
     let hasError = false
@@ -100,6 +70,37 @@ const URL = ({ idx, url, error, onUpdate, onRemove, onKeyEnter }) => {
     }
   }, [])
 
+  const onChange = useCallback((e) => {
+    onUpdate(idx, e.target.value)
+
+    // Also start validting one the field is dirty
+    // this lets UrlList to make the Run button active as soon as an error is fixed
+    function alsoValidate() {
+      const { hasError, error } = validateURL(e.target.value)
+      onUpdate(idx, e.target.value, hasError, error)
+    }
+
+    alsoValidate()
+  }, [idx, onUpdate, validateURL])
+
+  const onDelete = useCallback(() => {
+    onRemove(idx)
+  }, [idx, onRemove])
+
+  const onKeyPress = useCallback((e) => {
+    if (e.key === 'Enter') {
+      onKeyEnter(idx)
+    }
+  }, [idx, onKeyEnter])
+
+  const onBlur = useCallback((e) => {
+    if (!dirty) {
+      setDirty(true)
+    }
+    const { hasError, error } = validateURL(e.target.value)
+    onUpdate(idx, e.target.value, hasError, error)
+  }, [idx, dirty, validateURL, onUpdate])
+
   return (
     <URLBox my={3}>
       <URLInput
@@ -107,17 +108,18 @@ const URL = ({ idx, url, error, onUpdate, onRemove, onKeyEnter }) => {
         name={idx}
         spellCheck={false}
         placeholder='https://'
-        value={url}
+        value={url || ''}
         onChange={onChange}
         onBlur={onBlur}
         onKeyPress={onKeyPress}
         error={error}
+        data-testid='url-input'
       />
       <label htmlFor={idx}>
         <FormattedMessage id='Settings.Websites.CustomURL.URL' />
       </label>
       {onRemove &&
-        <RemoveButton onClick={onDelete}>
+        <RemoveButton onClick={onDelete} data-testid={`urlRemove${idx}`}>
           <MdRemoveCircle size={32} />
         </RemoveButton>
       }
