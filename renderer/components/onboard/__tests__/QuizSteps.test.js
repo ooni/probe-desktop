@@ -107,4 +107,50 @@ describe('Tests for QuizSteps', () => {
     fireEvent.click(continueButton2)
     expect(onQuizComplete).toHaveBeenCalledTimes(1)
   })
+  test('User Story with first input incorrect and second input correct', async () => {
+    const falseButton1 = screen.getByText(English['Onboarding.PopQuiz.False'])
+    fireEvent.click(falseButton1)
+    const lottiePlayer1 = screen.getByTestId('quiz-steps-cross')
+    await waitForElementToBeRemoved(lottiePlayer1, { timeout: 2000 })
+    const warningParagraph1 = screen.getByText(
+      English['Onboarding.PopQuiz.1.Wrong.Paragraph']
+    )
+    const continueButton1 = screen.getByText(
+      English['Onboarding.PopQuiz.Wrong.Button.Continue']
+    )
+    expect(warningParagraph1).toBeInTheDocument()
+    fireEvent.click(continueButton1)
+    const quizHeading2 = await screen.findByText(
+      English['Onboarding.PopQuiz.2.Title']
+    )
+    expect(quizHeading2).toBeInTheDocument()
+    const yesButton2 = screen.getByText(English['Onboarding.PopQuiz.True'])
+    fireEvent.click(yesButton2)
+    const lottiePlayerSecond = screen.getByTestId('quiz-steps-tick')
+    await waitForElementToBeRemoved(lottiePlayerSecond, { timeout: 2000 })
+    expect(onQuizComplete).toHaveBeenCalledTimes(1)
+  })
+  test('User Story with first input correct and second input incorrect', async () => {
+    const yesButton1 = screen.getByText(English['Onboarding.PopQuiz.True'])
+    fireEvent.click(yesButton1)
+    const lottiePlayerFirst = screen.getByTestId('quiz-steps-tick')
+    await waitForElementToBeRemoved(lottiePlayerFirst, { timeout: 2000 })
+    const quizHeading2 = await screen.findByText(
+      English['Onboarding.PopQuiz.2.Title']
+    )
+    expect(quizHeading2).toBeInTheDocument()
+    const falseButton2 = screen.getByText(English['Onboarding.PopQuiz.False'])
+    fireEvent.click(falseButton2)
+    const lottiePlayer2 = screen.getByTestId('quiz-steps-cross')
+    await waitForElementToBeRemoved(lottiePlayer2, { timeout: 2000 })
+    const warningParagraph2 = screen.getByText(
+      English['Onboarding.PopQuiz.2.Wrong.Paragraph']
+    )
+    const continueButton2 = screen.getByText(
+      English['Onboarding.PopQuiz.Wrong.Button.Continue']
+    )
+    expect(warningParagraph2).toBeInTheDocument()
+    fireEvent.click(continueButton2)
+    expect(onQuizComplete).toHaveBeenCalledTimes(1)
+  })
 })
