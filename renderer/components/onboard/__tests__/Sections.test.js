@@ -24,7 +24,7 @@ const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice
 
 
 describe('Tests for Screen 1 of Sections component', () => {
-  afterAll(() => {
+  afterEach(() => {
     cleanup()
   })
   test('Matches snapshot', async () => {
@@ -110,13 +110,13 @@ describe('Tests for Screens 3 and Screen 4 of Sections component', () => {
     const yesButton1 = screen.getByText(English['Onboarding.PopQuiz.True'])
     fireEvent.click(yesButton1)
 
-    const lottiePlayerFirst = screen.getByTestId('quiz-steps-animation')
+    const lottiePlayerFirst = screen.getByTestId('quiz-steps-tick')
     await waitForElementToBeRemoved(lottiePlayerFirst, { timeout: 2000 })
 
     const yesButton2 = screen.getByText(English['Onboarding.PopQuiz.True'])
     fireEvent.click(yesButton2)
     
-    const lottiePlayerSecond = screen.getByTestId('quiz-steps-animation')
+    const lottiePlayerSecond = screen.getByTestId('quiz-steps-tick')
     await waitForElementToBeRemoved(lottiePlayerSecond, { timeout: 2000 })
     
     const popQuizTitle = screen.queryByText(English['Onboarding.PopQuiz.Title'])

@@ -7,6 +7,7 @@ import {
   render,
   fireEvent,
   waitForElementToBeRemoved,
+  cleanup,
 } from '@testing-library/react'
 import { theme } from 'ooni-components'
 import { ThemeProvider } from 'styled-components'
@@ -58,18 +59,19 @@ describe('Tests for QuizSteps', () => {
 
   afterEach(() => {
     onQuizComplete.mockClear()
+    cleanup()
   })
 
   test('User Story with correct answers', async () => {
     const yesButton1 = screen.getByText(English['Onboarding.PopQuiz.True'])
     fireEvent.click(yesButton1)
-    const lottiePlayerFirst = screen.getByTestId('quiz-steps-animation')
+    const lottiePlayerFirst = screen.getByTestId('quiz-steps-tick')
     await waitForElementToBeRemoved(lottiePlayerFirst, { timeout: 2000 })
     const heading = screen.getByText(English['Onboarding.PopQuiz.2.Title'])
     const yesButton2 = screen.getByText(English['Onboarding.PopQuiz.True'])
     expect(heading).toBeInTheDocument()
     fireEvent.click(yesButton2)
-    const lottiePlayerSecond = screen.getByTestId('quiz-steps-animation')
+    const lottiePlayerSecond = screen.getByTestId('quiz-steps-tick')
     await waitForElementToBeRemoved(lottiePlayerSecond, { timeout: 2000 })
     expect(onQuizComplete).toHaveBeenCalledTimes(1)
   })
@@ -77,7 +79,7 @@ describe('Tests for QuizSteps', () => {
   test('User Story with incorrect answers', async () => {
     const falseButton1 = screen.getByText(English['Onboarding.PopQuiz.False'])
     fireEvent.click(falseButton1)
-    const lottiePlayer1 = screen.getByTestId('quiz-steps-animation')
+    const lottiePlayer1 = screen.getByTestId('quiz-steps-cross')
     await waitForElementToBeRemoved(lottiePlayer1, { timeout: 2000 })
     const warningParagraph1 = screen.getByText(
       English['Onboarding.PopQuiz.1.Wrong.Paragraph']
@@ -93,7 +95,7 @@ describe('Tests for QuizSteps', () => {
     expect(quizHeading2).toBeInTheDocument()
     const falseButton2 = screen.getByText(English['Onboarding.PopQuiz.False'])
     fireEvent.click(falseButton2)
-    const lottiePlayer2 = screen.getByTestId('quiz-steps-animation')
+    const lottiePlayer2 = screen.getByTestId('quiz-steps-cross')
     await waitForElementToBeRemoved(lottiePlayer2, { timeout: 2000 })
     const warningParagraph2 = screen.getByText(
       English['Onboarding.PopQuiz.2.Wrong.Paragraph']

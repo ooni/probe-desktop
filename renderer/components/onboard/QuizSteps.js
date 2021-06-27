@@ -94,9 +94,10 @@ QuizQuestion.propTypes = {
 
 const Animation = ({ okay, onComplete }) => {
   const animationData = okay ? tickAnimation : crossAnimation
+  const testIdSuffix = okay ? 'tick' : 'cross'
   return (
     <Lottie
-      data-testid='quiz-steps-animation'
+      data-testid={`quiz-steps-${testIdSuffix}`}
       loop={false}
       play={true}
       animationData={animationData}
