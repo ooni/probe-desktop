@@ -70,7 +70,7 @@ const URL = ({ idx, url, error, onUpdate, onRemove, onKeyEnter }) => {
     }
   }, [])
 
-  const onChange = (e) => {
+  const onChange = useCallback((e) => {
     onUpdate(idx, e.target.value)
 
     // Also start validting one the field is dirty
@@ -80,8 +80,8 @@ const URL = ({ idx, url, error, onUpdate, onRemove, onKeyEnter }) => {
       onUpdate(idx, e.target.value, hasError, error)
     }
 
-    dirty && alsoValidate()
-  }
+    alsoValidate()
+  }, [idx, onUpdate, validateURL])
 
   const onDelete = useCallback(() => {
     onRemove(idx)
