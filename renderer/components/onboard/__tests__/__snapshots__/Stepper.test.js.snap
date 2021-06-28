@@ -1,0 +1,244 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tests from Stepper component With active index 0 1`] = `
+.c0 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c1 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  background-color: #f8f9fa;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+}
+
+.c3 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  background-color: #0588cb;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+}
+
+.c2 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  background-color: #0588cb;
+  width: 50px;
+  height: 3px;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  />
+  <div
+    className="c2"
+  />
+  <div
+    className="c3"
+  />
+  <div
+    className="c2"
+  />
+  <div
+    className="c3"
+  />
+  <div
+    className="c2"
+  />
+  <div
+    className="c3"
+  />
+</div>
+`;
+
+exports[`Tests from Stepper component With active index 1 1`] = `
+.c0 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c1 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  background-color: #f8f9fa;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+}
+
+.c4 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  background-color: #0588cb;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+}
+
+.c2 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  background-color: #f8f9fa;
+  width: 50px;
+  height: 3px;
+}
+
+.c3 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  background-color: #0588cb;
+  width: 50px;
+  height: 3px;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  />
+  <div
+    className="c2"
+  />
+  <div
+    className="c1"
+  />
+  <div
+    className="c3"
+  />
+  <div
+    className="c4"
+  />
+  <div
+    className="c3"
+  />
+  <div
+    className="c4"
+  />
+</div>
+`;
+
+exports[`Tests from Stepper component With active index 2 1`] = `
+.c0 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c1 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  background-color: #f8f9fa;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+}
+
+.c4 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  background-color: #0588cb;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+}
+
+.c2 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  background-color: #f8f9fa;
+  width: 50px;
+  height: 3px;
+}
+
+.c3 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  background-color: #0588cb;
+  width: 50px;
+  height: 3px;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  />
+  <div
+    className="c2"
+  />
+  <div
+    className="c1"
+  />
+  <div
+    className="c2"
+  />
+  <div
+    className="c1"
+  />
+  <div
+    className="c3"
+  />
+  <div
+    className="c4"
+  />
+</div>
+`;

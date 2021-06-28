@@ -94,8 +94,10 @@ QuizQuestion.propTypes = {
 
 const Animation = ({ okay, onComplete }) => {
   const animationData = okay ? tickAnimation : crossAnimation
+  const testIdSuffix = okay ? 'tick' : 'cross'
   return (
     <Lottie
+      data-testid={`quiz-steps-${testIdSuffix}`}
       loop={false}
       play={true}
       animationData={animationData}
@@ -168,7 +170,7 @@ const QuizSteps = ({ questionList, actuallyList, onDone, onClose }) => {
   }
 
   return (
-    <Modal show={true} bg={modalBg}>
+    <Modal show={true} bg={modalBg} data-testid='quiz-steps-modal'>
       <Box sx={{
         top: 0,
         bottom: 0,
