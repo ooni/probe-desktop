@@ -106,7 +106,7 @@ const LogContainer = styled.div`
   width: 100%;
 `
 
-const Log = ({lines, onToggleLog, open}) => (
+export const Log = ({lines, onToggleLog, open}) => (
   <LogContainer>
     <ToggleLogButton onClick={onToggleLog} open={open} />
     {open && <CodeLog lines={lines} />}
@@ -247,6 +247,7 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
   }, [logOpen])
 
   const onMessage = useCallback((event, data) => {
+    console.log('data received is: ', data)
     switch (data.key) {
     case 'ooni.run.progress':
       var currentTestGroup = cliTestKeysToGroups[data.testKey]
