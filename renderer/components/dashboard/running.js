@@ -61,9 +61,9 @@ const ToggleButtonContainer = styled(Flex)`
   }
 `
 
-const ToggleLogButton = ({open, onClick}) => {
+export const ToggleLogButton = ({open, onClick}) => {
   if (open) {
-    return <ToggleButtonContainer onClick={onClick}>
+    return <ToggleButtonContainer onClick={onClick} data-testid='toggle-log-button'>
       <Box>
         <FormattedMessage id='Dashboard.Running.CloseLog' />
       </Box>
@@ -72,7 +72,7 @@ const ToggleLogButton = ({open, onClick}) => {
       </Box>
     </ToggleButtonContainer>
   }
-  return <ToggleButtonContainer onClick={onClick}>
+  return <ToggleButtonContainer onClick={onClick} data-testid='toggle-log-button'>
     <Box>
       <FormattedMessage id='Dashboard.Running.ShowLog' />
     </Box>

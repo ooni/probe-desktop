@@ -6,10 +6,11 @@ import React from 'react'
 import { theme } from 'ooni-components'
 import { ThemeProvider } from 'styled-components'
 import { IntlProvider } from 'react-intl'
-import { render, cleanup, screen } from '@testing-library/react'
+import { render, cleanup, screen, fireEvent } from '@testing-library/react'
 import English from '../../../../lang/en.json'
+import { ipcRenderer } from 'electron'
 
-import Running, { Log } from '../running'
+import Running, { Log, ToggleLogButton } from '../running'
 
 // Mocking useRouter().push()
 const mockRouterPush = jest.fn()
@@ -47,14 +48,45 @@ describe('Tests for Log component', () => {
   })
 })
 
-describe('Tests for "Running" component', () => {
+describe('Tests for ToggleLogButton component', () => {
   afterEach(() => {
     cleanup()
   })
-
-  test('Runs', async () => {
-    const testGroupName = 'im'
-    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
-    expect(2).toBe(2)
+  test('ToggleLogButton shows "Close Log" when is open and triggers callback on click', async () => {
+    const open = true
+    const onToggleLog = jest.fn()
+    renderComponent(<ToggleLogButton onClick={onToggleLog} open={open} />)
+    const closeLogButton = screen.getByText(English['Dashboard.Running.CloseLog'])
+    const showLogButton = screen.queryByText(English['Dashboard.Running.ShowLog'])
+    expect(closeLogButton).toBeInTheDocument()
+    expect(showLogButton).not.toBeInTheDocument()
+    const toggleLog = screen.getByTestId('toggle-log-button')
+    fireEvent.click(toggleLog)
+    expect(onToggleLog).toHaveBeenCalledTimes(1)
+  })
+  test('ToggleLogButton shows "Show Log" when is open and triggers callback on click', async () => {
+    const open = false
+    const onToggleLog = jest.fn()
+    renderComponent(<ToggleLogButton onClick={onToggleLog} open={open} />)
+    const showLogButton = screen.getByText(English['Dashboard.Running.ShowLog'])
+    const closeLogButton = screen.queryByText(English['Dashboard.Running.CloseLog'])
+    expect(showLogButton).toBeInTheDocument()
+    expect(closeLogButton).not.toBeInTheDocument()
+    const toggeLog = screen.getByTestId('toggle-log-button')
+    fireEvent.click(toggeLog)
+    expect(onToggleLog).toHaveBeenCalledTimes(1)
   })
 })
+
+// describe('Tests for "Running" component', () => {
+//   afterEach(() => {
+//     cleanup()
+//   })
+
+//   test('Runs', async () => {
+//     const testGroupName = 'im'
+//     renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
+//     expect(2).toBe(2)
+//     expect(ipcRenderer.send).toHaveBeenCalledTimes(1)
+//   })
+// })
