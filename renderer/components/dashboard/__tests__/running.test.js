@@ -8,7 +8,6 @@ import { ThemeProvider } from 'styled-components'
 import { IntlProvider } from 'react-intl'
 import { render, cleanup, screen, fireEvent } from '@testing-library/react'
 import English from '../../../../lang/en.json'
-import { ipcRenderer } from 'electron'
 
 import Running, { Log, ToggleLogButton } from '../running'
 
@@ -78,15 +77,50 @@ describe('Tests for ToggleLogButton component', () => {
   })
 })
 
-// describe('Tests for "Running" component', () => {
-//   afterEach(() => {
-//     cleanup()
-//   })
+describe('Tests for "Running" component', () => {
+  afterEach(() => {
+    cleanup()
+  })
 
-//   test('Runs', async () => {
-//     const testGroupName = 'im'
-//     renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
-//     expect(2).toBe(2)
-//     expect(ipcRenderer.send).toHaveBeenCalledTimes(1)
-//   })
-// })
+  test('IM test animations load correctly', async () => {
+    const testGroupName = 'im'
+    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
+    const animationElement = screen.getByTestId('running-animation-im')
+    expect(animationElement).toBeInTheDocument()
+  })
+
+  test('Website test animations load correctly', async () => {
+    const testGroupName = 'websites'
+    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
+    const animationElement = screen.getByTestId('running-animation-websites')
+    expect(animationElement).toBeInTheDocument()
+  })
+
+  test('Middleboxes test animations load correctly', async () => {
+    const testGroupName = 'middlebox'
+    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
+    const animationElement = screen.getByTestId('running-animation-middlebox')
+    expect(animationElement).toBeInTheDocument()
+  })
+
+  test('Performance test animations load correctly', async () => {
+    const testGroupName = 'performance'
+    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
+    const animationElement = screen.getByTestId('running-animation-performance')
+    expect(animationElement).toBeInTheDocument()
+  })
+
+  test('Circumvention test animations load correctly', async () => {
+    const testGroupName = 'circumvention'
+    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
+    const animationElement = screen.getByTestId('running-animation-circumvention')
+    expect(animationElement).toBeInTheDocument()
+  })
+
+  test('Default test animations load correctly for non-existing', async () => {
+    const testGroupName = 'nonexistent'
+    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
+    const animationElement = screen.getByTestId('running-animation-default')
+    expect(animationElement).toBeInTheDocument()
+  })
+})

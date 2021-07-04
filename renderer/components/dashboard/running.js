@@ -247,7 +247,6 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
   }, [logOpen])
 
   const onMessage = useCallback((event, data) => {
-    console.log('data received is: ', data)
     switch (data.key) {
     case 'ooni.run.progress':
       var currentTestGroup = cliTestKeysToGroups[data.testKey]
@@ -337,6 +336,7 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
                 <Lottie
                   loop={true}
                   play={!isStopping}
+                  data-testid={`running-animation-${testGroupName in testGroups ? testGroupName : 'default'}`}
                   animationData={testGroup['animation']}
                   style={{ width: '300px', height: '300px', alignSelf: 'center', transform: `scaleX(${isRTL ? -1 : 1})` }}
                   rendererSettings={{
