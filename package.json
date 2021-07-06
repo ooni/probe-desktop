@@ -179,6 +179,7 @@
     "fix-path": "^2.1.0",
     "fs-extra": "^8.1.0",
     "moment": "^2.24.0",
+    "semver": "^7.3.5",
     "split2": "^2.2.0"
   },
   "optionalDependencies": {

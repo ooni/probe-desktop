@@ -4,7 +4,7 @@ const prepareNext = require('electron-next')
 const { is } = require('electron-util')
 const { autoUpdater } = require('electron-updater')
 const isDev = require('electron-is-dev')
-
+const semver = require('semver')
 const fixPath = require('fix-path')
 const Sentry = require('@sentry/electron')
 const log = require('electron-log')
@@ -130,9 +130,13 @@ function sendStatusToWindow(text, options = {}) {
 function sendUpdaterProgress(progressObj, options = {}) {
   const aboutWindow = openAboutWindow(options['showWindow'] === true)
   log.info(`Update download progress: ${progressObj.percent}`)
-  aboutWindow.webContents.on('did-finish-load', () => {
+  if (aboutWindow.isVisible()) {
     aboutWindow.webContents.send('update-progress', progressObj)
-  })
+  } else {
+    aboutWindow.webContents.on('did-finish-load', () => {
+      aboutWindow.webContents.send('update-progress', progressObj)
+    })
+  }
 }
 
 autoUpdater.on('update-not-available', () => {
@@ -170,7 +174,8 @@ function checkForUpdates() {
   if (isDev) return
 
   autoUpdater.checkForUpdates().then((info) => {
-    if (autoUpdater.updateAvailable) {
+    // if(info.updateInfo.version !== autoUpdater.currentVersion) {
+    if (semver.gt(info.updateInfo.version, autoUpdater.currentVersion.version, { includePrerelease: true })) {
       downloadUpdate(info.cancellationToken)
     } else {
       log.info('Update not available')
