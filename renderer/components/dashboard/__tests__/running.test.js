@@ -8,6 +8,7 @@ import { ThemeProvider } from 'styled-components'
 import { IntlProvider } from 'react-intl'
 import { render, cleanup, screen, fireEvent } from '@testing-library/react'
 import English from '../../../../lang/en.json'
+import { ipcRenderer } from 'electron'
 
 import Running, { Log, ToggleLogButton } from '../running'
 
@@ -80,6 +81,7 @@ describe('Tests for ToggleLogButton component', () => {
 describe('Tests for "Running" component', () => {
   afterEach(() => {
     cleanup()
+    jest.clearAllMocks()
   })
 
   test('IM test animations load correctly', async () => {
@@ -122,5 +124,23 @@ describe('Tests for "Running" component', () => {
     renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
     const animationElement = screen.getByTestId('running-animation-default')
     expect(animationElement).toBeInTheDocument()
+  })
+
+  test('Log message is displayed on receiving log object', async () => {
+    const logObj = {
+      key: 'log',
+      value: '0.48214285714285715% - telegram: measure http://95.161.76.100:443/: <nil>'
+    }
+    ipcRenderer.on.mockImplementationOnce((event, callback) => {
+      callback(event, logObj)
+    })
+    const testGroupName = 'im'
+    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
+    const toggeLog = screen.getByTestId('toggle-log-button')
+    fireEvent.click(toggeLog)
+    const logLine = screen.getByText(logObj.value)
+    expect(logLine).toBeInTheDocument()
+    fireEvent.click(toggeLog)
+    expect(logLine).not.toBeInTheDocument()
   })
 })
