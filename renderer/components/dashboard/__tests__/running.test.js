@@ -203,3 +203,51 @@ describe('IPC tests for "ooni" event in "Running" component', () => {
     expect(errorLine).toBeInTheDocument()
   })
 })
+
+describe('IPC tests for other ooniprobe ipc events in "Running" component', () => {
+  afterEach(() => {
+    cleanup()
+    jest.clearAllMocks()
+  })
+
+  test('Displays "Finished running" in log on receiving "ooniprobe.done" event', async () => {
+    const testGroupName = 'im'
+    ipcRenderer.on.mockImplementation((event, callback) => {
+      if(event==='ooniprobe.done') {
+        callback(event, testGroupName)
+      }
+    })
+    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
+    const toggeLog = screen.getByTestId('toggle-log-button')
+    fireEvent.click(toggeLog)
+    const logLine = screen.getByText(`Finished running ${testGroupName}`)
+    expect(logLine).toBeInTheDocument()
+  })
+
+  test('Directs to /test-results on receiving "ooniprobe.completed" event', async () => {
+    const testGroupName = 'im'
+    ipcRenderer.on.mockImplementation((event, callback) => {
+      if(event==='ooniprobe.completed') {
+        callback(event)
+      }
+    })
+    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
+    expect(mockRouterPush).toHaveBeenCalledWith('/test-results')
+  })
+
+  test('Displays error message in log on receiving "ooniprobe.error" event', async () => {
+    const testGroupName = 'im'
+    const errorMessage = 'Runner: error failed to run im'
+    ipcRenderer.on.mockImplementation((event, callback) => {
+      if(event==='ooniprobe.error') {
+        callback(event, errorMessage)
+      }
+    })
+    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
+    const toggeLog = screen.getByTestId('toggle-log-button')
+    fireEvent.click(toggeLog)
+    const logLine = screen.getByText(errorMessage)
+    expect(logLine).toBeInTheDocument()
+  })
+
+})
