@@ -3,7 +3,7 @@
   "description": "OONI Probe Desktop app",
   "author": "Open Observatory of Network Interference (OONI) <contact@openobservatory.org>",
   "productName": "OONI Probe",
-  "version": "3.6.0-dev",
+  "version": "3.5.2-rc.2",
   "probeVersion": "3.10.0-beta.3",
   "main": "main/index.js",
   "license": "BSD-3-Clause",
@@ -179,6 +179,7 @@
     "fix-path": "^2.1.0",
     "fs-extra": "^8.1.0",
     "moment": "^2.24.0",
+    "semver": "^7.3.5",
     "split2": "^2.2.0"
   },
   "optionalDependencies": {
