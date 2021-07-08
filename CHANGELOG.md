@@ -1,5 +1,13 @@
 # Changelog
 
+## OONI Probe Desktop 3.5.2 [2021-07-08]
+
+probe-cli: 3.10.0-beta.3
+
+### Fixed
+
+- Critical bug in autoupdate that prevents downloading and installing updates (ooni/probe#1699)
+
 ## OONI Probe Desktop 3.5.1 [2021-06-17]
 
 probe-cli: 3.10.0-beta.3
