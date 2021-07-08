@@ -255,7 +255,6 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
       ) {
         setTestGroupName(currentTestGroup)
       }
-
       data.testKey && setRunningTestName(data.testKey)
       data.message && setProgressLine(data.message)
       data.percentage && setPercent(data.percentage)
@@ -356,6 +355,7 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
                 strokeWidth='2'
                 trailColor='rgba(255,255,255,0.4)'
                 trailWidth='2'
+                data-testid='running-progress-line'
               />
             ) : (
               <StripedProgress />

@@ -78,10 +78,9 @@ describe('Tests for ToggleLogButton component', () => {
   })
 })
 
-describe('Tests for "Running" component', () => {
+describe('Animation tests for "Running" component', () => {
   afterEach(() => {
     cleanup()
-    jest.clearAllMocks()
   })
 
   test('IM test animations load correctly', async () => {
@@ -125,6 +124,52 @@ describe('Tests for "Running" component', () => {
     const animationElement = screen.getByTestId('running-animation-default')
     expect(animationElement).toBeInTheDocument()
   })
+})
+
+
+describe('IPC tests for "ooni" event in "Running" component', () => {
+  afterEach(() => {
+    cleanup()
+    jest.clearAllMocks()
+  })
+
+  test('Component on receiving "ooni.run.progress" for a sample "nettests.Telegram" object', async () => {
+    const data = {
+      key: 'ooni.run.progress',
+      eta: -1,
+      message: 'telegram: measure http://95.161.76.100:443/: <nil>',
+      percentage: 0.48,
+      testKey: 'nettests.Telegram'
+    }
+    ipcRenderer.on.mockImplementationOnce((event, callback) => {
+      callback(event, data)
+    })
+    const testGroupName = 'im'
+    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
+    const labelTelegram = screen.getByText(/Telegram Test/i)
+    const testDetail = screen.getByText('telegram: measure http://95.161.76.100:443/: <nil>')
+    expect(labelTelegram).toBeInTheDocument()
+    expect(testDetail).toBeInTheDocument()
+  })
+
+  test('Component on receiving "ooni.run.progress" for a sample "nettests.WhatsApp" object', async () => {
+    const data = {
+      key: 'ooni.run.progress',
+      eta: -1,
+      message: 'whatsapp: measure tcpconnect://e14.whatsapp.net:443: <nil>',
+      percentage: 0.55,
+      testKey: 'nettests.WhatsApp'
+    }
+    ipcRenderer.on.mockImplementationOnce((event, callback) => {
+      callback(event, data)
+    })
+    const testGroupName = 'im'
+    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
+    const labelTelegram = screen.getByText(/WhatsApp Test/i)
+    const testDetail = screen.getByText('whatsapp: measure tcpconnect://e14.whatsapp.net:443: <nil>')
+    expect(labelTelegram).toBeInTheDocument()
+    expect(testDetail).toBeInTheDocument()
+  })
 
   test('Log message is displayed on receiving log object', async () => {
     const logObj = {
@@ -142,5 +187,19 @@ describe('Tests for "Running" component', () => {
     expect(logLine).toBeInTheDocument()
     fireEvent.click(toggeLog)
     expect(logLine).not.toBeInTheDocument()
+  })
+
+  test('Error message is displayed on receiving error object', async () => {
+    const errorObj = {
+      key: 'error',
+      message: 'There was an error'
+    }
+    ipcRenderer.on.mockImplementationOnce((event, callback) => {
+      callback(event, errorObj)
+    })
+    const testGroupName = 'im'
+    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
+    const errorLine = screen.getByText(errorObj.message)
+    expect(errorLine).toBeInTheDocument()
   })
 })
