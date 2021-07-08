@@ -115,6 +115,15 @@ app.on('window-all-closed', () => {
   }
 })
 
+/*** CRITICAL CODE FOR AUTO-UPDATE STARTS ***/
+/*
+  This section contains critical code that handles automatically updating
+  the app based on Github releases. Bugs in this part of the code can
+  have serious consequences like blocking users from receiving critical
+  and timely updates. When making changes to this section, please execise
+  extra caution and mandatorily get the changes reviewed by another team
+  member.
+ */
 function sendStatusToWindow(text, options = {}) {
   const aboutWindow = openAboutWindow(options['showWindow'] === true)
   log.info(text)
@@ -174,11 +183,12 @@ function checkForUpdates() {
   if (isDev) return
 
   autoUpdater.checkForUpdates().then((info) => {
-    // if(info.updateInfo.version !== autoUpdater.currentVersion) {
+    // If the check returns something, make sure the new version is
+    // greater than the current version, and then initiate download.
     if (semver.gt(info.updateInfo.version, autoUpdater.currentVersion.version, { includePrerelease: true })) {
       downloadUpdate(info.cancellationToken)
     } else {
-      log.info('Update not available')
+      log.info('No updates available')
     }
   }).catch((error) => {
     if (isNetworkError(error)) {
@@ -213,6 +223,9 @@ function isNetworkError(errorObject) {
     errorObject.message === 'net::ERR_CONNECTION_TIMED_OUT'
   )
 }
+
+/** CRITICAL AUTO-UPDATE SECTION ENDS ***/
+
 const createWindow = async (url) => {
   windows = {
     main: mainWindow(url)
