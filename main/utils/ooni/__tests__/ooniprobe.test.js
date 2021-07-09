@@ -10,13 +10,29 @@ jest.mock('electron-util', () => ({
   },
 }))
 
-log.debug = jest.fn((arg1, arg2) => {
-  console.log('arg1: ', arg1, ' arg2: ', arg2)
-})
+log.debug = jest.fn()
 
-describe('Tests Ooniprobe', () => {
-  test('testing', async () => {
-    const ooni = new Ooniprobe()
-    expect(2).toBe(2)
+describe('Tests if killing Ooniprobe instances work as expected', () => {
+  test('Killing Ooniprobe instance with .ooni property calls this.ooni.stdin.end function', async () => {
+    const ooniInstance = new Ooniprobe()
+    ooniInstance.ooni = {
+      stdin: {
+        end: jest.fn()
+      }
+    }
+    ooniInstance.kill()
+    expect(ooniInstance.ooni.stdin.end).toHaveBeenCalledTimes(1)
+  })
+
+  test('Killing Ooniprobe instance with .ooni as null throws error', async () => {
+    const ooniInstance = new Ooniprobe()
+    const errorFunc = () => {
+      try {
+        ooniInstance.kill()
+      } catch(err) {
+        throw Error(err)
+      }
+    }
+    expect(errorFunc).toThrow('cannot kill an unstarted process')
   })
 })
