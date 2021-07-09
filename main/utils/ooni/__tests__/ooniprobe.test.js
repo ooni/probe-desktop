@@ -97,7 +97,7 @@ describe('Ooniprobe instances invokes .call() method', () => {
     ooniInstance.call(['list'])
     expect(childProcess.spawn).toHaveBeenCalledTimes(1)
     expect(childProcess.spawn.mock.calls[0][0]).toBe(binaryPath)
-    expect(childProcess.spawn.mock.calls[0][1]).toMatchObject(args)
+    expect(childProcess.spawn.mock.calls[0][1].toString()).toMatch(args.toString())
     expect(childProcess.spawn.mock.calls[0][2]).toMatchObject(options)
   })
 })
