@@ -89,8 +89,8 @@ describe('Ooniprobe instances invokes .call() method', () => {
     const args = [
       '--batch',
       '--software-name=ooniprobe-desktop',
-      // '--software-version=3.5.2', // For CI
-      '--software-version=3.6.0-dev', // For dev environment
+      '--software-version=3.5.2', // For CI
+      // '--software-version=3.6.0-dev', // For dev environment
       'list',
     ]
     const options = {
