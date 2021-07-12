@@ -1,6 +1,7 @@
 import { Ooniprobe } from '../ooniprobe'
 import childProcess from 'child_process'
 import log from 'electron-log'
+import { waitFor } from '@testing-library/react'
 
 jest.mock('electron-util', () => ({
   is: {
@@ -17,7 +18,7 @@ log.verbose = jest.fn()
 log.error = jest.fn()
 
 jest.mock('child_process', () => ({
-  spawn: jest.fn()
+  spawn: jest.fn(),
 }))
 
 jest.mock('../../paths', () => ({
@@ -110,18 +111,23 @@ describe('Ooniprobe instances invokes .call() method', () => {
   })
 })
 
-describe('Ooniprobe instances can call the IPC events', () => {
+describe('Testing behaviour of "on" IPC events on using .call() with an Ooniprobe instance', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
-  test('ChildProcess is spawned on .call()', async () => {
+
+  test('Promise rejects with correct error message on "error" event', async () => {
     childProcess.spawn.mockImplementation(() => ({
       stdin: {
         end: jest.fn(),
       },
       on: jest.fn((event, callback) => {
-        console.log('pepe: ', event)
-        callback()
+        if (event === 'error') {
+          // Simulating the callback with an error message
+          callback('There was an error')
+        } else {
+          return
+        }
       }),
       stderr: {
         on: jest.fn(),
@@ -133,8 +139,80 @@ describe('Ooniprobe instances can call the IPC events', () => {
       },
     }))
     const ooniInstance = new Ooniprobe()
-    const calledPromise = ooniInstance.call(['list'])
-    console.log('calls: ', childProcess.spawn.mock.calls)
-    expect(2).toBeTruthy()
+    await waitFor(() =>
+      expect(ooniInstance.call(['list'])).rejects.toBe('There was an error')
+    )
+  })
+
+  test('Promise resolves with correct exit code 0 on "exit" event', async () => {
+    childProcess.spawn.mockImplementation(() => ({
+      stdin: {
+        end: jest.fn(),
+      },
+      on: jest.fn((event, callback) => {
+        if (event==='exit') {
+          callback(0)
+        }
+      }),
+      stderr: {
+        on: jest.fn(),
+      },
+      stdout: {
+        pipe: jest.fn(() => ({
+          on: jest.fn(),
+        })),
+      },
+    }))
+    const ooniInstance = new Ooniprobe()
+    await expect(ooniInstance.call(['list'])).resolves.toBeUndefined()
+  })
+
+  test('Promise resolves with correct exit code null on "exit" event', async () => {
+    childProcess.spawn.mockImplementation(() => ({
+      stdin: {
+        end: jest.fn(),
+      },
+      on: jest.fn((event, callback) => {
+        if (event==='exit') {
+          callback(null)
+        }
+      }),
+      stderr: {
+        on: jest.fn(),
+      },
+      stdout: {
+        pipe: jest.fn(() => ({
+          on: jest.fn(),
+        })),
+      },
+    }))
+    const ooniInstance = new Ooniprobe()
+    await expect(ooniInstance.call(['list'])).resolves.toBeUndefined()
+  })
+
+  test('Promise is reject with correct exit code 1 on "exit" event', async () => {
+    childProcess.spawn.mockImplementation(() => ({
+      stdin: {
+        end: jest.fn(),
+      },
+      on: jest.fn((event, callback) => {
+        if (event==='exit') {
+          callback(1)
+        }
+      }),
+      stderr: {
+        on: jest.fn(),
+      },
+      stdout: {
+        pipe: jest.fn(() => ({
+          on: jest.fn(),
+        })),
+      },
+    }))
+    const ooniInstance = new Ooniprobe()
+    const argv = ['list']
+    const binaryPath = 'build/probe-cli/linux_amd64'
+    const errorMessage = new Error(`Running '${binaryPath} ${argv.join(' ')}' failed with exit code: 1`)
+    await expect(ooniInstance.call(argv)).rejects.toThrow(errorMessage)
   })
 })
