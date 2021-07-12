@@ -150,7 +150,7 @@ describe('Testing behaviour of "on" IPC events on using .call() with an Ooniprob
         end: jest.fn(),
       },
       on: jest.fn((event, callback) => {
-        if (event==='exit') {
+        if (event === 'exit') {
           callback(0)
         }
       }),
@@ -173,7 +173,7 @@ describe('Testing behaviour of "on" IPC events on using .call() with an Ooniprob
         end: jest.fn(),
       },
       on: jest.fn((event, callback) => {
-        if (event==='exit') {
+        if (event === 'exit') {
           callback(null)
         }
       }),
@@ -196,7 +196,7 @@ describe('Testing behaviour of "on" IPC events on using .call() with an Ooniprob
         end: jest.fn(),
       },
       on: jest.fn((event, callback) => {
-        if (event==='exit') {
+        if (event === 'exit') {
           callback(1)
         }
       }),
@@ -212,7 +212,69 @@ describe('Testing behaviour of "on" IPC events on using .call() with an Ooniprob
     const ooniInstance = new Ooniprobe()
     const argv = ['list']
     const binaryPath = 'build/probe-cli/linux_amd64'
-    const errorMessage = new Error(`Running '${binaryPath} ${argv.join(' ')}' failed with exit code: 1`)
+    const errorMessage = new Error(
+      `Running '${binaryPath} ${argv.join(' ')}' failed with exit code: 1`
+    )
     await expect(ooniInstance.call(argv)).rejects.toThrow(errorMessage)
+  })
+})
+
+describe('Testing the behavior of remaining IPC events', () => {
+  beforeAll(() => {
+    jest.clearAllMocks()
+  })
+
+  test('Logs error on stderr "data" event', async () => {
+    const mockErrorMessage = 10870098
+    childProcess.spawn.mockImplementation(() => ({
+      stdin: {
+        end: jest.fn(),
+      },
+      on: jest.fn(),
+      stderr: {
+        on: jest.fn((event, callback) => {
+          if (event === 'data') {
+            callback(mockErrorMessage)
+          }
+        }),
+      },
+      stdout: {
+        pipe: jest.fn(() => ({
+          on: jest.fn(),
+        })),
+      },
+    }))
+    const ooniInstance = new Ooniprobe()
+    ooniInstance.call(['list'])
+    expect(log.error.mock.calls[0][0]).toBe('stderr: ')
+    expect(log.error.mock.calls[0][1]).toBe(mockErrorMessage.toString())
+  })
+
+  test('Emits message on stdout "data" event', async () => {
+    const mockJsonMessage = '[{ "msg": "There was an error in the measurement" }]'
+    childProcess.spawn.mockImplementation(() => ({
+      stdin: {
+        end: jest.fn(),
+      },
+      on: jest.fn(),
+      stderr: {
+        on: jest.fn(),
+      },
+      stdout: {
+        pipe: jest.fn(() => ({
+          on: jest.fn((event, callback) => {
+            if (event === 'data') {
+              callback(mockJsonMessage)
+            }
+          }),
+        })),
+      },
+    }))
+    const ooniInstance = new Ooniprobe()
+    ooniInstance.emit = jest.fn()
+    ooniInstance.call(['list'])
+    expect(ooniInstance.emit).toHaveBeenCalledTimes(1)
+    expect(ooniInstance.emit.mock.calls[0][0]).toBe('data')
+    expect(ooniInstance.emit.mock.calls[0][1]).toEqual(JSON.parse(mockJsonMessage))
   })
 })
