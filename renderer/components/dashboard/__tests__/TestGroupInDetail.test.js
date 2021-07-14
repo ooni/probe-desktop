@@ -1,3 +1,5 @@
+// TODO: Can parametrize these tests based on testGroups
+
 /**
  * @jest-environment jsdom
  */
@@ -8,7 +10,13 @@ import { theme } from 'ooni-components'
 import { ThemeProvider } from 'styled-components'
 import { IntlProvider, createIntl, createIntlCache } from 'react-intl'
 import TestGroupInDetail from '../TestGroupInDetail'
-import { screen, render, waitFor, fireEvent, cleanup } from '@testing-library/react'
+import {
+  screen,
+  render,
+  waitFor,
+  fireEvent,
+  cleanup,
+} from '@testing-library/react'
 import English from '../../../../lang/en.json'
 import fs from 'fs-extra'
 import path from 'path'
@@ -17,7 +25,6 @@ import { testGroups } from '../../nettests'
 // For Using Intl formatting outside React Hooks
 const cache = createIntlCache()
 const intl = createIntl({ locale: 'en-US', messages: English }, cache)
-
 
 // For mocking ConfigProvider and useConfig.js
 const ConfigContext = createContext([{}, () => {}])
@@ -35,8 +42,33 @@ const getConfig = async (key = null) => {
       return getConfigValue(mockConfig, key)
     }
   } catch (err) {
-    console.log('error in func', err)
-    return null
+    console.error('Config file not found', err)
+    // returning mocked config values if config.json is not found
+    return {
+      _version: 5,
+      _informed_consent: true,
+      sharing: { upload_results: true },
+      nettests: {
+        websites_enabled_category_codes: [
+          'ALDR', 'ANON',  'COMM', 'COMT',
+          'CTRL', 'CULTR', 'DATE', 'ECON',
+          'ENV',  'FILE',  'GAME', 'GMB',
+          'GOVT', 'GRP',   'HACK', 'HATE',
+          'HOST', 'HUMR',  'IGO',  'LGBT',
+          'MILX', 'MMED',  'NEWS', 'POLR',
+          'PORN', 'PROV',  'PUBH', 'REL',
+          'SRCH', 'XED'
+        ],
+        websites_enable_max_runtime: true,
+        websites_max_runtime: 90
+      },
+      advanced: {
+        use_domain_fronting: false,
+        send_crash_reports: true,
+        collector_url: '',
+        bouncer_url: 'https://bouncer.ooni.io'
+      }
+    }
   }
 }
 
@@ -73,7 +105,7 @@ const mockRouterPush = jest.fn()
 jest.mock('next/router', () => ({
   useRouter() {
     return {
-      push: mockRouterPush
+      push: mockRouterPush,
     }
   },
 }))
@@ -88,7 +120,7 @@ const renderComponent = (component, locale = 'en', messages = English) => {
   )
 }
 
-const getEstimatedSizeAndTime = testGroup => {
+const getEstimatedSizeAndTime = (testGroup) => {
   const { estimatedSize, estimatedTimeInSec } = testGroups[testGroup]
   const estimatedTime = estimatedTimeInSec(0)
   const [estimatedTimeValue, estimatedTimeUnit] =
@@ -109,10 +141,16 @@ describe('Test if TestGroupInDetail component is correctly rendered', () => {
     cleanup()
     runTest.mockClear()
   })
+
   test('Component renders correctly for IM', async () => {
     const testGroup = 'im'
-    
-    renderComponent(<TestGroupInDetail testGroup={ testGroup } onRun={() => runTest(testGroup)} />)
+
+    renderComponent(
+      <TestGroupInDetail
+        testGroup={testGroup}
+        onRun={() => runTest(testGroup)}
+      />
+    )
 
     const [estimatedSize, estimatedTime] = getEstimatedSizeAndTime(testGroup)
     await waitFor(
@@ -127,15 +165,23 @@ describe('Test if TestGroupInDetail component is correctly rendered', () => {
     expect(size).toBeInTheDocument()
     expect(time).toBeInTheDocument()
 
-    const runButton = screen.getByRole('button', { name: English['Dashboard.Overview.Run'] })
+    const runButton = screen.getByRole('button', {
+      name: English['Dashboard.Overview.Run'],
+    })
     fireEvent.click(runButton)
     expect(runTest).toHaveBeenCalledTimes(1)
     expect(runTest).toHaveBeenCalledWith(testGroup)
   })
+
   test('Component renders correctly for Circumvention', async () => {
     const testGroup = 'circumvention'
-    
-    renderComponent(<TestGroupInDetail testGroup={ testGroup } onRun={() => runTest(testGroup)} />)
+
+    renderComponent(
+      <TestGroupInDetail
+        testGroup={testGroup}
+        onRun={() => runTest(testGroup)}
+      />
+    )
 
     const [estimatedSize, estimatedTime] = getEstimatedSizeAndTime(testGroup)
     await waitFor(
@@ -150,15 +196,23 @@ describe('Test if TestGroupInDetail component is correctly rendered', () => {
     expect(size).toBeInTheDocument()
     expect(time).toBeInTheDocument()
 
-    const runButton = screen.getByRole('button', { name: English['Dashboard.Overview.Run'] })
+    const runButton = screen.getByRole('button', {
+      name: English['Dashboard.Overview.Run'],
+    })
     fireEvent.click(runButton)
     expect(runTest).toHaveBeenCalledTimes(1)
     expect(runTest).toHaveBeenCalledWith(testGroup)
   })
+
   test('Component renders correctly for Performance', async () => {
     const testGroup = 'performance'
-    
-    renderComponent(<TestGroupInDetail testGroup={ testGroup } onRun={() => runTest(testGroup)} />)
+
+    renderComponent(
+      <TestGroupInDetail
+        testGroup={testGroup}
+        onRun={() => runTest(testGroup)}
+      />
+    )
 
     const [estimatedSize, estimatedTime] = getEstimatedSizeAndTime(testGroup)
     await waitFor(
@@ -173,15 +227,23 @@ describe('Test if TestGroupInDetail component is correctly rendered', () => {
     expect(size).toBeInTheDocument()
     expect(time).toBeInTheDocument()
 
-    const runButton = screen.getByRole('button', { name: English['Dashboard.Overview.Run'] })
+    const runButton = screen.getByRole('button', {
+      name: English['Dashboard.Overview.Run'],
+    })
     fireEvent.click(runButton)
     expect(runTest).toHaveBeenCalledTimes(1)
     expect(runTest).toHaveBeenCalledWith(testGroup)
   })
+
   test('Component renders correctly for Middleboxes', async () => {
     const testGroup = 'middlebox'
-    
-    renderComponent(<TestGroupInDetail testGroup={ testGroup } onRun={() => runTest(testGroup)} />)
+
+    renderComponent(
+      <TestGroupInDetail
+        testGroup={testGroup}
+        onRun={() => runTest(testGroup)}
+      />
+    )
 
     const [estimatedSize, estimatedTime] = getEstimatedSizeAndTime(testGroup)
     await waitFor(
@@ -196,13 +258,14 @@ describe('Test if TestGroupInDetail component is correctly rendered', () => {
     expect(size).toBeInTheDocument()
     expect(time).toBeInTheDocument()
 
-    const runButton = screen.getByRole('button', { name: English['Dashboard.Overview.Run'] })
+    const runButton = screen.getByRole('button', {
+      name: English['Dashboard.Overview.Run'],
+    })
     fireEvent.click(runButton)
     expect(runTest).toHaveBeenCalledTimes(1)
     expect(runTest).toHaveBeenCalledWith(testGroup)
   })
 })
-
 
 describe('TestGroupInDetail is correctly rendered for Website test', () => {
   const runTest = jest.fn()
@@ -210,10 +273,16 @@ describe('TestGroupInDetail is correctly rendered for Website test', () => {
     cleanup()
     runTest.mockClear()
   })
+
   test('Component renders correctly for Websites', async () => {
     const testGroup = 'websites'
-    
-    renderComponent(<TestGroupInDetail testGroup={ testGroup } onRun={() => runTest(testGroup)} />)
+
+    renderComponent(
+      <TestGroupInDetail
+        testGroup={testGroup}
+        onRun={() => runTest(testGroup)}
+      />
+    )
 
     const [estimatedSize] = getEstimatedSizeAndTime(testGroup)
     await waitFor(
@@ -231,12 +300,18 @@ describe('TestGroupInDetail is correctly rendered for Website test', () => {
     // const time = screen.getByText('~' + estimatedTime)
     expect(size).toBeInTheDocument()
 
-    const runButton = screen.getByRole('button', { name: English['Dashboard.Overview.Run'] })
+    const runButton = screen.getByRole('button', {
+      name: English['Dashboard.Overview.Run'],
+    })
     fireEvent.click(runButton)
     expect(runTest).toHaveBeenCalledTimes(1)
     expect(runTest).toHaveBeenCalledWith(testGroup)
 
-    const chooseButton = screen.getByRole('button', { name: English['Dashboard.Overview.ChooseWebsites'] })
+    const chooseButton = screen.getByRole('button', {
+      name: English['Dashboard.Overview.ChooseWebsites'],
+    })
+    expect(chooseButton).toBeInTheDocument()
+
     fireEvent.click(chooseButton, { button: 0 })
     expect(mockRouterPush).toHaveBeenCalledTimes(1)
     expect(mockRouterPush).toHaveBeenCalledWith('/dashboard/websites/choose')
