@@ -253,6 +253,9 @@ const ipcBindingsForMain = (ipcMain) => {
     return newConfig
   })
 
+  ipcMain.handle('get-fresh-config', async () => {
+    return await getConfig()
+  })
 }
 
 module.exports = {

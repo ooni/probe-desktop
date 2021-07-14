@@ -9,7 +9,6 @@ import PropTypes from 'prop-types'
 import { theme } from 'ooni-components'
 import { ThemeProvider } from 'styled-components'
 import { IntlProvider, createIntl, createIntlCache } from 'react-intl'
-import TestGroupInDetail from '../TestGroupInDetail'
 import {
   screen,
   render,
@@ -17,10 +16,11 @@ import {
   fireEvent,
   cleanup,
 } from '@testing-library/react'
+
 import English from '../../../../lang/en.json'
-import fs from 'fs-extra'
-import path from 'path'
 import { testGroups } from '../../nettests'
+import TestGroupInDetail from '../TestGroupInDetail'
+import { initializeConfig } from '../../../../main/utils/config'
 
 // For Using Intl formatting outside React Hooks
 const cache = createIntlCache()
@@ -30,66 +30,10 @@ const intl = createIntl({ locale: 'en-US', messages: English }, cache)
 const ConfigContext = createContext([{}, () => {}])
 let mockConfig
 
-const getConfig = async (key = null) => {
+const getConfig = (key = null) => {
   try {
-    const absolutePath = path.join(
-      __dirname,
-      '../../../../ooni_home/config.json'
-    )
-    if (fs.existsSync(absolutePath)) {
-      const configRaw = fs.readFileSync(absolutePath)
-      mockConfig = JSON.parse(configRaw)
-    } else {
-      mockConfig = {
-        _version: 5,
-        _informed_consent: true,
-        sharing: {
-          upload_results: true,
-        },
-        nettests: {
-          websites_enabled_category_codes: [
-            'ALDR',
-            'ANON',
-            'COMM',
-            'COMT',
-            'CTRL',
-            'CULTR',
-            'DATE',
-            'ECON',
-            'ENV',
-            'FILE',
-            'GAME',
-            'GMB',
-            'GOVT',
-            'GRP',
-            'HACK',
-            'HATE',
-            'HOST',
-            'HUMR',
-            'IGO',
-            'LGBT',
-            'MILX',
-            'MMED',
-            'NEWS',
-            'POLR',
-            'PORN',
-            'PROV',
-            'PUBH',
-            'REL',
-            'SRCH',
-            'XED',
-          ],
-          websites_enable_max_runtime: true,
-          websites_max_runtime: 90,
-        },
-        advanced: {
-          use_domain_fronting: false,
-          send_crash_reports: true,
-          collector_url: '',
-          bouncer_url: 'https://bouncer.ooni.io',
-        },
-      }
-    }
+    mockConfig = initializeConfig()
+
     if (key === null) {
       return mockConfig
     } else {
@@ -106,7 +50,6 @@ const getConfigValue = (config, optionKey) =>
 
 const ConfigProvider = (props) => {
   const [state, setState] = useState(getConfig())
-
   return (
     <ConfigContext.Provider value={[state, setState]}>
       {props.children}
@@ -137,6 +80,11 @@ jest.mock('next/router', () => ({
       push: mockRouterPush,
     }
   },
+}))
+
+// Mock getHomeDir
+jest.mock('../../../../main/utils/paths', () => ({
+  getHomeDir: jest.fn(() => '/home/user/probe-desktop/ooni_home'),
 }))
 
 const renderComponent = (component, locale = 'en', messages = English) => {
