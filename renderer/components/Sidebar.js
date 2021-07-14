@@ -8,7 +8,7 @@ import {
   Box
 } from 'ooni-components'
 import Link from 'next/link'
-import { useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import OONILogo from 'ooni-components/components/svgs/logos/Probe-HorizontalMonochrome.svg'
 import { MdWeb, MdHistory } from 'react-icons/md'
 import { FaCog } from 'react-icons/fa'
@@ -72,18 +72,17 @@ NavItem.propTypes = {
   pathName: PropTypes.string
 }
 
-// The id here is used by react-intl for localization
 const navigationPaths = {
   '/dashboard': {
-    id: 'Dashboard.Tab.Label',
+    name: <FormattedMessage id='Dashboard.Tab.Label' />,
     icon: <MdWeb size={40} />
   },
   '/test-results': {
-    id: 'TestResults.Overview.Tab.Label',
+    name: <FormattedMessage id='TestResults.Overview.Tab.Label' />,
     icon: <MdHistory size={40} />
   },
   '/settings': {
-    id: 'Settings.Title',
+    name: <FormattedMessage id='Settings.Title' />,
     icon: <FaCog size={40} />
   }
 }
@@ -104,8 +103,6 @@ const StyledOONILogo = styled(OONILogo)`
 
 const Sidebar = ({ children }) => {
   const { pathname } = useRouter()
-  const intl = useIntl()
-  
   return (
     <Flex flexDirection='row'>
       <SidebarContainer data-id='sidebar' width={1/5}>
@@ -124,7 +121,7 @@ const Sidebar = ({ children }) => {
                   pathName={pathname}
                   href={path}
                   icon={info.icon}
-                  label={intl.formatMessage(info.id)}
+                  label={info.name}
                 />
               )
             })}
