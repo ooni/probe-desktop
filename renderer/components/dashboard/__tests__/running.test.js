@@ -34,14 +34,23 @@ describe('Tests for Log component', () => {
   afterEach(() => {
     cleanup()
   })
+
   test('Log component renders lines correctly', async () => {
     const onToggleLog = jest.fn()
     const logOpen = true
-    const logLines = ['Running tests', 'iplookup: using ubuntu', 'sessionresolver: http3://dns.google/dns-query... <nil>']
-    renderComponent(<Log lines={logLines} onToggleLog={onToggleLog} open={logOpen} />)
+    const logLines = [
+      'Running tests',
+      'iplookup: using ubuntu',
+      'sessionresolver: http3://dns.google/dns-query... <nil>',
+    ]
+    renderComponent(
+      <Log lines={logLines} onToggleLog={onToggleLog} open={logOpen} />
+    )
     const logLine1 = screen.getByText(/Running tests/)
     const logLine2 = screen.getByText(/iplookup: using ubuntu/)
-    const logLine3 = screen.getByText(/sessionresolver: http3:\/\/dns.google\/dns-query... <nil>/)
+    const logLine3 = screen.getByText(
+      /sessionresolver: http3:\/\/dns.google\/dns-query... <nil>/
+    )
     expect(logLine1).toBeInTheDocument()
     expect(logLine2).toBeInTheDocument()
     expect(logLine3).toBeInTheDocument()
@@ -52,24 +61,32 @@ describe('Tests for ToggleLogButton component', () => {
   afterEach(() => {
     cleanup()
   })
+
   test('ToggleLogButton shows "Close Log" when is open and triggers callback on click', async () => {
     const open = true
     const onToggleLog = jest.fn()
     renderComponent(<ToggleLogButton onClick={onToggleLog} open={open} />)
-    const closeLogButton = screen.getByText(English['Dashboard.Running.CloseLog'])
-    const showLogButton = screen.queryByText(English['Dashboard.Running.ShowLog'])
+    const closeLogButton = screen.getByText(
+      English['Dashboard.Running.CloseLog']
+    )
+    const showLogButton = screen.queryByText(
+      English['Dashboard.Running.ShowLog']
+    )
     expect(closeLogButton).toBeInTheDocument()
     expect(showLogButton).not.toBeInTheDocument()
     const toggleLog = screen.getByTestId('toggle-log-button')
     fireEvent.click(toggleLog)
     expect(onToggleLog).toHaveBeenCalledTimes(1)
   })
+  
   test('ToggleLogButton shows "Show Log" when is open and triggers callback on click', async () => {
     const open = false
     const onToggleLog = jest.fn()
     renderComponent(<ToggleLogButton onClick={onToggleLog} open={open} />)
     const showLogButton = screen.getByText(English['Dashboard.Running.ShowLog'])
-    const closeLogButton = screen.queryByText(English['Dashboard.Running.CloseLog'])
+    const closeLogButton = screen.queryByText(
+      English['Dashboard.Running.CloseLog']
+    )
     expect(showLogButton).toBeInTheDocument()
     expect(closeLogButton).not.toBeInTheDocument()
     const toggeLog = screen.getByTestId('toggle-log-button')
@@ -114,7 +131,9 @@ describe('Animation tests for "Running" component', () => {
   test('Circumvention test animations load correctly', async () => {
     const testGroupName = 'circumvention'
     renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
-    const animationElement = screen.getByTestId('running-animation-circumvention')
+    const animationElement = screen.getByTestId(
+      'running-animation-circumvention'
+    )
     expect(animationElement).toBeInTheDocument()
   })
 
@@ -125,7 +144,6 @@ describe('Animation tests for "Running" component', () => {
     expect(animationElement).toBeInTheDocument()
   })
 })
-
 
 describe('IPC tests for "ooni" event in "Running" component', () => {
   afterEach(() => {
@@ -139,7 +157,7 @@ describe('IPC tests for "ooni" event in "Running" component', () => {
       eta: -1,
       message: 'telegram: measure http://95.161.76.100:443/: <nil>',
       percentage: 0.48,
-      testKey: 'nettests.Telegram'
+      testKey: 'nettests.Telegram',
     }
     ipcRenderer.on.mockImplementationOnce((event, callback) => {
       callback(event, data)
@@ -147,7 +165,9 @@ describe('IPC tests for "ooni" event in "Running" component', () => {
     const testGroupName = 'im'
     renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
     const labelTelegram = screen.getByText(/Telegram Test/i)
-    const testDetail = screen.getByText('telegram: measure http://95.161.76.100:443/: <nil>')
+    const testDetail = screen.getByText(
+      'telegram: measure http://95.161.76.100:443/: <nil>'
+    )
     expect(labelTelegram).toBeInTheDocument()
     expect(testDetail).toBeInTheDocument()
   })
@@ -158,7 +178,7 @@ describe('IPC tests for "ooni" event in "Running" component', () => {
       eta: -1,
       message: 'whatsapp: measure tcpconnect://e14.whatsapp.net:443: <nil>',
       percentage: 0.55,
-      testKey: 'nettests.WhatsApp'
+      testKey: 'nettests.WhatsApp',
     }
     ipcRenderer.on.mockImplementationOnce((event, callback) => {
       callback(event, data)
@@ -166,7 +186,9 @@ describe('IPC tests for "ooni" event in "Running" component', () => {
     const testGroupName = 'im'
     renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
     const labelTelegram = screen.getByText(/WhatsApp Test/i)
-    const testDetail = screen.getByText('whatsapp: measure tcpconnect://e14.whatsapp.net:443: <nil>')
+    const testDetail = screen.getByText(
+      'whatsapp: measure tcpconnect://e14.whatsapp.net:443: <nil>'
+    )
     expect(labelTelegram).toBeInTheDocument()
     expect(testDetail).toBeInTheDocument()
   })
@@ -174,7 +196,8 @@ describe('IPC tests for "ooni" event in "Running" component', () => {
   test('Log message is displayed on receiving log object', async () => {
     const logObj = {
       key: 'log',
-      value: '0.48214285714285715% - telegram: measure http://95.161.76.100:443/: <nil>'
+      value:
+        '0.48214285714285715% - telegram: measure http://95.161.76.100:443/: <nil>',
     }
     ipcRenderer.on.mockImplementationOnce((event, callback) => {
       callback(event, logObj)
@@ -192,7 +215,7 @@ describe('IPC tests for "ooni" event in "Running" component', () => {
   test('Error message is displayed on receiving error object', async () => {
     const errorObj = {
       key: 'error',
-      message: 'There was an error'
+      message: 'There was an error',
     }
     ipcRenderer.on.mockImplementationOnce((event, callback) => {
       callback(event, errorObj)
@@ -213,7 +236,7 @@ describe('IPC tests for other ooniprobe ipc events in "Running" component', () =
   test('Displays "Finished running" in log on receiving "ooniprobe.done" event', async () => {
     const testGroupName = 'im'
     ipcRenderer.on.mockImplementation((event, callback) => {
-      if(event==='ooniprobe.done') {
+      if (event === 'ooniprobe.done') {
         callback(event, testGroupName)
       }
     })
@@ -227,7 +250,7 @@ describe('IPC tests for other ooniprobe ipc events in "Running" component', () =
   test('Directs to /test-results on receiving "ooniprobe.completed" event', async () => {
     const testGroupName = 'im'
     ipcRenderer.on.mockImplementation((event, callback) => {
-      if(event==='ooniprobe.completed') {
+      if (event === 'ooniprobe.completed') {
         callback(event)
       }
     })
@@ -239,7 +262,7 @@ describe('IPC tests for other ooniprobe ipc events in "Running" component', () =
     const testGroupName = 'im'
     const errorMessage = 'Runner: error failed to run im'
     ipcRenderer.on.mockImplementation((event, callback) => {
-      if(event==='ooniprobe.error') {
+      if (event === 'ooniprobe.error') {
         callback(event, errorMessage)
       }
     })
@@ -249,5 +272,4 @@ describe('IPC tests for other ooniprobe ipc events in "Running" component', () =
     const logLine = screen.getByText(errorMessage)
     expect(logLine).toBeInTheDocument()
   })
-
 })
