@@ -46,7 +46,7 @@ const defaultOptions = {
   configFilePath: OONI_CONFIG_PATH
 }
 
-export const initializeConfig = (opts = {}) => {
+const initializeConfig = (opts = {}) => {
   const config = {
     '_version': LATEST_CONFIG_VERSION,
     '_informed_consent': true,
