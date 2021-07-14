@@ -72,7 +72,7 @@ NavItem.propTypes = {
   pathName: PropTypes.string
 }
 
-// Using getter function to get `name` because `id` is needed for testing
+// The id here is used by react-intl for localization
 const navigationPaths = {
   '/dashboard': {
     id: 'Dashboard.Tab.Label',

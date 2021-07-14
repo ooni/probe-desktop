@@ -1,3 +1,5 @@
+// TODO: Mocking a general useRouter().push() case
+
 import { Ooniprobe } from '../ooniprobe'
 import childProcess from 'child_process'
 import log from 'electron-log'

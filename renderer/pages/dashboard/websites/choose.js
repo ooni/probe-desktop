@@ -4,10 +4,10 @@ import { Hero, Container, Flex, Box } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
 
-import Layout from 'components/Layout'
-import Sidebar from 'components/Sidebar'
-import BackButton from 'components/BackButton'
-import UrlList from 'components/dashboard/UrlList'
+import Layout from '../../../components/Layout'
+import Sidebar from '../../../components/Sidebar'
+import BackButton from '../../../components/BackButton'
+import UrlList from '../../../components/dashboard/UrlList'
 
 const StyledHero = styled(Hero)`
   -webkit-app-region: drag;

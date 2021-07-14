@@ -4,11 +4,11 @@ import Raven from 'raven-js'
 import { useRouter } from 'next/router'
 import log from 'electron-log'
 
-import Layout from 'components/Layout'
-import Sidebar from 'components/Sidebar'
-import MeasurementContainer from 'components/measurement/MeasurementContainer'
-import ErrorView from 'components/ErrorView'
-import LoadingOverlay from 'components/LoadingOverlay'
+import Layout from '../../../../components/Layout'
+import Sidebar from '../../../../components/Sidebar'
+import MeasurementContainer from '../../../../components/measurement/MeasurementContainer'
+import ErrorView from '../../../../components/ErrorView'
+import LoadingOverlay from '../../../../components/LoadingOverlay'
 
 const debug = require('debug')('ooniprobe-desktop.renderer.pages.measurement')
 
