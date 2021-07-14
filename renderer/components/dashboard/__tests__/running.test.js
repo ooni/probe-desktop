@@ -6,9 +6,10 @@ import React from 'react'
 import { theme } from 'ooni-components'
 import { ThemeProvider } from 'styled-components'
 import { IntlProvider } from 'react-intl'
-import { render, cleanup, screen, fireEvent } from '@testing-library/react'
+import { render, cleanup, screen, fireEvent, waitFor } from '@testing-library/react'
 import English from '../../../../lang/en.json'
 import { ipcRenderer } from 'electron'
+import { testGroups } from '../../nettests'
 
 import Running, { Log, ToggleLogButton } from '../running'
 
@@ -100,48 +101,28 @@ describe('Animation tests for "Running" component', () => {
     cleanup()
   })
 
-  test('IM test animations load correctly', async () => {
-    const testGroupName = 'im'
-    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
-    const animationElement = screen.getByTestId('running-animation-im')
-    expect(animationElement).toBeInTheDocument()
+  const testGroupNames = ['im', 'websites', 'middlebox', 'performance', 'circumvention']
+  testGroupNames.forEach(testGroupName => {
+    test(`${testGroupName} test animations load correctly`, async () => {
+      const animationData = testGroups[testGroupName].animation
+      renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
+      const animationElement = screen.getByTestId(`running-animation-${testGroupName}`)
+      expect(animationElement).toBeInTheDocument()
+      expect(animationElement.firstChild.nodeName).toBe('svg')
+      expect(animationElement.firstChild.getAttribute('width')).toBe(animationData.w.toString())
+      expect(animationElement.firstChild.getAttribute('height')).toBe(animationData.h.toString())
+    })
   })
 
-  test('Website test animations load correctly', async () => {
-    const testGroupName = 'websites'
-    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
-    const animationElement = screen.getByTestId('running-animation-websites')
-    expect(animationElement).toBeInTheDocument()
-  })
-
-  test('Middleboxes test animations load correctly', async () => {
-    const testGroupName = 'middlebox'
-    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
-    const animationElement = screen.getByTestId('running-animation-middlebox')
-    expect(animationElement).toBeInTheDocument()
-  })
-
-  test('Performance test animations load correctly', async () => {
-    const testGroupName = 'performance'
-    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
-    const animationElement = screen.getByTestId('running-animation-performance')
-    expect(animationElement).toBeInTheDocument()
-  })
-
-  test('Circumvention test animations load correctly', async () => {
-    const testGroupName = 'circumvention'
-    renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
-    const animationElement = screen.getByTestId(
-      'running-animation-circumvention'
-    )
-    expect(animationElement).toBeInTheDocument()
-  })
-
-  test('Default test animations load correctly for non-existing', async () => {
+  test('Default test animations load correctly for non-existing test', async () => {
     const testGroupName = 'nonexistent'
+    const animationData = testGroups['default'].animation
     renderComponent(<Running testGroupToRun={testGroupName} inputFile={null} />)
     const animationElement = screen.getByTestId('running-animation-default')
     expect(animationElement).toBeInTheDocument()
+    expect(animationElement.firstChild.nodeName).toBe('svg')
+    expect(animationElement.firstChild.getAttribute('width')).toBe(animationData.w.toString())
+    expect(animationElement.firstChild.getAttribute('height')).toBe(animationData.h.toString())
   })
 })
 
