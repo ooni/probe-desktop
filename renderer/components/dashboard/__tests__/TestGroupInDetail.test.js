@@ -32,10 +32,64 @@ let mockConfig
 
 const getConfig = async (key = null) => {
   try {
-    const configRaw = fs.readFileSync(
-      path.join(__dirname, '../../../../ooni_home/config.json')
+    const absolutePath = path.join(
+      __dirname,
+      '../../../../ooni_home/config.json'
     )
-    mockConfig = JSON.parse(configRaw)
+    if (fs.existsSync(absolutePath)) {
+      const configRaw = fs.readFileSync(absolutePath)
+      mockConfig = JSON.parse(configRaw)
+    } else {
+      mockConfig = {
+        _version: 5,
+        _informed_consent: true,
+        sharing: {
+          upload_results: true,
+        },
+        nettests: {
+          websites_enabled_category_codes: [
+            'ALDR',
+            'ANON',
+            'COMM',
+            'COMT',
+            'CTRL',
+            'CULTR',
+            'DATE',
+            'ECON',
+            'ENV',
+            'FILE',
+            'GAME',
+            'GMB',
+            'GOVT',
+            'GRP',
+            'HACK',
+            'HATE',
+            'HOST',
+            'HUMR',
+            'IGO',
+            'LGBT',
+            'MILX',
+            'MMED',
+            'NEWS',
+            'POLR',
+            'PORN',
+            'PROV',
+            'PUBH',
+            'REL',
+            'SRCH',
+            'XED',
+          ],
+          websites_enable_max_runtime: true,
+          websites_max_runtime: 90,
+        },
+        advanced: {
+          use_domain_fronting: false,
+          send_crash_reports: true,
+          collector_url: '',
+          bouncer_url: 'https://bouncer.ooni.io',
+        },
+      }
+    }
     if (key === null) {
       return mockConfig
     } else {
@@ -43,32 +97,7 @@ const getConfig = async (key = null) => {
     }
   } catch (err) {
     console.error('Config file not found', err)
-    // returning mocked config values if config.json is not found
-    return {
-      _version: 5,
-      _informed_consent: true,
-      sharing: { upload_results: true },
-      nettests: {
-        websites_enabled_category_codes: [
-          'ALDR', 'ANON',  'COMM', 'COMT',
-          'CTRL', 'CULTR', 'DATE', 'ECON',
-          'ENV',  'FILE',  'GAME', 'GMB',
-          'GOVT', 'GRP',   'HACK', 'HATE',
-          'HOST', 'HUMR',  'IGO',  'LGBT',
-          'MILX', 'MMED',  'NEWS', 'POLR',
-          'PORN', 'PROV',  'PUBH', 'REL',
-          'SRCH', 'XED'
-        ],
-        websites_enable_max_runtime: true,
-        websites_max_runtime: 90
-      },
-      advanced: {
-        use_domain_fronting: false,
-        send_crash_reports: true,
-        collector_url: '',
-        bouncer_url: 'https://bouncer.ooni.io'
-      }
-    }
+    return null
   }
 }
 
