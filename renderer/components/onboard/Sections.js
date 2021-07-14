@@ -190,7 +190,7 @@ const SectionDefaultSettings = ({ onGo }) => (
       </Flex>
     </Box>
     <Flex alignItems='center' flexDirection='column'>
-      <Button inverted onClick={onGo} data-test-id='letsgo'>
+      <Button inverted onClick={onGo} data-testid='letsgo'>
         <FormattedMessage id='Onboarding.DefaultSettings.Button.Go' />
       </Button>
     </Flex>

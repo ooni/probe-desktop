@@ -43,7 +43,7 @@ export const BooleanOption = ({ label, optionKey, disabled = false, ...rest }) =
       <Checkbox
         mr={1}
         className='checkbox'
-        data-test-id={optionKey}
+        data-testid={optionKey}
         checked={checked}
         onChange={handleChange}
         disabled={disabled}
