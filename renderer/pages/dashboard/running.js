@@ -11,7 +11,7 @@ const RunningTest = () => {
   const router = useRouter()
   const { runningTestGroupName, inputFile } = router.query
 
-  // debug('running', runningTestGroupName)
+  debug('running', runningTestGroupName)
 
   return (
     <Layout>
