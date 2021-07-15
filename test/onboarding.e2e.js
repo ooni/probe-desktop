@@ -41,7 +41,7 @@ describe('Onboarding', function() {
       .getText('h3')
     ).resolves.toBe('Pop Quiz')
     await expect(app.client
-      .getText('h4[data-test-id=pop-quiz-question]')
+      .getText('h4[data-testid=pop-quiz-question]')
     ).resolves.toBe('Question 1/2')
   })
 
@@ -50,7 +50,7 @@ describe('Onboarding', function() {
       .$('div=True')
       .click()
       .pause(2000)
-      .getText('h4[data-test-id=pop-quiz-question]')
+      .getText('h4[data-testid=pop-quiz-question]')
     ).resolves.toBe('Question 2/2')
   })
 
@@ -74,9 +74,9 @@ describe('Onboarding', function() {
 
   it('finishes onboarding and shows dashboard', async function () {
     await expect(app.client
-      .click('button[data-test-id=letsgo]')
+      .click('button[data-testid=letsgo]')
       .pause(1000)
-      .getText('button[data-test-id=dashboard-run-button]')
+      .getText('button[data-testid=dashboard-run-button]')
     ).resolves.toBe('Run')
     screenshotApp(app, 'onboarding-success')
   })
@@ -87,7 +87,7 @@ describe('Onboarding', function() {
       .getText('h3')
     ).resolves.toBe('Settings')
     await expect(app.client
-      .isSelected('[data-test-id="advanced.send_crash_reports"]')
+      .isSelected('[data-testid="advanced.send_crash_reports"]')
     ).resolves.toBe(true)
   })
 })

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Button, Text, Box } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 
-import LastTest from 'components/dashboard/LastTest'
+import LastTest from '../../components/dashboard/LastTest'
 
 const DashBoardHeaderContainer = styled.div`
   color: white;
@@ -60,7 +60,7 @@ export const DashboardHeader = ({ onRunAll }) => (
       <Ellipse />
     </DashboardHeaderBG>
     <RunAllContainer>
-      <RunAllButton inverted onClick={onRunAll} fontSize={2} data-test-id='dashboard-run-button'>
+      <RunAllButton inverted onClick={onRunAll} fontSize={2} data-testid='dashboard-run-button'>
         <Text as='span' fontWeight='bold' fontSize={3}>
           <FormattedMessage id='Dashboard.Overview.Run' />
         </Text>

@@ -61,9 +61,9 @@ const ToggleButtonContainer = styled(Flex)`
   }
 `
 
-const ToggleLogButton = ({open, onClick}) => {
+export const ToggleLogButton = ({open, onClick}) => {
   if (open) {
-    return <ToggleButtonContainer onClick={onClick}>
+    return <ToggleButtonContainer onClick={onClick} data-testid='toggle-log-button'>
       <Box>
         <FormattedMessage id='Dashboard.Running.CloseLog' />
       </Box>
@@ -72,7 +72,7 @@ const ToggleLogButton = ({open, onClick}) => {
       </Box>
     </ToggleButtonContainer>
   }
-  return <ToggleButtonContainer onClick={onClick}>
+  return <ToggleButtonContainer onClick={onClick} data-testid='toggle-log-button'>
     <Box>
       <FormattedMessage id='Dashboard.Running.ShowLog' />
     </Box>
@@ -106,7 +106,7 @@ const LogContainer = styled.div`
   width: 100%;
 `
 
-const Log = ({lines, onToggleLog, open}) => (
+export const Log = ({lines, onToggleLog, open}) => (
   <LogContainer>
     <ToggleLogButton onClick={onToggleLog} open={open} />
     {open && <CodeLog lines={lines} />}
@@ -255,7 +255,6 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
       ) {
         setTestGroupName(currentTestGroup)
       }
-
       data.testKey && setRunningTestName(data.testKey)
       data.message && setProgressLine(data.message)
       data.percentage && setPercent(data.percentage)
@@ -336,6 +335,7 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
                 <Lottie
                   loop={true}
                   play={!isStopping}
+                  data-testid={`running-animation-${testGroupName in testGroups ? testGroupName : 'default'}`}
                   animationData={testGroup['animation']}
                   style={{ width: '300px', height: '300px', alignSelf: 'center', transform: `scaleX(${isRTL ? -1 : 1})` }}
                   rendererSettings={{
@@ -355,6 +355,7 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
                 strokeWidth='2'
                 trailColor='rgba(255,255,255,0.4)'
                 trailWidth='2'
+                data-testid='running-progress-line'
               />
             ) : (
               <StripedProgress />

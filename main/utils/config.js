@@ -1,7 +1,6 @@
 const path = require('path')
 const fs = require('fs-extra')
 const log = require('electron-log')
-const { ipcMain } = require('electron')
 
 const { getHomeDir, getAutorunHomeDir } = require('./paths')
 
@@ -47,14 +46,7 @@ const defaultOptions = {
   configFilePath: OONI_CONFIG_PATH
 }
 
-/**
- * Initialize config file
- * @param {Object} [options] - Options to  prepare config file before writing to disk
- * @param {string} [options.configFilePath] - path to custom config file to use instead of generating here
- * @param {boolean} [options.crashReportsOptIn] - whether to opt-in to crash reporting
- */
-const initConfigFile = async (options = {}) => {
-  const opts = Object.assign(defaultOptions, options)
+const initializeConfig = (opts = {}) => {
   const config = {
     '_version': LATEST_CONFIG_VERSION,
     '_informed_consent': true,
@@ -73,6 +65,19 @@ const initConfigFile = async (options = {}) => {
       'bouncer_url': 'https://bouncer.ooni.io'
     }
   }
+  return config
+}
+
+/**
+ * Initialize config file
+ * @param {Object} [options] - Options to  prepare config file before writing to disk
+ * @param {string} [options.configFilePath] - path to custom config file to use instead of generating here
+ * @param {boolean} [options.crashReportsOptIn] - whether to opt-in to crash reporting
+ */
+
+const initConfigFile = async (options = {}) => {
+  const opts = Object.assign(defaultOptions, options)
+  const config = initializeConfig(opts)
   await fs.ensureFile(opts.configFilePath)
   await fs.writeJson(opts.configFilePath, config, {spaces: '  '})
 
@@ -236,14 +241,11 @@ const maybeMigrate = async () => {
     config = migrate(config, ver, ver+1)
   }
   log.debug('Config file migration completed. Writing config file to disk.')
-  await fs.writeJson(OONI_CONFIG_PATH, config, {spaces: '  '})
+  await fs.writeJson(getConfigPath(), config, {spaces: '  '})
 }
 
-ipcMain.handle('get-fresh-config', async () => {
-  return await getConfig()
-})
-
 module.exports = {
+  initializeConfig,
   initConfigFile,
   getConfig,
   setConfig,

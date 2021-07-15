@@ -153,3 +153,5 @@ Sidebar.propTypes = {
   children: PropTypes.element
 }
 export default Sidebar
+
+export { navigationPaths }
