@@ -119,7 +119,7 @@ const SectionWhatIsOONI = ({onNext}) => (
       <FormattedMarkdownMessage id="Onboarding.WhatIsOONIProbe.Paragraph" />
     </Box>
     <Box mx='auto'>
-      <Button inverted onClick={onNext}>
+      <Button inverted onClick={onNext} data-testid='got-it-button'>
         <FormattedMessage id='Onboarding.WhatIsOONIProbe.GotIt' />
       </Button>
     </Box>
