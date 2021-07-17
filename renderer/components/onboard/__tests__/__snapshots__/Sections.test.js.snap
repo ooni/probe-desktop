@@ -283,6 +283,7 @@ exports[`Tests for Screen 1 of Sections component Matches snapshot 1`] = `
         >
           <button
             className="c9"
+            data-testid="got-it-button"
             fontSize={1}
             onClick={[Function]}
           >
