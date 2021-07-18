@@ -35,6 +35,7 @@ describe('Tests for RunTestCard component', () => {
   afterEach(() => {
     cleanup()
   })
+
   test('All the Test Cards are mounted', async () => {
     const router = useRouter()
     testList.map((t, idx) => {
@@ -53,6 +54,7 @@ describe('Tests for RunTestCard component', () => {
       ).toBeInTheDocument()
     })
   })
+
   test('Individual Test Cards work as expected', async () => {
     const loadTest = jest.fn()
     const websiteDetails = testList[0]

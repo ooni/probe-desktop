@@ -21,6 +21,7 @@ const renderComponent = (component, locale = 'en', messages = English) => {
 
 describe('Tests for DashboardHeader', () => {
   const onRunTest = jest.fn()
+
   test('Run button is rendered and triggers the test', async () => {
     renderComponent(<DashboardHeader onRunAll={onRunTest('all')} />)
     const runButton = screen.getByText(English['Dashboard.Overview.Run'])
