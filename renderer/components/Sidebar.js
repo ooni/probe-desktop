@@ -154,4 +154,4 @@ Sidebar.propTypes = {
 }
 export default Sidebar
 
-export { navigationPaths }
+export { navigationPaths, NavItem }
