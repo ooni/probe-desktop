@@ -3,7 +3,7 @@
  */
 
 import React from 'react'
-import { screen, render, cleanup } from '@testing-library/react'
+import { screen, render, cleanup, fireEvent } from '@testing-library/react'
 import { theme } from 'ooni-components'
 import { ThemeProvider } from 'styled-components'
 import { IntlProvider } from 'react-intl'
@@ -13,11 +13,13 @@ import Sidebar, { NavItem, navigationPaths } from '../Sidebar'
 import { version } from '../../../package.json'
 
 // Mocking useRouter()
+const mockRouterPush = jest.fn()
 jest.mock('next/router', () => ({
   useRouter() {
     return {
       route: '/',
       pathname: '/dashboard',
+      push: mockRouterPush
     }
   },
 }))
@@ -65,7 +67,15 @@ describe('Tests for Sidebar component', () => {
           label={info.name}
         />
       )
-      expect(screen.getByText(English[info.name.props.id])).toBeInTheDocument()
+
+      const linkText = screen.getByText(English[info.name.props.id])
+      expect(linkText).toBeInTheDocument()
+
+      fireEvent.click(linkText)
+
+      // Asserting if clicking on sidebar links causes Router to push to correct URL
+      // eg. clicking on 'Settings' pushes to '/settings'
+      expect(mockRouterPush).toHaveBeenLastCalledWith(path)
     })
   })
 })

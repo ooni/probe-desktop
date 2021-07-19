@@ -7,7 +7,6 @@ import {
   Flex,
   Box
 } from 'ooni-components'
-import Link from 'next/link'
 import { FormattedMessage } from 'react-intl'
 import OONILogo from 'ooni-components/components/svgs/logos/Probe-HorizontalMonochrome.svg'
 import { MdWeb, MdHistory } from 'react-icons/md'
@@ -48,9 +47,15 @@ const ColoredStrip = styled.span`
 
 const NavItem = ({href, icon, label, pathName}) => {
   const isActive = pathName === href
+  const router = useRouter()
+
+  const handleLinkClick = () => {
+    router.push(href)
+  }
+
   return (
     <StyledNavItem isActive={isActive}>
-      <Link href={href}>
+      <Flex alignItems='center' onClick={handleLinkClick} >
         <Flex alignItems='center'>
           <Box>
             {icon}
@@ -59,7 +64,7 @@ const NavItem = ({href, icon, label, pathName}) => {
             {label}
           </Box>
         </Flex>
-      </Link>
+      </Flex>
       <ColoredStrip active={isActive} />
     </StyledNavItem>
   )
