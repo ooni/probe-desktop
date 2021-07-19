@@ -53,7 +53,7 @@ describe('Tests for Sidebar component', () => {
     expect(screen.getByText('Test paragraph')).toBeInTheDocument()
   })
 
-  test('Navigation List component works correctly', async () => {
+  test('NavItem renders Navigation List correctly in the Sidebar', async () => {
     Object.keys(navigationPaths).map((path, idx) => {
       const info = navigationPaths[path]
       renderComponent(

@@ -14,11 +14,13 @@ import RunTestCard from '../RunTestCard'
 import { testList } from '../../nettests'
 
 // Mocking useRouter()
+const mockPush = jest.fn()
 jest.mock('next/router', () => ({
   useRouter() {
     return {
       route: '/',
       pathname: '/dashboard',
+      push: mockPush
     }
   },
 }))
@@ -32,8 +34,11 @@ const renderComponent = (component, locale = 'en', messages = English) => {
 }
 
 describe('Tests for RunTestCard component', () => {
+  const router = useRouter()
+
   afterEach(() => {
     cleanup()
+    jest.clearAllMocks()
   })
 
   test('All the Test Cards are mounted', async () => {
@@ -56,17 +61,20 @@ describe('Tests for RunTestCard component', () => {
   })
 
   test('Individual Test Cards work as expected', async () => {
-    const loadTest = jest.fn()
     const websiteDetails = testList[0]
     renderComponent(
       <RunTestCard
-        onClick={() => loadTest()}
+        onClick={() =>
+          router.push('/dashboard/[testGroup]', `/dashboard/${websiteDetails.key}`)
+        }
         id={websiteDetails.key}
         {...websiteDetails}
       />
     )
+
     const testCard = screen.getByTestId('card')
     fireEvent.click(testCard)
-    expect(loadTest).toHaveBeenCalledTimes(1)
+    
+    expect(mockPush).toHaveBeenCalledWith('/dashboard/[testGroup]', `/dashboard/${websiteDetails.key}`)
   })
 })
