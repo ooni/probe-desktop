@@ -10,7 +10,8 @@ class CustomSequencer extends TestSequencer {
     const orderPath = [
       'onboarding',
       'sidebar',
-      'dashboard'
+      'dashboard',
+      'settings'
     ]
 
     // based on: https://github.com/facebook/jest/issues/6194#issuecomment-521521514
