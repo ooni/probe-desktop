@@ -132,4 +132,93 @@ describe('Tests for Settings page', () => {
     const languageLabelEn = await app.client.isVisible('label=Language')
     expect(languageLabelEn).toBe(true)
   })
+
+  test('Clicking on button to edit Website categories brings up modal', async () => {
+    await app.client
+      .$('button[data-testid=website-categories-edit-button]')
+      .click()
+
+    const modalHeadingVisible = await app.client.isVisible(
+      `h4=${En['Settings.Websites.Categories.Label']}`
+    )
+    expect(modalHeadingVisible).toBe(true)
+
+    const saveButtonEnabled = await app.client.isEnabled(
+      `button=${En['Settings.Websites.Categories.Selection.Done']}`
+    )
+    expect(saveButtonEnabled).toBe(false)
+  })
+
+  test('Modal Deselect All buttons work as expected', async () => {
+    const websiteCount = await app.client.getText(
+      'div[data-testid=website-category-count]'
+    )
+    expect(websiteCount).toBe('30 categories enabled')
+
+    await app.client
+      .$(`button=${En['Settings.Websites.Categories.Selection.None']}`)
+      .click()
+
+    await app.client
+      .$(`button=${En['Settings.Websites.Categories.Selection.Done']}`)
+      .click()
+
+    const websiteCountNew = await app.client.getText(
+      'div[data-testid=website-category-count]'
+    )
+    expect(websiteCountNew).toBe('0 categories enabled')
+  })
+
+  test('Modal Select All buttons work as expected', async () => {
+    await app.client
+      .$('button[data-testid=website-categories-edit-button]')
+      .click()
+
+    await app.client
+      .$(`button=${En['Settings.Websites.Categories.Selection.All']}`)
+      .click()
+
+    await app.client
+      .$(`button=${En['Settings.Websites.Categories.Selection.Done']}`)
+      .click()
+
+    const websiteCountNew = await app.client.getText(
+      'div[data-testid=website-category-count]'
+    )
+    expect(websiteCountNew).toBe('30 categories enabled')
+
+    await app.client.pause(2000)
+  })
+
+  test('Individual categories can be enabled/disabled', async () => {
+    await app.client
+      .$('button[data-testid=website-categories-edit-button]')
+      .click()
+
+    // Simulate unchecking of checkboxes by clicking on them
+    await app.client.$('input[data-testid=category-checkbox-ANON]').click()
+    await app.client.$('input[data-testid=category-checkbox-CTRL]').click()
+    await app.client.$('input[data-testid=category-checkbox-GAME]').click()
+    await app.client.$('input[data-testid=category-checkbox-LGBT]').click()
+
+    await app.client
+      .$(`button=${En['Settings.Websites.Categories.Selection.Done']}`)
+      .click()
+
+    const websiteCountNew = await app.client.getText(
+      'div[data-testid=website-category-count]'
+    )
+    expect(websiteCountNew).toBe('26 categories enabled')
+
+    // Bring back to default settings (all website categories selected)
+    await app.client
+      .$('button[data-testid=website-categories-edit-button]')
+      .click()
+    await app.client
+      .$(`button=${En['Settings.Websites.Categories.Selection.All']}`)
+      .click()
+    await app.client
+      .$(`button=${En['Settings.Websites.Categories.Selection.Done']}`)
+      .click()
+  })
 })
