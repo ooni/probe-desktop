@@ -1,16 +1,14 @@
 const { startApp, stopApp } = require('./utils')
+import En from '../lang/en.json'
 
 // Skipping because the app opens the About window before the main Window
 // which is picked by spectron to query for dashboard elements.
 // This needs to be enabled after carefully fixing the autoupdate code that
 // causes this behaviour in NODE_ENV='test' in `main/index.js:170`
-describe.skip('Dashboard', () => {
-
+describe('Dashboard', () => {
   let app
 
   beforeAll(async () => {
-    jest.setTimeout(30000)
-    // Launch the app
     app = await startApp()
   })
 
@@ -18,9 +16,45 @@ describe.skip('Dashboard', () => {
     await stopApp(app)
   })
 
-  it('5 test cards are visible', async () => {
-    await expect(app.client
-      .isVisible('div[data-testid="card"]')
+  test('Run button is displayed correctly', async () => {
+    const runButtonVisible = await app.client.isVisible(
+      'button[data-testid=dashboard-run-button]'
+    )
+    const runButtonText = await app.client
+      .$('button[data-testid=dashboard-run-button]')
+      .getText()
+
+    expect(runButtonVisible).toBeTruthy()
+    expect(runButtonText).toMatch(En['Dashboard.Overview.Run'])
+  })
+
+  test('5 test cards are visible', async () => {
+    await expect(
+      app.client.isVisible('div[data-testid="card"]')
     ).resolves.toHaveProperty('length', 5)
+  })
+
+  test('Clicking on "Test Results" tab loads it up correctly', async () => {
+    await app.client.$(`div=${En['TestResults.Overview.Tab.Label']}`).click().pause(1000)
+
+    const labelTests = await app.client.$('div[data-testid=overview-label-tests]').getText()
+    const labelNetworks = await app.client.$('div[data-testid=overview-label-networks]').getText()
+    const labelDataUsage = await app.client.$('div[data-testid=overview-label-data-usage]').getText()
+
+    expect(labelTests).toContain('Tests')
+    expect(labelNetworks).toContain('Networks')
+    expect(labelDataUsage).toContain('Data Usage')
+  })
+
+  test('Clicking on "Settings" tab loads it up correctly', async () => {
+    await app.client.$(`div=${En['Settings.Title']}`).click().pause(1000)
+
+    const labelTestOptionsVisible = await app.client.isVisible(`h4=${En['Settings.TestOptions.Label']}`)
+    const labelAutoTestingVisible = await app.client.isVisible(`h4=${En['Settings.AutomatedTesting.Label']}`)
+    const labelPrivacyVisible = await app.client.isVisible(`h4=${En['Settings.Privacy.Label']}`)
+
+    expect(labelTestOptionsVisible).toBe(true)
+    expect(labelAutoTestingVisible).toBe(true)
+    expect(labelPrivacyVisible).toBe(true)
   })
 })
