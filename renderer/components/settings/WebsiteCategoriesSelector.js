@@ -32,7 +32,14 @@ const CategoryEntry = ({ code, enabled, handleChange }) => {
 
   return (
     <FlexWithBottomBorder alignItems='center' py={3}>
-      <input type='checkbox' id={code} name={code} checked={enabled} onChange={handleChange}/>
+      <input
+        type='checkbox'
+        id={code}
+        name={code}
+        checked={enabled}
+        onChange={handleChange}
+        data-testid={`category-checkbox-${code}`}
+      />
       <Label htmlFor={code}>
         <Box ml={2}>
           <Text fontSize={1}><FormattedMessage id={`CategoryCode.${code}.Name`} /></Text>
@@ -138,7 +145,7 @@ export const WebsiteCategoriesSelector = () => {
   return (
     <Flex flexDirection='column'>
       <Label my={1}><FormattedMessage id='Settings.Websites.Categories.Label' /></Label>
-      <Text my={1} fontSize='90%' color='gray8'>
+      <Text my={1} fontSize='90%' color='gray8' data-testid='website-category-count'>
         <FormattedMessage
           id='Settings.Websites.Categories.Description'
           values={{
@@ -147,7 +154,12 @@ export const WebsiteCategoriesSelector = () => {
         />
       </Text>
       <Box mt={1} mb={2} width={2/3}>
-        <Button fontSize={14} hollow onClick={() => setShowCategoriesModal(!showCategoriesModal)}>
+        <Button
+          fontSize={14}
+          hollow
+          onClick={() => setShowCategoriesModal(!showCategoriesModal)}
+          data-testid='website-categories-edit-button'
+        >
           <FormattedMessage id='Settings.Websites.Categories.Edit' />
         </Button>
       </Box>
