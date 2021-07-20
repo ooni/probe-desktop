@@ -30,6 +30,7 @@ export const LanguageSelector = () => {
         <Select
           defaultValue={intl.locale}
           onChange={onChange}
+          data-testid='select-language'
         >
           {languageOptions}
         </Select>

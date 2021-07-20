@@ -49,12 +49,9 @@ describe('Dashboard', () => {
   test('Clicking on "Settings" tab loads it up correctly', async () => {
     await app.client.$(`div=${En['Settings.Title']}`).click().pause(1000)
 
-    const labelTestOptionsVisible = await app.client.isVisible(`h4=${En['Settings.TestOptions.Label']}`)
-    const labelAutoTestingVisible = await app.client.isVisible(`h4=${En['Settings.AutomatedTesting.Label']}`)
-    const labelPrivacyVisible = await app.client.isVisible(`h4=${En['Settings.Privacy.Label']}`)
-
+    // Checking for the "Settings" heading
+    // Rest of the assertions are in settings.e2e.js
+    const labelTestOptionsVisible = await app.client.isVisible('h3=Settings')
     expect(labelTestOptionsVisible).toBe(true)
-    expect(labelAutoTestingVisible).toBe(true)
-    expect(labelPrivacyVisible).toBe(true)
   })
 })
