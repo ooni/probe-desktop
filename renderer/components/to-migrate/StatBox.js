@@ -18,8 +18,8 @@ const ValueBox = styled(Box)`
   text-align: center;
 `
 
-const StatBox = ({value, label, unit}) => (
-  <Flex flexDirection='column' justifyContent='space-around' style={{ height: '100%' }}>
+const StatBox = ({value, label, unit, ...rest}) => (
+  <Flex flexDirection='column' justifyContent='space-around' style={{ height: '100%' }} {...rest}>
     {label && <LabelBox>
       {label}
     </LabelBox>}

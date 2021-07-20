@@ -30,7 +30,7 @@ import VerticalDivider from '../to-migrate/VerticalDivider'
 const DataUsage = ({ dataUsage }) => {
   return (
     <Flex flexDirection='column' alignItems='center'>
-      <LabelBox>
+      <LabelBox data-testid='overview-label-data-usage'>
         <FormattedMessage id='TestResults.Overview.Hero.DataUsage' />
       </LabelBox>
       <Flex flexDirection='column'>
@@ -68,13 +68,15 @@ const ResultsHeader = ({testCount, networkCount, dataUsage}) => {
           <Box width={1/3}>
             <StatBox
               label={<FormattedMessage id='TestResults.Overview.Hero.Tests' />}
-              value={testCount} />
+              value={testCount}
+              data-testid='overview-label-tests' />
           </Box>
           <VerticalDivider />
           <Box width={1/3}>
             <StatBox
               label={<FormattedMessage id='TestResults.Overview.Hero.Networks' />}
-              value={networkCount} />
+              value={networkCount}
+              data-testid='overview-label-networks' />
           </Box>
           <VerticalDivider />
           <Box width={1/3}>
