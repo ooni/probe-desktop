@@ -23,10 +23,16 @@ describe('Tests for translations', () => {
     expect(supportedLanguages.sort()).toEqual(expectedLanguagesArray.sort())
   })
 
-  test('en.json contains all the ids', async () => {
-    const En = JSON.parse(readFileSync('./lang/en.json'))
-
-    const missingMessageArray = langIdArray.filter(id => En[id] ? false : true)
-    expect(missingMessageArray).toHaveLength(0)
+  supportedLanguages.forEach(langName => {
+    test(`${langName}.json contains all the ids and their corresponding messages`, async () => {
+      const lang = JSON.parse(readFileSync(`./lang/${langName}.json`))
+      
+      // If an id, for example 'Onboarding.PopQuiz.Title' is missing from {langName}.json file
+      // or if its message is missing, then the id is pushed into missingMessageArray, thus
+      // making its length non-zero and failing the test
+      const missingMessageArray = langIdArray.filter(id => lang[id] ? false : true)
+      expect(missingMessageArray).toHaveLength(0)
+    })
   })
+
 })
