@@ -24,9 +24,9 @@ const CardDescription = styled(Box)`
   }
 `
 
-const RunTestCard = ({ name, color, icon, description, onClick }) => {
+const RunTestCard = ({ name, color, icon, description, onClick, id }) => {
   return (
-    <Card mb={4} p={2} onClick={onClick} data-testid='card'>
+    <Card mb={4} p={2} onClick={onClick} data-testid={`run-card-${id}`}>
       <Flex alignItems='center'>
         <Box>
           {React.cloneElement(
