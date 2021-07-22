@@ -28,10 +28,16 @@ describe('Dashboard', () => {
     expect(runButtonText).toMatch(En['Dashboard.Overview.Run'])
   })
 
-  test('5 test cards are visible', async () => {
-    await expect(
-      app.client.isVisible('div[data-testid="card"]')
-    ).resolves.toHaveProperty('length', 5)
+  describe('All 5 test cards are visible', () => {
+    const idArray = ['websites', 'im', 'circumvention', 'performance', 'middlebox']
+  
+    idArray.forEach( id => {
+      
+      test(`${id} test card is visible`, async () => {
+        const isCardVisible = await app.client.isVisible(`div[data-testid=run-card-${id}]`)
+        expect(isCardVisible).toBe(true)
+      })
+    })
   })
 
   test('Clicking on "Test Results" tab loads it up correctly', async () => {
