@@ -2,9 +2,7 @@
 const { app, Menu, ipcMain } = require('electron')
 const prepareNext = require('electron-next')
 const { is } = require('electron-util')
-const { autoUpdater } = require('electron-updater')
 const isDev = require('electron-is-dev')
-const semver = require('semver')
 const fixPath = require('fix-path')
 const Sentry = require('@sentry/electron')
 const log = require('electron-log')
@@ -17,6 +15,7 @@ const toggleWindow = require('./windows/toggle')
 const { ipcBindingsForMain } = require('./ipcBindings')
 const initializeSentry = require('./utils/sentry')
 const store = require('./utils/store')
+const updater = require('./updater')
 
 log.info(`Initializing ${app.name} in ${isDev? 'development': 'production'} mode.`)
 
@@ -40,10 +39,6 @@ require('electron-debug')({
   // make sure it's always enabled even in "production" builds.
   enabled: parseInt(process.env.FORCE_ELECTRON_DEBUG, 10) === 1 ? true : null
 })
-
-autoUpdater.logger = log
-autoUpdater.logger.transports.file.level = 'info'
-autoUpdater.autoDownload = false
 
 // To prevent garbage collection of the windows
 let windows = null
@@ -115,117 +110,6 @@ app.on('window-all-closed', () => {
   }
 })
 
-/*** CRITICAL CODE FOR AUTO-UPDATE STARTS ***/
-/*
-  This section contains critical code that handles automatically updating
-  the app based on Github releases. Bugs in this part of the code can
-  have serious consequences like blocking users from receiving critical
-  and timely updates. When making changes to this section, please execise
-  extra caution and mandatorily get the changes reviewed by another team
-  member.
- */
-function sendStatusToWindow(text, options = {}) {
-  const aboutWindow = openAboutWindow(options['showWindow'] === true)
-  log.info(text)
-  if (aboutWindow.isVisible()) {
-    aboutWindow.webContents.send('update-message', text)
-  } else {
-    aboutWindow.webContents.on('did-finish-load', () => {
-      aboutWindow.webContents.send('update-message', text)
-    })
-  }
-}
-
-function sendUpdaterProgress(progressObj, options = {}) {
-  const aboutWindow = openAboutWindow(options['showWindow'] === true)
-  log.info(`Update download progress: ${progressObj.percent}`)
-  if (aboutWindow.isVisible()) {
-    aboutWindow.webContents.send('update-progress', progressObj)
-  } else {
-    aboutWindow.webContents.on('did-finish-load', () => {
-      aboutWindow.webContents.send('update-progress', progressObj)
-    })
-  }
-}
-
-autoUpdater.on('update-not-available', () => {
-  log.info('You are up to date')
-})
-
-autoUpdater.on('checking-for-update', () => {
-  log.info('Checking for update')
-})
-
-autoUpdater.on('update-available', () => {
-  sendStatusToWindow('A new update is available. Downloading now...', { showWindow: true })
-})
-
-autoUpdater.on('error', err => {
-  sendStatusToWindow('Unable to check for updates. Please visit https://ooni.org/ to get the latest version.')
-  log.error(err)
-})
-
-autoUpdater.on('download-progress', progressObj => {
-  sendUpdaterProgress(progressObj)
-})
-
-autoUpdater.on('update-downloaded', () => {
-  sendStatusToWindow('Update downloaded. Quitting and installing.')
-  autoUpdater.quitAndInstall()
-})
-
-// Instead of calling autoUpdater.checkForUpdatesAndNotify(), we separate the
-// check and download actions to avoid uncatchable exceptions triggered by connectivity problems.
-// See ooni/probe#1318
-// From https://github.com/electron-userland/electron-builder/issues/2398#issuecomment-413117520
-function checkForUpdates() {
-  // Skip checking updates in dev mode
-  if (isDev) return
-
-  autoUpdater.checkForUpdates().then((info) => {
-    // If the check returns something, make sure the new version is
-    // greater than the current version, and then initiate download.
-    if (semver.gt(info.updateInfo.version, autoUpdater.currentVersion.version, { includePrerelease: true })) {
-      downloadUpdate(info.cancellationToken)
-    } else {
-      log.info('No updates available')
-    }
-  }).catch((error) => {
-    if (isNetworkError(error)) {
-      log.info('Network Error')
-    } else {
-      log.info('Unknown Error')
-      log.info(error == null ? 'unknown' : (error.stack || error).toString())
-    }
-  })
-}
-
-function downloadUpdate(cancellationToken) {
-  autoUpdater.downloadUpdate(cancellationToken).then(() => {
-    setImmediate(() => autoUpdater.quitAndInstall())
-  }).catch((error) => {
-    if (isNetworkError(error)) {
-      log.info('Network Error')
-    } else {
-      log.info('Unknown Error')
-      log.info(error == null ? 'unknown' : (error.stack || error).toString())
-    }
-  })
-}
-
-function isNetworkError(errorObject) {
-  return (
-    errorObject.message === 'net::ERR_INTERNET_DISCONNECTED' ||
-    errorObject.message === 'net::ERR_PROXY_CONNECTION_FAILED' ||
-    errorObject.message === 'net::ERR_CONNECTION_RESET' ||
-    errorObject.message === 'net::ERR_CONNECTION_CLOSE' ||
-    errorObject.message === 'net::ERR_NAME_NOT_RESOLVED' ||
-    errorObject.message === 'net::ERR_CONNECTION_TIMED_OUT'
-  )
-}
-
-/** CRITICAL AUTO-UPDATE SECTION ENDS ***/
-
 const createWindow = async (url) => {
   windows = {
     main: mainWindow(url)
@@ -240,11 +124,14 @@ const createWindow = async (url) => {
 }
 
 // Prepare the renderer once the app is ready
-app.on('ready', async () => {
-
+app.whenReady().then(async () => {
+  // Check for any updates
   // Auto update is not yet available for Linux
   if (process.platform === 'darwin' || process.platform === 'win32') {
-    checkForUpdates()
+    // Skip in dev mode
+    if (!isDev) {
+      updater.checkForUpdatesAndInstall()
+    }
   }
 
   // Setup devtools in development mode
