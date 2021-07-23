@@ -241,7 +241,7 @@ const maybeMigrate = async () => {
     config = migrate(config, ver, ver+1)
   }
   log.debug('Config file migration completed. Writing config file to disk.')
-  await fs.writeJson(getConfigPath(), config, {spaces: '  '})
+  await fs.writeJson(OONI_CONFIG_PATH, config, {spaces: '  '})
 }
 
 module.exports = {
