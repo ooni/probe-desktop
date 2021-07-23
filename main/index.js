@@ -16,6 +16,7 @@ const { ipcBindingsForMain } = require('./ipcBindings')
 const initializeSentry = require('./utils/sentry')
 const store = require('./utils/store')
 const updater = require('./updater')
+const autorun = require('./utils/autorun/schedule')
 
 log.info(`Initializing ${app.name} in ${isDev? 'development': 'production'} mode.`)
 
@@ -165,6 +166,9 @@ app.whenReady().then(async () => {
     await initConfigFile()
   }
   const config = await getConfig()
+
+  // Initialize autorun
+  autorun.init()
 
   // XXX Only allow one instance of OONI Probe running
   // at the same time

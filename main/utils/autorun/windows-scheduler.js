@@ -26,16 +26,54 @@ SOFTWARE.
 
 const { execSync } = require('child_process')
 const log = require('electron-log')
+const { app } = require('electron')
+const { join } = require('path')
+const { getBinaryDirectory, getAutorunHomeDir, getBinaryPath } = require('../paths')
+const { writeFile, unlink } = require('fs').promises
+const { existsSync, writeFileSync } = require('fs-extra')
+const { taskXMLTemplate, taskBatchTemplate, taskVBScriptTemplate } = require('./taskTemplateWin')
 
 const taskBatchFileName = 'ooniprobe-unattended.bat'
 const taskVBScriptFileName = 'hidecmd.vbs'
 const taskXmlFileName = 'ooniprobe-autorun-task.xml'
+const taskVBScriptFilePath = join(getBinaryDirectory(), taskVBScriptFileName)
+const taskBatchFilePath = join(getBinaryDirectory(), taskBatchFileName)
+const taskXmlFilePath = join(app.getPath('temp'), taskXmlFileName)
 
 function exec(command) {
   return execSync(`cmd /C schtasks ${command}`)
 }
 
 module.exports = {
+  init: function (/* taskId, opts */) {
+    // Check if required files are on disk
+    // (Re)generate files that are missing or removed by an update
+    if (!existsSync(taskBatchFilePath)) {
+      log.verbose(`Autorun task batch file missing at ${taskBatchFilePath}`)
+      try {
+        // Create batch file to run ooniprobe run unattended
+        const batchFileStr = taskBatchTemplate({
+          OONI_HOME_autorun: getAutorunHomeDir(),
+          pathToBinary: getBinaryPath()
+        })
+        writeFileSync(taskBatchFilePath, batchFileStr)
+        log.debug(`Autorun task batch file created: ${taskBatchFilePath}`)
+      } catch (e) {
+        log.error(`Failed to create autorun task batch file: ${taskBatchFilePath}: ${e.message}`)
+      }
+    }
+    if (!existsSync(taskVBScriptFilePath)) {
+      log.verbose(`Autorun task VBscript file missing at ${taskVBScriptFilePath}`)
+      try {
+        const VBSCriptStr = taskVBScriptTemplate({ taskBatchFileName })
+        writeFileSync(taskVBScriptFilePath, VBSCriptStr)
+        log.debug(`Autorun task VBscript file created: ${taskVBScriptFilePath}`)
+      } catch (e) {
+        log.error(`Failed to create autorun task VBscript file: ${taskVBScriptFilePath}: ${e.message}`)
+      }
+    }
+    log.verbose('Initialized autorun.')
+  },
 
   get: function (taskname, format, verbose) {
 
@@ -117,15 +155,6 @@ module.exports = {
           return reject('Task: Create error - Taskname already exists')
         })
         .catch(async () => {
-          const { app } = require('electron')
-          const { join } = require('path')
-          const { getBinaryDirectory, getAutorunHomeDir, getBinaryPath } = require('../paths')
-          const { writeFile, unlink } = require('fs').promises
-          const { taskXMLTemplate, taskBatchTemplate, taskVBScriptTemplate } = require('./taskTemplateWin')
-
-          const taskVBScriptFilePath = join(getBinaryDirectory(), taskVBScriptFileName)
-          const taskBatchFilePath = join(getBinaryDirectory(), taskBatchFileName)
-          const taskXmlFilePath = join(app.getPath('temp'), taskXmlFileName)
 
           try {
             // Create batch file to run ooniprobe run unattended
