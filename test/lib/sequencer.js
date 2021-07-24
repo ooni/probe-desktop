@@ -11,7 +11,8 @@ class CustomSequencer extends TestSequencer {
       'onboarding',
       'sidebar',
       'dashboard',
-      'settings'
+      'settings',
+      'runtest'
     ]
 
     // based on: https://github.com/facebook/jest/issues/6194#issuecomment-521521514
