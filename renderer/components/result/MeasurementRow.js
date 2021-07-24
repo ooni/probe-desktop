@@ -148,7 +148,7 @@ const TestNameIcon = ({ testName }) => {
   )
 
   return (
-    <div>
+    <div data-testid='measured-test-name'>
       {icon && <IconContainer>{icon}</IconContainer>}
       {tests[testName] && tests[testName].name}
     </div>
