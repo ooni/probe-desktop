@@ -59,11 +59,11 @@ const TestGroupInDetail = ({ onRun, testGroup }) => {
               <Heading h={3}>
                 {name}
               </Heading>
-              <BoldButton inverted onClick={onRun} width={1/5} ml='auto'>
+              <BoldButton inverted onClick={onRun} width={1/5} ml='auto' data-testid='button-run-test'>
                 <FormattedMessage id='Dashboard.Overview.Run' />
               </BoldButton>
               {isWebsites && (
-                <InvertedBoldButton hollow ml={3} onClick={onChooseWebsites}>
+                <InvertedBoldButton hollow ml={3} onClick={onChooseWebsites} data-testid='button-choose-websites'>
                   <FormattedMessage id='Dashboard.Overview.ChooseWebsites' />
                 </InvertedBoldButton>
               )}

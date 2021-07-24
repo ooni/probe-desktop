@@ -148,7 +148,7 @@ const ContentContainer = styled.div`
 ContentContainer.displayName = 'ContentContainer'
 
 const Title = ({ groupName }) => (
-  <Heading h={2}>
+  <Heading h={2} data-testid='heading-test-group-name'>
     {groupName ? groupName : <span>&nbsp;</span>}
   </Heading>
 )
@@ -164,14 +164,14 @@ const MemoizedTitle = React.memo(Title)
 
 const RunningTestnameLabel = ({ runningTestName }) => (
   <React.Fragment>
-    <Heading h={3}>
+    <Heading h={3} data-testid='heading-running-test-name'>
       {runningTestName ? (
         <FormattedMessage id='Dashboard.Running.Running' />
       ) : (
         <span><FormattedMessage id='Dashboard.Running.PreparingTest' />...</span>
       )}
     </Heading>
-    <Text fontSize={4}>
+    <Text fontSize={4} data-testid='text-running-test-name'>
       {runningTestName ? (
         <FormattedMessage id={`Test.${runningTestName.split('.')[1]}.Fullname`} />
       ) : (
