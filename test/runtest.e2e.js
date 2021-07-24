@@ -1,9 +1,9 @@
 import { startApp, stopApp } from './utils'
 import { waitFor } from '@testing-library/dom'
 
-jest.setTimeout(300000)
+jest.setTimeout(600000)
 
-describe('Tests for measurement runs', () => {
+describe('IM test', () => {
   let app
 
   beforeAll(async () => {
@@ -17,7 +17,7 @@ describe('Tests for measurement runs', () => {
   test('IM test successfully starts', async () => {
     await app.client.$('div[data-testid=run-card-im]').click()
 
-    await app.client.$('button=Run').click()
+    await app.client.$('button[data-testid=button-run-test]').click()
 
     const preparingTestsVisible = await app.client.isVisible(
       'span=Preparing test...'
@@ -26,6 +26,26 @@ describe('Tests for measurement runs', () => {
   })
 
   test('IM test runs with all 4 network tests', async () => {
+    await waitFor(
+      async () => {
+        const whatsAppTestHeading = await app.client.isVisible(
+          'div=Facebook Messenger Test'
+        )
+        return expect(whatsAppTestHeading).toBe(true)
+      },
+      { timeout: 120000 }
+    )
+
+    await waitFor(
+      async () => {
+        const whatsAppTestHeading = await app.client.isVisible(
+          'div=Telegram Test'
+        )
+        return expect(whatsAppTestHeading).toBe(true)
+      },
+      { timeout: 120000 }
+    )
+
     await waitFor(
       async () => {
         const whatsAppTestHeading = await app.client.isVisible(
@@ -73,5 +93,93 @@ describe('Tests for measurement runs', () => {
       .$('div[data-testid=measured-test-name]')
       .click()
       .pause(2000)
+  })
+})
+
+
+describe('Websites test', () => {
+  let app
+
+  beforeAll(async () => {
+    app = await startApp()
+  })
+
+  afterAll(async () => {
+    await stopApp(app)
+  })
+
+  test('Website measurement test loads correctly', async () => {
+    await app.client.$('div[data-testid=run-card-websites]').click()
+
+    await app.client.$('button[data-testid=button-run-test]').click()
+
+    const headingTestGroupName = await app.client.getText(
+      'h2[data-testid=heading-test-group-name]'
+    )
+    expect(headingTestGroupName).toBe('Websites')
+
+    const headingPreparingTests = await app.client.getText(
+      'h3[data-testid=heading-running-test-name]'
+    )
+    expect(headingPreparingTests).toBe('Preparing test...')
+  })
+
+  test('Website network test is run successfully', async () => {
+    await waitFor(
+      async () => {
+        const runningTestName = await app.client.getText(
+          'div[data-testid=text-running-test-name]'
+        )
+        return expect(runningTestName).toBe('Web Connectivity Test')
+      },
+      { timeout: 300000 }
+    )
+
+    await waitFor(
+      async () => {
+        const headingRunning = await app.client.getText(
+          'h3[data-testid=heading-running-test-name]'
+        )
+        return expect(headingRunning).toBe('Running:')
+      },
+      { timeout: 120000 }
+    )
+    
+    await waitFor(
+      async () => {
+        const animationVisible = await app.client.isVisible(
+          'div[data-testid=running-animation-websites]'
+        )
+        expect(animationVisible).toBe(false)
+      },
+      { timeout: 300000 }
+    )
+
+    await app.client.pause(1000)
+  })
+
+  test('Test result data is stored in an expected fashion', async () => {
+    await app.client
+      .$('div[data-testid=test-result-websites]')
+      .click()
+      .pause(2000)
+
+    await app.client
+      .$('div[data-testid=measured-url-row]')
+      .click()
+      .pause(2000)
+
+    await waitFor(
+      async () => {
+        const explorerButtonVisible = await app.client.isVisible(
+          'button[data-testid=button-show-in-explorer]'
+        )
+        expect(explorerButtonVisible).toBe(true)
+      },
+      { timeout: 20000 }
+    )
+
+    const explorerButtonText = await app.client.getText('button[data-testid=button-show-in-explorer]')
+    expect(explorerButtonText).toBe('Show In OONI Explorer')
   })
 })

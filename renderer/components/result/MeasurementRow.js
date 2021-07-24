@@ -97,7 +97,7 @@ const NotUploadedNotice = () => {
 
 const URLRow = ({measurement, resultID, measurementID, isAnomaly}) => (
   <Link href={{pathname: `/result/${resultID}/measurement/${measurementID}`, query : {isAnomaly}}}>
-    <BorderedFlex>
+    <BorderedFlex data-testid='measured-url-row'>
       <Box pr={2} pl={2} width={1/8}>
         <CategoryCode code={measurement['url_category_code']} />
       </Box>
