@@ -375,7 +375,7 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
                 </Box>
               </Flex>
             }
-            {progressLine && <Text>{progressLine}</Text>}
+            {progressLine && <Text data-testid='test-progress-message'>{progressLine}</Text>}
           </Container>
 
           <Log lines={logLines} onToggleLog={onToggleLog} open={logOpen} />
