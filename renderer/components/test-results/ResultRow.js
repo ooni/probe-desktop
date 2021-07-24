@@ -273,7 +273,7 @@ class ResultRow extends React.Component {
     const {
       resultID,
     } = this.props
-    return <BorderedRow>
+    return <BorderedRow data-testid={`test-result-${this.props.name}`}>
       <Link href={{ pathname: '/result', query: {resultID} }} passHref>
         <Flex alignItems='center'>
           <Box pr={2} width={4/16}>
