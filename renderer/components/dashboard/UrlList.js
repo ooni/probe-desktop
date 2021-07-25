@@ -125,7 +125,7 @@ const UrlList = ({ incomingList = [] }) => {
         <MzAddUrlButton onClick={onAddUrl} />
       </Box>
       <Box my={4}>
-        <Button onClick={runTest} disabled={notReady}>
+        <Button onClick={runTest} disabled={notReady} data-testid='button-run-custom-test'>
           <FormattedMessage id='Settings.Websites.CustomURL.Run' />
         </Button>
       </Box>
