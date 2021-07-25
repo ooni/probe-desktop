@@ -382,3 +382,84 @@ describe('Circumvention test', () => {
       .pause(2000)
   })
 })
+
+describe('Performance test', () => {
+  let app
+
+  beforeAll(async () => {
+    app = await startApp()
+  })
+
+  afterAll(async () => {
+    await stopApp(app)
+  })
+
+  test('Performance test successfully starts', async () => {
+    await app.client
+      .$('div[data-testid=run-card-performance]')
+      .click()
+      .pause(1500)
+
+    await app.client
+      .$('button[data-testid=button-run-test]')
+      .click()
+      .pause(1500)
+
+    const preparingTestsVisible = await app.client.isVisible(
+      'span=Preparing test...'
+    )
+    expect(preparingTestsVisible).toBe(true)
+  })
+
+  test('Performance test performs both network tests', async () => {
+    await waitFor(
+      async () => {
+        const psiphonTestName = await app.client.getText(
+          'div[data-testid=text-running-test-name]'
+        )
+        return expect(psiphonTestName).toBe('DASH Streaming Test')
+      },
+      { timeout: 120000 }
+    )
+
+    await waitFor(
+      async () => {
+        const riseupVpnTestName = await app.client.getText(
+          'div[data-testid=text-running-test-name]'
+        )
+        return expect(riseupVpnTestName).toBe('NDT Speed Test')
+      },
+      { timeout: 120000 }
+    )
+
+    await waitFor(
+      async () => {
+        const animationVisible = await app.client.isVisible(
+          'div[data-testid=running-animation-performance]'
+        )
+        expect(animationVisible).toBe(false)
+      },
+      { timeout: 120000 }
+    )
+
+    await app.client.pause(2500)
+  })
+
+  test('Performance test result data is stored in an expected fashion', async () => {
+    await app.client
+      .$('div[data-testid=test-result-performance]')
+      .click()
+      .pause(2500)
+
+    const rowResultLength = await app.client.$$(
+      'div[data-testid=measured-test-name]'
+    )
+
+    expect(rowResultLength).toHaveLength(2)
+
+    await app.client
+      .$('div[data-testid=measured-test-name]')
+      .click()
+      .pause(2000)
+  })
+})
