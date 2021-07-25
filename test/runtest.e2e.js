@@ -17,7 +17,7 @@ describe('IM test', () => {
   test('IM test successfully starts', async () => {
     await app.client.$('div[data-testid=run-card-im]').click().pause(1500)
 
-    await app.client.$('button[data-testid=button-run-test]').click()
+    await app.client.$('button[data-testid=button-run-test]').click().pause(1500)
 
     const preparingTestsVisible = await app.client.isVisible(
       'span=Preparing test...'
@@ -76,14 +76,14 @@ describe('IM test', () => {
       { timeout: 120000 }
     )
 
-    await app.client.pause(1000)
+    await app.client.pause(2500)
   })
 
   test('Test result data is stored in an expected fashion', async () => {
     await app.client
       .$('div[data-testid=test-result-im]')
       .click()
-      .pause(2000)
+      .pause(2500)
 
     const rowResultLength = await app.client.$$(
       'div[data-testid=measured-test-name]'
@@ -156,7 +156,7 @@ describe('Websites test', () => {
       { timeout: 300000 }
     )
 
-    await app.client.pause(1000)
+    await app.client.pause(2500)
   })
 
   test('Website test result data is stored in an expected fashion', async () => {
@@ -229,7 +229,7 @@ describe('Custom websites test', () => {
   })
 
   test('Runs the custom websites test', async () => {
-    await app.client.$('button[data-testid=button-run-custom-test]').click()
+    await app.client.$('button[data-testid=button-run-custom-test]').click().pause(1500)
 
     const headingTestGroupName = await app.client.getText(
       'h2[data-testid=heading-test-group-name]'
@@ -279,7 +279,7 @@ describe('Custom websites test', () => {
       { timeout: 300000 }
     )
 
-    await app.client.pause(1000)
+    await app.client.pause(2500)
   })
 
   test('Custom website test result is browsable', async () => {
