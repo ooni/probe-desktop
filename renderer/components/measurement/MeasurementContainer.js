@@ -63,8 +63,8 @@ HeroItemBox.propTypes = {
   content: PropTypes.node
 }
 
-const HeroLineItem = ({ size, fontWeight, children }) => (
-  <Flex justifyContent='center' my={3}>
+const HeroLineItem = ({ size, fontWeight, children, ...rest }) => (
+  <Flex justifyContent='center' my={3} {...rest}>
     <Text fontSize={size} fontWeight={fontWeight}>
       {children}
     </Text>
@@ -111,7 +111,7 @@ const Hero = ({
         <React.Fragment>
           <Box width={1}>
             <HeroLineItem size={60}>{heroIcon}</HeroLineItem>
-            <HeroLineItem size={24} fontWeight={900}>{heroTitle}</HeroLineItem>
+            <HeroLineItem size={24} fontWeight={900} data-testid='measurement-title'>{heroTitle}</HeroLineItem>
             {heroSubtitle && <HeroLineItem size={16}>{heroSubtitle}</HeroLineItem>}
           </Box>
           <Box width={1}>
