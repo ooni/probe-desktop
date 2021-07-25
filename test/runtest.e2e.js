@@ -297,3 +297,88 @@ describe('Custom websites test', () => {
     expect(measuredURL).toBe('https://www.twitter.com')
   })
 })
+
+describe('Circumvention test', () => {
+  let app
+
+  beforeAll(async () => {
+    app = await startApp()
+  })
+
+  afterAll(async () => {
+    await stopApp(app)
+  })
+
+  test('Circumvention test successfully starts', async () => {
+    await app.client.$('div[data-testid=run-card-circumvention]').click().pause(1500)
+
+    await app.client.$('button[data-testid=button-run-test]').click().pause(1500)
+
+    const preparingTestsVisible = await app.client.isVisible(
+      'span=Preparing test...'
+    )
+    expect(preparingTestsVisible).toBe(true)
+  })
+
+  test('Circumvention test runs with all 3 network tests', async () => {
+    await waitFor(
+      async () => {
+        const psiphonTestName = await app.client.getText(
+          'div[data-testid=text-running-test-name]'
+        )
+        return expect(psiphonTestName).toBe('Psiphon Test')
+      },
+      { timeout: 120000 }
+    )
+
+    await waitFor(
+      async () => {
+        const riseupVpnTestName = await app.client.getText(
+          'div[data-testid=text-running-test-name]'
+        )
+        return expect(riseupVpnTestName).toBe('RiseupVPN Test')
+      },
+      { timeout: 120000 }
+    )
+
+    await waitFor(
+      async () => {
+        const torTestName = await app.client.getText(
+          'div[data-testid=text-running-test-name]'
+        )
+        return expect(torTestName).toBe('Tor Test')
+      },
+      { timeout: 120000 }
+    )
+
+    await waitFor(
+      async () => {
+        const animationVisible = await app.client.isVisible(
+          'div[data-testid=running-animation-circumvention]'
+        )
+        expect(animationVisible).toBe(false)
+      },
+      { timeout: 120000 }
+    )
+
+    await app.client.pause(2500)
+  })
+
+  test('Circumvention test result data is stored in an expected fashion', async () => {
+    await app.client
+      .$('div[data-testid=test-result-circumvention]')
+      .click()
+      .pause(2500)
+
+    const rowResultLength = await app.client.$$(
+      'div[data-testid=measured-test-name]'
+    )
+
+    expect(rowResultLength).toHaveLength(3)
+
+    await app.client
+      .$('div[data-testid=measured-test-name]')
+      .click()
+      .pause(2000)
+  })
+})
