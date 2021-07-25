@@ -28,38 +28,38 @@ describe('IM test', () => {
   test('IM test runs with all 4 network tests', async () => {
     await waitFor(
       async () => {
-        const whatsAppTestHeading = await app.client.isVisible(
-          'div=Facebook Messenger Test'
+        const messengerTestName = await app.client.getText(
+          'div[data-testid=text-running-test-name]'
         )
-        return expect(whatsAppTestHeading).toBe(true)
+        return expect(messengerTestName).toBe('Facebook Messenger Test')
       },
       { timeout: 120000 }
     )
 
     await waitFor(
       async () => {
-        const whatsAppTestHeading = await app.client.isVisible(
-          'div=Telegram Test'
+        const telegramTestName = await app.client.getText(
+          'div[data-testid=text-running-test-name]'
         )
-        return expect(whatsAppTestHeading).toBe(true)
+        return expect(telegramTestName).toBe('Telegram Test')
       },
       { timeout: 120000 }
     )
 
     await waitFor(
       async () => {
-        const whatsAppTestHeading = await app.client.isVisible(
-          'div=WhatsApp Test'
+        const whatsAppTestHeading = await app.client.getText(
+          'div[data-testid=text-running-test-name]'
         )
-        return expect(whatsAppTestHeading).toBe(true)
+        return expect(whatsAppTestHeading).toBe('WhatsApp Test')
       },
       { timeout: 120000 }
     )
 
     await waitFor(
       async () => {
-        const signalTestHeading = await app.client.isVisible('div=Signal Test')
-        return expect(signalTestHeading).toBe(true)
+        const signalTestHeading = await app.client.getText('div[data-testid=text-running-test-name]')
+        return expect(signalTestHeading).toBe('Signal Test')
       },
       { timeout: 120000 }
     )
