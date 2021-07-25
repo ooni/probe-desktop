@@ -96,7 +96,6 @@ describe('IM test', () => {
   })
 })
 
-
 describe('Websites test', () => {
   let app
 
@@ -144,7 +143,7 @@ describe('Websites test', () => {
       },
       { timeout: 120000 }
     )
-    
+
     await waitFor(
       async () => {
         const animationVisible = await app.client.isVisible(
@@ -181,5 +180,47 @@ describe('Websites test', () => {
 
     const explorerButtonText = await app.client.getText('button[data-testid=button-show-in-explorer]')
     expect(explorerButtonText).toBe('Show In OONI Explorer')
+  })
+})
+
+describe('Custom websites test', () => {
+  let app
+
+  beforeAll(async () => {
+    app = await startApp()
+  })
+
+  afterAll(async () => {
+    await stopApp(app)
+  })
+
+  test('Run button is disabled by default', async () => {
+    await app.client.$('div[data-testid=run-card-websites]').click()
+
+    await app.client.$('button[data-testid=button-choose-websites]').click()
+
+    const runButtonEnabled = await app.client.isEnabled(
+      'button[data-testid=button-run-custom-test]'
+    )
+
+    expect(runButtonEnabled).toBe(false)
+  })
+
+  test('Allows entering custom URLs', async () => {
+    await app.client
+      .$('input[data-testid=input-add-url-0]')
+      .setValue('https://www.twitter.com')
+
+    await app.client.$('button[data-testid=button-add-url]').click()
+
+    await app.client
+      .$('input[data-testid=input-add-url-1]')
+      .setValue('https://www.facebook.com')
+
+    const runButtonEnabled = await app.client.isEnabled(
+      'button[data-testid=button-run-custom-test]'
+    )
+
+    expect(runButtonEnabled).toBe(true)
   })
 })

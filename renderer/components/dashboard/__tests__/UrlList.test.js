@@ -42,9 +42,7 @@ describe('Tests for UrlList.js', () => {
   })
 
   test('Run button is disabled by default', async () => {
-    const runButton = screen.getByRole('button', {
-      name: English['Settings.Websites.CustomURL.Run'],
-    })
+    const runButton = screen.getByTestId('button-run-custom-test')
     expect(runButton).toBeDisabled()
   })
 
@@ -54,9 +52,7 @@ describe('Tests for UrlList.js', () => {
     fireEvent.change(urlInputBox, {
       target: { value: 'https://www.twitter.c' },
     })
-    const runButton = screen.getByRole('button', {
-      name: English['Settings.Websites.CustomURL.Run'],
-    })
+    const runButton = screen.getByTestId('button-run-custom-test')
     expect(runButton).toBeDisabled()
   })
 
@@ -66,9 +62,7 @@ describe('Tests for UrlList.js', () => {
     fireEvent.change(urlInputBox, {
       target: { value: websiteList[0] },
     })
-    const runButton = screen.getByRole('button', {
-      name: English['Settings.Websites.CustomURL.Run'],
-    })
+    const runButton = screen.getByTestId('button-run-custom-test')
     expect(runButton).not.toBeDisabled()
   })
 
@@ -87,9 +81,7 @@ describe('Tests for UrlList.js', () => {
     expect(urlInputBoxes).toHaveLength(2)
     expect(urlInputBoxes[0].value).toBe(websiteList[0])
     expect(urlInputBoxes[1].value).toBe('')
-    const runButton = screen.getByRole('button', {
-      name: English['Settings.Websites.CustomURL.Run'],
-    })
+    const runButton = screen.getByTestId('button-run-custom-test')
     expect(runButton).toBeDisabled()
   })
 
@@ -129,9 +121,7 @@ describe('Tests for UrlList.js', () => {
     fireEvent.change(newUrlInputBox, {
       target: { value: websiteList[1] },
     })
-    const runButton = screen.getByRole('button', {
-      name: English['Settings.Websites.CustomURL.Run'],
-    })
+    const runButton = screen.getByTestId('button-run-custom-test')
     expect(runButton).not.toBeDisabled()
     fireEvent.click(runButton)
     expect(ipcRenderer.send).toHaveBeenCalledTimes(1)
