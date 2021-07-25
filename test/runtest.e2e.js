@@ -3,185 +3,189 @@ import { waitFor } from '@testing-library/dom'
 
 jest.setTimeout(600000)
 
-describe('IM test', () => {
-  let app
+// describe('IM test', () => {
+//   let app
 
-  beforeAll(async () => {
-    app = await startApp()
-  })
+//   beforeAll(async () => {
+//     app = await startApp()
+//   })
 
-  afterAll(async () => {
-    await stopApp(app)
-  })
+//   afterAll(async () => {
+//     await stopApp(app)
+//   })
 
-  test('IM test successfully starts', async () => {
-    await app.client.$('div[data-testid=run-card-im]').click()
+//   test('IM test successfully starts', async () => {
+//     await app.client.$('div[data-testid=run-card-im]').click()
 
-    await app.client.$('button[data-testid=button-run-test]').click()
+//     await app.client.$('button[data-testid=button-run-test]').click()
 
-    const preparingTestsVisible = await app.client.isVisible(
-      'span=Preparing test...'
-    )
-    expect(preparingTestsVisible).toBe(true)
-  })
+//     const preparingTestsVisible = await app.client.isVisible(
+//       'span=Preparing test...'
+//     )
+//     expect(preparingTestsVisible).toBe(true)
+//   })
 
-  test('IM test runs with all 4 network tests', async () => {
-    await waitFor(
-      async () => {
-        const messengerTestName = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(messengerTestName).toBe('Facebook Messenger Test')
-      },
-      { timeout: 120000 }
-    )
+//   test('IM test runs with all 4 network tests', async () => {
+//     await waitFor(
+//       async () => {
+//         const messengerTestName = await app.client.getText(
+//           'div[data-testid=text-running-test-name]'
+//         )
+//         return expect(messengerTestName).toBe('Facebook Messenger Test')
+//       },
+//       { timeout: 120000 }
+//     )
 
-    await waitFor(
-      async () => {
-        const telegramTestName = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(telegramTestName).toBe('Telegram Test')
-      },
-      { timeout: 120000 }
-    )
+//     await waitFor(
+//       async () => {
+//         const telegramTestName = await app.client.getText(
+//           'div[data-testid=text-running-test-name]'
+//         )
+//         return expect(telegramTestName).toBe('Telegram Test')
+//       },
+//       { timeout: 120000 }
+//     )
 
-    await waitFor(
-      async () => {
-        const whatsAppTestHeading = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(whatsAppTestHeading).toBe('WhatsApp Test')
-      },
-      { timeout: 120000 }
-    )
+//     await waitFor(
+//       async () => {
+//         const whatsAppTestHeading = await app.client.getText(
+//           'div[data-testid=text-running-test-name]'
+//         )
+//         return expect(whatsAppTestHeading).toBe('WhatsApp Test')
+//       },
+//       { timeout: 120000 }
+//     )
 
-    await waitFor(
-      async () => {
-        const signalTestHeading = await app.client.getText('div[data-testid=text-running-test-name]')
-        return expect(signalTestHeading).toBe('Signal Test')
-      },
-      { timeout: 120000 }
-    )
+//     await waitFor(
+//       async () => {
+//         const signalTestHeading = await app.client.getText(
+//           'div[data-testid=text-running-test-name]'
+//         )
+//         return expect(signalTestHeading).toBe('Signal Test')
+//       },
+//       { timeout: 120000 }
+//     )
 
-    await waitFor(
-      async () => {
-        const animationVisible = await app.client.isVisible(
-          'div[data-testid=running-animation-im]'
-        )
-        expect(animationVisible).toBe(false)
-      },
-      { timeout: 120000 }
-    )
+//     await waitFor(
+//       async () => {
+//         const animationVisible = await app.client.isVisible(
+//           'div[data-testid=running-animation-im]'
+//         )
+//         expect(animationVisible).toBe(false)
+//       },
+//       { timeout: 120000 }
+//     )
 
-    await app.client.pause(1000)
-  })
+//     await app.client.pause(1000)
+//   })
 
-  test('Test result data is stored in an expected fashion', async () => {
-    await app.client
-      .$('div[data-testid=test-result-im]')
-      .click()
-      .pause(2000)
+//   test('Test result data is stored in an expected fashion', async () => {
+//     await app.client
+//       .$('div[data-testid=test-result-im]')
+//       .click()
+//       .pause(2000)
 
-    const rowResultLength = await app.client.$$(
-      'div[data-testid=measured-test-name]'
-    )
+//     const rowResultLength = await app.client.$$(
+//       'div[data-testid=measured-test-name]'
+//     )
 
-    expect(rowResultLength).toHaveLength(4)
+//     expect(rowResultLength).toHaveLength(4)
 
-    await app.client
-      .$('div[data-testid=measured-test-name]')
-      .click()
-      .pause(2000)
-  })
-})
+//     await app.client
+//       .$('div[data-testid=measured-test-name]')
+//       .click()
+//       .pause(2000)
+//   })
+// })
 
-describe('Websites test', () => {
-  let app
+// describe('Websites test', () => {
+//   let app
 
-  beforeAll(async () => {
-    app = await startApp()
-  })
+//   beforeAll(async () => {
+//     app = await startApp()
+//   })
 
-  afterAll(async () => {
-    await stopApp(app)
-  })
+//   afterAll(async () => {
+//     await stopApp(app)
+//   })
 
-  test('Website measurement test loads correctly', async () => {
-    await app.client.$('div[data-testid=run-card-websites]').click()
+//   test('Website measurement test loads correctly', async () => {
+//     await app.client.$('div[data-testid=run-card-websites]').click()
 
-    await app.client.$('button[data-testid=button-run-test]').click()
+//     await app.client.$('button[data-testid=button-run-test]').click()
 
-    const headingTestGroupName = await app.client.getText(
-      'h2[data-testid=heading-test-group-name]'
-    )
-    expect(headingTestGroupName).toBe('Websites')
+//     const headingTestGroupName = await app.client.getText(
+//       'h2[data-testid=heading-test-group-name]'
+//     )
+//     expect(headingTestGroupName).toBe('Websites')
 
-    const headingPreparingTests = await app.client.getText(
-      'h3[data-testid=heading-running-test-name]'
-    )
-    expect(headingPreparingTests).toBe('Preparing test...')
-  })
+//     const headingPreparingTests = await app.client.getText(
+//       'h3[data-testid=heading-running-test-name]'
+//     )
+//     expect(headingPreparingTests).toBe('Preparing test...')
+//   })
 
-  test('Website network test is run successfully', async () => {
-    await waitFor(
-      async () => {
-        const runningTestName = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(runningTestName).toBe('Web Connectivity Test')
-      },
-      { timeout: 300000 }
-    )
+//   test('Website network test is run successfully', async () => {
+//     await waitFor(
+//       async () => {
+//         const runningTestName = await app.client.getText(
+//           'div[data-testid=text-running-test-name]'
+//         )
+//         return expect(runningTestName).toBe('Web Connectivity Test')
+//       },
+//       { timeout: 300000 }
+//     )
 
-    await waitFor(
-      async () => {
-        const headingRunning = await app.client.getText(
-          'h3[data-testid=heading-running-test-name]'
-        )
-        return expect(headingRunning).toBe('Running:')
-      },
-      { timeout: 120000 }
-    )
+//     await waitFor(
+//       async () => {
+//         const headingRunning = await app.client.getText(
+//           'h3[data-testid=heading-running-test-name]'
+//         )
+//         return expect(headingRunning).toBe('Running:')
+//       },
+//       { timeout: 120000 }
+//     )
 
-    await waitFor(
-      async () => {
-        const animationVisible = await app.client.isVisible(
-          'div[data-testid=running-animation-websites]'
-        )
-        expect(animationVisible).toBe(false)
-      },
-      { timeout: 300000 }
-    )
+//     await waitFor(
+//       async () => {
+//         const animationVisible = await app.client.isVisible(
+//           'div[data-testid=running-animation-websites]'
+//         )
+//         expect(animationVisible).toBe(false)
+//       },
+//       { timeout: 300000 }
+//     )
 
-    await app.client.pause(1000)
-  })
+//     await app.client.pause(1000)
+//   })
 
-  test('Test result data is stored in an expected fashion', async () => {
-    await app.client
-      .$('div[data-testid=test-result-websites]')
-      .click()
-      .pause(2000)
+//   test('Website test result data is stored in an expected fashion', async () => {
+//     await app.client
+//       .$('div[data-testid=test-result-websites]')
+//       .click()
+//       .pause(2000)
 
-    await app.client
-      .$('div[data-testid=measured-url-row]')
-      .click()
-      .pause(2000)
+//     await app.client
+//       .$('div[data-testid=measured-url-row]')
+//       .click()
+//       .pause(2000)
 
-    await waitFor(
-      async () => {
-        const explorerButtonVisible = await app.client.isVisible(
-          'button[data-testid=button-show-in-explorer]'
-        )
-        expect(explorerButtonVisible).toBe(true)
-      },
-      { timeout: 20000 }
-    )
+//     await waitFor(
+//       async () => {
+//         const explorerButtonVisible = await app.client.isVisible(
+//           'button[data-testid=button-show-in-explorer]'
+//         )
+//         expect(explorerButtonVisible).toBe(true)
+//       },
+//       { timeout: 20000 }
+//     )
 
-    const explorerButtonText = await app.client.getText('button[data-testid=button-show-in-explorer]')
-    expect(explorerButtonText).toBe('Show In OONI Explorer')
-  })
-})
+//     const explorerButtonText = await app.client.getText(
+//       'button[data-testid=button-show-in-explorer]'
+//     )
+//     expect(explorerButtonText).toBe('Show In OONI Explorer')
+//   })
+// })
 
 describe('Custom websites test', () => {
   let app
@@ -222,5 +226,74 @@ describe('Custom websites test', () => {
     )
 
     expect(runButtonEnabled).toBe(true)
+  })
+
+  test('Runs the custom websites test', async () => {
+    await app.client.$('button[data-testid=button-run-custom-test]').click()
+
+    const headingTestGroupName = await app.client.getText(
+      'h2[data-testid=heading-test-group-name]'
+    )
+    expect(headingTestGroupName).toBe('Websites')
+
+    const headingPreparingTests = await app.client.getText(
+      'h3[data-testid=heading-running-test-name]'
+    )
+    expect(headingPreparingTests).toBe('Preparing test...')
+  })
+
+  test('Tests custom URLs', async () => {
+    await waitFor(
+      async () => {
+        const processingURL = await app.client.getText(
+          'div[data-testid=test-progress-message]'
+        )
+        return expect(processingURL).toBe(
+          'processing input: https://www.twitter.com'
+        )
+      },
+      { timeout: 300000 }
+    )
+
+    await waitFor(
+      async () => {
+        const processingURL = await app.client.getText(
+          'div[data-testid=test-progress-message]'
+        )
+        return expect(processingURL).toBe(
+          'processing input: https://www.facebook.com'
+        )
+      },
+      { timeout: 300000 }
+    )
+  })
+
+  test('Custom website test finishes correctly', async () => {
+    await waitFor(
+      async () => {
+        const animationVisible = await app.client.isVisible(
+          'div[data-testid=running-animation-websites]'
+        )
+        expect(animationVisible).toBe(false)
+      },
+      { timeout: 300000 }
+    )
+
+    await app.client.pause(1000)
+  })
+
+  test('Custom website test result is browsable', async () => {
+    await app.client
+      .$('div[data-testid=test-result-websites]')
+      .click()
+      .pause(2000)
+
+    await app.client
+      .$('div[data-testid=measured-url-row]')
+      .click()
+      .pause(2000)
+
+    const measuredURL = await app.client.getText('div[data-testid=measurement-title]')
+    expect(measuredURL).toBe('https://www.twitter.com')
   })
 })
