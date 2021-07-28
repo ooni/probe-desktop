@@ -111,6 +111,16 @@ const ipcBindingsForMain = (ipcMain) => {
     await onboard({ crashReportsOptIn })
   })
 
+  ipcMain.handle('autorun.status', async () => {
+    try {
+      const { getAutorunStatus } = require('./utils/autorun/schedule')
+      await getAutorunStatus()
+      return true
+    } catch (e) {
+      return false
+    }
+  })
+
   ipcMain.handle('autorun.schedule', async () => {
     if (autorunTaskUpdating) {
       return false

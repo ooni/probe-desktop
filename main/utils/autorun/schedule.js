@@ -27,7 +27,18 @@ const scheduler = platforms[process.platform]
  * @param {Object} opts Options
  */
 const init = (opts) => {
+  // TODO: Check for platform support right away
   return scheduler.init(taskId, opts)
+}
+
+const getAutorunStatus = () => {
+  return new Promise((resolve, reject) => {
+    scheduler.get(taskId).then(() => {
+      resolve()
+    }).catch(() => {
+      reject()
+    })
+  })
 }
 
 // These task managment methods should be made platform-agnostic
@@ -71,6 +82,7 @@ const disableAutorun = () => {
 
 module.exports = {
   init,
+  getAutorunStatus,
   scheduleAutorun,
   disableAutorun
 }

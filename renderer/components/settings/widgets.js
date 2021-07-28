@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   Box,
@@ -121,8 +121,15 @@ export const ListOption = ({ optionKey, children }) => {
 
 // This widget is wired to the pesistent storage in main/utils/store.js
 export const AutorunCheckbox = ({ label, optionKey, disabled = false, ...rest }) => {
-  const [checked, setChecked] = useState(ipcRenderer.sendSync('prefs.get', optionKey))
-  const [busy, setBusy] = useState(false)
+  const [checked, setChecked] = useState(null)
+  const [busy, setBusy] = useState(true)
+
+  useEffect(() => {
+    ipcRenderer.invoke('autorun.status').then(status => {
+      setChecked(status)
+      setBusy(false)
+    })
+  }, [])
 
   const handleChange = useCallback((event) => {
     setBusy(true)
