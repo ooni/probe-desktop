@@ -111,7 +111,7 @@ describe('Tests for Settings page', () => {
       .click()
       .pause(500)
     const runButtonText = await app.client
-      .$('button[data-testid=dashboard-run-button]')
+      .$('button[data-testid=button-dashboard-run]')
       .getText()
 
     expect(runButtonText).toMatch(Es['Dashboard.Overview.Run'])
