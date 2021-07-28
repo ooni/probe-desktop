@@ -71,7 +71,7 @@ describe('IM test', () => {
         const animationVisible = await app.client.isVisible(
           'div[data-testid=running-animation-im]'
         )
-        expect(animationVisible).toBe(false)
+        return expect(animationVisible).toBe(false)
       },
       { timeout: 120000 }
     )
@@ -151,7 +151,7 @@ describe('Websites test', () => {
         const animationVisible = await app.client.isVisible(
           'div[data-testid=running-animation-websites]'
         )
-        expect(animationVisible).toBe(false)
+        return expect(animationVisible).toBe(false)
       },
       { timeout: 300000 }
     )
@@ -175,7 +175,7 @@ describe('Websites test', () => {
         const explorerButtonVisible = await app.client.isVisible(
           'button[data-testid=button-show-in-explorer]'
         )
-        expect(explorerButtonVisible).toBe(true)
+        return expect(explorerButtonVisible).toBe(true)
       },
       { timeout: 20000 }
     )
@@ -274,7 +274,7 @@ describe('Custom websites test', () => {
         const animationVisible = await app.client.isVisible(
           'div[data-testid=running-animation-websites]'
         )
-        expect(animationVisible).toBe(false)
+        return expect(animationVisible).toBe(false)
       },
       { timeout: 300000 }
     )
@@ -356,7 +356,7 @@ describe('Circumvention test', () => {
         const animationVisible = await app.client.isVisible(
           'div[data-testid=running-animation-circumvention]'
         )
-        expect(animationVisible).toBe(false)
+        return expect(animationVisible).toBe(false)
       },
       { timeout: 120000 }
     )
@@ -437,7 +437,7 @@ describe('Performance test', () => {
         const animationVisible = await app.client.isVisible(
           'div[data-testid=running-animation-performance]'
         )
-        expect(animationVisible).toBe(false)
+        return expect(animationVisible).toBe(false)
       },
       { timeout: 120000 }
     )
