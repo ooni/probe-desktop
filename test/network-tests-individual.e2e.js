@@ -414,20 +414,20 @@ describe('Performance test', () => {
   test('Performance test performs both network tests', async () => {
     await waitFor(
       async () => {
-        const psiphonTestName = await app.client.getText(
+        const dashStreamingText = await app.client.getText(
           'div[data-testid=text-running-test-name]'
         )
-        return expect(psiphonTestName).toBe('DASH Streaming Test')
+        return expect(dashStreamingText).toBe('DASH Streaming Test')
       },
       { timeout: 120000 }
     )
 
     await waitFor(
       async () => {
-        const riseupVpnTestName = await app.client.getText(
+        const ndtSpeedText = await app.client.getText(
           'div[data-testid=text-running-test-name]'
         )
-        return expect(riseupVpnTestName).toBe('NDT Speed Test')
+        return expect(ndtSpeedText).toBe('NDT Speed Test')
       },
       { timeout: 120000 }
     )
@@ -475,7 +475,7 @@ describe('Middleboxes test', () => {
     await stopApp(app)
   })
 
-  test('Performance test successfully starts', async () => {
+  test('Middleboxes test successfully starts', async () => {
     await app.client
       .$('div[data-testid=run-card-middlebox]')
       .click()
@@ -495,20 +495,20 @@ describe('Middleboxes test', () => {
   test('Middleboxes test performs both network tests', async () => {
     await waitFor(
       async () => {
-        const psiphonTestName = await app.client.getText(
+        const httpRequestLine = await app.client.getText(
           'div[data-testid=text-running-test-name]'
         )
-        return expect(psiphonTestName).toBe('HTTP Invalid Request Line Test')
+        return expect(httpRequestLine).toBe('HTTP Invalid Request Line Test')
       },
       { timeout: 120000 }
     )
 
     await waitFor(
       async () => {
-        const riseupVpnTestName = await app.client.getText(
+        const httpHeaderField = await app.client.getText(
           'div[data-testid=text-running-test-name]'
         )
-        return expect(riseupVpnTestName).toBe('HTTP Header Field Manipulation Test')
+        return expect(httpHeaderField).toBe('HTTP Header Field Manipulation Test')
       },
       { timeout: 120000 }
     )
@@ -518,7 +518,7 @@ describe('Middleboxes test', () => {
         const animationVisible = await app.client.isVisible(
           'div[data-testid=running-animation-middlebox]'
         )
-        expect(animationVisible).toBe(false)
+        return expect(animationVisible).toBe(false)
       },
       { timeout: 120000 }
     )

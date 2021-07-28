@@ -18,10 +18,10 @@ describe('Dashboard', () => {
 
   test('Run button is displayed correctly', async () => {
     const runButtonVisible = await app.client.isVisible(
-      'button[data-testid=dashboard-run-button]'
+      'button[data-testid=button-dashboard-run]'
     )
     const runButtonText = await app.client
-      .$('button[data-testid=dashboard-run-button]')
+      .$('button[data-testid=button-dashboard-run]')
       .getText()
 
     expect(runButtonVisible).toBeTruthy()
