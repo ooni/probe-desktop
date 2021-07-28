@@ -12,7 +12,8 @@ class CustomSequencer extends TestSequencer {
       'sidebar',
       'dashboard',
       'settings',
-      'runtest'
+      'network-tests-individual',
+      'network-tests-at-once'
     ]
 
     // based on: https://github.com/facebook/jest/issues/6194#issuecomment-521521514

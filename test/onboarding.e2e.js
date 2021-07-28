@@ -115,7 +115,7 @@ describe('Onboarding', () => {
   test('Finishing Onboarding process brings up the Dashboard', async () => {
     await app.client.$('button[data-testid=letsgo]').click()
 
-    const runButtonExists = app.client.$('button[data-testid=dashboard-run-button]').isExisting()
+    const runButtonExists = app.client.$('button[data-testid=button-dashboard-run]').isExisting()
     expect(runButtonExists).toBeTruthy()
 
     screenshotApp(app, 'onboarding-success')
