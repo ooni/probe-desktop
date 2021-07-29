@@ -1,5 +1,4 @@
 import { startApp, stopApp } from './utils'
-import { waitFor } from '@testing-library/dom'
 
 describe('Tests for Test-Results screen', () => {
   let app
@@ -40,5 +39,32 @@ describe('Tests for Test-Results screen', () => {
   test('Page shows two Performance test result rows', async () => {
     const rows = await app.client.$$('div[data-testid=test-result-performance]')
     expect(rows).toHaveLength(2)
+  })
+})
+
+describe('IM results', () => {
+  let app
+
+  beforeAll(async () => {
+    app = await startApp()
+
+    await app.client
+      .$('div=Test Results')
+      .click()
+      .pause(500)
+  })
+
+  afterAll(async () => {
+    await stopApp(app)
+  })
+
+  test('Total 4 apps are tested', async () => {
+    await app.client.$('div[data-testid=test-result-im]').click().pause(1500)
+
+    const rowResults = await app.client.$$(
+      'div[data-testid=measured-test-name]'
+    )
+
+    expect(rowResults).toHaveLength(4)
   })
 })
