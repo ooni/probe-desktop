@@ -55,7 +55,7 @@ const NavItem = ({href, icon, label, pathName}) => {
 
   return (
     <StyledNavItem isActive={isActive}>
-      <Flex alignItems='center' onClick={handleLinkClick} >
+      <Flex alignItems='center' onClick={handleLinkClick} data-testid={`sidebar-item-${href.substring(1)}`}>
         <Flex alignItems='center'>
           <Box>
             {icon}
@@ -137,7 +137,7 @@ const Sidebar = ({ children }) => {
             </Box>
             <Box mb={2}>
               <NoRTLFlip>
-                <Text fontSize={12} textAlign='right' color='gray7'>
+                <Text fontSize={12} textAlign='right' color='gray7' data-testid='sidebar-version-number'>
                   {version}
                 </Text>
               </NoRTLFlip>

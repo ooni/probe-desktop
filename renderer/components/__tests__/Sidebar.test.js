@@ -43,16 +43,17 @@ describe('Tests for Sidebar component', () => {
         <></>
       </Sidebar>
     )
-    expect(screen.getByText(version)).toBeInTheDocument()
+    const versionNumber = screen.getByTestId('sidebar-version-number')
+    expect(versionNumber.innerHTML).toMatch(version)
   })
 
   test('Displays child elements', async () => {
     renderComponent(
       <Sidebar>
-        <p>Test paragraph</p>
+        <p data-testid='test-paragraph'>Test paragraph</p>
       </Sidebar>
     )
-    expect(screen.getByText('Test paragraph')).toBeInTheDocument()
+    expect(screen.getByTestId('test-paragraph').innerHTML).toBe('Test paragraph')
   })
 
   test('NavItem renders Navigation List correctly in the Sidebar', async () => {
