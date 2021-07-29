@@ -9,7 +9,7 @@ import { ThemeProvider } from 'styled-components'
 import { IntlProvider } from 'react-intl'
 import English from '../../../lang/en.json'
 
-import Sidebar, { NavItem, navigationPaths } from '../Sidebar'
+import Sidebar from '../Sidebar'
 import { version } from '../../../package.json'
 
 // Mocking useRouter()
@@ -19,7 +19,7 @@ jest.mock('next/router', () => ({
     return {
       route: '/',
       pathname: '/dashboard',
-      push: mockRouterPush
+      push: mockRouterPush,
     }
   },
 }))
@@ -50,33 +50,50 @@ describe('Tests for Sidebar component', () => {
   test('Displays child elements', async () => {
     renderComponent(
       <Sidebar>
-        <p data-testid='test-paragraph'>Test paragraph</p>
+        <p data-testid="test-paragraph">Test paragraph</p>
       </Sidebar>
     )
-    expect(screen.getByTestId('test-paragraph').innerHTML).toBe('Test paragraph')
+    expect(screen.getByTestId('test-paragraph').innerHTML).toBe(
+      'Test paragraph'
+    )
   })
 
-  test('NavItem renders Navigation List correctly in the Sidebar', async () => {
-    Object.keys(navigationPaths).map((path, idx) => {
-      const info = navigationPaths[path]
-      renderComponent(
-        <NavItem
-          key={idx}
-          pathName="/dashboard"
-          href={path}
-          icon={info.icon}
-          label={info.name}
-        />
-      )
+})
 
-      const linkText = screen.getByText(English[info.name.props.id])
-      expect(linkText).toBeInTheDocument()
 
-      fireEvent.click(linkText)
-
-      // Asserting if clicking on sidebar links causes Router to push to correct URL
-      // eg. clicking on 'Settings' pushes to '/settings'
-      expect(mockRouterPush).toHaveBeenLastCalledWith(path)
-    })
+describe('Sidebar NavItems push the router to correct path', () => {
+  beforeEach(() => {
+    renderComponent(
+      <Sidebar>
+        <></>
+      </Sidebar>
+    )
   })
+
+  afterEach(() => {
+    cleanup()
+    jest.clearAllMocks()
+  })
+
+  test('Clicking on Dashboard NavItem calls pushes router to /dashboard', async () => {
+    const navItemDashboard = screen.getByTestId('sidebar-item-dashboard')
+    fireEvent.click(navItemDashboard)
+
+    expect(mockRouterPush).toHaveBeenLastCalledWith('/dashboard')
+  })
+
+  test('Clicking on Test Results NavItem calls pushes router to /test-results', async () => {
+    const navItemTestResults = screen.getByTestId('sidebar-item-test-results')
+    fireEvent.click(navItemTestResults)
+
+    expect(mockRouterPush).toHaveBeenLastCalledWith('/test-results')
+  })
+
+  test('Clicking on Settings NavItem calls pushes router to /settings', async () => {
+    const navItemSettings= screen.getByTestId('sidebar-item-settings')
+    fireEvent.click(navItemSettings)
+
+    expect(mockRouterPush).toHaveBeenLastCalledWith('/settings')
+  })
+
 })
