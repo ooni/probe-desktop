@@ -33,35 +33,7 @@ const renderComponent = (component, locale = 'en', messages = English) => {
 }
 
 describe('Tests for Sidebar component', () => {
-  afterEach(() => {
-    cleanup()
-  })
 
-  test('Displays the correct version', async () => {
-    renderComponent(
-      <Sidebar>
-        <></>
-      </Sidebar>
-    )
-    const versionNumber = screen.getByTestId('sidebar-version-number')
-    expect(versionNumber.innerHTML).toMatch(version)
-  })
-
-  test('Displays child elements', async () => {
-    renderComponent(
-      <Sidebar>
-        <p data-testid="test-paragraph">Test paragraph</p>
-      </Sidebar>
-    )
-    expect(screen.getByTestId('test-paragraph').innerHTML).toBe(
-      'Test paragraph'
-    )
-  })
-
-})
-
-
-describe('Sidebar NavItems push the router to correct path', () => {
   beforeEach(() => {
     renderComponent(
       <Sidebar>
@@ -73,6 +45,16 @@ describe('Sidebar NavItems push the router to correct path', () => {
   afterEach(() => {
     cleanup()
     jest.clearAllMocks()
+  })
+
+  test('Displays the correct version', async () => {
+    renderComponent(
+      <Sidebar>
+        <></>
+      </Sidebar>
+    )
+    const versionNumber = screen.getByTestId('sidebar-version-number')
+    expect(versionNumber.innerHTML).toMatch(version)
   })
 
   test('Clicking on Dashboard NavItem calls pushes router to /dashboard', async () => {
