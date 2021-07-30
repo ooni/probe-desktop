@@ -47,11 +47,6 @@ describe('Tests for Sidebar component', () => {
   })
 
   test('Displays the correct version', async () => {
-    renderComponent(
-      <Sidebar>
-        <></>
-      </Sidebar>
-    )
     const versionNumber = screen.getByTestId('sidebar-version-number')
     expect(versionNumber.innerHTML).toMatch(version)
   })
