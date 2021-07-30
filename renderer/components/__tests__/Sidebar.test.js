@@ -33,7 +33,6 @@ const renderComponent = (component, locale = 'en', messages = English) => {
 }
 
 describe('Tests for Sidebar component', () => {
-
   beforeEach(() => {
     renderComponent(
       <Sidebar>
@@ -72,10 +71,9 @@ describe('Tests for Sidebar component', () => {
   })
 
   test('Clicking on Settings NavItem calls pushes router to /settings', async () => {
-    const navItemSettings= screen.getByTestId('sidebar-item-settings')
+    const navItemSettings = screen.getByTestId('sidebar-item-settings')
     fireEvent.click(navItemSettings)
 
     expect(mockRouterPush).toHaveBeenLastCalledWith('/settings')
   })
-
 })

@@ -41,25 +41,6 @@ describe('Tests for RunTestCard component', () => {
     jest.clearAllMocks()
   })
 
-  test('All the Test Cards are mounted', async () => {
-    const router = useRouter()
-    testList.map((t, idx) => {
-      renderComponent(
-        <RunTestCard
-          onClick={() =>
-            router.push('/dashboard/[testGroup]', `/dashboard/${t.key}`)
-          }
-          key={idx}
-          id={t.key}
-          {...t}
-        />
-      )
-      expect(
-        screen.getByText(English[t.description.props.id])
-      ).toBeInTheDocument()
-    })
-  })
-
   test('Individual Test Cards work as expected', async () => {
     const websiteDetails = testList[0]
     renderComponent(
