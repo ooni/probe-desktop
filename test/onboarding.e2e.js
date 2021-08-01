@@ -66,10 +66,12 @@ describe('Onboarding', () => {
     await app.client
       .$(`div=${En['Onboarding.PopQuiz.True']}`)
       .click()
-      .pause(2000)
+      .pause(500)
 
-    const tickAnimation = await app.client.$('div[data-testid=quiz-steps-true]')
-    expect(tickAnimation).toBeTruthy()
+    const tickAnimation = await app.client.isVisible('div[data-testid=quiz-steps-tick]')
+    expect(tickAnimation).toBe(true)
+
+    await app.client.pause(1500)
   })
 
   test('App accepts second Pop Quiz Answer and goes to Crash Reporting page', async () => {
@@ -81,27 +83,29 @@ describe('Onboarding', () => {
     await app.client
       .$(`div=${En['Onboarding.PopQuiz.True']}`)
       .click()
-      .pause(2000)
+      .pause(500)
 
-    const tickAnimation = await app.client.$('div[data-testid=quiz-steps-true]')
-    expect(tickAnimation).toBeTruthy()
+    const tickAnimation = await app.client.isVisible('div[data-testid=quiz-steps-tick]')
+    expect(tickAnimation).toBe(true)
 
+    await app.client.pause(1500)
+    
     const crashReportingHeading = await app.client.$('h1').getText()
     expect(crashReportingHeading).toMatch(En['Onboarding.Crash.Title'])
   })
 
   test('App lets user opt-in for Crash Reporting', async () => {
     const noButton = await app.client.$(
-      `button=${En['Onboarding.Crash.Button.No']}`
-    )
+      'button[data-testid=button-crash-reporting-no]'
+    ).getText()
     const yesButton = await app.client.$(
-      `button=${En['Onboarding.Crash.Button.Yes']}`
-    )
+      'button[data-testid=button-crash-reporting-yes]'
+    ).getText()
 
-    expect(noButton).toBeTruthy()
-    expect(yesButton).toBeTruthy()
+    expect(noButton).toMatch('No')
+    expect(yesButton).toMatch('Yes')
 
-    await app.client.$(`button=${En['Onboarding.Crash.Button.Yes']}`).click()
+    await app.client.$('button[data-testid=button-crash-reporting-yes]').click()
 
     const defaultSettingsHeading = await app.client
       .$(`h1=${En['Onboarding.DefaultSettings.Title']}`)
@@ -115,7 +119,7 @@ describe('Onboarding', () => {
   test('Finishing Onboarding process brings up the Dashboard', async () => {
     await app.client.$('button[data-testid=letsgo]').click()
 
-    const runButtonExists = app.client.$('button[data-testid=button-dashboard-run]').isExisting()
+    const runButtonExists = app.client.isVisible('button[data-testid=button-dashboard-run]')
     expect(runButtonExists).toBeTruthy()
 
     screenshotApp(app, 'onboarding-success')
