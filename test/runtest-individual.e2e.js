@@ -28,7 +28,7 @@ describe('IM test', () => {
       { timeout: 120000 }
     )
 
-    await screenshotApp(app, 'test-description-im')
+    await screenshotApp(app, 'runtest-description-im')
 
     await app.client
       .$('button[data-testid=button-run-test]')
@@ -65,7 +65,7 @@ describe('IM test', () => {
       { timeout: 120000 }
     )
 
-    await screenshotApp(app, 'running-im')
+    await screenshotApp(app, 'runtest-running-im')
 
     await waitFor(
       async () => {
@@ -106,7 +106,7 @@ describe('IM test', () => {
       .click()
       .pause(500)
 
-    await screenshotApp(app, 'test-results-im')
+    await screenshotApp(app, 'runtest-results-im')
 
     await waitFor(
       async () =>
@@ -134,7 +134,7 @@ describe('IM test', () => {
     )
     expect(explorerButtonText).toBe('Show In OONI Explorer')
 
-    await screenshotApp(app, 'test-result-im-details')
+    await screenshotApp(app, 'runtest-result-im-details')
   })
 })
 
@@ -163,7 +163,7 @@ describe('Websites test', () => {
       { timeout: 120000 }
     )
 
-    await screenshotApp(app, 'test-description-websites')
+    await screenshotApp(app, 'runtest-description-websites')
 
     await app.client
       .$('button[data-testid=button-run-test]')
@@ -202,7 +202,7 @@ describe('Websites test', () => {
       { timeout: 120000 }
     )
 
-    await screenshotApp(app, 'running-websites')
+    await screenshotApp(app, 'runtest-running-websites')
 
     await waitFor(
       async () => {
@@ -223,7 +223,7 @@ describe('Websites test', () => {
       .click()
       .pause(500)
 
-    await screenshotApp(app, 'test-results-websites')
+    await screenshotApp(app, 'runtest-results-websites')
 
     await app.client
       .$('div[data-testid=measured-url-row]')
@@ -243,7 +243,7 @@ describe('Websites test', () => {
     )
     expect(explorerButtonText).toBe('Show In OONI Explorer')
 
-    await screenshotApp(app, 'test-result-websites-details')
+    await screenshotApp(app, 'runtest-result-websites-details')
   })
 })
 
@@ -283,7 +283,7 @@ describe('Custom websites test', () => {
 
     expect(runButtonEnabled).toBe(false)
 
-    await screenshotApp(app, 'test-custom-websites-choose')
+    await screenshotApp(app, 'runtest-custom-websites-choose')
   })
 
   test('Allows entering custom URLs', async () => {
@@ -303,7 +303,7 @@ describe('Custom websites test', () => {
 
     expect(runButtonEnabled).toBe(true)
 
-    await screenshotApp(app, 'test-custom-websites-chosen')
+    await screenshotApp(app, 'runtest-custom-websites-chosen')
   })
 
   test('Runs the custom websites test', async () => {
@@ -351,7 +351,7 @@ describe('Custom websites test', () => {
       { timeout: 300000 }
     )
 
-    await screenshotApp(app, 'running-websites-custom')
+    await screenshotApp(app, 'runtest-running-websites-custom')
   })
 
   test('Custom website test finishes correctly', async () => {
@@ -382,7 +382,7 @@ describe('Custom websites test', () => {
       { timeout: 120000 }
     )
 
-    await screenshotApp(app, 'test-results-websites-custom')
+    await screenshotApp(app, 'runtest-results-websites-custom')
 
     await app.client
       .$('div[data-testid=measured-url-row]')
@@ -416,7 +416,7 @@ describe('Circumvention test', () => {
       .click()
       .pause(500)
 
-    await screenshotApp(app, 'test-description-circumvention')
+    await screenshotApp(app, 'runtest-description-circumvention')
 
     await waitFor(
       async () =>
@@ -471,7 +471,7 @@ describe('Circumvention test', () => {
       { timeout: 120000 }
     )
 
-    await screenshotApp(app, 'running-circumvention')
+    await screenshotApp(app, 'runtest-running-circumvention')
 
     await waitFor(
       async () => {
@@ -500,7 +500,7 @@ describe('Circumvention test', () => {
       { timeout: 120000 }
     )
     
-    await screenshotApp(app, 'test-results-circumvention')
+    await screenshotApp(app, 'runtest-results-circumvention')
 
     await app.client
       .$('div[data-testid=measured-test-name]')
@@ -520,7 +520,7 @@ describe('Circumvention test', () => {
     )
     expect(explorerButtonText).toBe('Show In OONI Explorer')
 
-    await screenshotApp(app, 'test-result-circumvention-details')
+    await screenshotApp(app, 'runtest-result-circumvention-details')
   })
 })
 
@@ -549,7 +549,7 @@ describe('Performance test', () => {
       { timeout: 120000 }
     )
 
-    await screenshotApp(app, 'test-description-performance')
+    await screenshotApp(app, 'runtest-description-performance')
 
     await app.client
       .$('button[data-testid=button-run-test]')
@@ -586,7 +586,7 @@ describe('Performance test', () => {
       { timeout: 120000 }
     )
 
-    await screenshotApp(app, 'running-performance')
+    await screenshotApp(app, 'runtest-running-performance')
 
     await waitFor(
       async () => {
@@ -615,7 +615,7 @@ describe('Performance test', () => {
       { timeout: 120000 }
     )
 
-    await screenshotApp(app, 'test-results-performance')
+    await screenshotApp(app, 'runtest-results-performance')
 
     await app.client
       .$('div[data-testid=measured-test-name]')
@@ -635,7 +635,7 @@ describe('Performance test', () => {
     )
     expect(explorerButtonText).toBe('Show In OONI Explorer')
 
-    await screenshotApp(app, 'test-result-performance-details')
+    await screenshotApp(app, 'runtest-result-performance-details')
   })
 })
 
@@ -664,7 +664,7 @@ describe('Middleboxes test', () => {
       { timeout: 120000 }
     )
 
-    await screenshotApp(app, 'test-description-middlebox')
+    await screenshotApp(app, 'runtest-description-middlebox')
 
     await app.client
       .$('button[data-testid=button-run-test]')
@@ -703,7 +703,7 @@ describe('Middleboxes test', () => {
       { timeout: 120000 }
     )
 
-    await screenshotApp(app, 'running-circumvention')
+    await screenshotApp(app, 'runtest-running-circumvention')
 
     await waitFor(
       async () => {
@@ -732,7 +732,7 @@ describe('Middleboxes test', () => {
       { timeout: 120000 }
     )
 
-    await screenshotApp(app, 'test-results-circumvention')
+    await screenshotApp(app, 'runtest-results-circumvention')
 
     await app.client
       .$('div[data-testid=measured-test-name]')
@@ -752,6 +752,6 @@ describe('Middleboxes test', () => {
     )
     expect(explorerButtonText).toBe('Show In OONI Explorer')
 
-    await screenshotApp(app, 'test-result-circumvention-details')
+    await screenshotApp(app, 'runtest-result-circumvention-details')
   })
 })
