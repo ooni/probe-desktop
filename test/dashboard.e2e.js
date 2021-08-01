@@ -1,4 +1,4 @@
-const { startApp, stopApp } = require('./utils')
+const { startApp, stopApp, screenshotApp } = require('./utils')
 import En from '../lang/en.json'
 
 describe('Dashboard tests', () => {
@@ -88,6 +88,8 @@ describe('Dashboard tests', () => {
     expect(labelTests).toContain('Tests')
     expect(labelNetworks).toContain('Networks')
     expect(labelDataUsage).toContain('Data Usage')
+
+    screenshotApp(app, 'dashboard-test-results')
   })
 
   test('Clicking on "Settings" tab loads the Settings page', async () => {
@@ -100,5 +102,7 @@ describe('Dashboard tests', () => {
     // Rest of the assertions are in settings.e2e.js
     const labelTestOptionsVisible = await app.client.isVisible('h3=Settings')
     expect(labelTestOptionsVisible).toBe(true)
+
+    screenshotApp(app, 'dashboard-settings-page')
   })
 })
