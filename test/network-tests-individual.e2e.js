@@ -1,4 +1,4 @@
-import { startApp, stopApp } from './utils'
+import { startApp, stopApp, screenshotApp } from './utils'
 import { waitFor } from '@testing-library/dom'
 
 jest.setTimeout(600000)
@@ -27,6 +27,8 @@ describe('IM test', () => {
         ).resolves.toBe(true),
       { timeout: 120000 }
     )
+
+    await screenshotApp(app, 'test-description-im')
 
     await app.client
       .$('button[data-testid=button-run-test]')
@@ -62,6 +64,8 @@ describe('IM test', () => {
       },
       { timeout: 120000 }
     )
+
+    await screenshotApp(app, 'running-im')
 
     await waitFor(
       async () => {
@@ -102,6 +106,8 @@ describe('IM test', () => {
       .click()
       .pause(500)
 
+    await screenshotApp(app, 'test-results-im')
+
     await waitFor(
       async () =>
         expect(
@@ -127,6 +133,8 @@ describe('IM test', () => {
       'button[data-testid=button-show-in-explorer]'
     )
     expect(explorerButtonText).toBe('Show In OONI Explorer')
+
+    await screenshotApp(app, 'test-result-im-details')
   })
 })
 
@@ -154,6 +162,8 @@ describe('Websites test', () => {
         ).resolves.toBe(true),
       { timeout: 120000 }
     )
+
+    await screenshotApp(app, 'test-description-websites')
 
     await app.client
       .$('button[data-testid=button-run-test]')
@@ -192,6 +202,8 @@ describe('Websites test', () => {
       { timeout: 120000 }
     )
 
+    await screenshotApp(app, 'running-websites')
+
     await waitFor(
       async () => {
         const animationVisible = await app.client.isVisible(
@@ -211,6 +223,8 @@ describe('Websites test', () => {
       .click()
       .pause(500)
 
+    await screenshotApp(app, 'test-results-websites')
+
     await app.client
       .$('div[data-testid=measured-url-row]')
       .click()
@@ -228,6 +242,8 @@ describe('Websites test', () => {
       'button[data-testid=button-show-in-explorer]'
     )
     expect(explorerButtonText).toBe('Show In OONI Explorer')
+
+    await screenshotApp(app, 'test-result-websites-details')
   })
 })
 
@@ -266,6 +282,8 @@ describe('Custom websites test', () => {
     )
 
     expect(runButtonEnabled).toBe(false)
+
+    await screenshotApp(app, 'test-custom-websites-choose')
   })
 
   test('Allows entering custom URLs', async () => {
@@ -284,6 +302,8 @@ describe('Custom websites test', () => {
     )
 
     expect(runButtonEnabled).toBe(true)
+
+    await screenshotApp(app, 'test-custom-websites-chosen')
   })
 
   test('Runs the custom websites test', async () => {
@@ -330,6 +350,8 @@ describe('Custom websites test', () => {
       },
       { timeout: 300000 }
     )
+
+    await screenshotApp(app, 'running-websites-custom')
   })
 
   test('Custom website test finishes correctly', async () => {
@@ -359,6 +381,8 @@ describe('Custom websites test', () => {
         ).resolves.toHaveLength(2),
       { timeout: 120000 }
     )
+
+    await screenshotApp(app, 'test-results-websites-custom')
 
     await app.client
       .$('div[data-testid=measured-url-row]')
@@ -391,6 +415,8 @@ describe('Circumvention test', () => {
       .$('div[data-testid=run-card-circumvention]')
       .click()
       .pause(500)
+
+    await screenshotApp(app, 'test-description-circumvention')
 
     await waitFor(
       async () =>
@@ -445,6 +471,8 @@ describe('Circumvention test', () => {
       { timeout: 120000 }
     )
 
+    await screenshotApp(app, 'running-circumvention')
+
     await waitFor(
       async () => {
         const animationVisible = await app.client.isVisible(
@@ -471,6 +499,8 @@ describe('Circumvention test', () => {
         ).resolves.toHaveLength(3),
       { timeout: 120000 }
     )
+    
+    await screenshotApp(app, 'test-results-circumvention')
 
     await app.client
       .$('div[data-testid=measured-test-name]')
@@ -489,6 +519,8 @@ describe('Circumvention test', () => {
       'button[data-testid=button-show-in-explorer]'
     )
     expect(explorerButtonText).toBe('Show In OONI Explorer')
+
+    await screenshotApp(app, 'test-result-circumvention-details')
   })
 })
 
@@ -516,6 +548,8 @@ describe('Performance test', () => {
         ).resolves.toBe(true),
       { timeout: 120000 }
     )
+
+    await screenshotApp(app, 'test-description-performance')
 
     await app.client
       .$('button[data-testid=button-run-test]')
@@ -552,6 +586,8 @@ describe('Performance test', () => {
       { timeout: 120000 }
     )
 
+    await screenshotApp(app, 'running-performance')
+
     await waitFor(
       async () => {
         const animationVisible = await app.client.isVisible(
@@ -579,6 +615,8 @@ describe('Performance test', () => {
       { timeout: 120000 }
     )
 
+    await screenshotApp(app, 'test-results-performance')
+
     await app.client
       .$('div[data-testid=measured-test-name]')
       .click()
@@ -596,6 +634,8 @@ describe('Performance test', () => {
       'button[data-testid=button-show-in-explorer]'
     )
     expect(explorerButtonText).toBe('Show In OONI Explorer')
+
+    await screenshotApp(app, 'test-result-performance-details')
   })
 })
 
@@ -623,6 +663,8 @@ describe('Middleboxes test', () => {
         ).resolves.toBe(true),
       { timeout: 120000 }
     )
+
+    await screenshotApp(app, 'test-description-middlebox')
 
     await app.client
       .$('button[data-testid=button-run-test]')
@@ -661,6 +703,8 @@ describe('Middleboxes test', () => {
       { timeout: 120000 }
     )
 
+    await screenshotApp(app, 'running-circumvention')
+
     await waitFor(
       async () => {
         const animationVisible = await app.client.isVisible(
@@ -688,6 +732,8 @@ describe('Middleboxes test', () => {
       { timeout: 120000 }
     )
 
+    await screenshotApp(app, 'test-results-circumvention')
+
     await app.client
       .$('div[data-testid=measured-test-name]')
       .click()
@@ -705,5 +751,7 @@ describe('Middleboxes test', () => {
       'button[data-testid=button-show-in-explorer]'
     )
     expect(explorerButtonText).toBe('Show In OONI Explorer')
+
+    await screenshotApp(app, 'test-result-circumvention-details')
   })
 })
