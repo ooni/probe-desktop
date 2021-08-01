@@ -1,11 +1,7 @@
 const { startApp, stopApp } = require('./utils')
 import En from '../lang/en.json'
 
-// Skipping because the app opens the About window before the main Window
-// which is picked by spectron to query for dashboard elements.
-// This needs to be enabled after carefully fixing the autoupdate code that
-// causes this behaviour in NODE_ENV='test' in `main/index.js:170`
-describe('Dashboard', () => {
+describe('Dashboard tests', () => {
   let app
 
   beforeAll(async () => {
@@ -16,44 +12,89 @@ describe('Dashboard', () => {
     await stopApp(app)
   })
 
-  test('Run button is displayed correctly', async () => {
-    const runButtonVisible = await app.client.isVisible(
-      'button[data-testid=button-dashboard-run]'
-    )
+  test('Run button is displayed on Dashboard', async () => {
     const runButtonText = await app.client
       .$('button[data-testid=button-dashboard-run]')
       .getText()
 
-    expect(runButtonVisible).toBeTruthy()
-    expect(runButtonText).toMatch(En['Dashboard.Overview.Run'])
+    expect(runButtonText).toMatch('Run')
   })
 
   describe('All 5 test cards are visible', () => {
-    const idArray = ['websites', 'im', 'circumvention', 'performance', 'middlebox']
-  
-    idArray.forEach( id => {
-      
-      test(`${id} test card is visible`, async () => {
-        const isCardVisible = await app.client.isVisible(`div[data-testid=run-card-${id}]`)
+    const testDetails = [
+      {
+        id: 'websites',
+        name: 'Websites',
+        desc: 'Test the blocking of websites',
+      },
+      {
+        id: 'im',
+        name: 'Instant Messaging',
+        desc: 'Test the blocking of instant messaging apps',
+      },
+      {
+        id: 'circumvention',
+        name: 'Circumvention',
+        desc: 'Test the blocking of censorship circumvention tools',
+      },
+      {
+        id: 'performance',
+        name: 'Performance',
+        desc: 'Test your network speed and performance',
+      },
+      {
+        id: 'middlebox',
+        name: 'Middleboxes',
+        desc: 'Detect middleboxes in your network',
+      },
+    ]
+
+    testDetails.forEach((itr) => {
+      test(`${itr.id} test card is visible`, async () => {
+        const isCardVisible = await app.client.isVisible(
+          `div[data-testid=run-card-${itr.id}]`
+        )
         expect(isCardVisible).toBe(true)
+
+        const cardName = await app.client.getText(
+          `div[data-testid=run-card-${itr.id}] div[data-testid=run-card-name-${itr.id}]`
+        )
+        expect(cardName).toBe(itr.name)
+
+        const cardDesc = await app.client.getText(
+          `div[data-testid=run-card-${itr.id}] div[data-testid=run-card-description-${itr.id}]`
+        )
+        expect(cardDesc).toBe(itr.desc)
       })
     })
   })
 
-  test('Clicking on "Test Results" tab loads it up correctly', async () => {
-    await app.client.$(`div=${En['TestResults.Overview.Tab.Label']}`).click().pause(1000)
+  test('Clicking on "Test Results" tab loads the Test Results Page', async () => {
+    await app.client
+      .$(`div=${En['TestResults.Overview.Tab.Label']}`)
+      .click()
+      .pause(1000)
 
-    const labelTests = await app.client.$('div[data-testid=overview-label-tests]').getText()
-    const labelNetworks = await app.client.$('div[data-testid=overview-label-networks]').getText()
-    const labelDataUsage = await app.client.$('div[data-testid=overview-label-data-usage]').getText()
+    const labelTests = await app.client
+      .$('div[data-testid=overview-label-tests]')
+      .getText()
+    const labelNetworks = await app.client
+      .$('div[data-testid=overview-label-networks]')
+      .getText()
+    const labelDataUsage = await app.client
+      .$('div[data-testid=overview-label-data-usage]')
+      .getText()
 
     expect(labelTests).toContain('Tests')
     expect(labelNetworks).toContain('Networks')
     expect(labelDataUsage).toContain('Data Usage')
   })
 
-  test('Clicking on "Settings" tab loads it up correctly', async () => {
-    await app.client.$(`div=${En['Settings.Title']}`).click().pause(1000)
+  test('Clicking on "Settings" tab loads the Settings page', async () => {
+    await app.client
+      .$(`div=${En['Settings.Title']}`)
+      .click()
+      .pause(1000)
 
     // Checking for the "Settings" heading
     // Rest of the assertions are in settings.e2e.js
