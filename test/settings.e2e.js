@@ -1,4 +1,4 @@
-const { startApp, stopApp } = require('./utils')
+const { startApp, stopApp, screenshotApp } = require('./utils')
 import En from '../lang/en.json'
 import Es from '../lang/es.json'
 
@@ -82,6 +82,8 @@ describe('Tests for Settings page', () => {
       `h4=${Es['Settings.Privacy.Label']}`
     )
     expect(labelPrivacyVisibleEs).toBe(true)
+
+    await screenshotApp(app, 'settings-in-spanish')
   })
 
   test('Language changes in other screens', async () => {
@@ -100,10 +102,12 @@ describe('Tests for Settings page', () => {
     const labelDataUsage = await app.client
       .$('div[data-testid=overview-label-data-usage]')
       .getText()
-
+      
     expect(labelTests).toContain('Pruebas')
     expect(labelNetworks).toContain('Redes')
     expect(labelDataUsage).toContain('Uso de datos')
+      
+    await screenshotApp(app, 'test-results-in-spanish')
 
     // Checking for Dashboard screen
     await app.client
@@ -115,6 +119,8 @@ describe('Tests for Settings page', () => {
       .getText()
 
     expect(runButtonText).toMatch(Es['Dashboard.Overview.Run'])
+
+    await screenshotApp(app, 'dashboard-in-spanish')
   })
 
   test('Changing language back to En', async () => {
@@ -131,6 +137,8 @@ describe('Tests for Settings page', () => {
 
     const languageLabelEn = await app.client.isVisible('label=Language')
     expect(languageLabelEn).toBe(true)
+
+    await screenshotApp(app, 'settings-in-english')
   })
 
   test('Clicking on button to edit Website categories brings up modal', async () => {
@@ -147,6 +155,8 @@ describe('Tests for Settings page', () => {
       `button=${En['Settings.Websites.Categories.Selection.Done']}`
     )
     expect(saveButtonEnabled).toBe(false)
+
+    await screenshotApp(app, 'settings-website-selection-modal')
   })
 
   test('Modal Deselect All buttons work as expected', async () => {
@@ -167,6 +177,8 @@ describe('Tests for Settings page', () => {
       'div[data-testid=website-category-count]'
     )
     expect(websiteCountNew).toBe('0 categories enabled')
+
+    await screenshotApp(app, 'settings-no-website-category-selected')
   })
 
   test('Modal Select All buttons work as expected', async () => {
@@ -186,6 +198,8 @@ describe('Tests for Settings page', () => {
       'div[data-testid=website-category-count]'
     )
     expect(websiteCountNew).toBe('30 categories enabled')
+
+    await screenshotApp(app, 'settings-all-website-categories-selected')
 
     await app.client.pause(2000)
   })
@@ -209,6 +223,8 @@ describe('Tests for Settings page', () => {
       'div[data-testid=website-category-count]'
     )
     expect(websiteCountNew).toBe('26 categories enabled')
+
+    await screenshotApp(app, 'settings-some-website-categories-selected')
 
     // Bring back to default settings (all website categories selected)
     await app.client
