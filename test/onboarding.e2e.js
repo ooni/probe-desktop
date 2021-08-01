@@ -31,6 +31,8 @@ describe('Onboarding', () => {
       'button[data-testid=got-it-button]'
     )
     expect(gotItButtonText).toBe(En['Onboarding.WhatIsOONIProbe.GotIt'])
+
+    await screenshotApp(app, 'onboarding-what-is-ooni-probe')
   })
 
   test('App goes to the second screen', async () => {
@@ -49,6 +51,8 @@ describe('Onboarding', () => {
       .$(`=${En['Settings.About.Content.LearnMore']}`)
       .getAttribute('href')
     expect(learnMoreLink).toMatch('https://ooni.org/about/risks/')
+
+    await screenshotApp(app, 'onboarding-heads-up')
   })
 
   test('App loads up Pop Quiz', async () => {
@@ -60,6 +64,8 @@ describe('Onboarding', () => {
       'h4[data-testid=pop-quiz-question]'
     )
     expect(question1Title).toMatch(En['Onboarding.PopQuiz.1.Title'])
+
+    await screenshotApp(app, 'onboarding-pop-quiz-1')
   })
 
   test('App accepts first Pop Quiz Answer', async () => {
@@ -72,6 +78,8 @@ describe('Onboarding', () => {
     expect(tickAnimation).toBe(true)
 
     await app.client.pause(1500)
+    
+    await screenshotApp(app, 'onboarding-pop-quiz-2')
   })
 
   test('App accepts second Pop Quiz Answer and goes to Crash Reporting page', async () => {
@@ -92,6 +100,8 @@ describe('Onboarding', () => {
     
     const crashReportingHeading = await app.client.$('h1').getText()
     expect(crashReportingHeading).toMatch(En['Onboarding.Crash.Title'])
+
+    await screenshotApp(app, 'onboarding-crash-reporting-page')
   })
 
   test('App lets user opt-in for Crash Reporting', async () => {
@@ -114,15 +124,17 @@ describe('Onboarding', () => {
     expect(defaultSettingsHeading).toMatch(
       En['Onboarding.DefaultSettings.Title']
     )
+
+    await screenshotApp(app, 'onboarding-default-settings')
   })
 
   test('Finishing Onboarding process brings up the Dashboard', async () => {
-    await app.client.$('button[data-testid=letsgo]').click()
+    await app.client.$('button[data-testid=letsgo]').click().pause(500)
 
     const runButtonExists = app.client.isVisible('button[data-testid=button-dashboard-run]')
     expect(runButtonExists).toBeTruthy()
 
-    screenshotApp(app, 'onboarding-success')
+    await screenshotApp(app, 'onboarding-success')
   })
 
   test('Check if Crash Reporting is enabled in Settings', async () => {
