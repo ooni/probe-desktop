@@ -1,4 +1,4 @@
-import { startApp, stopApp } from './utils'
+import { startApp, stopApp, screenshotApp } from './utils'
 import { waitFor } from '@testing-library/dom'
 
 jest.setTimeout(600000)
@@ -26,6 +26,8 @@ describe('All network tests run successfully', () => {
       },
       { timeout: 120000 }
     )
+
+    await screenshotApp(app, 'runtestall-started')
   })
 
   test('Website test runs from start to finish', async () => {
@@ -58,6 +60,8 @@ describe('All network tests run successfully', () => {
       },
       { timeout: 120000 }
     )
+
+    await screenshotApp(app, 'runtestall-website')
 
     await waitFor(
       async () => {
@@ -117,6 +121,8 @@ describe('All network tests run successfully', () => {
       },
       { timeout: 120000 }
     )
+
+    await screenshotApp(app, 'runtestall-circumvention')
 
     await waitFor(
       async () => {
@@ -187,6 +193,8 @@ describe('All network tests run successfully', () => {
       { timeout: 120000 }
     )
 
+    await screenshotApp(app, 'runtestall-im')
+
     await waitFor(
       async () => {
         const animationVisible = await app.client.isVisible(
@@ -236,6 +244,8 @@ describe('All network tests run successfully', () => {
       { timeout: 120000 }
     )
 
+    await screenshotApp(app, 'runtestall-middlebox')
+
     await waitFor(
       async () => {
         const animationVisible = await app.client.isVisible(
@@ -284,6 +294,7 @@ describe('All network tests run successfully', () => {
       },
       { timeout: 120000 }
     )
+    await screenshotApp(app, 'runtestall-performance')
 
     await waitFor(
       async () => {
