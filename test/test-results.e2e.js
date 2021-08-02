@@ -1,6 +1,6 @@
 import { startApp, stopApp } from './utils'
 
-describe('Tests for Test-Results screen', () => {
+describe.skip('Tests for Test-Results screen', () => {
   let app
 
   beforeAll(async () => {
@@ -40,4 +40,22 @@ describe('Tests for Test-Results screen', () => {
     const rows = await app.client.$$('div[data-testid=test-result-performance]')
     expect(rows).toHaveLength(2)
   })
+
+  describe('IM test measurements', () => {
+
+    beforeAll(async () => {
+      await app.client.$('div[data-testid=test-result-im]').click().pause(500)
+    })
+
+    test('There are total 4 IM measurements', async () => {
+      const rows = await app.client.$$('div[data-testid=measured-test-name')
+      expect(rows).toHaveLength(4)
+    })
+
+    test('Trests', async () => {
+      const rows = await app.client.$$('div[data-testid=measured-test-name')[0].getText()
+      expect(rows).toBe('Telegram Test')
+    })
+  })
 })
+
