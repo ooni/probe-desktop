@@ -10,7 +10,7 @@ const ExplorerURLButton = ({ reportID, input }) => {
     explorerURL = `${explorerURL}?input=${input}`
   }
   return (
-    <Button onClick={(e) => openInBrowser(explorerURL, e)} data-testid='button-show-in-explorer'>
+    <Button onClick={(e) => openInBrowser(explorerURL, e)} data-testid='button-show-in-explorer' href={explorerURL}>
       <FormattedMessage id='TestResults.Details.ShowInExplorer' />
     </Button>
   )

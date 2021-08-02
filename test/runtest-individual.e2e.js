@@ -134,6 +134,11 @@ describe('IM test', () => {
     )
     expect(explorerButtonText).toBe('Show In OONI Explorer')
 
+    const explorerButtonHref = await app.client.getAttribute('button[data-testid=button-show-in-explorer]', 'href')
+
+    expect(explorerButtonHref.substr(0, 37)).toMatch('https://explorer.ooni.org/measurement')
+    expect(explorerButtonHref.substr(38)).toContain('telegram')
+
     await screenshotApp(app, 'runtest-result-im-details')
   })
 })
@@ -242,6 +247,11 @@ describe('Websites test', () => {
       'button[data-testid=button-show-in-explorer]'
     )
     expect(explorerButtonText).toBe('Show In OONI Explorer')
+
+    const explorerButtonHref = await app.client.getAttribute('button[data-testid=button-show-in-explorer]', 'href')
+
+    expect(explorerButtonHref.substr(0, 37)).toMatch('https://explorer.ooni.org/measurement')
+    expect(explorerButtonHref.substr(38)).toContain('webconnectivity')
 
     await screenshotApp(app, 'runtest-result-websites-details')
   })
@@ -520,6 +530,11 @@ describe('Circumvention test', () => {
     )
     expect(explorerButtonText).toBe('Show In OONI Explorer')
 
+    const explorerButtonHref = await app.client.getAttribute('button[data-testid=button-show-in-explorer]', 'href')
+
+    expect(explorerButtonHref.substr(0, 37)).toMatch('https://explorer.ooni.org/measurement')
+    expect(explorerButtonHref.substr(38)).toContain('psiphon')
+
     await screenshotApp(app, 'runtest-result-circumvention-details')
   })
 })
@@ -634,6 +649,11 @@ describe('Performance test', () => {
       'button[data-testid=button-show-in-explorer]'
     )
     expect(explorerButtonText).toBe('Show In OONI Explorer')
+
+    const explorerButtonHref = await app.client.getAttribute('button[data-testid=button-show-in-explorer]', 'href')
+
+    expect(explorerButtonHref.substr(0, 37)).toMatch('https://explorer.ooni.org/measurement')
+    expect(explorerButtonHref.substr(38)).toContain('dash')
 
     await screenshotApp(app, 'runtest-result-performance-details')
   })
@@ -751,6 +771,11 @@ describe('Middleboxes test', () => {
       'button[data-testid=button-show-in-explorer]'
     )
     expect(explorerButtonText).toBe('Show In OONI Explorer')
+
+    const explorerButtonHref = await app.client.getAttribute('button[data-testid=button-show-in-explorer]', 'href')
+
+    expect(explorerButtonHref.substr(0, 37)).toMatch('https://explorer.ooni.org/measurement')
+    expect(explorerButtonHref.substr(38)).toContain('httpinvalidrequestline')
 
     await screenshotApp(app, 'runtest-result-circumvention-details')
   })
