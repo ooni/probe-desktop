@@ -64,12 +64,12 @@ describe('Tests for Test-Results screen', () => {
       const testedApps = await app.client.getText(
         'div div[data-testid=measured-test-name'
       )
-      expect(testedApps).toEqual([
+      expect(testedApps.sort()).toEqual([
         'Telegram Test',
         'Facebook Messenger Test',
         'WhatsApp Test',
         'Signal Test',
-      ])
+      ].sort())
 
       await screenshotApp(app, 'test-results-measurements-im')
     })
@@ -123,7 +123,7 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Data button loads up raw data', async () => {
-      await app.client.$('button[data-testid=button-data-raw]').click()
+      await app.client.$('button[data-testid=button-data-raw]').click().pause(1500)
 
       await waitFor(
         async () => expect(app.client.isVisible('h3=Data')).resolves.toBe(true),
@@ -204,7 +204,7 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Data button loads up raw data', async () => {
-      await app.client.$('button[data-testid=button-data-raw]').click()
+      await app.client.$('button[data-testid=button-data-raw]').click().pause(1500)
 
       await waitFor(
         async () => expect(app.client.isVisible('h3=Data')).resolves.toBe(true),
@@ -236,7 +236,7 @@ describe('Tests for Test-Results screen', () => {
       const testedApps = await app.client.getText(
         'div div[data-testid=measured-test-name'
       )
-      expect(testedApps).toEqual(['Psiphon Test', 'RiseupVPN Test', 'Tor Test'])
+      expect(testedApps.sort()).toEqual(['Psiphon Test', 'RiseupVPN Test', 'Tor Test'].sort())
 
       await screenshotApp(app, 'test-results-measurements-circumvention')
     })
@@ -290,7 +290,7 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Data button loads up raw data', async () => {
-      await app.client.$('button[data-testid=button-data-raw]').click()
+      await app.client.$('button[data-testid=button-data-raw]').click().pause(1500)
 
       await waitFor(
         async () => expect(app.client.isVisible('h3=Data')).resolves.toBe(true),
@@ -322,7 +322,7 @@ describe('Tests for Test-Results screen', () => {
       const testedParams = await app.client.getText(
         'div div[data-testid=measured-test-name'
       )
-      expect(testedParams).toEqual(['DASH Streaming Test', 'NDT Speed Test'])
+      expect(testedParams.sort()).toEqual(['DASH Streaming Test', 'NDT Speed Test'].sort())
 
       await screenshotApp(app, 'test-results-measurements-performance')
     })
@@ -376,7 +376,7 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Data button loads up raw data', async () => {
-      await app.client.$('button[data-testid=button-data-raw]').click()
+      await app.client.$('button[data-testid=button-data-raw]').click().pause(1500)
 
       await waitFor(
         async () => expect(app.client.isVisible('h3=Data')).resolves.toBe(true),
@@ -385,7 +385,7 @@ describe('Tests for Test-Results screen', () => {
     })
   })
 
-  // Middleboxs
+  // Middleboxes
   describe('Middleboxes test measurements', () => {
     beforeAll(async () => {
       await app.client
@@ -462,7 +462,7 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Data button loads up raw data', async () => {
-      await app.client.$('button[data-testid=button-data-raw]').click()
+      await app.client.$('button[data-testid=button-data-raw]').click().pause(1500)
 
       await waitFor(
         async () => expect(app.client.isVisible('h3=Data')).resolves.toBe(true),
