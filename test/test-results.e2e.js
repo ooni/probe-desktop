@@ -1,6 +1,8 @@
 import { startApp, stopApp, screenshotApp } from './utils'
 import { waitFor } from '@testing-library/dom'
 
+jest.setTimeout(600000)
+
 describe('Tests for Test-Results screen', () => {
   let app
 
