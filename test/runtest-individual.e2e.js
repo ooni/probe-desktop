@@ -18,7 +18,7 @@ describe('IM test', () => {
     await app.client
       .$('div[data-testid=run-card-im]')
       .click()
-      .pause(500)
+      .pause(1000)
 
     await waitFor(
       async () =>
@@ -99,6 +99,16 @@ describe('IM test', () => {
 
     await app.client.pause(2500)
   })
+
+  test('Loads Test Results page on completion', async () => {
+    await waitFor(
+      async () =>
+        expect(
+          app.client.isVisible('div[data-testid=overview-tests]')
+        ).resolves.toBe(true),
+      { timeout: 120000 }
+    )
+  })
 })
 
 describe('Websites test', () => {
@@ -116,7 +126,7 @@ describe('Websites test', () => {
     await app.client
       .$('div[data-testid=run-card-websites]')
       .click()
-      .pause(500)
+      .pause(1000)
 
     await waitFor(
       async () =>
@@ -144,7 +154,7 @@ describe('Websites test', () => {
     expect(headingPreparingTests).toBe('Preparing test...')
   })
 
-  test('Website network test is run successfully', async () => {
+  test('Website network runs successfully', async () => {
     await waitFor(
       async () => {
         const runningTestName = await app.client.getText(
@@ -180,38 +190,14 @@ describe('Websites test', () => {
     await app.client.pause(2500)
   })
 
-  test('Website test result data is stored in an expected fashion', async () => {
-    await app.client
-      .$('div[data-testid=test-result-websites]')
-      .click()
-      .pause(500)
-
-    await screenshotApp(app, 'runtest-results-websites')
-
-    await app.client
-      .$('div[data-testid=measured-url-row]')
-      .click()
-      .pause(2000)
-
+  test('Loads Test Results page on completion', async () => {
     await waitFor(
       async () =>
         expect(
-          app.client.isVisible('button[data-testid=button-show-in-explorer]')
+          app.client.isVisible('div[data-testid=overview-tests]')
         ).resolves.toBe(true),
-      { timeout: 20000 }
+      { timeout: 120000 }
     )
-
-    const explorerButtonText = await app.client.getText(
-      'button[data-testid=button-show-in-explorer]'
-    )
-    expect(explorerButtonText).toBe('Show In OONI Explorer')
-
-    const explorerButtonHref = await app.client.getAttribute('button[data-testid=button-show-in-explorer]', 'href')
-
-    expect(explorerButtonHref.substr(0, 37)).toMatch('https://explorer.ooni.org/measurement')
-    expect(explorerButtonHref.substr(38)).toContain('webconnectivity')
-
-    await screenshotApp(app, 'runtest-result-websites-details')
   })
 })
 
@@ -230,7 +216,7 @@ describe('Custom websites test', () => {
     await app.client
       .$('div[data-testid=run-card-websites]')
       .click()
-      .pause(500)
+      .pause(1000)
 
     await waitFor(
       async () =>
@@ -243,7 +229,7 @@ describe('Custom websites test', () => {
     await app.client
       .$('button[data-testid=button-choose-websites]')
       .click()
-      .pause(500)
+      .pause(1000)
 
     const runButtonEnabled = await app.client.isEnabled(
       'button[data-testid=button-run-custom-test]'
@@ -278,7 +264,7 @@ describe('Custom websites test', () => {
     await app.client
       .$('button[data-testid=button-run-custom-test]')
       .click()
-      .pause(500)
+      .pause(1000)
 
     await waitFor(
       async () =>
@@ -336,35 +322,16 @@ describe('Custom websites test', () => {
     await app.client.pause(2500)
   })
 
-  test('Custom website test result is browsable', async () => {
-    await app.client
-      .$('div[data-testid=test-result-websites]')
-      .click()
-      .pause(500)
-
+  test('Loads Test Results page on completion', async () => {
     await waitFor(
       async () =>
         expect(
-          app.client.$$('div[data-testid=measured-url-row]')
-        ).resolves.toHaveLength(2),
-      { timeout: 120000 }
-    )
-
-    await screenshotApp(app, 'runtest-results-websites-custom')
-
-    await app.client
-      .$('div[data-testid=measured-url-row]')
-      .click()
-      .pause(500)
-
-    await waitFor(
-      async () =>
-        expect(
-          app.client.getText('div[data-testid=measurement-title]')
-        ).resolves.toBe('https://www.twitter.com'),
+          app.client.isVisible('div[data-testid=overview-tests]')
+        ).resolves.toBe(true),
       { timeout: 120000 }
     )
   })
+
 })
 
 describe('Circumvention test', () => {
@@ -382,7 +349,7 @@ describe('Circumvention test', () => {
     await app.client
       .$('div[data-testid=run-card-circumvention]')
       .click()
-      .pause(500)
+      .pause(1000)
 
     await screenshotApp(app, 'runtest-description-circumvention')
 
@@ -454,47 +421,16 @@ describe('Circumvention test', () => {
     await app.client.pause(2500)
   })
 
-  test('Circumvention test result data is stored in an expected fashion', async () => {
-    await app.client
-      .$('div[data-testid=test-result-circumvention]')
-      .click()
-      .pause(500)
-
+  test('Loads Test Results page on completion', async () => {
     await waitFor(
       async () =>
         expect(
-          app.client.$$('div[data-testid=measured-test-name]')
-        ).resolves.toHaveLength(3),
+          app.client.isVisible('div[data-testid=overview-tests]')
+        ).resolves.toBe(true),
       { timeout: 120000 }
     )
-    
-    await screenshotApp(app, 'runtest-results-circumvention')
-
-    await app.client
-      .$('div[data-testid=measured-test-name]')
-      .click()
-      .pause(2000)
-
-    await waitFor(
-      async () =>
-        expect(
-          app.client.isVisible('button[data-testid=button-show-in-explorer]')
-        ).resolves.toBe(true),
-      { timeout: 20000 }
-    )
-
-    const explorerButtonText = await app.client.getText(
-      'button[data-testid=button-show-in-explorer]'
-    )
-    expect(explorerButtonText).toBe('Show In OONI Explorer')
-
-    const explorerButtonHref = await app.client.getAttribute('button[data-testid=button-show-in-explorer]', 'href')
-
-    expect(explorerButtonHref.substr(0, 37)).toMatch('https://explorer.ooni.org/measurement')
-    expect(explorerButtonHref.substr(38)).toContain('psiphon')
-
-    await screenshotApp(app, 'runtest-result-circumvention-details')
   })
+
 })
 
 describe('Performance test', () => {
@@ -512,7 +448,7 @@ describe('Performance test', () => {
     await app.client
       .$('div[data-testid=run-card-performance]')
       .click()
-      .pause(500)
+      .pause(1000)
 
     await waitFor(
       async () =>
@@ -574,46 +510,14 @@ describe('Performance test', () => {
     await app.client.pause(2500)
   })
 
-  test('Performance test result data is stored in an expected fashion', async () => {
-    await app.client
-      .$('div[data-testid=test-result-performance]')
-      .click()
-      .pause(500)
-
+  test('Loads Test Results page on completion', async () => {
     await waitFor(
       async () =>
         expect(
-          app.client.$$('div[data-testid=measured-test-name]')
-        ).resolves.toHaveLength(2),
+          app.client.isVisible('div[data-testid=overview-tests]')
+        ).resolves.toBe(true),
       { timeout: 120000 }
     )
-
-    await screenshotApp(app, 'runtest-results-performance')
-
-    await app.client
-      .$('div[data-testid=measured-test-name]')
-      .click()
-      .pause(500)
-
-    await waitFor(
-      async () =>
-        expect(
-          app.client.isVisible('button[data-testid=button-show-in-explorer]')
-        ).resolves.toBe(true),
-      { timeout: 20000 }
-    )
-
-    const explorerButtonText = await app.client.getText(
-      'button[data-testid=button-show-in-explorer]'
-    )
-    expect(explorerButtonText).toBe('Show In OONI Explorer')
-
-    const explorerButtonHref = await app.client.getAttribute('button[data-testid=button-show-in-explorer]', 'href')
-
-    expect(explorerButtonHref.substr(0, 37)).toMatch('https://explorer.ooni.org/measurement')
-    expect(explorerButtonHref.substr(38)).toContain('dash')
-
-    await screenshotApp(app, 'runtest-result-performance-details')
   })
 })
 
@@ -632,7 +536,7 @@ describe('Middleboxes test', () => {
     await app.client
       .$('div[data-testid=run-card-middlebox]')
       .click()
-      .pause(500)
+      .pause(1000)
 
     await waitFor(
       async () =>
@@ -696,45 +600,13 @@ describe('Middleboxes test', () => {
     await app.client.pause(2500)
   })
 
-  test('Middleboxes test result data is stored in an expected fashion', async () => {
-    await app.client
-      .$('div[data-testid=test-result-middlebox]')
-      .click()
-      .pause(500)
-
+  test('Loads Test Results page on completion', async () => {
     await waitFor(
       async () =>
         expect(
-          app.client.$$('div[data-testid=measured-test-name]')
-        ).resolves.toHaveLength(2),
+          app.client.isVisible('div[data-testid=overview-tests]')
+        ).resolves.toBe(true),
       { timeout: 120000 }
     )
-
-    await screenshotApp(app, 'runtest-results-circumvention')
-
-    await app.client
-      .$('div[data-testid=measured-test-name]')
-      .click()
-      .pause(500)
-
-    await waitFor(
-      async () =>
-        expect(
-          app.client.isVisible('button[data-testid=button-show-in-explorer]')
-        ).resolves.toBe(true),
-      { timeout: 20000 }
-    )
-
-    const explorerButtonText = await app.client.getText(
-      'button[data-testid=button-show-in-explorer]'
-    )
-    expect(explorerButtonText).toBe('Show In OONI Explorer')
-
-    const explorerButtonHref = await app.client.getAttribute('button[data-testid=button-show-in-explorer]', 'href')
-
-    expect(explorerButtonHref.substr(0, 37)).toMatch('https://explorer.ooni.org/measurement')
-    expect(explorerButtonHref.substr(38)).toContain('httpinvalidrequestline')
-
-    await screenshotApp(app, 'runtest-result-circumvention-details')
   })
 })
