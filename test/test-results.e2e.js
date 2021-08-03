@@ -70,6 +70,8 @@ describe('Tests for Test-Results screen', () => {
         'WhatsApp Test',
         'Signal Test',
       ])
+
+      await screenshotApp(app, 'test-results-measurements-im')
     })
 
     test('Detailed Measurements load up correctly', async () => {
@@ -86,7 +88,7 @@ describe('Tests for Test-Results screen', () => {
         { timeout: 120000 }
       )
 
-      await screenshotApp(app, 'test-results-im-detailed')
+      await screenshotApp(app, 'test-results-detailed-im')
     })
 
     test('Explorer button is displayed with correct link', async () => {
@@ -149,6 +151,8 @@ describe('Tests for Test-Results screen', () => {
         'div div[data-testid=measured-url-row'
       )
       expect(testedURLs.length).toBeGreaterThanOrEqual(1)
+
+      await screenshotApp(app, 'test-results-measurements-websites')
     })
 
     test('Detailed Measurements load up correctly', async () => {
@@ -165,7 +169,7 @@ describe('Tests for Test-Results screen', () => {
         { timeout: 120000 }
       )
 
-      await screenshotApp(app, 'test-results-websites-detailed')
+      await screenshotApp(app, 'test-results-detailed-websites')
     })
 
     test('Explorer button is displayed with correct link', async () => {
@@ -233,6 +237,8 @@ describe('Tests for Test-Results screen', () => {
         'div div[data-testid=measured-test-name'
       )
       expect(testedApps).toEqual(['Psiphon Test', 'RiseupVPN Test', 'Tor Test'])
+
+      await screenshotApp(app, 'test-results-measurements-circumvention')
     })
 
     test('Detailed Measurements load up correctly', async () => {
@@ -249,7 +255,7 @@ describe('Tests for Test-Results screen', () => {
         { timeout: 120000 }
       )
 
-      await screenshotApp(app, 'test-results-circumvention-detailed')
+      await screenshotApp(app, 'test-results-detailed-circumvention')
     })
 
     test('Explorer button is displayed with correct link', async () => {
@@ -317,6 +323,8 @@ describe('Tests for Test-Results screen', () => {
         'div div[data-testid=measured-test-name'
       )
       expect(testedParams).toEqual(['DASH Streaming Test', 'NDT Speed Test'])
+
+      await screenshotApp(app, 'test-results-measurements-performance')
     })
 
     test('Detailed Measurements load up correctly', async () => {
@@ -333,7 +341,7 @@ describe('Tests for Test-Results screen', () => {
         { timeout: 120000 }
       )
 
-      await screenshotApp(app, 'test-results-performance-detailed')
+      await screenshotApp(app, 'test-results-detailed-performance')
     })
 
     test('Explorer button is displayed with correct link', async () => {
@@ -401,6 +409,8 @@ describe('Tests for Test-Results screen', () => {
         'div div[data-testid=measured-test-name'
       )
       expect(testedParams).toEqual(['HTTP Invalid Request Line Test', 'HTTP Header Field Manipulation Test'])
+
+      await screenshotApp(app, 'test-results-measurements-middlebox')
     })
 
     test('Detailed Measurements load up correctly', async () => {
@@ -417,7 +427,7 @@ describe('Tests for Test-Results screen', () => {
         { timeout: 120000 }
       )
 
-      await screenshotApp(app, 'test-results-middlebox-detailed')
+      await screenshotApp(app, 'test-results-detailed-middlebox')
     })
 
     test('Explorer button is displayed with correct link', async () => {
