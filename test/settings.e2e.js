@@ -94,13 +94,13 @@ describe('Tests for Settings page', () => {
       .pause(500)
 
     const labelTests = await app.client
-      .$('div[data-testid=overview-label-tests]')
+      .$('div[data-testid=overview-tests]')
       .getText()
     const labelNetworks = await app.client
-      .$('div[data-testid=overview-label-networks]')
+      .$('div[data-testid=overview-networks]')
       .getText()
     const labelDataUsage = await app.client
-      .$('div[data-testid=overview-label-data-usage]')
+      .$('div[data-testid=overview-data-usage-label]')
       .getText()
       
     expect(labelTests).toContain('Pruebas')
