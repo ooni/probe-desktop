@@ -99,48 +99,6 @@ describe('IM test', () => {
 
     await app.client.pause(2500)
   })
-
-  test('Test result data is stored in an expected fashion', async () => {
-    await app.client
-      .$('div[data-testid=test-result-im]')
-      .click()
-      .pause(500)
-
-    await screenshotApp(app, 'runtest-results-im')
-
-    await waitFor(
-      async () =>
-        expect(
-          app.client.$$('div[data-testid=measured-test-name]')
-        ).resolves.toHaveLength(4),
-      { timeout: 120000 }
-    )
-
-    await app.client
-      .$('div[data-testid=measured-test-name]')
-      .click()
-      .pause(500)
-
-    await waitFor(
-      async () =>
-        expect(
-          app.client.isVisible('button[data-testid=button-show-in-explorer]')
-        ).resolves.toBe(true),
-      { timeout: 120000 }
-    )
-
-    const explorerButtonText = await app.client.getText(
-      'button[data-testid=button-show-in-explorer]'
-    )
-    expect(explorerButtonText).toBe('Show In OONI Explorer')
-
-    const explorerButtonHref = await app.client.getAttribute('button[data-testid=button-show-in-explorer]', 'href')
-
-    expect(explorerButtonHref.substr(0, 37)).toMatch('https://explorer.ooni.org/measurement')
-    expect(explorerButtonHref.substr(38)).toContain('telegram')
-
-    await screenshotApp(app, 'runtest-result-im-details')
-  })
 })
 
 describe('Websites test', () => {

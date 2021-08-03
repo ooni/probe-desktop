@@ -192,7 +192,7 @@ const MeasurementContainer = ({ measurement, isAnomaly }) => {
                 <BackButton />
               </Box>
               <Box width={7/8}>
-                <Heading textAlign='center' h={4} color='white'>
+                <Heading textAlign='center' h={4} color='white' data-testid='heading-test-name-full'>
                   {testFullName}
                 </Heading>
               </Box>
@@ -228,7 +228,7 @@ const MeasurementContainer = ({ measurement, isAnomaly }) => {
               </FullHeightFlex>
               <Flex my={3}>
                 <Box mr='auto'>
-                  <Button onClick={() => setRawDataOpen(!rawDataOpen)}>
+                  <Button onClick={() => setRawDataOpen(!rawDataOpen)} data-testid='button-data-raw'>
                     <FormattedMessage id='TestResults.Details.RawData' />
                   </Button>
                 </Box>

@@ -148,10 +148,10 @@ const TestNameIcon = ({ testName }) => {
   )
 
   return (
-    <div data-testid='measured-test-name'>
+    <Flex alignItems='center'>
       {icon && <IconContainer>{icon}</IconContainer>}
-      {tests[testName] && tests[testName].name}
-    </div>
+      <Text data-testid='measured-test-name'>{tests[testName] && tests[testName].name}</Text>
+    </Flex>
   )
 }
 // XXX still need to show the summary in here
