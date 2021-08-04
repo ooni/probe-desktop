@@ -108,11 +108,11 @@ const RawDataContainer = ({ rawData, isOpen, onClose }) => {
 
   return (
     <AnimatedWrapper style={props} width={4/5}>
-      <Flex flexDirection='column' flexWrap='wrap'>
+      <Flex flexDirection='column' flexWrap='wrap' data-testid='container-json-viewer'>
         <StickyBox width={1} mb={2}>
           <Flex justifyContent='space-between' alignItems='center' bg='gray3'>
             <Box mx={3}>
-              <Heading h={3}>
+              <Heading h={3} data-testid='heading-json-viewer'>
                 <FormattedMessage id='TestResults.Details.RawData' />
               </Heading>
             </Box>
@@ -121,7 +121,7 @@ const RawDataContainer = ({ rawData, isOpen, onClose }) => {
             </Box>
           </Flex>
         </StickyBox>
-        <Box width={1}>
+        <Box width={1} data-testid='data-json-viewer'>
           <StyledReactJsonContainer>
             <JsonViewer src={rawData} />
           </StyledReactJsonContainer>
