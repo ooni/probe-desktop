@@ -58,27 +58,30 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('There are total 4 IM measurements', async () => {
-      const rows = await app.client.$$('div[data-testid=measured-test-name')
+      const rows = await app.client.$$('div[data-testid=measured-test-name]')
       expect(rows).toHaveLength(4)
     })
 
     test('Result rows displayed for all 4 tests', async () => {
       const testedApps = await app.client.getText(
-        'div div[data-testid=measured-test-name'
+        'div div[data-testid=measured-test-name]'
       )
-      expect(testedApps.sort()).toEqual([
-        'Telegram Test',
-        'Facebook Messenger Test',
-        'WhatsApp Test',
-        'Signal Test',
-      ].sort())
+      expect(testedApps.sort()).toEqual(
+        [
+          'Telegram Test',
+          'Facebook Messenger Test',
+          'WhatsApp Test',
+          'Signal Test',
+        ].sort()
+      )
 
       await screenshotApp(app, 'test-results-measurements-im')
     })
 
     test('Detailed Measurements load up correctly', async () => {
       await app.client
-        .$('div[data-testid=measured-test-name')
+        .$$('div[data-testid=measured-test-name]')
+        .$('div=Signal Test')
         .click()
         .pause(1500)
 
@@ -86,7 +89,7 @@ describe('Tests for Test-Results screen', () => {
         async () =>
           expect(
             app.client.getText('h4[data-testid=heading-test-name-full]')
-          ).resolves.toBe('Telegram Test'),
+          ).resolves.toBe('Signal Test'),
         { timeout: 120000 }
       )
 
@@ -115,22 +118,36 @@ describe('Tests for Test-Results screen', () => {
       expect(explorerButtonHref.substr(0, 37)).toMatch(
         'https://explorer.ooni.org/measurement'
       )
-      expect(explorerButtonHref.substr(38)).toContain('_telegram_')
+      expect(explorerButtonHref.substr(38)).toContain('_signal_')
     })
 
     test('Methodology link is correctly displayed', async () => {
       await expect(
         app.client.getAttribute('=Methodology', 'href')
-      ).resolves.toBe('https://ooni.org/nettest/telegram/')
+      ).resolves.toBe('https://ooni.org/nettest/signal/')
     })
 
     test('Data button loads up raw data', async () => {
-      await app.client.$('button[data-testid=button-data-raw]').click().pause(1500)
+      await app.client
+        .$('button[data-testid=button-data-raw]')
+        .click()
+        .pause(1500)
 
       await waitFor(
-        async () => expect(app.client.isVisible('h3=Data')).resolves.toBe(true),
+        async () =>
+          expect(
+            app.client.isVisible('div[data-testid=container-json-viewer]')
+          ).resolves.toBe(true),
         { timeout: 2500 }
       )
+
+      await expect(
+        app.client.getText('h3[data-testid=heading-json-viewer]')
+      ).resolves.toBe('Data')
+
+      await expect(
+        app.client.isVisible('div[data-testid=data-json-viewer]')
+      ).resolves.toBe(true)
     })
   })
 
@@ -206,12 +223,26 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Data button loads up raw data', async () => {
-      await app.client.$('button[data-testid=button-data-raw]').click().pause(1500)
+      await app.client
+        .$('button[data-testid=button-data-raw]')
+        .click()
+        .pause(1500)
 
       await waitFor(
-        async () => expect(app.client.isVisible('h3=Data')).resolves.toBe(true),
+        async () =>
+          expect(
+            app.client.isVisible('div[data-testid=container-json-viewer]')
+          ).resolves.toBe(true),
         { timeout: 2500 }
       )
+
+      await expect(
+        app.client.getText('h3[data-testid=heading-json-viewer]')
+      ).resolves.toBe('Data')
+
+      await expect(
+        app.client.isVisible('div[data-testid=data-json-viewer]')
+      ).resolves.toBe(true)
     })
   })
 
@@ -230,22 +261,25 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('There are total 3 Circumvention measurements', async () => {
-      const rows = await app.client.$$('div[data-testid=measured-test-name')
+      const rows = await app.client.$$('div[data-testid=measured-test-name]')
       expect(rows).toHaveLength(3)
     })
 
     test('Result rows displayed for all 3 tests', async () => {
       const testedApps = await app.client.getText(
-        'div div[data-testid=measured-test-name'
+        'div div[data-testid=measured-test-name]'
       )
-      expect(testedApps.sort()).toEqual(['Psiphon Test', 'RiseupVPN Test', 'Tor Test'].sort())
+      expect(testedApps.sort()).toEqual(
+        ['Psiphon Test', 'RiseupVPN Test', 'Tor Test'].sort()
+      )
 
       await screenshotApp(app, 'test-results-measurements-circumvention')
     })
 
     test('Detailed Measurements load up correctly', async () => {
       await app.client
-        .$('div[data-testid=measured-test-name')
+        .$$('div[data-testid=measured-test-name]')
+        .$('div=Tor Test')
         .click()
         .pause(1500)
 
@@ -253,7 +287,7 @@ describe('Tests for Test-Results screen', () => {
         async () =>
           expect(
             app.client.getText('h4[data-testid=heading-test-name-full]')
-          ).resolves.toBe('Psiphon Test'),
+          ).resolves.toBe('Tor Test'),
         { timeout: 120000 }
       )
 
@@ -282,22 +316,36 @@ describe('Tests for Test-Results screen', () => {
       expect(explorerButtonHref.substr(0, 37)).toMatch(
         'https://explorer.ooni.org/measurement'
       )
-      expect(explorerButtonHref.substr(38)).toContain('_psiphon_')
+      expect(explorerButtonHref.substr(38)).toContain('_tor_')
     })
 
     test('Methodology link is correctly displayed', async () => {
       await expect(
         app.client.getAttribute('=Methodology', 'href')
-      ).resolves.toBe('https://ooni.org/nettest/psiphon/')
+      ).resolves.toBe('https://ooni.org/nettest/tor')
     })
 
     test('Data button loads up raw data', async () => {
-      await app.client.$('button[data-testid=button-data-raw]').click().pause(1500)
+      await app.client
+        .$('button[data-testid=button-data-raw]')
+        .click()
+        .pause(1500)
 
       await waitFor(
-        async () => expect(app.client.isVisible('h3=Data')).resolves.toBe(true),
+        async () =>
+          expect(
+            app.client.isVisible('div[data-testid=container-json-viewer]')
+          ).resolves.toBe(true),
         { timeout: 2500 }
       )
+
+      await expect(
+        app.client.getText('h3[data-testid=heading-json-viewer]')
+      ).resolves.toBe('Data')
+
+      await expect(
+        app.client.isVisible('div[data-testid=data-json-viewer]')
+      ).resolves.toBe(true)
     })
   })
 
@@ -316,22 +364,25 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('There are total 2 Performance measurements', async () => {
-      const rows = await app.client.$$('div[data-testid=measured-test-name')
+      const rows = await app.client.$$('div[data-testid=measured-test-name]')
       expect(rows).toHaveLength(2)
     })
 
     test('Result rows displayed for all 2 tests', async () => {
       const testedParams = await app.client.getText(
-        'div div[data-testid=measured-test-name'
+        'div div[data-testid=measured-test-name]'
       )
-      expect(testedParams.sort()).toEqual(['DASH Streaming Test', 'NDT Speed Test'].sort())
+      expect(testedParams.sort()).toEqual(
+        ['DASH Streaming Test', 'NDT Speed Test'].sort()
+      )
 
       await screenshotApp(app, 'test-results-measurements-performance')
     })
 
     test('Detailed Measurements load up correctly', async () => {
       await app.client
-        .$('div[data-testid=measured-test-name')
+        .$$('div[data-testid=measured-test-name]')
+        .$('div=NDT Speed Test')
         .click()
         .pause(1500)
 
@@ -339,7 +390,7 @@ describe('Tests for Test-Results screen', () => {
         async () =>
           expect(
             app.client.getText('h4[data-testid=heading-test-name-full]')
-          ).resolves.toBe('DASH Streaming Test'),
+          ).resolves.toBe('NDT Speed Test'),
         { timeout: 120000 }
       )
 
@@ -368,22 +419,36 @@ describe('Tests for Test-Results screen', () => {
       expect(explorerButtonHref.substr(0, 37)).toMatch(
         'https://explorer.ooni.org/measurement'
       )
-      expect(explorerButtonHref.substr(38)).toContain('_dash_')
+      expect(explorerButtonHref.substr(38)).toContain('_ndt_')
     })
 
     test('Methodology link is correctly displayed', async () => {
       await expect(
         app.client.getAttribute('=Methodology', 'href')
-      ).resolves.toBe('https://ooni.org/nettest/dash/')
+      ).resolves.toBe('https://ooni.org/nettest/ndt/')
     })
 
     test('Data button loads up raw data', async () => {
-      await app.client.$('button[data-testid=button-data-raw]').click().pause(1500)
+      await app.client
+        .$('button[data-testid=button-data-raw]')
+        .click()
+        .pause(1500)
 
       await waitFor(
-        async () => expect(app.client.isVisible('h3=Data')).resolves.toBe(true),
+        async () =>
+          expect(
+            app.client.isVisible('div[data-testid=container-json-viewer]')
+          ).resolves.toBe(true),
         { timeout: 2500 }
       )
+
+      await expect(
+        app.client.getText('h3[data-testid=heading-json-viewer]')
+      ).resolves.toBe('Data')
+
+      await expect(
+        app.client.isVisible('div[data-testid=data-json-viewer]')
+      ).resolves.toBe(true)
     })
   })
 
@@ -402,22 +467,26 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('There are total 2 Middlebox measurements', async () => {
-      const rows = await app.client.$$('div[data-testid=measured-test-name')
+      const rows = await app.client.$$('div[data-testid=measured-test-name]')
       expect(rows).toHaveLength(2)
     })
 
     test('Result rows displayed for all 2 tests', async () => {
       const testedParams = await app.client.getText(
-        'div div[data-testid=measured-test-name'
+        'div div[data-testid=measured-test-name]'
       )
-      expect(testedParams).toEqual(['HTTP Invalid Request Line Test', 'HTTP Header Field Manipulation Test'])
+      expect(testedParams.sort()).toEqual([
+        'HTTP Invalid Request Line Test',
+        'HTTP Header Field Manipulation Test',
+      ].sort())
 
       await screenshotApp(app, 'test-results-measurements-middlebox')
     })
 
     test('Detailed Measurements load up correctly', async () => {
       await app.client
-        .$('div[data-testid=measured-test-name')
+        .$$('div[data-testid=measured-test-name]')
+        .$('div=HTTP Header Field Manipulation Test')
         .click()
         .pause(1500)
 
@@ -425,7 +494,7 @@ describe('Tests for Test-Results screen', () => {
         async () =>
           expect(
             app.client.getText('h4[data-testid=heading-test-name-full]')
-          ).resolves.toBe('HTTP Invalid Request Line Test'),
+          ).resolves.toBe('HTTP Header Field Manipulation Test'),
         { timeout: 120000 }
       )
 
@@ -454,22 +523,38 @@ describe('Tests for Test-Results screen', () => {
       expect(explorerButtonHref.substr(0, 37)).toMatch(
         'https://explorer.ooni.org/measurement'
       )
-      expect(explorerButtonHref.substr(38)).toContain('_httpinvalidrequestline_')
+      expect(explorerButtonHref.substr(38)).toContain(
+        '_httpheaderfieldmanipulation_'
+      )
     })
 
     test('Methodology link is correctly displayed', async () => {
       await expect(
         app.client.getAttribute('=Methodology', 'href')
-      ).resolves.toBe('https://ooni.org/nettest/http-invalid-request-line/')
+      ).resolves.toBe('https://ooni.org/nettest/http-header-field-manipulation/')
     })
 
     test('Data button loads up raw data', async () => {
-      await app.client.$('button[data-testid=button-data-raw]').click().pause(1500)
+      await app.client
+        .$('button[data-testid=button-data-raw]')
+        .click()
+        .pause(1500)
 
       await waitFor(
-        async () => expect(app.client.isVisible('h3=Data')).resolves.toBe(true),
+        async () =>
+          expect(
+            app.client.isVisible('div[data-testid=container-json-viewer]')
+          ).resolves.toBe(true),
         { timeout: 2500 }
       )
+
+      await expect(
+        app.client.getText('h3[data-testid=heading-json-viewer]')
+      ).resolves.toBe('Data')
+
+      await expect(
+        app.client.isVisible('div[data-testid=data-json-viewer]')
+      ).resolves.toBe(true)
     })
   })
 })
