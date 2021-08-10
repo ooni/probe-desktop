@@ -45,69 +45,52 @@ describe('IM test', () => {
   })
 
   test('IM test runs with all 4 network tests', async () => {
-    await waitFor(
-      async () => {
-        const messengerTestName = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(messengerTestName).toBe('Facebook Messenger Test')
-      },
-      { timeout: 120000 }
+
+    await app.client.waitUntilTextExists(
+      'div[data-testid=text-running-test-name]',
+      'Facebook Messenger Test',
+      120000
+    )
+    await app.client.waitUntilTextExists(
+      'div[data-testid=text-running-test-name]',
+      'Telegram Test',
+      120000
+    )
+    await app.client.waitUntilTextExists(
+      'div[data-testid=text-running-test-name]',
+      'WhatsApp Test',
+      120000
+    )
+    await app.client.waitUntilTextExists(
+      'div[data-testid=text-running-test-name]',
+      'Signal Test',
+      120000
     )
 
-    await waitFor(
-      async () => {
-        const telegramTestName = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(telegramTestName).toBe('Telegram Test')
-      },
-      { timeout: 120000 }
-    )
-
-    await screenshotApp(app, 'runtest-running-im')
-
-    await waitFor(
-      async () => {
-        const whatsAppTestHeading = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(whatsAppTestHeading).toBe('WhatsApp Test')
-      },
-      { timeout: 120000 }
-    )
-
-    await waitFor(
-      async () => {
-        const signalTestHeading = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(signalTestHeading).toBe('Signal Test')
-      },
-      { timeout: 120000 }
-    )
-
-    await waitFor(
-      async () => {
-        const animationVisible = await app.client.isVisible(
+    await app.client.waitUntil(
+      async () =>
+        (await app.client.isVisible(
           'div[data-testid=running-animation-im]'
-        )
-        return expect(animationVisible).toBe(false)
-      },
-      { timeout: 120000 }
+        )) === false,
+      120000
     )
 
-    await app.client.pause(2500)
+    await expect(
+      app.client.isVisible('div[data-testid=running-animation-im]')
+    ).resolves.toBe(false)
   })
 
   test('Loads Test Results page on completion', async () => {
-    await waitFor(
-      async () =>
-        expect(
-          app.client.isVisible('div[data-testid=overview-tests]')
-        ).resolves.toBe(true),
-      { timeout: 120000 }
+    await app.client.waitUntilWindowLoaded()
+
+    await app.client.waitUntil(
+      async () => app.client.isVisible('div[data-testid=overview-tests]'),
+      120000
     )
+
+    await expect(
+      app.client.getText('div[data-testid=overview-data-usage-label]')
+    ).resolves.toBe('Data Usage')
   })
 })
 
@@ -331,7 +314,6 @@ describe('Custom websites test', () => {
       { timeout: 120000 }
     )
   })
-
 })
 
 describe('Circumvention test', () => {
@@ -430,7 +412,6 @@ describe('Circumvention test', () => {
       { timeout: 120000 }
     )
   })
-
 })
 
 describe('Performance test', () => {
