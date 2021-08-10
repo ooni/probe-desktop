@@ -20,12 +20,9 @@ describe('IM test', () => {
       .click()
       .pause(1000)
 
-    await waitFor(
-      async () =>
-        expect(
-          app.client.isVisible('button[data-testid=button-run-test]')
-        ).resolves.toBe(true),
-      { timeout: 120000 }
+    await app.client.waitUntil(
+      () => app.client.isVisible('button[data-testid=button-run-test]'),
+      120000
     )
 
     await screenshotApp(app, 'runtest-description-im')
@@ -35,17 +32,14 @@ describe('IM test', () => {
       .click()
       .pause(500)
 
-    await waitFor(
-      async () =>
-        expect(app.client.isVisible('span=Preparing test...')).resolves.toBe(
-          true
-        ),
-      { timeout: 120000 }
+    await app.client.waitUntilTextExists(
+      'h3[data-testid=heading-running-test-name]',
+      'Preparing test...',
+      120000
     )
   })
 
   test('IM test runs with all 4 network tests', async () => {
-
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'Facebook Messenger Test',
@@ -74,10 +68,6 @@ describe('IM test', () => {
         )) === false,
       120000
     )
-
-    await expect(
-      app.client.isVisible('div[data-testid=running-animation-im]')
-    ).resolves.toBe(false)
   })
 
   test('Loads Test Results page on completion', async () => {
@@ -89,8 +79,8 @@ describe('IM test', () => {
     )
 
     await expect(
-      app.client.getText('div[data-testid=overview-data-usage-label]')
-    ).resolves.toBe('Data Usage')
+      app.client.isVisible('div[data-testid=test-result-im]')
+    ).resolves.toContain(true)
   })
 })
 
@@ -111,12 +101,9 @@ describe('Websites test', () => {
       .click()
       .pause(1000)
 
-    await waitFor(
-      async () =>
-        expect(
-          app.client.isVisible('button[data-testid=button-run-test]')
-        ).resolves.toBe(true),
-      { timeout: 120000 }
+    await app.client.waitUntil(
+      () => app.client.isVisible('button[data-testid=button-run-test]'),
+      120000
     )
 
     await screenshotApp(app, 'runtest-description-websites')
@@ -138,49 +125,37 @@ describe('Websites test', () => {
   })
 
   test('Website network runs successfully', async () => {
-    await waitFor(
-      async () => {
-        const runningTestName = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(runningTestName).toBe('Web Connectivity Test')
-      },
-      { timeout: 300000 }
+    await app.client.waitUntilTextExists(
+      'div[data-testid=text-running-test-name]',
+      'Web Connectivity Test',
+      120000
+    )
+    await app.client.waitUntilTextExists(
+      'h3[data-testid=heading-running-test-name]',
+      'Running:',
+      120000
     )
 
-    await waitFor(
-      async () => {
-        const headingRunning = await app.client.getText(
-          'h3[data-testid=heading-running-test-name]'
-        )
-        return expect(headingRunning).toBe('Running:')
-      },
-      { timeout: 120000 }
-    )
-
-    await screenshotApp(app, 'runtest-running-websites')
-
-    await waitFor(
-      async () => {
-        const animationVisible = await app.client.isVisible(
+    await app.client.waitUntil(
+      async () =>
+        (await app.client.isVisible(
           'div[data-testid=running-animation-websites]'
-        )
-        return expect(animationVisible).toBe(false)
-      },
-      { timeout: 300000 }
+        )) === false,
+      120000
     )
-
-    await app.client.pause(2500)
   })
 
   test('Loads Test Results page on completion', async () => {
-    await waitFor(
-      async () =>
-        expect(
-          app.client.isVisible('div[data-testid=overview-tests]')
-        ).resolves.toBe(true),
-      { timeout: 120000 }
+    await app.client.waitUntilWindowLoaded()
+
+    await app.client.waitUntil(
+      async () => app.client.isVisible('div[data-testid=overview-tests]'),
+      120000
     )
+
+    await expect(
+      app.client.isVisible('div[data-testid=test-result-websites]')
+    ).resolves.toContain(true)
   })
 })
 
