@@ -4,6 +4,7 @@ import { Ooniprobe } from '../ooniprobe'
 import childProcess from 'child_process'
 import log from 'electron-log'
 import pkgJson from '../../../../package.json'
+import Sentry from '@sentry/electron'
 
 jest.mock('electron-util', () => ({
   is: {
@@ -18,6 +19,8 @@ log.debug = jest.fn()
 log.info = jest.fn()
 log.verbose = jest.fn()
 log.error = jest.fn()
+
+Sentry.addBreadcrumb = jest.fn()
 
 jest.mock('child_process', () => ({
   spawn: jest.fn(),
@@ -251,7 +254,19 @@ describe('Testing the behavior of remaining IPC events', () => {
   })
 
   test('Emits message on stdout "data" event', async () => {
-    const mockJsonMessage = '[{ "msg": "There was an error in the measurement" }]'
+    const line = `{
+      "fields": {
+        "total_data_usage_down": 729963.47265625,
+        "total_data_usage_up": 41480.248046875,
+        "total_networks": 1,
+        "total_tests": 13,
+        "type": "result_summary"
+      },
+      "level": "info",
+      "timestamp": "2021-08-10T16:43:23.463179849+05:30",
+      "message": "result summary"
+    }`
+
     childProcess.spawn.mockImplementation(() => ({
       stdin: {
         end: jest.fn(),
@@ -264,7 +279,7 @@ describe('Testing the behavior of remaining IPC events', () => {
         pipe: jest.fn(() => ({
           on: jest.fn((event, callback) => {
             if (event === 'data') {
-              callback(mockJsonMessage)
+              callback(line)
             }
           }),
         })),
@@ -275,6 +290,51 @@ describe('Testing the behavior of remaining IPC events', () => {
     ooniInstance.call(['list'])
     expect(ooniInstance.emit).toHaveBeenCalledTimes(1)
     expect(ooniInstance.emit.mock.calls[0][0]).toBe('data')
-    expect(ooniInstance.emit.mock.calls[0][1]).toEqual(JSON.parse(mockJsonMessage))
+    expect(ooniInstance.emit.mock.calls[0][1]).toEqual(JSON.parse(line))
+  })
+
+  test('Throws error on stdout "data" event if JSON.parse fails', async () => {
+
+    // nonJSONLine throws error on trying to parse it to JSON
+    const nonJSONLine = `{
+      "fields": {
+        "total_data_usage_down": 729963.47265625,
+        "total_data_usage_up": 41480.248046875,
+        "total_networks": 1,
+        "total_tests": 13,
+        "type": "result_summary
+      }
+    }`
+
+    childProcess.spawn.mockImplementation(() => ({
+      stdin: {
+        end: jest.fn(),
+      },
+      on: jest.fn(),
+      stderr: {
+        on: jest.fn(),
+      },
+      stdout: {
+        pipe: jest.fn(() => ({
+          on: jest.fn((event, callback) => {
+            if (event === 'data') {
+              callback(nonJSONLine)
+            }
+          }),
+        })),
+      },
+    }))
+
+    const ooniInstance = new Ooniprobe()
+    ooniInstance.call(['list'])
+
+    // Calls Sentry.addBreadcrumb with expected arg object in case JSON parse throws error
+    expect(Sentry.addBreadcrumb).toHaveBeenCalledWith({
+      message: 'got unparseable line from ooni cli',
+      category: 'internal',
+      data: {
+        line: nonJSONLine.toString('utf8')
+      }
+    })
   })
 })
