@@ -107,7 +107,7 @@ describe('Ooniprobe instances invokes .call() method', () => {
     const ooniInstance = new Ooniprobe()
 
     ooniInstance.call(['list'])
-    
+
     ooniInstance.kill()
     expect(ooniInstance.ooni.stdin.end).toHaveBeenCalledTimes(1)
   })
@@ -119,14 +119,17 @@ describe('Testing behaviour of "on" IPC events on using .call() with an Ooniprob
   })
 
   test('Promise rejects with correct error message on "error" event', async () => {
+    const errorMessage = 'There was an error'
+
     childProcess.spawn.mockImplementation(() => ({
       stdin: {
         end: jest.fn(),
       },
       on: jest.fn((event, callback) => {
+
+        // Simulating probe-cli emitting 'error' event with an error message
         if (event === 'error') {
-          // Simulating the callback with an error message
-          callback('There was an error')
+          callback(errorMessage)
         } else {
           return
         }
@@ -142,7 +145,7 @@ describe('Testing behaviour of "on" IPC events on using .call() with an Ooniprob
     }))
     const ooniInstance = new Ooniprobe()
 
-    await expect(ooniInstance.call(['list'])).rejects.toBe('There was an error')
+    await expect(ooniInstance.call(['list'])).rejects.toBe(errorMessage)
   })
 
   test('Promise resolves with correct exit code 0 on "exit" event', async () => {
@@ -151,6 +154,7 @@ describe('Testing behaviour of "on" IPC events on using .call() with an Ooniprob
         end: jest.fn(),
       },
       on: jest.fn((event, callback) => {
+        // Simulating probe-cli emitting 'exit' event with code 0
         if (event === 'exit') {
           callback(0)
         }
@@ -174,6 +178,7 @@ describe('Testing behaviour of "on" IPC events on using .call() with an Ooniprob
         end: jest.fn(),
       },
       on: jest.fn((event, callback) => {
+        // Simulating probe-cli emitting 'exit' event with code null
         if (event === 'exit') {
           callback(null)
         }
@@ -191,12 +196,13 @@ describe('Testing behaviour of "on" IPC events on using .call() with an Ooniprob
     await expect(ooniInstance.call(['list'])).resolves.toBeUndefined()
   })
 
-  test('Promise is reject with correct exit code 1 on "exit" event', async () => {
+  test('Promise is rejected on exit code 1 in "exit" event', async () => {
     childProcess.spawn.mockImplementation(() => ({
       stdin: {
         end: jest.fn(),
       },
       on: jest.fn((event, callback) => {
+        // Simulating probe-cli emitting 'exit' event with code 1
         if (event === 'exit') {
           callback(1)
         }
@@ -226,7 +232,11 @@ describe('Testing the behavior of remaining IPC events', () => {
   })
 
   test('Logs error on stderr "data" event', async () => {
+
+    // Assigning a numerical value to make sure 
+    // that it is converted to string
     const mockErrorMessage = 10870098
+
     childProcess.spawn.mockImplementation(() => ({
       stdin: {
         end: jest.fn(),
@@ -234,6 +244,7 @@ describe('Testing the behavior of remaining IPC events', () => {
       on: jest.fn(),
       stderr: {
         on: jest.fn((event, callback) => {
+          // Simulating probe-cli emitting 'stderr' event on 'data'
           if (event === 'data') {
             callback(mockErrorMessage)
           }
@@ -247,6 +258,7 @@ describe('Testing the behavior of remaining IPC events', () => {
     }))
     const ooniInstance = new Ooniprobe()
     ooniInstance.call(['list'])
+
     expect(log.error.mock.calls[0][0]).toBe('stderr: ')
     expect(log.error.mock.calls[0][1]).toBe(mockErrorMessage.toString())
   })
@@ -276,6 +288,7 @@ describe('Testing the behavior of remaining IPC events', () => {
       stdout: {
         pipe: jest.fn(() => ({
           on: jest.fn((event, callback) => {
+            // Simulating probe-cli emitting 'stdout' event on 'data'
             if (event === 'data') {
               callback(line)
             }
@@ -284,8 +297,12 @@ describe('Testing the behavior of remaining IPC events', () => {
       },
     }))
     const ooniInstance = new Ooniprobe()
+
+    // Mocking ooniInstance.emit and replacing it with jest.fn()
     ooniInstance.emit = jest.fn()
+
     ooniInstance.call(['list'])
+    
     expect(ooniInstance.emit).toHaveBeenCalledTimes(1)
     expect(ooniInstance.emit.mock.calls[0][0]).toBe('data')
     expect(ooniInstance.emit.mock.calls[0][1]).toEqual(JSON.parse(line))
@@ -326,7 +343,7 @@ describe('Testing the behavior of remaining IPC events', () => {
     const ooniInstance = new Ooniprobe()
     ooniInstance.call(['list'])
 
-    // Calls Sentry.addBreadcrumb with expected arg object in case JSON parse throws error
+    // Calls Sentry.addBreadcrumb with expected arg object if parsing JSON throws error
     expect(Sentry.addBreadcrumb).toHaveBeenCalledWith({
       message: 'got unparseable line from ooni cli',
       category: 'internal',
