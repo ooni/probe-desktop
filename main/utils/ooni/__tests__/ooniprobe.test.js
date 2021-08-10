@@ -3,7 +3,7 @@
 import { Ooniprobe } from '../ooniprobe'
 import childProcess from 'child_process'
 import log from 'electron-log'
-import { waitFor } from '@testing-library/react'
+import pkgJson from '../../../../package.json'
 
 jest.mock('electron-util', () => ({
   is: {
@@ -90,9 +90,8 @@ describe('Ooniprobe instances invokes .call() method', () => {
     const binaryPath = 'build/probe-cli/linux_amd64'
     const args = [
       '--batch',
-      '--software-name=ooniprobe-desktop',
-      '--software-version=3.5.2', // For CI
-      // '--software-version=3.6.0-dev', // For dev environment
+      `--software-name=${pkgJson.name}`,
+      `--software-version=${pkgJson.version}`,
       'list',
     ]
     const options = {
@@ -141,9 +140,8 @@ describe('Testing behaviour of "on" IPC events on using .call() with an Ooniprob
       },
     }))
     const ooniInstance = new Ooniprobe()
-    await waitFor(() =>
-      expect(ooniInstance.call(['list'])).rejects.toBe('There was an error')
-    )
+
+    await expect(ooniInstance.call(['list'])).rejects.toBe('There was an error')
   })
 
   test('Promise resolves with correct exit code 0 on "exit" event', async () => {
