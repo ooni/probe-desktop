@@ -1,5 +1,5 @@
 import { startApp, stopApp, screenshotApp } from './utils'
-import { waitFor } from '@testing-library/dom'
+// import { waitFor } from '@testing-library/dom'
 
 jest.setTimeout(600000)
 
@@ -85,25 +85,35 @@ describe('Tests for Test-Results screen', () => {
         .click()
         .pause(1500)
 
-      await waitFor(
-        async () =>
-          expect(
-            app.client.getText('h4[data-testid=heading-test-name-full]')
-          ).resolves.toBe('Signal Test'),
-        { timeout: 120000 }
+      await app.client.waitUntilTextExists(
+        'h4[data-testid=heading-test-name-full]',
+        'Signal Test',
+        120000
       )
+      // await waitFor(
+      //   async () =>
+      //     expect(
+      //       app.client.getText('h4[data-testid=heading-test-name-full]')
+      //     ).resolves.toBe('Signal Test'),
+      //   { timeout: 120000 }
+      // )
 
       await screenshotApp(app, 'test-results-detailed-im')
     })
 
     test('Explorer button is displayed with correct link', async () => {
-      await waitFor(
-        async () =>
-          expect(
-            app.client.isVisible('button[data-testid=button-show-in-explorer]')
-          ).resolves.toBe(true),
-        { timeout: 120000 }
+      await app.client.waitUntil(
+        () =>
+          app.client.isVisible('button[data-testid=button-show-in-explorer]'),
+        120000
       )
+      // await waitFor(
+      //   async () =>
+      //     expect(
+      //       app.client.isVisible('button[data-testid=button-show-in-explorer]')
+      //     ).resolves.toBe(true),
+      //   { timeout: 120000 }
+      // )
 
       const explorerButtonText = await app.client.getText(
         'button[data-testid=button-show-in-explorer]'
@@ -133,13 +143,17 @@ describe('Tests for Test-Results screen', () => {
         .click()
         .pause(1500)
 
-      await waitFor(
-        async () =>
-          expect(
-            app.client.isVisible('div[data-testid=container-json-viewer]')
-          ).resolves.toBe(true),
-        { timeout: 2500 }
+      await app.client.waitUntil(
+        () => app.client.isVisible('div[data-testid=container-json-viewer]'),
+        120000
       )
+      // await waitFor(
+      //   async () =>
+      //     expect(
+      //       app.client.isVisible('div[data-testid=container-json-viewer]')
+      //     ).resolves.toBe(true),
+      //   { timeout: 2500 }
+      // )
 
       await expect(
         app.client.getText('h3[data-testid=heading-json-viewer]')
@@ -180,25 +194,34 @@ describe('Tests for Test-Results screen', () => {
         .click()
         .pause(1500)
 
-      await waitFor(
-        async () =>
-          expect(
-            app.client.isVisible('h4[data-testid=heading-test-name-full]')
-          ).resolves.toBe(true),
-        { timeout: 120000 }
+      await app.client.waitUntil(
+        () => app.client.isVisible('h4[data-testid=heading-test-name-full]'),
+        120000
       )
+      // await waitFor(
+      //   async () =>
+      //     expect(
+      //       app.client.isVisible('h4[data-testid=heading-test-name-full]')
+      //     ).resolves.toBe(true),
+      //   { timeout: 120000 }
+      // )
 
       await screenshotApp(app, 'test-results-detailed-websites')
     })
 
     test('Explorer button is displayed with correct link', async () => {
-      await waitFor(
-        async () =>
-          expect(
-            app.client.isVisible('button[data-testid=button-show-in-explorer]')
-          ).resolves.toBe(true),
-        { timeout: 120000 }
+      await app.client.waitUntil(
+        () =>
+          app.client.isVisible('button[data-testid=button-show-in-explorer]'),
+        120000
       )
+      // await waitFor(
+      //   async () =>
+      //     expect(
+      //       app.client.isVisible('button[data-testid=button-show-in-explorer]')
+      //     ).resolves.toBe(true),
+      //   { timeout: 120000 }
+      // )
 
       const explorerButtonText = await app.client.getText(
         'button[data-testid=button-show-in-explorer]'
@@ -228,13 +251,18 @@ describe('Tests for Test-Results screen', () => {
         .click()
         .pause(1500)
 
-      await waitFor(
-        async () =>
-          expect(
-            app.client.isVisible('div[data-testid=container-json-viewer]')
-          ).resolves.toBe(true),
-        { timeout: 2500 }
+      await app.client.waitUntil(
+        () => app.client.isVisible('div[data-testid=container-json-viewer]'),
+        120000
       )
+
+      // await waitFor(
+      //   async () =>
+      //     expect(
+      //       app.client.isVisible('div[data-testid=container-json-viewer]')
+      //     ).resolves.toBe(true),
+      //   { timeout: 2500 }
+      // )
 
       await expect(
         app.client.getText('h3[data-testid=heading-json-viewer]')
@@ -283,25 +311,35 @@ describe('Tests for Test-Results screen', () => {
         .click()
         .pause(1500)
 
-      await waitFor(
-        async () =>
-          expect(
-            app.client.getText('h4[data-testid=heading-test-name-full]')
-          ).resolves.toBe('Tor Test'),
-        { timeout: 120000 }
+      await app.client.waitUntilTextExists(
+        'h4[data-testid=heading-test-name-full]',
+        'Tor Test',
+        120000
       )
+      // await waitFor(
+      //   async () =>
+      //     expect(
+      //       app.client.getText('h4[data-testid=heading-test-name-full]')
+      //     ).resolves.toBe('Tor Test'),
+      //   { timeout: 120000 }
+      // )
 
       await screenshotApp(app, 'test-results-detailed-circumvention')
     })
 
     test('Explorer button is displayed with correct link', async () => {
-      await waitFor(
-        async () =>
-          expect(
-            app.client.isVisible('button[data-testid=button-show-in-explorer]')
-          ).resolves.toBe(true),
-        { timeout: 120000 }
+      await app.client.waitUntil(
+        () =>
+          app.client.isVisible('button[data-testid=button-show-in-explorer]'),
+        120000
       )
+      // await waitFor(
+      //   async () =>
+      //     expect(
+      //       app.client.isVisible('button[data-testid=button-show-in-explorer]')
+      //     ).resolves.toBe(true),
+      //   { timeout: 120000 }
+      // )
 
       const explorerButtonText = await app.client.getText(
         'button[data-testid=button-show-in-explorer]'
@@ -331,13 +369,18 @@ describe('Tests for Test-Results screen', () => {
         .click()
         .pause(1500)
 
-      await waitFor(
-        async () =>
-          expect(
-            app.client.isVisible('div[data-testid=container-json-viewer]')
-          ).resolves.toBe(true),
-        { timeout: 2500 }
+      await app.client.waitUntil(
+        () => app.client.isVisible('div[data-testid=container-json-viewer]'),
+        120000
       )
+
+      // await waitFor(
+      //   async () =>
+      //     expect(
+      //       app.client.isVisible('div[data-testid=container-json-viewer]')
+      //     ).resolves.toBe(true),
+      //   { timeout: 2500 }
+      // )
 
       await expect(
         app.client.getText('h3[data-testid=heading-json-viewer]')
@@ -386,25 +429,35 @@ describe('Tests for Test-Results screen', () => {
         .click()
         .pause(1500)
 
-      await waitFor(
-        async () =>
-          expect(
-            app.client.getText('h4[data-testid=heading-test-name-full]')
-          ).resolves.toBe('NDT Speed Test'),
-        { timeout: 120000 }
+      await app.client.waitUntilTextExists(
+        'h4[data-testid=heading-test-name-full]',
+        'NDT Speed Test',
+        120000
       )
+      // await waitFor(
+      //   async () =>
+      //     expect(
+      //       app.client.getText('h4[data-testid=heading-test-name-full]')
+      //     ).resolves.toBe('NDT Speed Test'),
+      //   { timeout: 120000 }
+      // )
 
       await screenshotApp(app, 'test-results-detailed-performance')
     })
 
     test('Explorer button is displayed with correct link', async () => {
-      await waitFor(
-        async () =>
-          expect(
-            app.client.isVisible('button[data-testid=button-show-in-explorer]')
-          ).resolves.toBe(true),
-        { timeout: 120000 }
+      await app.client.waitUntil(
+        () =>
+          app.client.isVisible('button[data-testid=button-show-in-explorer]'),
+        120000
       )
+      // await waitFor(
+      //   async () =>
+      //     expect(
+      //       app.client.isVisible('button[data-testid=button-show-in-explorer]')
+      //     ).resolves.toBe(true),
+      //   { timeout: 120000 }
+      // )
 
       const explorerButtonText = await app.client.getText(
         'button[data-testid=button-show-in-explorer]'
@@ -434,13 +487,18 @@ describe('Tests for Test-Results screen', () => {
         .click()
         .pause(1500)
 
-      await waitFor(
-        async () =>
-          expect(
-            app.client.isVisible('div[data-testid=container-json-viewer]')
-          ).resolves.toBe(true),
-        { timeout: 2500 }
+      await app.client.waitUntil(
+        () => app.client.isVisible('div[data-testid=container-json-viewer]'),
+        120000
       )
+
+      // await waitFor(
+      //   async () =>
+      //     expect(
+      //       app.client.isVisible('div[data-testid=container-json-viewer]')
+      //     ).resolves.toBe(true),
+      //   { timeout: 2500 }
+      // )
 
       await expect(
         app.client.getText('h3[data-testid=heading-json-viewer]')
@@ -475,10 +533,12 @@ describe('Tests for Test-Results screen', () => {
       const testedParams = await app.client.getText(
         'div div[data-testid=measured-test-name]'
       )
-      expect(testedParams.sort()).toEqual([
-        'HTTP Invalid Request Line Test',
-        'HTTP Header Field Manipulation Test',
-      ].sort())
+      expect(testedParams.sort()).toEqual(
+        [
+          'HTTP Invalid Request Line Test',
+          'HTTP Header Field Manipulation Test',
+        ].sort()
+      )
 
       await screenshotApp(app, 'test-results-measurements-middlebox')
     })
@@ -490,25 +550,35 @@ describe('Tests for Test-Results screen', () => {
         .click()
         .pause(1500)
 
-      await waitFor(
-        async () =>
-          expect(
-            app.client.getText('h4[data-testid=heading-test-name-full]')
-          ).resolves.toBe('HTTP Header Field Manipulation Test'),
-        { timeout: 120000 }
+      await app.client.waitUntilTextExists(
+        'h4[data-testid=heading-test-name-full]',
+        'HTTP Header Field Manipulation Test',
+        120000
       )
+      // await waitFor(
+      //   async () =>
+      //     expect(
+      //       app.client.getText('h4[data-testid=heading-test-name-full]')
+      //     ).resolves.toBe('HTTP Header Field Manipulation Test'),
+      //   { timeout: 120000 }
+      // )
 
       await screenshotApp(app, 'test-results-detailed-middlebox')
     })
 
     test('Explorer button is displayed with correct link', async () => {
-      await waitFor(
-        async () =>
-          expect(
-            app.client.isVisible('button[data-testid=button-show-in-explorer]')
-          ).resolves.toBe(true),
-        { timeout: 120000 }
+      await app.client.waitUntil(
+        () =>
+          app.client.isVisible('button[data-testid=button-show-in-explorer]'),
+        120000
       )
+      // await waitFor(
+      //   async () =>
+      //     expect(
+      //       app.client.isVisible('button[data-testid=button-show-in-explorer]')
+      //     ).resolves.toBe(true),
+      //   { timeout: 120000 }
+      // )
 
       const explorerButtonText = await app.client.getText(
         'button[data-testid=button-show-in-explorer]'
@@ -531,7 +601,9 @@ describe('Tests for Test-Results screen', () => {
     test('Methodology link is correctly displayed', async () => {
       await expect(
         app.client.getAttribute('=Methodology', 'href')
-      ).resolves.toBe('https://ooni.org/nettest/http-header-field-manipulation/')
+      ).resolves.toBe(
+        'https://ooni.org/nettest/http-header-field-manipulation/'
+      )
     })
 
     test('Data button loads up raw data', async () => {
@@ -540,13 +612,15 @@ describe('Tests for Test-Results screen', () => {
         .click()
         .pause(1500)
 
-      await waitFor(
-        async () =>
-          expect(
-            app.client.isVisible('div[data-testid=container-json-viewer]')
-          ).resolves.toBe(true),
-        { timeout: 2500 }
-      )
+      await app.client.waitUntil(() => app.client.isVisible('div[data-testid=container-json-viewer]'), 120000)
+
+      // await waitFor(
+      //   async () =>
+      //     expect(
+      //       app.client.isVisible('div[data-testid=container-json-viewer]')
+      //     ).resolves.toBe(true),
+      //   { timeout: 2500 }
+      // )
 
       await expect(
         app.client.getText('h3[data-testid=heading-json-viewer]')
