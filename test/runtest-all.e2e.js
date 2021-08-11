@@ -13,15 +13,23 @@ describe('All network tests run successfully', () => {
     await stopApp(app)
   })
 
+  afterEach(async () => {
+    await screenshotApp(app, expect.getState().currentTestName)
+  })
+
   test('Tests start successfully on click of RUN button', async () => {
     await app.client.$('button[data-testid=button-dashboard-run]').click()
 
     await app.client.waitUntil(
-      () => app.client.isVisible('span=Preparing test...'),
+      () => app.client.isVisible('h3[data-testid=heading-running-test-name]'),
       120000
     )
 
-    await screenshotApp(app, 'runtestall-started')
+    await expect(
+      app.client.getText('h3[data-testid=heading-running-test-name]')
+    ).resolves.toBe('Preparing test...')
+
+    // await screenshotApp(app, 'runtestall-started')
   })
 
   test('Website test runs from start to finish', async () => {

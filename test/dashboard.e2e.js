@@ -12,6 +12,10 @@ describe('Dashboard tests', () => {
     await stopApp(app)
   })
 
+  afterEach(async () => {
+    await screenshotApp(app, expect.getState().currentTestName)
+  })
+
   test('Run button is displayed on Dashboard', async () => {
     const runButtonText = await app.client
       .$('button[data-testid=button-dashboard-run]')
@@ -89,7 +93,7 @@ describe('Dashboard tests', () => {
     expect(labelNetworks).toContain('Networks')
     expect(labelDataUsage).toContain('Data Usage')
 
-    screenshotApp(app, 'dashboard-test-results')
+    // screenshotApp(app, 'dashboard-test-results')
   })
 
   test('Clicking on "Settings" tab loads the Settings page', async () => {
@@ -103,6 +107,6 @@ describe('Dashboard tests', () => {
     const labelTestOptionsVisible = await app.client.isVisible('h3=Settings')
     expect(labelTestOptionsVisible).toBe(true)
 
-    screenshotApp(app, 'dashboard-settings-page')
+    // screenshotApp(app, 'dashboard-settings-page')
   })
 })
