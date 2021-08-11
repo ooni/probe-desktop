@@ -27,7 +27,7 @@
     "lint": "eslint --ignore-path .gitignore .",
     "test:unit": "jest -c test/lib/unit.config.js",
     "test:e2e": "jest -c test/lib/integration.config.js --testRegex 'e2e.js' --runInBand",
-    "test:current": "jest runtest-all.e2e.js -c test/lib/integration.config.js --testRegex 'e2e.js'",
+    "test:current": "jest test-results.e2e.js -c test/lib/integration.config.js --testRegex 'e2e.js'",
     "test:unit:update_snapshot": "jest -c test/lib/unit.config.js --updateSnapshot",
     "postinstall": "electron-builder install-app-deps",
     "storybook": "start-storybook -p 6006"

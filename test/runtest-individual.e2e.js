@@ -14,6 +14,10 @@ describe('IM test', () => {
     await stopApp(app)
   })
 
+  afterEach(async () => {
+    await screenshotApp(app, expect.getState().currentTestName)
+  })
+
   test('IM test successfully starts', async () => {
     await app.client
       .$('div[data-testid=run-card-im]')
@@ -196,7 +200,7 @@ describe('Custom websites test', () => {
 
     expect(runButtonEnabled).toBe(false)
 
-    await screenshotApp(app, 'runtest-custom-websites-choose')
+    // await screenshotApp(app, 'runtest-custom-websites-choose')
   })
 
   test('Allows entering custom URLs', async () => {
@@ -216,7 +220,7 @@ describe('Custom websites test', () => {
 
     expect(runButtonEnabled).toBe(true)
 
-    await screenshotApp(app, 'runtest-custom-websites-chosen')
+    // await screenshotApp(app, 'runtest-custom-websites-chosen')
   })
 
   test('Runs the custom websites test', async () => {
@@ -249,7 +253,7 @@ describe('Custom websites test', () => {
       300000
     )
 
-    await screenshotApp(app, 'runtest-running-websites-custom')
+    // await screenshotApp(app, 'runtest-running-websites-custom')
   })
 
   test('Custom website test finishes correctly', async () => {
@@ -272,7 +276,7 @@ describe('Custom websites test', () => {
 
     await expect(
       app.client.isVisible('div[data-testid=test-result-websites]')
-    ).resolves.toBe(true)
+    ).resolves.toMatch([true, true])
   })
 })
 
