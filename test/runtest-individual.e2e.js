@@ -20,45 +20,47 @@ describe('IM test', () => {
       .click()
       .pause(1000)
 
-    await app.client.waitUntil(
-      () => app.client.isVisible('button[data-testid=button-run-test]'),
-      120000
-    )
-
     await screenshotApp(app, 'runtest-description-im')
 
-    await app.client
-      .$('button[data-testid=button-run-test]')
-      .click()
-      .pause(500)
-
-    await app.client.waitUntilTextExists(
-      'h3[data-testid=heading-running-test-name]',
-      'Preparing test...',
-      120000
+    await app.client.waitUntil(
+      () => app.client.isVisible('button[data-testid=button-run-test]'),
+      300000
     )
+
+    await app.client.$('button[data-testid=button-run-test]').click()
+
+    await app.client.waitUntilWindowLoaded()
+    const headingTestGroupName = await app.client.getText(
+      'h2[data-testid=heading-test-group-name]'
+    )
+    expect(headingTestGroupName).toBe('Instant Messaging')
+
+    const headingPreparingTests = await app.client.getText(
+      'h3[data-testid=heading-running-test-name]'
+    )
+    expect(headingPreparingTests).toBe('Preparing test...')
   })
 
   test('IM test runs with all 4 network tests', async () => {
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'Facebook Messenger Test',
-      120000
+      300000
     )
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'Telegram Test',
-      120000
+      300000
     )
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'WhatsApp Test',
-      120000
+      300000
     )
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'Signal Test',
-      120000
+      300000
     )
 
     await app.client.waitUntil(
@@ -66,7 +68,7 @@ describe('IM test', () => {
         (await app.client.isVisible(
           'div[data-testid=running-animation-im]'
         )) === false,
-      120000
+      300000
     )
   })
 
@@ -75,7 +77,7 @@ describe('IM test', () => {
 
     await app.client.waitUntil(
       async () => app.client.isVisible('div[data-testid=overview-tests]'),
-      120000
+      300000
     )
 
     await expect(
@@ -104,7 +106,7 @@ describe('Websites test', () => {
 
     await app.client.waitUntil(
       () => app.client.isVisible('button[data-testid=button-run-test]'),
-      120000
+      300000
     )
 
     await screenshotApp(app, 'runtest-description-websites')
@@ -129,12 +131,12 @@ describe('Websites test', () => {
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'Web Connectivity Test',
-      120000
+      300000
     )
     await app.client.waitUntilTextExists(
       'h3[data-testid=heading-running-test-name]',
       'Running:',
-      120000
+      300000
     )
 
     await app.client.waitUntil(
@@ -142,7 +144,7 @@ describe('Websites test', () => {
         (await app.client.isVisible(
           'div[data-testid=running-animation-websites]'
         )) === false,
-      120000
+      300000
     )
   })
 
@@ -151,7 +153,7 @@ describe('Websites test', () => {
 
     await app.client.waitUntil(
       async () => app.client.isVisible('div[data-testid=overview-tests]'),
-      120000
+      300000
     )
 
     await expect(
@@ -180,7 +182,7 @@ describe('Custom websites test', () => {
 
     await app.client.waitUntil(
       () => app.client.isVisible('button[data-testid=button-choose-websites]'),
-      120000
+      300000
     )
 
     await app.client
@@ -226,7 +228,7 @@ describe('Custom websites test', () => {
     await app.client.waitUntilTextExists(
       'h2[data-testid=heading-test-group-name]',
       'Websites',
-      120000
+      300000
     )
 
     const headingPreparingTests = await app.client.getText(
@@ -239,12 +241,12 @@ describe('Custom websites test', () => {
     await app.client.waitUntilTextExists(
       'div[data-testid=test-progress-message]',
       'processing input: https://www.twitter.com',
-      120000
+      300000
     )
     await app.client.waitUntilTextExists(
       'div[data-testid=test-progress-message]',
       'processing input: https://www.facebook.com',
-      120000
+      300000
     )
 
     await screenshotApp(app, 'runtest-running-websites-custom')
@@ -256,7 +258,7 @@ describe('Custom websites test', () => {
         (await app.client.isVisible(
           'div[data-testid=running-animation-websites]'
         )) === false,
-      120000
+      300000
     )
   })
 
@@ -265,7 +267,7 @@ describe('Custom websites test', () => {
 
     await app.client.waitUntil(
       async () => app.client.isVisible('div[data-testid=overview-tests]'),
-      120000
+      300000
     )
 
     await expect(
@@ -296,7 +298,7 @@ describe('Circumvention test', () => {
 
     await app.client.waitUntil(
       () => app.client.isVisible('button[data-testid=button-run-test]'),
-      120000
+      300000
     )
 
     await app.client.$('button[data-testid=button-run-test]').click()
@@ -317,17 +319,17 @@ describe('Circumvention test', () => {
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'Psiphon Test',
-      120000
+      300000
     )
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'RiseupVPN Test',
-      120000
+      300000
     )
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'Tor Test',
-      120000
+      300000
     )
 
     await screenshotApp(app, 'runtest-running-circumvention')
@@ -337,7 +339,7 @@ describe('Circumvention test', () => {
         (await app.client.isVisible(
           'div[data-testid=running-animation-cirumvention]'
         )) === false,
-      120000
+      300000
     )
   })
 
@@ -346,7 +348,7 @@ describe('Circumvention test', () => {
 
     await app.client.waitUntil(
       async () => app.client.isVisible('div[data-testid=overview-tests]'),
-      120000
+      300000
     )
 
     await expect(
@@ -377,7 +379,7 @@ describe('Performance test', () => {
 
     await app.client.waitUntil(
       () => app.client.isVisible('button[data-testid=button-run-test]'),
-      120000
+      300000
     )
 
     await app.client.$('button[data-testid=button-run-test]').click()
@@ -399,13 +401,13 @@ describe('Performance test', () => {
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'DASH Streaming Test',
-      120000
+      300000
     )
 
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'NDT Speed Test',
-      120000
+      300000
     )
 
     await screenshotApp(app, 'runtest-running-performance')
@@ -415,7 +417,7 @@ describe('Performance test', () => {
         (await app.client.isVisible(
           'div[data-testid=running-animation-performance]'
         )) === false,
-      120000
+      300000
     )
   })
 
@@ -424,7 +426,7 @@ describe('Performance test', () => {
 
     await app.client.waitUntil(
       async () => app.client.isVisible('div[data-testid=overview-tests]'),
-      120000
+      300000
     )
 
     await expect(
@@ -456,7 +458,7 @@ describe('Middleboxes test', () => {
 
     await app.client.waitUntil(
       () => app.client.isVisible('button[data-testid=button-run-test]'),
-      120000
+      300000
     )
 
     await app.client.$('button[data-testid=button-run-test]').click()
@@ -478,13 +480,13 @@ describe('Middleboxes test', () => {
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'HTTP Invalid Request Line Test',
-      120000
+      300000
     )
 
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'HTTP Header Field Manipulation Test',
-      120000
+      300000
     )
 
     await screenshotApp(app, 'runtest-running-circumvention')
@@ -494,7 +496,7 @@ describe('Middleboxes test', () => {
         (await app.client.isVisible(
           'div[data-testid=running-animation-middlebox]'
         )) === false,
-      120000
+      300000
     )
   })
 
@@ -503,7 +505,7 @@ describe('Middleboxes test', () => {
 
     await app.client.waitUntil(
       async () => app.client.isVisible('div[data-testid=overview-tests]'),
-      120000
+      300000
     )
 
     await expect(
