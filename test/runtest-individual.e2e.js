@@ -22,6 +22,7 @@ describe('IM test', () => {
     await app.client
       .$('div[data-testid=run-card-im]')
       .click()
+      .pause(500)
 
     await app.client.waitUntilWindowLoaded()
 
@@ -32,7 +33,10 @@ describe('IM test', () => {
       300000
     )
 
-    await app.client.$('button[data-testid=button-run-test]').click()
+    await app.client
+      .$('button[data-testid=button-run-test]')
+      .click()
+      .pause(500)
 
     await app.client.waitUntilWindowLoaded()
     const headingTestGroupName = await app.client.getText(
@@ -107,7 +111,8 @@ describe('Websites test', () => {
     await app.client
       .$('div[data-testid=run-card-websites]')
       .click()
-    
+      .pause(500)
+
     await app.client.waitUntilWindowLoaded()
 
     await app.client.waitUntil(
@@ -120,7 +125,8 @@ describe('Websites test', () => {
     await app.client
       .$('button[data-testid=button-run-test]')
       .click()
-    
+      .pause(500)
+
     await app.client.waitUntilWindowLoaded()
 
     const headingTestGroupName = await app.client.getText(
@@ -185,7 +191,8 @@ describe('Custom websites test', () => {
     await app.client
       .$('div[data-testid=run-card-websites]')
       .click()
-    
+      .pause(500)
+
     await app.client.waitUntilWindowLoaded()
 
     await app.client.waitUntil(
@@ -196,7 +203,8 @@ describe('Custom websites test', () => {
     await app.client
       .$('button[data-testid=button-choose-websites]')
       .click()
-    
+      .pause(500)
+
     await app.client.waitUntilWindowLoaded()
 
     const runButtonEnabled = await app.client.isEnabled(
@@ -213,7 +221,10 @@ describe('Custom websites test', () => {
       .$('input[data-testid=input-add-url-0]')
       .setValue('https://www.twitter.com')
 
-    await app.client.$('button[data-testid=button-add-url]').click()
+    await app.client
+      .$('button[data-testid=button-add-url]')
+      .click()
+      .pause(500)
 
     await app.client
       .$('input[data-testid=input-add-url-1]')
@@ -232,7 +243,8 @@ describe('Custom websites test', () => {
     await app.client
       .$('button[data-testid=button-run-custom-test]')
       .click()
-    
+      .pause(500)
+
     await app.client.waitUntilWindowLoaded()
 
     await app.client.waitUntilTextExists(
@@ -302,6 +314,7 @@ describe('Circumvention test', () => {
     await app.client
       .$('div[data-testid=run-card-circumvention]')
       .click()
+      .pause(500)
 
     await app.client.waitUntilWindowLoaded()
 
@@ -312,7 +325,10 @@ describe('Circumvention test', () => {
       300000
     )
 
-    await app.client.$('button[data-testid=button-run-test]').click()
+    await app.client
+      .$('button[data-testid=button-run-test]')
+      .click()
+      .pause(500)
 
     await app.client.waitUntilWindowLoaded()
     const headingTestGroupName = await app.client.getText(
@@ -384,6 +400,7 @@ describe('Performance test', () => {
     await app.client
       .$('div[data-testid=run-card-performance]')
       .click()
+      .pause(500)
 
     await app.client.waitUntilWindowLoaded()
 
@@ -394,7 +411,10 @@ describe('Performance test', () => {
       300000
     )
 
-    await app.client.$('button[data-testid=button-run-test]').click()
+    await app.client
+      .$('button[data-testid=button-run-test]')
+      .click()
+      .pause(500)
 
     await app.client.waitUntilWindowLoaded()
     const headingTestGroupName = await app.client.getText(
@@ -409,7 +429,6 @@ describe('Performance test', () => {
   })
 
   test('Performance test performs both network tests', async () => {
-
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'DASH Streaming Test',
@@ -447,7 +466,6 @@ describe('Performance test', () => {
   })
 })
 
-
 // Middleboxes test
 describe('Middleboxes test', () => {
   let app
@@ -464,6 +482,7 @@ describe('Middleboxes test', () => {
     await app.client
       .$('div[data-testid=run-card-middlebox]')
       .click()
+      .pause(500)
 
     await app.client.waitUntilWindowLoaded()
 
@@ -474,7 +493,10 @@ describe('Middleboxes test', () => {
       300000
     )
 
-    await app.client.$('button[data-testid=button-run-test]').click()
+    await app.client
+      .$('button[data-testid=button-run-test]')
+      .click()
+      .pause(500)
 
     await app.client.waitUntilWindowLoaded()
     const headingTestGroupName = await app.client.getText(
@@ -489,7 +511,6 @@ describe('Middleboxes test', () => {
   })
 
   test('Middleboxes test performs both network tests', async () => {
-
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'HTTP Invalid Request Line Test',

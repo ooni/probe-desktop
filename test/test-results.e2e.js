@@ -10,8 +10,9 @@ describe('Tests for Test-Results screen', () => {
 
     await app.client
       .$('div=Test Results')
-      .click().pause(1000)
-      
+      .click()
+      .pause(1000)
+
     await app.client.waitUntilWindowLoaded()
 
     await screenshotApp(app, 'test-results-after-run')
@@ -57,8 +58,9 @@ describe('Tests for Test-Results screen', () => {
     beforeAll(async () => {
       await app.client
         .$('div[data-testid=test-result-im]')
-        .click().pause(1000)
-      
+        .click()
+        .pause(1000)
+
       await app.client.waitUntilWindowLoaded()
     })
 
@@ -87,8 +89,9 @@ describe('Tests for Test-Results screen', () => {
       await app.client
         .$$('div[data-testid=measured-test-name]')
         .$('div=Signal Test')
-        .click().pause(1000)
-      
+        .click()
+        .pause(1000)
+
       await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntilTextExists(
@@ -132,8 +135,9 @@ describe('Tests for Test-Results screen', () => {
     test('Data button loads up raw data', async () => {
       await app.client
         .$('button[data-testid=button-data-raw]')
-        .click().pause(1000)
-      
+        .click()
+        .pause(1000)
+
       await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntil(
@@ -156,14 +160,15 @@ describe('Tests for Test-Results screen', () => {
     beforeAll(async () => {
       await app.client
         .$('div=Test Results')
-        .click().pause(1000)
-        
+        .click()
+        .pause(1000)
 
       await app.client.waitUntilWindowLoaded()
 
       await app.client
         .$('div[data-testid=test-result-websites]')
-        .click().pause(1000)
+        .click()
+        .pause(1000)
 
       await app.client.waitUntilWindowLoaded()
     })
@@ -180,7 +185,8 @@ describe('Tests for Test-Results screen', () => {
     test('Detailed Measurements load up correctly', async () => {
       await app.client
         .$('div[data-testid=measured-url-row')
-        .click().pause(1000)
+        .click()
+        .pause(1000)
 
       await app.client.waitUntilWindowLoaded()
 
@@ -224,7 +230,8 @@ describe('Tests for Test-Results screen', () => {
     test('Data button loads up raw data', async () => {
       await app.client
         .$('button[data-testid=button-data-raw]')
-        .click().pause(1000)
+        .click()
+        .pause(1000)
 
       await app.client.waitUntilWindowLoaded()
 
@@ -248,14 +255,15 @@ describe('Tests for Test-Results screen', () => {
     beforeAll(async () => {
       await app.client
         .$('div=Test Results')
-        .click().pause(1000)
-        
+        .click()
+        .pause(1000)
 
       await app.client.waitUntilWindowLoaded()
 
       await app.client
         .$('div[data-testid=test-result-circumvention]')
-        .click().pause(1000)
+        .click()
+        .pause(1000)
 
       await app.client.waitUntilWindowLoaded()
     })
@@ -280,7 +288,8 @@ describe('Tests for Test-Results screen', () => {
       await app.client
         .$$('div[data-testid=measured-test-name]')
         .$('div=Tor Test')
-        .click().pause(1000)
+        .click()
+        .pause(1000)
 
       await app.client.waitUntilWindowLoaded()
 
@@ -325,7 +334,8 @@ describe('Tests for Test-Results screen', () => {
     test('Data button loads up raw data', async () => {
       await app.client
         .$('button[data-testid=button-data-raw]')
-        .click().pause(1000)
+        .click()
+        .pause(1000)
 
       await app.client.waitUntilWindowLoaded()
 
@@ -349,14 +359,15 @@ describe('Tests for Test-Results screen', () => {
     beforeAll(async () => {
       await app.client
         .$('div=Test Results')
-        .click().pause(1000)
-        
+        .click()
+        .pause(1000)
 
       await app.client.waitUntilWindowLoaded()
 
       await app.client
         .$('div[data-testid=test-result-performance]')
-        .click().pause(1000)
+        .click()
+        .pause(1000)
 
       await app.client.waitUntilWindowLoaded()
     })
@@ -381,7 +392,8 @@ describe('Tests for Test-Results screen', () => {
       await app.client
         .$$('div[data-testid=measured-test-name]')
         .$('div=NDT Speed Test')
-        .click().pause(1000)
+        .click()
+        .pause(1000)
 
       await app.client.waitUntilWindowLoaded()
 
@@ -426,7 +438,8 @@ describe('Tests for Test-Results screen', () => {
     test('Data button loads up raw data', async () => {
       await app.client
         .$('button[data-testid=button-data-raw]')
-        .click().pause(1000)
+        .click()
+        .pause(1000)
 
       await app.client.waitUntilWindowLoaded()
 
@@ -450,14 +463,15 @@ describe('Tests for Test-Results screen', () => {
     beforeAll(async () => {
       await app.client
         .$('div=Test Results')
-        .click().pause(1000)
-        
+        .click()
+        .pause(1000)
 
       await app.client.waitUntilWindowLoaded()
 
       await app.client
         .$('div[data-testid=test-result-middlebox]')
-        .click().pause(1000)
+        .click()
+        .pause(1000)
 
       await app.client.waitUntilWindowLoaded()
     })
@@ -485,7 +499,8 @@ describe('Tests for Test-Results screen', () => {
       await app.client
         .$$('div[data-testid=measured-test-name]')
         .$('div=HTTP Header Field Manipulation Test')
-        .click().pause(1000)
+        .click()
+        .pause(1000)
 
       await app.client.waitUntilWindowLoaded()
 
@@ -534,11 +549,15 @@ describe('Tests for Test-Results screen', () => {
     test('Data button loads up raw data', async () => {
       await app.client
         .$('button[data-testid=button-data-raw]')
-        .click().pause(1000)
+        .click()
+        .pause(1000)
 
       await app.client.waitUntilWindowLoaded()
 
-      await app.client.waitUntil(() => app.client.isVisible('div[data-testid=container-json-viewer]'), 120000)
+      await app.client.waitUntil(
+        () => app.client.isVisible('div[data-testid=container-json-viewer]'),
+        120000
+      )
 
       await expect(
         app.client.getText('h3[data-testid=heading-json-viewer]')
