@@ -22,7 +22,8 @@ describe('IM test', () => {
     await app.client
       .$('div[data-testid=run-card-im]')
       .click()
-      .pause(1000)
+
+    await app.client.waitUntilWindowLoaded()
 
     await screenshotApp(app, 'runtest-description-im')
 
@@ -106,7 +107,8 @@ describe('Websites test', () => {
     await app.client
       .$('div[data-testid=run-card-websites]')
       .click()
-      .pause(1000)
+    
+    await app.client.waitUntilWindowLoaded()
 
     await app.client.waitUntil(
       () => app.client.isVisible('button[data-testid=button-run-test]'),
@@ -118,7 +120,8 @@ describe('Websites test', () => {
     await app.client
       .$('button[data-testid=button-run-test]')
       .click()
-      .pause(500)
+    
+    await app.client.waitUntilWindowLoaded()
 
     const headingTestGroupName = await app.client.getText(
       'h2[data-testid=heading-test-group-name]'
@@ -182,7 +185,8 @@ describe('Custom websites test', () => {
     await app.client
       .$('div[data-testid=run-card-websites]')
       .click()
-      .pause(1000)
+    
+    await app.client.waitUntilWindowLoaded()
 
     await app.client.waitUntil(
       () => app.client.isVisible('button[data-testid=button-choose-websites]'),
@@ -192,7 +196,8 @@ describe('Custom websites test', () => {
     await app.client
       .$('button[data-testid=button-choose-websites]')
       .click()
-      .pause(1000)
+    
+    await app.client.waitUntilWindowLoaded()
 
     const runButtonEnabled = await app.client.isEnabled(
       'button[data-testid=button-run-custom-test]'
@@ -227,7 +232,8 @@ describe('Custom websites test', () => {
     await app.client
       .$('button[data-testid=button-run-custom-test]')
       .click()
-      .pause(1000)
+    
+    await app.client.waitUntilWindowLoaded()
 
     await app.client.waitUntilTextExists(
       'h2[data-testid=heading-test-group-name]',
@@ -276,7 +282,7 @@ describe('Custom websites test', () => {
 
     await expect(
       app.client.isVisible('div[data-testid=test-result-websites]')
-    ).resolves.toMatch([true, true])
+    ).resolves.toEqual([true, true])
   })
 })
 
@@ -296,7 +302,8 @@ describe('Circumvention test', () => {
     await app.client
       .$('div[data-testid=run-card-circumvention]')
       .click()
-      .pause(1000)
+
+    await app.client.waitUntilWindowLoaded()
 
     await screenshotApp(app, 'runtest-description-circumvention')
 
@@ -377,7 +384,8 @@ describe('Performance test', () => {
     await app.client
       .$('div[data-testid=run-card-performance]')
       .click()
-      .pause(1000)
+
+    await app.client.waitUntilWindowLoaded()
 
     await screenshotApp(app, 'runtest-description-performance')
 
@@ -456,7 +464,8 @@ describe('Middleboxes test', () => {
     await app.client
       .$('div[data-testid=run-card-middlebox]')
       .click()
-      .pause(1000)
+
+    await app.client.waitUntilWindowLoaded()
 
     await screenshotApp(app, 'runtest-description-middlebox')
 

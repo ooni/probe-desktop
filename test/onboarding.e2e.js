@@ -133,7 +133,9 @@ describe('Onboarding', () => {
   })
 
   test('Finishing Onboarding process brings up the Dashboard', async () => {
-    await app.client.$('button[data-testid=letsgo]').click().pause(500)
+    await app.client.$('button[data-testid=letsgo]').click()
+
+    await app.client.waitUntilWindowLoaded()
 
     const runButtonExists = app.client.isVisible('button[data-testid=button-dashboard-run]')
     expect(runButtonExists).toBeTruthy()

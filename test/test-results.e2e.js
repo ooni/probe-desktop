@@ -10,8 +10,9 @@ describe('Tests for Test-Results screen', () => {
 
     await app.client
       .$('div=Test Results')
-      .click()
-      .pause(1500)
+      .click().pause(1000)
+      
+    await app.client.waitUntilWindowLoaded()
 
     await screenshotApp(app, 'test-results-after-run')
   })
@@ -56,8 +57,9 @@ describe('Tests for Test-Results screen', () => {
     beforeAll(async () => {
       await app.client
         .$('div[data-testid=test-result-im]')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+      
+      await app.client.waitUntilWindowLoaded()
     })
 
     test('There are total 4 IM measurements', async () => {
@@ -85,8 +87,9 @@ describe('Tests for Test-Results screen', () => {
       await app.client
         .$$('div[data-testid=measured-test-name]')
         .$('div=Signal Test')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+      
+      await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntilTextExists(
         'h4[data-testid=heading-test-name-full]',
@@ -129,8 +132,9 @@ describe('Tests for Test-Results screen', () => {
     test('Data button loads up raw data', async () => {
       await app.client
         .$('button[data-testid=button-data-raw]')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+      
+      await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntil(
         () => app.client.isVisible('div[data-testid=container-json-viewer]'),
@@ -152,13 +156,16 @@ describe('Tests for Test-Results screen', () => {
     beforeAll(async () => {
       await app.client
         .$('div=Test Results')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+        
+
+      await app.client.waitUntilWindowLoaded()
 
       await app.client
         .$('div[data-testid=test-result-websites]')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+
+      await app.client.waitUntilWindowLoaded()
     })
 
     test('There is at least one URL row', async () => {
@@ -173,8 +180,9 @@ describe('Tests for Test-Results screen', () => {
     test('Detailed Measurements load up correctly', async () => {
       await app.client
         .$('div[data-testid=measured-url-row')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+
+      await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntil(
         () => app.client.isVisible('h4[data-testid=heading-test-name-full]'),
@@ -216,8 +224,9 @@ describe('Tests for Test-Results screen', () => {
     test('Data button loads up raw data', async () => {
       await app.client
         .$('button[data-testid=button-data-raw]')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+
+      await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntil(
         () => app.client.isVisible('div[data-testid=container-json-viewer]'),
@@ -239,13 +248,16 @@ describe('Tests for Test-Results screen', () => {
     beforeAll(async () => {
       await app.client
         .$('div=Test Results')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+        
+
+      await app.client.waitUntilWindowLoaded()
 
       await app.client
         .$('div[data-testid=test-result-circumvention]')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+
+      await app.client.waitUntilWindowLoaded()
     })
 
     test('There are total 3 Circumvention measurements', async () => {
@@ -268,8 +280,9 @@ describe('Tests for Test-Results screen', () => {
       await app.client
         .$$('div[data-testid=measured-test-name]')
         .$('div=Tor Test')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+
+      await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntilTextExists(
         'h4[data-testid=heading-test-name-full]',
@@ -312,8 +325,9 @@ describe('Tests for Test-Results screen', () => {
     test('Data button loads up raw data', async () => {
       await app.client
         .$('button[data-testid=button-data-raw]')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+
+      await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntil(
         () => app.client.isVisible('div[data-testid=container-json-viewer]'),
@@ -335,13 +349,16 @@ describe('Tests for Test-Results screen', () => {
     beforeAll(async () => {
       await app.client
         .$('div=Test Results')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+        
+
+      await app.client.waitUntilWindowLoaded()
 
       await app.client
         .$('div[data-testid=test-result-performance]')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+
+      await app.client.waitUntilWindowLoaded()
     })
 
     test('There are total 2 Performance measurements', async () => {
@@ -364,8 +381,9 @@ describe('Tests for Test-Results screen', () => {
       await app.client
         .$$('div[data-testid=measured-test-name]')
         .$('div=NDT Speed Test')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+
+      await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntilTextExists(
         'h4[data-testid=heading-test-name-full]',
@@ -408,8 +426,9 @@ describe('Tests for Test-Results screen', () => {
     test('Data button loads up raw data', async () => {
       await app.client
         .$('button[data-testid=button-data-raw]')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+
+      await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntil(
         () => app.client.isVisible('div[data-testid=container-json-viewer]'),
@@ -431,13 +450,16 @@ describe('Tests for Test-Results screen', () => {
     beforeAll(async () => {
       await app.client
         .$('div=Test Results')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+        
+
+      await app.client.waitUntilWindowLoaded()
 
       await app.client
         .$('div[data-testid=test-result-middlebox]')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+
+      await app.client.waitUntilWindowLoaded()
     })
 
     test('There are total 2 Middlebox measurements', async () => {
@@ -463,8 +485,9 @@ describe('Tests for Test-Results screen', () => {
       await app.client
         .$$('div[data-testid=measured-test-name]')
         .$('div=HTTP Header Field Manipulation Test')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+
+      await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntilTextExists(
         'h4[data-testid=heading-test-name-full]',
@@ -511,8 +534,9 @@ describe('Tests for Test-Results screen', () => {
     test('Data button loads up raw data', async () => {
       await app.client
         .$('button[data-testid=button-data-raw]')
-        .click()
-        .pause(1500)
+        .click().pause(1000)
+
+      await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntil(() => app.client.isVisible('div[data-testid=container-json-viewer]'), 120000)
 
