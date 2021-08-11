@@ -40,7 +40,10 @@ describe('Onboarding', () => {
   })
 
   test('App goes to the second screen', async () => {
-    await app.client.$('button[data-testid=got-it-button]').click()
+    await app.client
+      .$('button[data-testid=got-it-button]')
+      .click()
+      .pause(500)
 
     const headsUpText = await app.client.getText('h1')
     expect(headsUpText).toBe(En['Onboarding.ThingsToKnow.Title'])
@@ -78,11 +81,13 @@ describe('Onboarding', () => {
       .click()
       .pause(500)
 
-    const tickAnimation = await app.client.isVisible('div[data-testid=quiz-steps-tick]')
+    const tickAnimation = await app.client.isVisible(
+      'div[data-testid=quiz-steps-tick]'
+    )
     expect(tickAnimation).toBe(true)
 
     await app.client.pause(1500)
-    
+
     // await screenshotApp(app, 'onboarding-pop-quiz-2')
   })
 
@@ -97,11 +102,13 @@ describe('Onboarding', () => {
       .click()
       .pause(500)
 
-    const tickAnimation = await app.client.isVisible('div[data-testid=quiz-steps-tick]')
+    const tickAnimation = await app.client.isVisible(
+      'div[data-testid=quiz-steps-tick]'
+    )
     expect(tickAnimation).toBe(true)
 
     await app.client.pause(1500)
-    
+
     const crashReportingHeading = await app.client.$('h1').getText()
     expect(crashReportingHeading).toMatch(En['Onboarding.Crash.Title'])
 
@@ -109,12 +116,12 @@ describe('Onboarding', () => {
   })
 
   test('App lets user opt-in for Crash Reporting', async () => {
-    const noButton = await app.client.$(
-      'button[data-testid=button-crash-reporting-no]'
-    ).getText()
-    const yesButton = await app.client.$(
-      'button[data-testid=button-crash-reporting-yes]'
-    ).getText()
+    const noButton = await app.client
+      .$('button[data-testid=button-crash-reporting-no]')
+      .getText()
+    const yesButton = await app.client
+      .$('button[data-testid=button-crash-reporting-yes]')
+      .getText()
 
     expect(noButton).toMatch('No')
     expect(yesButton).toMatch('Yes')
@@ -124,7 +131,7 @@ describe('Onboarding', () => {
     const defaultSettingsHeading = await app.client
       .$(`h1=${En['Onboarding.DefaultSettings.Title']}`)
       .getText()
-      
+
     expect(defaultSettingsHeading).toMatch(
       En['Onboarding.DefaultSettings.Title']
     )
@@ -133,20 +140,30 @@ describe('Onboarding', () => {
   })
 
   test('Finishing Onboarding process brings up the Dashboard', async () => {
-    await app.client.$('button[data-testid=letsgo]').click()
+    await app.client
+      .$('button[data-testid=letsgo]')
+      .click()
+      .pause(1000)
 
     await app.client.waitUntilWindowLoaded()
 
-    const runButtonExists = app.client.isVisible('button[data-testid=button-dashboard-run]')
+    const runButtonExists = app.client.isVisible(
+      'button[data-testid=button-dashboard-run]'
+    )
     expect(runButtonExists).toBeTruthy()
 
     // await screenshotApp(app, 'onboarding-success')
   })
 
   test('Check if Crash Reporting is enabled in Settings', async () => {
-    await app.client.$('div=Settings').click()
+    await app.client
+      .$('div=Settings')
+      .click()
+      .pause(1000)
 
-    const crashReportSelected = await app.client.isSelected('[data-testid="advanced.send_crash_reports"]')
+    const crashReportSelected = await app.client.isSelected(
+      '[data-testid="advanced.send_crash_reports"]'
+    )
     expect(crashReportSelected).toBeTruthy()
   })
 })
