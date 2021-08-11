@@ -82,7 +82,7 @@ describe('IM test', () => {
 
     await expect(
       app.client.isVisible('div[data-testid=test-result-im]')
-    ).resolves.toContain(true)
+    ).resolves.toBe(true)
   })
 })
 
@@ -158,7 +158,7 @@ describe('Websites test', () => {
 
     await expect(
       app.client.isVisible('div[data-testid=test-result-websites]')
-    ).resolves.toContain(true)
+    ).resolves.toBe(true)
   })
 })
 
@@ -272,7 +272,7 @@ describe('Custom websites test', () => {
 
     await expect(
       app.client.isVisible('div[data-testid=test-result-websites]')
-    ).resolves.toContain(true)
+    ).resolves.toBe(true)
   })
 })
 
@@ -353,7 +353,7 @@ describe('Circumvention test', () => {
 
     await expect(
       app.client.isVisible('div[data-testid=test-result-circumvention]')
-    ).resolves.toContain(true)
+    ).resolves.toBe(true)
   })
 })
 
@@ -431,7 +431,7 @@ describe('Performance test', () => {
 
     await expect(
       app.client.isVisible('div[data-testid=test-result-performance]')
-    ).resolves.toContain(true)
+    ).resolves.toBe(true)
   })
 })
 
@@ -510,6 +510,6 @@ describe('Middleboxes test', () => {
 
     await expect(
       app.client.isVisible('div[data-testid=test-result-middlebox]')
-    ).resolves.toContain(true)
+    ).resolves.toBe(true)
   })
 })

@@ -1,5 +1,4 @@
 import { startApp, stopApp, screenshotApp } from './utils'
-import { waitFor } from '@testing-library/dom'
 
 jest.setTimeout(600000)
 
@@ -17,14 +16,9 @@ describe('All network tests run successfully', () => {
   test('Tests start successfully on click of RUN button', async () => {
     await app.client.$('button[data-testid=button-dashboard-run]').click()
 
-    await waitFor(
-      async () => {
-        const preparingTestsVisible = await app.client.isVisible(
-          'span=Preparing test...'
-        )
-        return expect(preparingTestsVisible).toBe(true)
-      },
-      { timeout: 120000 }
+    await app.client.waitUntil(
+      () => app.client.isVisible('span=Preparing test...'),
+      120000
     )
 
     await screenshotApp(app, 'runtestall-started')
@@ -158,7 +152,6 @@ describe('All network tests run successfully', () => {
   })
 
   test('Middleboxes test runs from start to finish', async () => {
-
     await app.client.waitUntilWindowLoaded()
 
     await app.client.waitUntilTextExists(
@@ -193,11 +186,9 @@ describe('All network tests run successfully', () => {
         )) === false,
       300000
     )
-
   })
 
   test('Performance test runs from start to finish', async () => {
-
     await app.client.waitUntilWindowLoaded()
 
     await app.client.waitUntilTextExists(
@@ -224,11 +215,11 @@ describe('All network tests run successfully', () => {
     )
 
     await screenshotApp(app, 'runtestall-performance')
-    
+
     await app.client.waitUntil(
       async () =>
         (await app.client.isVisible(
-          'div[data-testid=running-animation-circumvention]'
+          'div[data-testid=running-animation-performance]'
         )) === false,
       300000
     )
