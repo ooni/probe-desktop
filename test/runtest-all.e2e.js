@@ -31,60 +31,47 @@ describe('All network tests run successfully', () => {
   })
 
   test('Website test runs from start to finish', async () => {
-    await waitFor(
-      async () => {
-        const headingTestGroupName = await app.client.getText(
-          'h2[data-testid=heading-test-group-name]'
-        )
-        return expect(headingTestGroupName).toBe('Websites')
-      },
-      { timeout: 120000 }
+    await app.client.waitUntilTextExists(
+      'h2[data-testid=heading-test-group-name]',
+      'Websites',
+      300000
     )
 
-    await waitFor(
-      async () => {
-        const runningTestName = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(runningTestName).toBe('Web Connectivity Test')
-      },
-      { timeout: 300000 }
+    await app.client.waitUntilTextExists(
+      'div[data-testid=text-running-test-name]',
+      'Web Connectivity Test',
+      300000
     )
 
-    await waitFor(
-      async () => {
-        const headingRunning = await app.client.getText(
-          'h3[data-testid=heading-running-test-name]'
-        )
-        return expect(headingRunning).toBe('Running:')
-      },
-      { timeout: 120000 }
+    await app.client.waitUntilTextExists(
+      'h3[data-testid=heading-running-test-name]',
+      'Running:',
+      300000
     )
 
-    await screenshotApp(app, 'runtestall-website')
+    const animationVisible = await app.client.isVisible(
+      'div[data-testid=running-animation-websites]'
+    )
+    expect(animationVisible).toBe(true)
 
-    await waitFor(
-      async () => {
-        const animationVisible = await app.client.isVisible(
+    await screenshotApp(app, 'runtestall-websites')
+
+    await app.client.waitUntil(
+      async () =>
+        (await app.client.isVisible(
           'div[data-testid=running-animation-websites]'
-        )
-        return expect(animationVisible).toBe(false)
-      },
-      { timeout: 300000 }
+        )) === false,
+      300000
     )
-
-    await app.client.pause(1500)
   })
 
   test('Circumvention test runs from start to finish', async () => {
-    await waitFor(
-      async () => {
-        const headingTestGroupName = await app.client.getText(
-          'h2[data-testid=heading-test-group-name]'
-        )
-        return expect(headingTestGroupName).toBe('Circumvention')
-      },
-      { timeout: 120000 }
+    await app.client.waitUntilWindowLoaded()
+
+    await app.client.waitUntilTextExists(
+      'h2[data-testid=heading-test-group-name]',
+      'Circumvention',
+      300000
     )
 
     const animationVisible = await app.client.isVisible(
@@ -92,60 +79,42 @@ describe('All network tests run successfully', () => {
     )
     expect(animationVisible).toBe(true)
 
-    await waitFor(
-      async () => {
-        const psiphonTestName = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(psiphonTestName).toBe('Psiphon Test')
-      },
-      { timeout: 120000 }
+    await app.client.waitUntilTextExists(
+      'div[data-testid=text-running-test-name]',
+      'Psiphon Test',
+      300000
     )
 
-    await waitFor(
-      async () => {
-        const riseupVpnTestName = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(riseupVpnTestName).toBe('RiseupVPN Test')
-      },
-      { timeout: 120000 }
+    await app.client.waitUntilTextExists(
+      'div[data-testid=text-running-test-name]',
+      'RiseupVPN Test',
+      300000
     )
 
-    await waitFor(
-      async () => {
-        const torTestName = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(torTestName).toBe('Tor Test')
-      },
-      { timeout: 120000 }
+    await app.client.waitUntilTextExists(
+      'div[data-testid=text-running-test-name]',
+      'Tor Test',
+      300000
     )
 
     await screenshotApp(app, 'runtestall-circumvention')
 
-    await waitFor(
-      async () => {
-        const animationVisible = await app.client.isVisible(
+    await app.client.waitUntil(
+      async () =>
+        (await app.client.isVisible(
           'div[data-testid=running-animation-circumvention]'
-        )
-        return expect(animationVisible).toBe(false)
-      },
-      { timeout: 120000 }
+        )) === false,
+      300000
     )
-
-    await app.client.pause(1500)
   })
 
   test('IM test runs from start to finish', async () => {
-    await waitFor(
-      async () => {
-        const headingTestGroupName = await app.client.getText(
-          'h2[data-testid=heading-test-group-name]'
-        )
-        return expect(headingTestGroupName).toBe('Instant Messaging')
-      },
-      { timeout: 120000 }
+    await app.client.waitUntilWindowLoaded()
+
+    await app.client.waitUntilTextExists(
+      'h2[data-testid=heading-test-group-name]',
+      'Instant Messaging',
+      300000
     )
 
     const animationVisible = await app.client.isVisible(
@@ -153,70 +122,49 @@ describe('All network tests run successfully', () => {
     )
     expect(animationVisible).toBe(true)
 
-    await waitFor(
-      async () => {
-        const messengerTestName = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(messengerTestName).toBe('Facebook Messenger Test')
-      },
-      { timeout: 120000 }
+    await app.client.waitUntilTextExists(
+      'div[data-testid=text-running-test-name]',
+      'Facebook Messenger Test',
+      300000
     )
 
-    await waitFor(
-      async () => {
-        const telegramTestName = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(telegramTestName).toBe('Telegram Test')
-      },
-      { timeout: 120000 }
+    await app.client.waitUntilTextExists(
+      'div[data-testid=text-running-test-name]',
+      'Telegram Test',
+      300000
     )
 
-    await waitFor(
-      async () => {
-        const whatsAppTestHeading = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(whatsAppTestHeading).toBe('WhatsApp Test')
-      },
-      { timeout: 120000 }
+    await app.client.waitUntilTextExists(
+      'div[data-testid=text-running-test-name]',
+      'WhatsApp Test',
+      300000
     )
 
-    await waitFor(
-      async () => {
-        const signalTestHeading = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(signalTestHeading).toBe('Signal Test')
-      },
-      { timeout: 120000 }
+    await app.client.waitUntilTextExists(
+      'div[data-testid=text-running-test-name]',
+      'Signal Test',
+      300000
     )
 
     await screenshotApp(app, 'runtestall-im')
 
-    await waitFor(
-      async () => {
-        const animationVisible = await app.client.isVisible(
-          'div[data-testid=running-animation-im]'
-        )
-        return expect(animationVisible).toBe(false)
-      },
-      { timeout: 120000 }
+    await app.client.waitUntil(
+      async () =>
+        (await app.client.isVisible(
+          'div[data-testid=running-animation-circumvention]'
+        )) === false,
+      300000
     )
-
-    await app.client.pause(1500)
   })
 
   test('Middleboxes test runs from start to finish', async () => {
-    await waitFor(
-      async () => {
-        const headingTestGroupName = await app.client.getText(
-          'h2[data-testid=heading-test-group-name]'
-        )
-        return expect(headingTestGroupName).toBe('Middleboxes')
-      },
-      { timeout: 120000 }
+
+    await app.client.waitUntilWindowLoaded()
+
+    await app.client.waitUntilTextExists(
+      'h2[data-testid=heading-test-group-name]',
+      'Middleboxes',
+      300000
     )
 
     const animationVisible = await app.client.isVisible(
@@ -224,50 +172,38 @@ describe('All network tests run successfully', () => {
     )
     expect(animationVisible).toBe(true)
 
-    await waitFor(
-      async () => {
-        const httpRequestLine = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(httpRequestLine).toBe('HTTP Invalid Request Line Test')
-      },
-      { timeout: 120000 }
+    await app.client.waitUntilTextExists(
+      'div[data-testid=text-running-test-name]',
+      'HTTP Invalid Request Line Test',
+      300000
     )
 
-    await waitFor(
-      async () => {
-        const httpHeaderField = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(httpHeaderField).toBe('HTTP Header Field Manipulation Test')
-      },
-      { timeout: 120000 }
+    await app.client.waitUntilTextExists(
+      'div[data-testid=text-running-test-name]',
+      'HTTP Header Field Manipulation Test',
+      300000
     )
 
     await screenshotApp(app, 'runtestall-middlebox')
 
-    await waitFor(
-      async () => {
-        const animationVisible = await app.client.isVisible(
-          'div[data-testid=running-animation-middlebox]'
-        )
-        return expect(animationVisible).toBe(false)
-      },
-      { timeout: 120000 }
+    await app.client.waitUntil(
+      async () =>
+        (await app.client.isVisible(
+          'div[data-testid=running-animation-circumvention]'
+        )) === false,
+      300000
     )
 
-    await app.client.pause(1500)
   })
 
   test('Performance test runs from start to finish', async () => {
-    await waitFor(
-      async () => {
-        const headingTestGroupName = await app.client.getText(
-          'h2[data-testid=heading-test-group-name]'
-        )
-        return expect(headingTestGroupName).toBe('Performance')
-      },
-      { timeout: 120000 }
+
+    await app.client.waitUntilWindowLoaded()
+
+    await app.client.waitUntilTextExists(
+      'h2[data-testid=heading-test-group-name]',
+      'Performance',
+      300000
     )
 
     const animationVisible = await app.client.isVisible(
@@ -275,37 +211,26 @@ describe('All network tests run successfully', () => {
     )
     expect(animationVisible).toBe(true)
 
-    await waitFor(
-      async () => {
-        const dashStreamingText = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(dashStreamingText).toBe('DASH Streaming Test')
-      },
-      { timeout: 120000 }
+    await app.client.waitUntilTextExists(
+      'div[data-testid=text-running-test-name]',
+      'DASH Streaming Test',
+      300000
     )
 
-    await waitFor(
-      async () => {
-        const ndtSpeedText = await app.client.getText(
-          'div[data-testid=text-running-test-name]'
-        )
-        return expect(ndtSpeedText).toBe('NDT Speed Test')
-      },
-      { timeout: 120000 }
+    await app.client.waitUntilTextExists(
+      'div[data-testid=text-running-test-name]',
+      'NDT Speed Test',
+      300000
     )
+
     await screenshotApp(app, 'runtestall-performance')
-
-    await waitFor(
-      async () => {
-        const animationVisible = await app.client.isVisible(
-          'div[data-testid=running-animation-performance]'
-        )
-        return expect(animationVisible).toBe(false)
-      },
-      { timeout: 120000 }
+    
+    await app.client.waitUntil(
+      async () =>
+        (await app.client.isVisible(
+          'div[data-testid=running-animation-circumvention]'
+        )) === false,
+      300000
     )
-
-    await app.client.pause(1500)
   })
 })
