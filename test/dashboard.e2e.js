@@ -77,7 +77,8 @@ describe('Dashboard tests', () => {
     await app.client
       .$(`div=${En['TestResults.Overview.Tab.Label']}`)
       .click()
-      .pause(1000)
+    
+    await app.client.waitUntilWindowLoaded()
 
     const labelTests = await app.client
       .$('div[data-testid=overview-tests]')
@@ -100,7 +101,8 @@ describe('Dashboard tests', () => {
     await app.client
       .$(`div=${En['Settings.Title']}`)
       .click()
-      .pause(1000)
+    
+    await app.client.waitUntilWindowLoaded()
 
     // Checking for the "Settings" heading
     // Rest of the assertions are in settings.e2e.js
