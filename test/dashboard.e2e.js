@@ -77,6 +77,7 @@ describe('Dashboard tests', () => {
     await app.client
       .$(`div=${En['TestResults.Overview.Tab.Label']}`)
       .click()
+      .pause(500)
     
     await app.client.waitUntilWindowLoaded()
 

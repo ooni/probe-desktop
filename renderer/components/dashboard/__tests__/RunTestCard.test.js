@@ -53,7 +53,7 @@ describe('Tests for RunTestCard component', () => {
       />
     )
 
-    const testCard = screen.getByTestId('card')
+    const testCard = screen.getByTestId(`run-card-${websiteDetails.key}`)
     fireEvent.click(testCard)
     
     expect(mockPush).toHaveBeenCalledWith('/dashboard/[testGroup]', `/dashboard/${websiteDetails.key}`)
