@@ -21,7 +21,8 @@ describe('Tests for Settings page', () => {
     await app.client
       .$(`div=${En['Settings.Title']}`)
       .click()
-      .pause(1000)
+
+    await app.client.waitUntilWindowLoaded()
 
     const labelTestOptionsVisible = await app.client.isVisible(
       `h4=${En['Settings.TestOptions.Label']}`
@@ -95,7 +96,8 @@ describe('Tests for Settings page', () => {
     await app.client
       .$(`div=${Es['TestResults.Overview.Tab.Label']}`)
       .click()
-      .pause(500)
+
+    await app.client.waitUntilWindowLoaded()
 
     const labelTests = await app.client
       .$('div[data-testid=overview-tests]')
@@ -117,7 +119,9 @@ describe('Tests for Settings page', () => {
     await app.client
       .$(`div=${Es['Dashboard.Tab.Label']}`)
       .click()
-      .pause(500)
+
+    await app.client.waitUntilWindowLoaded()
+
     const runButtonText = await app.client
       .$('button[data-testid=button-dashboard-run]')
       .getText()
@@ -131,7 +135,8 @@ describe('Tests for Settings page', () => {
     await app.client
       .$(`div=${Es['Settings.Title']}`)
       .click()
-      .pause(500)
+
+    await app.client.waitUntilWindowLoaded()
 
     await app.client.$('select[data-testid=select-language]').click()
     await app.client
@@ -204,11 +209,12 @@ describe('Tests for Settings page', () => {
     expect(websiteCountNew).toBe('30 categories enabled')
 
     // await screenshotApp(app, 'settings-all-website-categories-selected')
-
-    await app.client.pause(2000)
   })
 
   test('Individual categories can be enabled or disabled', async () => {
+
+    await app.client.waitUntilWindowLoaded()
+    
     await app.client
       .$('button[data-testid=website-categories-edit-button]')
       .click()
