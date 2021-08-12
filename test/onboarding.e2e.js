@@ -157,7 +157,7 @@ describe('Onboarding', () => {
 
   test('Check if Crash Reporting is enabled in Settings', async () => {
     await app.client
-      .$('div=Settings')
+      .$('div[data-testid=sidebar-item-settings]')
       .click()
       .pause(1000)
 

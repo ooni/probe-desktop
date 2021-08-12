@@ -9,7 +9,7 @@ describe('Tests for Test-Results screen', () => {
     app = await startApp()
 
     await app.client
-      .$('div=Test Results')
+      .$('div[data-testid=sidebar-item-test-results]')
       .click()
       .pause(1000)
 
@@ -159,7 +159,7 @@ describe('Tests for Test-Results screen', () => {
   describe('Website test measurements', () => {
     beforeAll(async () => {
       await app.client
-        .$('div=Test Results')
+        .$('div[data-testid=sidebar-item-test-results]')
         .click()
         .pause(1000)
 
@@ -254,7 +254,7 @@ describe('Tests for Test-Results screen', () => {
   describe('Circumvention test measurements', () => {
     beforeAll(async () => {
       await app.client
-        .$('div=Test Results')
+        .$('div[data-testid=sidebar-item-test-results]')
         .click()
         .pause(1000)
 
@@ -358,7 +358,7 @@ describe('Tests for Test-Results screen', () => {
   describe('Performance test measurements', () => {
     beforeAll(async () => {
       await app.client
-        .$('div=Test Results')
+        .$('div[data-testid=sidebar-item-test-results]')
         .click()
         .pause(1000)
 
@@ -462,7 +462,7 @@ describe('Tests for Test-Results screen', () => {
   describe('Middleboxes test measurements', () => {
     beforeAll(async () => {
       await app.client
-        .$('div=Test Results')
+        .$('div[data-testid=sidebar-item-test-results]')
         .click()
         .pause(1000)
 

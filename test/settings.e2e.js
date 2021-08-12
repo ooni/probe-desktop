@@ -19,7 +19,7 @@ describe('Tests for Settings page', () => {
 
   test('Clicking on "Settings" tab loads it up correctly', async () => {
     await app.client
-      .$(`div=${En['Settings.Title']}`)
+      .$('div[data-testid=sidebar-item-settings]')
       .click()
       .pause(1000)
 
@@ -101,7 +101,7 @@ describe('Tests for Settings page', () => {
   test('Language changes in other screens', async () => {
     // Checking for Test Results screen
     await app.client
-      .$(`div=${Es['TestResults.Overview.Tab.Label']}`)
+      .$('div[data-testid=sidebar-item-test-results]')
       .click()
       .pause(1000)
 
@@ -125,7 +125,7 @@ describe('Tests for Settings page', () => {
 
     // Checking for Dashboard screen
     await app.client
-      .$(`div=${Es['Dashboard.Tab.Label']}`)
+      .$('div[data-testid=sidebar-item-dashboard]')
       .click()
       .pause(1000)
 
@@ -142,7 +142,7 @@ describe('Tests for Settings page', () => {
 
   test('Changing language back to En', async () => {
     await app.client
-      .$(`div=${Es['Settings.Title']}`)
+      .$('div[data-testid=sidebar-item-settings]')
       .click()
       .pause(1000)
 
