@@ -46,10 +46,10 @@ const QuizActually = ({text, onBack, onContinue}) => (
     <Box as='hr' sx={{my: 3}} />
     <Text p={4}>{text}</Text>
     <Flex>
-      <BackButton width={1/2} onClick={onBack}>
+      <BackButton width={1/2} onClick={onBack} data-testid='button-pop-quiz-goback'>
         <FormattedMessage id='Onboarding.PopQuiz.Wrong.Button.Back' />
       </BackButton>
-      <ContinueButton width={1/2} onClick={onContinue}>
+      <ContinueButton width={1/2} onClick={onContinue} data-testid='button-pop-quiz-continue'>
         <FormattedMessage id='Onboarding.PopQuiz.Wrong.Button.Continue' />
       </ContinueButton>
     </Flex>
@@ -74,10 +74,10 @@ const QuizQuestion = ({qNum, question, onTrue, onFalse}) => (
       </Heading>
       <Text mx={3} my={4} textAlign='center'>{question}</Text>
       <Flex>
-        <YesButton width={1/2} onClick={onTrue}>
+        <YesButton width={1/2} onClick={onTrue} data-testid='button-pop-quiz-true'>
           <FormattedMessage id='Onboarding.PopQuiz.True' />
         </YesButton>
-        <NoButton width={1/2} onClick={onFalse}>
+        <NoButton width={1/2} onClick={onFalse} data-testid='button-pop-quiz-false'>
           <FormattedMessage id='Onboarding.PopQuiz.False' />
         </NoButton>
       </Flex>
