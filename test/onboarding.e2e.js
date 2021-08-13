@@ -1,7 +1,7 @@
 import { startApp, stopApp, resetData, screenshotApp } from './utils'
 import En from '../lang/en.json'
 
-describe('Onboarding', () => {
+describe('Onboarding Story 1', () => {
   let app
 
   beforeAll(async () => {
@@ -10,6 +10,7 @@ describe('Onboarding', () => {
   })
 
   afterAll(async () => {
+    await resetData(app)
     await stopApp(app)
   })
 
@@ -40,7 +41,10 @@ describe('Onboarding', () => {
   })
 
   test('App goes to the second screen', async () => {
-    await app.client.$('button[data-testid=got-it-button]').click()
+    await app.client
+      .$('button[data-testid=got-it-button]')
+      .click()
+      .pause(500)
 
     const headsUpText = await app.client.getText('h1')
     expect(headsUpText).toBe(En['Onboarding.ThingsToKnow.Title'])
@@ -74,15 +78,17 @@ describe('Onboarding', () => {
 
   test('App accepts first Pop Quiz Answer', async () => {
     await app.client
-      .$(`div=${En['Onboarding.PopQuiz.True']}`)
+      .$('div[data-testid=button-pop-quiz-true]')
       .click()
       .pause(500)
 
-    const tickAnimation = await app.client.isVisible('div[data-testid=quiz-steps-tick]')
+    const tickAnimation = await app.client.isVisible(
+      'div[data-testid=quiz-steps-tick]'
+    )
     expect(tickAnimation).toBe(true)
 
     await app.client.pause(1500)
-    
+
     // await screenshotApp(app, 'onboarding-pop-quiz-2')
   })
 
@@ -93,15 +99,17 @@ describe('Onboarding', () => {
     expect(question2Title).toMatch(En['Onboarding.PopQuiz.2.Title'])
 
     await app.client
-      .$(`div=${En['Onboarding.PopQuiz.True']}`)
+      .$('div[data-testid=button-pop-quiz-true]')
       .click()
       .pause(500)
 
-    const tickAnimation = await app.client.isVisible('div[data-testid=quiz-steps-tick]')
+    const tickAnimation = await app.client.isVisible(
+      'div[data-testid=quiz-steps-tick]'
+    )
     expect(tickAnimation).toBe(true)
 
     await app.client.pause(1500)
-    
+
     const crashReportingHeading = await app.client.$('h1').getText()
     expect(crashReportingHeading).toMatch(En['Onboarding.Crash.Title'])
 
@@ -109,12 +117,12 @@ describe('Onboarding', () => {
   })
 
   test('App lets user opt-in for Crash Reporting', async () => {
-    const noButton = await app.client.$(
-      'button[data-testid=button-crash-reporting-no]'
-    ).getText()
-    const yesButton = await app.client.$(
-      'button[data-testid=button-crash-reporting-yes]'
-    ).getText()
+    const noButton = await app.client
+      .$('button[data-testid=button-crash-reporting-no]')
+      .getText()
+    const yesButton = await app.client
+      .$('button[data-testid=button-crash-reporting-yes]')
+      .getText()
 
     expect(noButton).toMatch('No')
     expect(yesButton).toMatch('Yes')
@@ -124,7 +132,7 @@ describe('Onboarding', () => {
     const defaultSettingsHeading = await app.client
       .$(`h1=${En['Onboarding.DefaultSettings.Title']}`)
       .getText()
-      
+
     expect(defaultSettingsHeading).toMatch(
       En['Onboarding.DefaultSettings.Title']
     )
@@ -133,20 +141,154 @@ describe('Onboarding', () => {
   })
 
   test('Finishing Onboarding process brings up the Dashboard', async () => {
-    await app.client.$('button[data-testid=letsgo]').click()
+    await app.client
+      .$('button[data-testid=letsgo]')
+      .click()
+      .pause(1000)
 
     await app.client.waitUntilWindowLoaded()
 
-    const runButtonExists = app.client.isVisible('button[data-testid=button-dashboard-run]')
+    const runButtonExists = app.client.isVisible(
+      'button[data-testid=button-dashboard-run]'
+    )
     expect(runButtonExists).toBeTruthy()
 
     // await screenshotApp(app, 'onboarding-success')
   })
 
   test('Check if Crash Reporting is enabled in Settings', async () => {
-    await app.client.$('div=Settings').click()
+    await app.client
+      .$('div[data-testid=sidebar-item-settings]')
+      .click()
+      .pause(1000)
 
-    const crashReportSelected = await app.client.isSelected('[data-testid="advanced.send_crash_reports"]')
+    const crashReportSelected = await app.client.isSelected(
+      '[data-testid="advanced.send_crash_reports"]'
+    )
     expect(crashReportSelected).toBeTruthy()
+  })
+})
+
+describe('Onboarding Story 2', () => {
+  let app
+
+  beforeAll(async () => {
+    app = await startApp()
+  })
+
+  afterAll(async () => {
+    await stopApp(app)
+  })
+
+  afterEach(async () => {
+    await screenshotApp(app, expect.getState().currentTestName)
+  })
+
+  test('App plays cross animation and shows warning if first pop quiz answer is wrong', async () => {
+    await app.client
+      .$('button[data-testid=got-it-button]')
+      .click()
+      .pause(500)
+
+    await app.client
+      .$('button[data-testid=onboarding-thingstoknow-button]')
+      .click()
+      .pause(500)
+
+    await app.client
+      .$('div[data-testid=button-pop-quiz-false]')
+      .click()
+      .pause(500)
+
+    const crossAnimation = await app.client.isVisible(
+      'div[data-testid=quiz-steps-cross]'
+    )
+    expect(crossAnimation).toBe(true)
+
+    await app.client.pause(1500)
+
+    const warningText =
+      'OONI Probe is not a privacy tool. Anyone monitoring your internet activity will see which software you are running.'
+
+    const isWarningTextDisplayed = await app.client.isVisible(
+      `div=${warningText}`
+    )
+    expect(isWarningTextDisplayed).toBe(true)
+  })
+
+  test('App plays cross animation and shows warning if second pop quiz answer is wrong', async () => {
+    await app.client
+      .$('div[data-testid=button-pop-quiz-continue]')
+      .click()
+      .pause(500)
+
+    await app.client
+      .$('div[data-testid=button-pop-quiz-false]')
+      .click()
+      .pause(500)
+
+    const crossAnimation = await app.client.isVisible(
+      'div[data-testid=quiz-steps-cross]'
+    )
+    expect(crossAnimation).toBe(true)
+
+    await app.client.pause(1500)
+
+    const warningText =
+      'To increase transparency of internet censorship, the network data of all OONI Probe users is automatically published (unless they opt-out in the settings).'
+
+    const isWarningTextDisplayed = await app.client.isVisible(
+      `div=${warningText}`
+    )
+    expect(isWarningTextDisplayed).toBe(true)
+
+    await app.client
+      .$('div[data-testid=button-pop-quiz-continue]')
+      .click()
+      .pause(500)
+  })
+
+  test('App lets user opt-in for Crash Reporting', async () => {
+    const crashReportingHeading = await app.client.$('h1').getText()
+    expect(crashReportingHeading).toMatch(En['Onboarding.Crash.Title'])
+
+    await app.client
+      .$('button[data-testid=button-crash-reporting-no]')
+      .click()
+      .pause(500)
+
+    const defaultSettingsHeading = await app.client
+      .$(`h1=${En['Onboarding.DefaultSettings.Title']}`)
+      .getText()
+
+    expect(defaultSettingsHeading).toMatch(
+      En['Onboarding.DefaultSettings.Title']
+    )
+  })
+
+  test('Finishing Onboarding process brings up the Dashboard', async () => {
+    await app.client
+      .$('button[data-testid=letsgo]')
+      .click()
+      .pause(1000)
+
+    await app.client.waitUntilWindowLoaded()
+
+    const runButtonExists = app.client.isVisible(
+      'button[data-testid=button-dashboard-run]'
+    )
+    expect(runButtonExists).toBeTruthy()
+  })
+
+  test('Check if Crash Reporting is disabled in Settings', async () => {
+    await app.client
+      .$('div[data-testid=sidebar-item-settings]')
+      .click()
+      .pause(1000)
+
+    const crashReportSelected = await app.client.isSelected(
+      '[data-testid="advanced.send_crash_reports"]'
+    )
+    expect(crashReportSelected).toBeFalsy()
   })
 })
