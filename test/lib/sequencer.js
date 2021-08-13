@@ -13,7 +13,8 @@ class CustomSequencer extends TestSequencer {
       'dashboard',
       'settings',
       'runtest-individual',
-      'runtest-all'
+      'runtest-all',
+      'test-results'
     ]
 
     // based on: https://github.com/facebook/jest/issues/6194#issuecomment-521521514

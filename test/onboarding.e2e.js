@@ -217,6 +217,7 @@ describe('Onboarding Story 2', () => {
   })
 
   test('App plays cross animation and shows warning if second pop quiz answer is wrong', async () => {
+
     await app.client
       .$('div[data-testid=button-pop-quiz-continue]')
       .click()
@@ -248,7 +249,7 @@ describe('Onboarding Story 2', () => {
       .pause(500)
   })
 
-  test('App lets user opt-in for Crash Reporting', async () => {
+  test('App lets user opt out of Crash Reporting', async () => {
     const crashReportingHeading = await app.client.$('h1').getText()
     expect(crashReportingHeading).toMatch(En['Onboarding.Crash.Title'])
 
