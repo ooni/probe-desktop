@@ -135,7 +135,7 @@
     "jest-dom": "^4.0.0",
     "jest-styled-components": "^7.0.4",
     "moment-range": "^4.0.2",
-    "next": "^10.0.3",
+    "next": "^11.1.0",
     "ooni-components": "^0.4.6",
     "os-locale": "^5.0.0",
     "prop-types": "15.7.2",
