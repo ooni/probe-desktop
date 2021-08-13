@@ -1,5 +1,4 @@
 const { startApp, stopApp, screenshotApp } = require('./utils')
-import En from '../lang/en.json'
 
 describe('Dashboard tests', () => {
   let app
@@ -75,10 +74,10 @@ describe('Dashboard tests', () => {
 
   test('Clicking on "Test Results" tab loads the Test Results Page', async () => {
     await app.client
-      .$(`div=${En['TestResults.Overview.Tab.Label']}`)
+      .$('div[data-testid=sidebar-item-test-results]')
       .click()
       .pause(500)
-    
+
     await app.client.waitUntilWindowLoaded()
 
     const labelTests = await app.client
@@ -100,8 +99,9 @@ describe('Dashboard tests', () => {
 
   test('Clicking on "Settings" tab loads the Settings page', async () => {
     await app.client
-      .$(`div=${En['Settings.Title']}`)
+      .$('div[data-testid=sidebar-item-settings]')
       .click()
+      .pause(500)
     
     await app.client.waitUntilWindowLoaded()
 

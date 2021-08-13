@@ -18,7 +18,10 @@ describe('All network tests run successfully', () => {
   })
 
   test('Tests start successfully on click of RUN button', async () => {
-    await app.client.$('button[data-testid=button-dashboard-run]').click()
+    await app.client
+      .$('button[data-testid=button-dashboard-run]')
+      .click()
+      .pause(1000)
 
     await app.client.waitUntil(
       () => app.client.isVisible('h3[data-testid=heading-running-test-name]'),
