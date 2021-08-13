@@ -1,4 +1,4 @@
-import { hardReset, listMeasurements, listResults, showMeasurement } from '../../../actions'
+import { hardReset, listMeasurements, listResults, showMeasurement } from '../actions'
 import childProcess from 'child_process'
 import log from 'electron-log'
 import Sentry from '@sentry/electron'
