@@ -87,7 +87,7 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
         </ul>
       </Box>
       <Box mx='auto'>
-        <Button inverted onClick={quizComplete ? onNext : toggleQuiz}>
+        <Button inverted onClick={quizComplete ? onNext : toggleQuiz} data-testid='onboarding-thingstoknow-button'>
           <FormattedMessage id="Onboarding.ThingsToKnow.Button" />
         </Button>
       </Box>
@@ -119,7 +119,7 @@ const SectionWhatIsOONI = ({onNext}) => (
       <FormattedMarkdownMessage id="Onboarding.WhatIsOONIProbe.Paragraph" />
     </Box>
     <Box mx='auto'>
-      <Button inverted onClick={onNext}>
+      <Button inverted onClick={onNext} data-testid='got-it-button'>
         <FormattedMessage id='Onboarding.WhatIsOONIProbe.GotIt' />
       </Button>
     </Box>
@@ -149,8 +149,8 @@ const SectionCrashReporting = ({ onOptIn, onOptOut }) => (
       <FormattedMarkdownMessage id='Onboarding.Crash.Paragraph' />
     </Box>
     <Flex flexDirection='row' alignItems='center' justifyContent='center' my={4}>
-      <NoButton mx={2} hollow onClick={onOptOut}><FormattedMessage id='Onboarding.Crash.Button.No' /></NoButton>
-      <Button mx={2} inverted onClick={onOptIn}><FormattedMessage id='Onboarding.Crash.Button.Yes' /></Button>
+      <NoButton mx={2} hollow onClick={onOptOut} data-testid='button-crash-reporting-no'><FormattedMessage id='Onboarding.Crash.Button.No' /></NoButton>
+      <Button mx={2} inverted onClick={onOptIn} data-testid='button-crash-reporting-yes'><FormattedMessage id='Onboarding.Crash.Button.Yes' /></Button>
     </Flex>
   </Flex>
 )

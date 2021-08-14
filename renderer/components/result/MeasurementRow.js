@@ -97,7 +97,7 @@ const NotUploadedNotice = () => {
 
 const URLRow = ({measurement, resultID, measurementID, isAnomaly}) => (
   <Link href={{pathname: `/result/${resultID}/measurement/${measurementID}`, query : {isAnomaly}}}>
-    <BorderedFlex>
+    <BorderedFlex data-testid='measured-url-row'>
       <Box pr={2} pl={2} width={1/8}>
         <CategoryCode code={measurement['url_category_code']} />
       </Box>
@@ -148,10 +148,10 @@ const TestNameIcon = ({ testName }) => {
   )
 
   return (
-    <div>
+    <Flex alignItems='center'>
       {icon && <IconContainer>{icon}</IconContainer>}
-      {tests[testName] && tests[testName].name}
-    </div>
+      <Text data-testid='measured-test-name'>{tests[testName] && tests[testName].name}</Text>
+    </Flex>
   )
 }
 // XXX still need to show the summary in here

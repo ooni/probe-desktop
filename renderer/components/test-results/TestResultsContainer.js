@@ -30,15 +30,23 @@ import VerticalDivider from '../to-migrate/VerticalDivider'
 const DataUsage = ({ dataUsage }) => {
   return (
     <Flex flexDirection='column' alignItems='center'>
-      <LabelBox>
+      <LabelBox data-testid='overview-data-usage-label'>
         <FormattedMessage id='TestResults.Overview.Hero.DataUsage' />
       </LabelBox>
       <Flex flexDirection='column'>
         <Box>
-          <HumanFilesize fontSize={26} icon={<MdArrowUpward size={22} />} size={dataUsage.up*1024} />
+          <HumanFilesize
+            fontSize={26}
+            icon={<MdArrowUpward size={22} />}
+            size={dataUsage.up*1024}
+            data-testid='overview-data-usage-upload' />
         </Box>
         <Box>
-          <HumanFilesize fontSize={26} icon={<MdArrowDownward size={22} />} size={dataUsage.down*1024} />
+          <HumanFilesize
+            fontSize={26}
+            icon={<MdArrowDownward size={22} />}
+            size={dataUsage.down*1024}
+            data-testid='overview-data-usage-download' />
         </Box>
       </Flex>
     </Flex>
@@ -68,13 +76,15 @@ const ResultsHeader = ({testCount, networkCount, dataUsage}) => {
           <Box width={1/3}>
             <StatBox
               label={<FormattedMessage id='TestResults.Overview.Hero.Tests' />}
-              value={testCount} />
+              value={testCount}
+              data-testid='overview-tests' />
           </Box>
           <VerticalDivider />
           <Box width={1/3}>
             <StatBox
               label={<FormattedMessage id='TestResults.Overview.Hero.Networks' />}
-              value={networkCount} />
+              value={networkCount}
+              data-testid='overview-networks' />
           </Box>
           <VerticalDivider />
           <Box width={1/3}>

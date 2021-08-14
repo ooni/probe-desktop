@@ -113,7 +113,7 @@ const URL = ({ idx, url, error, onUpdate, onRemove, onKeyEnter }) => {
         onBlur={onBlur}
         onKeyPress={onKeyPress}
         error={error}
-        data-testid='url-input'
+        data-testid={`input-add-url-${idx}`}
       />
       <label htmlFor={idx}>
         <FormattedMessage id='Settings.Websites.CustomURL.URL' />

@@ -63,8 +63,8 @@ HeroItemBox.propTypes = {
   content: PropTypes.node
 }
 
-const HeroLineItem = ({ size, fontWeight, children }) => (
-  <Flex justifyContent='center' my={3}>
+const HeroLineItem = ({ size, fontWeight, children, ...rest }) => (
+  <Flex justifyContent='center' my={3} {...rest}>
     <Text fontSize={size} fontWeight={fontWeight}>
       {children}
     </Text>
@@ -111,7 +111,7 @@ const Hero = ({
         <React.Fragment>
           <Box width={1}>
             <HeroLineItem size={60}>{heroIcon}</HeroLineItem>
-            <HeroLineItem size={24} fontWeight={900}>{heroTitle}</HeroLineItem>
+            <HeroLineItem size={24} fontWeight={900} data-testid='measurement-title'>{heroTitle}</HeroLineItem>
             {heroSubtitle && <HeroLineItem size={16}>{heroSubtitle}</HeroLineItem>}
           </Box>
           <Box width={1}>
@@ -192,7 +192,7 @@ const MeasurementContainer = ({ measurement, isAnomaly }) => {
                 <BackButton />
               </Box>
               <Box width={7/8}>
-                <Heading textAlign='center' h={4} color='white'>
+                <Heading textAlign='center' h={4} color='white' data-testid='heading-test-name-full'>
                   {testFullName}
                 </Heading>
               </Box>
@@ -228,7 +228,7 @@ const MeasurementContainer = ({ measurement, isAnomaly }) => {
               </FullHeightFlex>
               <Flex my={3}>
                 <Box mr='auto'>
-                  <Button onClick={() => setRawDataOpen(!rawDataOpen)}>
+                  <Button onClick={() => setRawDataOpen(!rawDataOpen)} data-testid='button-data-raw'>
                     <FormattedMessage id='TestResults.Details.RawData' />
                   </Button>
                 </Box>

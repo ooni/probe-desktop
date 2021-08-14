@@ -1,16 +1,9 @@
-const { startApp, stopApp } = require('./utils')
+const { startApp, stopApp, screenshotApp } = require('./utils')
 
-// Skipping because the app opens the About window before the main Window
-// which is picked by spectron to query for dashboard elements.
-// This needs to be enabled after carefully fixing the autoupdate code that
-// causes this behaviour in NODE_ENV='test' in `main/index.js:170`
-describe.skip('Dashboard', () => {
-
+describe('Dashboard tests', () => {
   let app
 
   beforeAll(async () => {
-    jest.setTimeout(30000)
-    // Launch the app
     app = await startApp()
   })
 
@@ -18,9 +11,105 @@ describe.skip('Dashboard', () => {
     await stopApp(app)
   })
 
-  it('5 test cards are visible', async () => {
-    await expect(app.client
-      .isVisible('div[data-testid="card"]')
-    ).resolves.toHaveProperty('length', 5)
+  afterEach(async () => {
+    await screenshotApp(app, expect.getState().currentTestName)
+  })
+
+  test('Run button is displayed on Dashboard', async () => {
+    const runButtonText = await app.client
+      .$('button[data-testid=button-dashboard-run]')
+      .getText()
+
+    expect(runButtonText).toMatch('Run')
+  })
+
+  describe('All 5 test cards are visible', () => {
+    const testDetails = [
+      {
+        id: 'websites',
+        name: 'Websites',
+        desc: 'Test the blocking of websites',
+      },
+      {
+        id: 'im',
+        name: 'Instant Messaging',
+        desc: 'Test the blocking of instant messaging apps',
+      },
+      {
+        id: 'circumvention',
+        name: 'Circumvention',
+        desc: 'Test the blocking of censorship circumvention tools',
+      },
+      {
+        id: 'performance',
+        name: 'Performance',
+        desc: 'Test your network speed and performance',
+      },
+      {
+        id: 'middlebox',
+        name: 'Middleboxes',
+        desc: 'Detect middleboxes in your network',
+      },
+    ]
+
+    testDetails.forEach((itr) => {
+      test(`${itr.id} test card is visible`, async () => {
+        const isCardVisible = await app.client.isVisible(
+          `div[data-testid=run-card-${itr.id}]`
+        )
+        expect(isCardVisible).toBe(true)
+
+        const cardName = await app.client.getText(
+          `div[data-testid=run-card-${itr.id}] div[data-testid=run-card-name-${itr.id}]`
+        )
+        expect(cardName).toBe(itr.name)
+
+        const cardDesc = await app.client.getText(
+          `div[data-testid=run-card-${itr.id}] div[data-testid=run-card-description-${itr.id}]`
+        )
+        expect(cardDesc).toBe(itr.desc)
+      })
+    })
+  })
+
+  test('Clicking on "Test Results" tab loads the Test Results Page', async () => {
+    await app.client
+      .$('div[data-testid=sidebar-item-test-results]')
+      .click()
+      .pause(500)
+
+    await app.client.waitUntilWindowLoaded()
+
+    const labelTests = await app.client
+      .$('div[data-testid=overview-tests]')
+      .getText()
+    const labelNetworks = await app.client
+      .$('div[data-testid=overview-networks]')
+      .getText()
+    const labelDataUsage = await app.client
+      .$('div[data-testid=overview-data-usage-label]')
+      .getText()
+
+    expect(labelTests).toContain('Tests')
+    expect(labelNetworks).toContain('Networks')
+    expect(labelDataUsage).toContain('Data Usage')
+
+    // screenshotApp(app, 'dashboard-test-results')
+  })
+
+  test('Clicking on "Settings" tab loads the Settings page', async () => {
+    await app.client
+      .$('div[data-testid=sidebar-item-settings]')
+      .click()
+      .pause(500)
+    
+    await app.client.waitUntilWindowLoaded()
+
+    // Checking for the "Settings" heading
+    // Rest of the assertions are in settings.e2e.js
+    const labelTestOptionsVisible = await app.client.isVisible('h3=Settings')
+    expect(labelTestOptionsVisible).toBe(true)
+
+    // screenshotApp(app, 'dashboard-settings-page')
   })
 })
