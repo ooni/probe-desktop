@@ -36,7 +36,7 @@ jest.mock('child_process', () => ({
   })),
 }))
 
-jest.mock('../../paths', () => ({
+jest.mock('../utils/paths', () => ({
   getHomeDir: jest.fn(() => '/home/user/probe-desktop/ooni_home'),
   getBinaryPath: jest.fn(() => 'build/probe-cli/linux_amd64'),
 }))
