@@ -10,7 +10,6 @@ describe('Onboarding Story 1', () => {
   })
 
   afterAll(async () => {
-    await resetData(app)
     await stopApp(app)
   })
 
@@ -173,6 +172,13 @@ describe('Onboarding Story 2', () => {
   let app
 
   beforeAll(async () => {
+    // Start app -> reset app -> close app
+    // ===> As a result, when the app starts up the next time,
+    //      it starts from the onboarding screen
+    app = await startApp()
+    await resetData(app)
+    await stopApp(app)
+
     app = await startApp()
   })
 
