@@ -2,7 +2,7 @@
   "_version": 5,
   "_informed_consent": true,
   "sharing": {
-    "upload_results": true
+    "upload_results": false
   },
   "nettests": {
     "websites_enabled_category_codes": [
