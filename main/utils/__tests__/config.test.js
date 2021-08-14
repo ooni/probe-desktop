@@ -10,7 +10,6 @@ import {
 import log from 'electron-log'
 import fs from 'fs-extra'
 import Sentry from '../sentry'
-import { getAutorunHomeDir, getHomeDir } from '../paths'
 
 jest.mock('electron-util', () => ({
   is: {
