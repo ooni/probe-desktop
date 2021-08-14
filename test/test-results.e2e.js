@@ -1,4 +1,4 @@
-import { startApp, stopApp, screenshotApp } from './utils'
+import { startApp, stopApp, screenshotApp, resetData } from './utils'
 
 jest.setTimeout(600000)
 
@@ -19,6 +19,7 @@ describe('Tests for Test-Results screen', () => {
   })
 
   afterAll(async () => {
+    await resetData(app)
     await stopApp(app)
   })
 
