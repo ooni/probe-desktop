@@ -25,9 +25,17 @@ jest.mock('../paths', () => ({
 
 jest.mock('electron-store', () =>
   jest.fn(() => ({
-    reset: jest.fn(),
+    reset: jest.fn(() => ({
+      autorun: {
+        enabled: false,
+        remind: true,
+        backoffRate: 0,
+        interactions: 1,
+        timestamp: 0
+      }
+    })),
     get: jest.fn((key) => {
-      if (key === 'foo') return 'bar'
+      if (key === 'autorun.enabled') return false
     }),
     has: jest.fn(() => true),
     set: jest.fn(),
@@ -91,25 +99,36 @@ describe('Tests for Store', () => {
 
   test('.get calls store.get and returns the value of provided key', async () => {
     const store = await init()
-    const getValue = get('foo')
+    const getValue = get('autorun.enabled')
 
-    expect(store.get).toHaveBeenLastCalledWith('foo')
-    expect(getValue).toBe('bar')
+    expect(store.get).toHaveBeenLastCalledWith('autorun.enabled')
+    expect(getValue).toBe(false)
   })
 
   test('.set calls store.set function with key-value arguments', async () => {
     const store = await init()
-    set('foo', 'bar')
+    set('autorun.enabled', true)
 
-    expect(store.set).toHaveBeenLastCalledWith('foo', 'bar')
+    expect(store.set).toHaveBeenLastCalledWith('autorun.enabled', true)
   })
 
-  test('.reset calls store.reset function with provided keys', async () => {
+  test('.reset calls store.reset function with provided keys and returns resetted state', async () => {
     const store = await init()
-    reset(['foo', 'bar', 'baz'])
+    const resettedState = reset(['autorun.enabled', 'autorun.remind'])
 
     expect(store.reset.mock.calls[0][0][0]).toEqual(
-      ['foo', 'bar', 'baz']
+      ['autorun.enabled', 'autorun.remind']
     )
+
+    const expectedResettedState = {
+      autorun: {
+        enabled: false,
+        remind: true,
+        backoffRate: 0,
+        interactions: 1,
+        timestamp: 0
+      }
+    }
+    expect(resettedState).toEqual(expectedResettedState)
   })
 })
