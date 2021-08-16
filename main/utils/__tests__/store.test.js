@@ -1,8 +1,7 @@
 import log from 'electron-log'
 import Store from 'electron-store'
-import { init } from '../store'
+import { init, get, set, reset } from '../store'
 import fs from 'fs-extra'
-import { getBinaryDirectory } from '../paths'
 
 jest.mock('electron-util', () => ({
   is: {
@@ -27,27 +26,29 @@ jest.mock('../paths', () => ({
 jest.mock('electron-store', () =>
   jest.fn(() => ({
     reset: jest.fn(),
+    get: jest.fn((key) => {
+      if (key === 'foo') return 'bar'
+    }),
+    has: jest.fn(() => true),
+    set: jest.fn(),
     store_created: true,
   }))
 )
 
 describe('Tests for Store', () => {
-
-  beforeAll(async () => {
-    // Remove .first-run if it exists to check if init() creates
-    // a new one
-    const firstRunFileExists = await fs.exists('test/mockFiles/bin/.first-run')
-
-    if(firstRunFileExists) {
-      await fs.remove('test/mockFiles/bin/.first-run')
-    }
-  })
-
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  test('init returns a store value and calls Store class with expected args', async () => {
+  test('init calls Store class, returns a store value and creates .first-run file', async () => {
+    // Remove .first-run if it exists to check if init() creates
+    // a new one
+    const firstRunFileExists = await fs.exists('test/mockFiles/bin/.first-run')
+
+    if (firstRunFileExists) {
+      await fs.remove('test/mockFiles/bin/.first-run')
+    }
+
     const schema = {
       autorun: {
         type: 'object',
@@ -86,5 +87,29 @@ describe('Tests for Store', () => {
 
     // init() creates a .first-run file in mocked Binary Directory
     await expect(fs.exists('test/mockFiles/bin/.first-run')).resolves.toBe(true)
+  })
+
+  test('.get calls store.get and returns the value of provided key', async () => {
+    const store = await init()
+    const getValue = get('foo')
+
+    expect(store.get).toHaveBeenLastCalledWith('foo')
+    expect(getValue).toBe('bar')
+  })
+
+  test('.set calls store.set function with key-value arguments', async () => {
+    const store = await init()
+    set('foo', 'bar')
+
+    expect(store.set).toHaveBeenLastCalledWith('foo', 'bar')
+  })
+
+  test('.reset calls store.reset function with provided keys', async () => {
+    const store = await init()
+    reset(['foo', 'bar', 'baz'])
+
+    expect(store.reset.mock.calls[0][0][0]).toEqual(
+      ['foo', 'bar', 'baz']
+    )
   })
 })
