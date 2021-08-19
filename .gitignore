@@ -25,3 +25,4 @@ cert.pem
 
 # test assets
 test/screenshots
+test/mockFiles
