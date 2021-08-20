@@ -43,7 +43,7 @@ export const BooleanOption = ({ label, optionKey, disabled = false, ...rest }) =
       <Checkbox
         mr={1}
         className='checkbox'
-        data-testid={optionKey}
+        data-testid={optionKey ? optionKey.split('.')[1] : ''}
         checked={checked}
         onChange={handleChange}
         disabled={disabled}

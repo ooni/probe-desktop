@@ -97,7 +97,7 @@ const Settings = () => {
               />
               <BooleanOption
                 label={<FormattedMessage id='Settings.Privacy.SendCrashReports' />}
-                optionKey='advanced_send_crash_reports'
+                optionKey='advanced.send_crash_reports'
               />
             </Section>
             <Text my={3}>OONI Probe Desktop v{pkgJson.version}</Text>

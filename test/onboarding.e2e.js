@@ -155,14 +155,14 @@ describe('Onboarding Story 1', () => {
     // await screenshotApp(app, 'onboarding-success')
   })
 
-  test.onLinux('Check if Crash Reporting is enabled in Settings', async () => {
+  test('Check if Crash Reporting is enabled in Settings', async () => {
     await app.client
       .$('div[data-testid=sidebar-item-settings]')
       .click()
       .pause(1000)
 
     const crashReportSelected = await app.client.isSelected(
-      '[data-testid=advanced_send_crash_reports]'
+      '[data-testid=send_crash_reports]'
     )
     expect(crashReportSelected).toBeTruthy()
   })
@@ -287,14 +287,14 @@ describe('Onboarding Story 2', () => {
     expect(runButtonExists).toBeTruthy()
   })
 
-  test.onLinux('Check if Crash Reporting is disabled in Settings', async () => {
+  test('Check if Crash Reporting is disabled in Settings', async () => {
     await app.client
       .$('div[data-testid=sidebar-item-settings]')
       .click()
       .pause(1000)
 
     const crashReportSelected = await app.client.isSelected(
-      '[data-testid="advanced_send_crash_reports"]'
+      '[data-testid=send_crash_reports]'
     )
     expect(crashReportSelected).toBeFalsy()
   })
