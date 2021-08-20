@@ -72,7 +72,7 @@ describe.onLinux('Dashboard tests on Linux', () => {
     })
   })
 
-  test('Clicking on "Test Results" tab loads the Test Results Page on Linux', async () => {
+  test('Clicking on Test Results tab loads the Test Results Page on Linux', async () => {
     await app.client
       .$('div[data-testid=sidebar-item-test-results]')
       .click()
@@ -97,7 +97,7 @@ describe.onLinux('Dashboard tests on Linux', () => {
     // screenshotApp(app, 'dashboard-test-results')
   })
 
-  test('Clicking on "Settings" tab loads the Settings page on Linux', async () => {
+  test('Clicking on Settings tab loads the Settings page on Linux', async () => {
     await app.client
       .$('div[data-testid=sidebar-item-settings]')
       .click()
@@ -187,7 +187,7 @@ describe.onMac('Dashboard tests on Mac', () => {
     })
   })
 
-  test('Loads up "Test Results" and opt-in for autorun on Mac', async () => {
+  test('Loads up Test Results and opt-in for autorun on Mac', async () => {
     await app.client
       .$('div[data-testid=sidebar-item-test-results]')
       .click()
@@ -206,22 +206,22 @@ describe.onMac('Dashboard tests on Mac', () => {
     ).resolves.toMatch('Would you like to run tests automatically?')
 
     await expect(
-      app.client.getText('h4[data-testid=text-autorun-confirmation]')
+      app.client.getText('div[data-testid=text-autorun-confirmation]')
     ).resolves.toMatch(
       'By enabling automatic testing, OONI Probe tests will run automatically on a regular basis (and you don’t need to remember to manually run tests).'
     )
 
     await expect(
       app.client.getText('button[data-testid=button-autorun-yes]')
-    ).resolves.toMatch('Sounds great')
+    ).resolves.toMatch('Sounds Great')
 
     await expect(
       app.client.getText('button[data-testid=button-autorun-no]')
-    ).resolves.toMatch('No, thanks')
+    ).resolves.toMatch('No, Thanks')
 
     await expect(
       app.client.getText('button[data-testid=button-autorun-yes]')
-    ).resolves.toMatch('Sounds great')
+    ).resolves.toMatch('Sounds Great')
 
     await app.client
       .$('button[data-testid=button-autorun-yes]')
@@ -338,7 +338,7 @@ describe.onWindows('Dashboard tests on Windows', () => {
     })
   })
 
-  test('Loads up "Test Results" and opt-in for autorun on Windows', async () => {
+  test('Loads up Test Results and opt-in for autorun on Windows', async () => {
     await app.client
       .$('div[data-testid=sidebar-item-test-results]')
       .click()
@@ -357,22 +357,22 @@ describe.onWindows('Dashboard tests on Windows', () => {
     ).resolves.toMatch('Would you like to run tests automatically?')
 
     await expect(
-      app.client.getText('h4[data-testid=text-autorun-confirmation]')
+      app.client.getText('div[data-testid=text-autorun-confirmation]')
     ).resolves.toMatch(
       'By enabling automatic testing, OONI Probe tests will run automatically on a regular basis (and you don’t need to remember to manually run tests).'
     )
 
     await expect(
       app.client.getText('button[data-testid=button-autorun-yes]')
-    ).resolves.toMatch('Sounds great')
+    ).resolves.toMatch('Sounds Great')
 
     await expect(
       app.client.getText('button[data-testid=button-autorun-no]')
-    ).resolves.toMatch('No, thanks')
+    ).resolves.toMatch('No, Thanks')
 
     await expect(
       app.client.getText('button[data-testid=button-autorun-yes]')
-    ).resolves.toMatch('Sounds great')
+    ).resolves.toMatch('Sounds Great')
 
     await app.client
       .$('button[data-testid=button-autorun-yes]')

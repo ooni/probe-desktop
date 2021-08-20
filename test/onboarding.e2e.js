@@ -162,7 +162,7 @@ describe('Onboarding Story 1', () => {
       .pause(1000)
 
     const crashReportSelected = await app.client.isSelected(
-      '[data-testid="advanced.send_crash_reports"]'
+      '[data-testid=advanced_send_crash_reports]'
     )
     expect(crashReportSelected).toBeTruthy()
   })
@@ -294,7 +294,7 @@ describe('Onboarding Story 2', () => {
       .pause(1000)
 
     const crashReportSelected = await app.client.isSelected(
-      '[data-testid="advanced.send_crash_reports"]'
+      '[data-testid="advanced_send_crash_reports"]'
     )
     expect(crashReportSelected).toBeFalsy()
   })
