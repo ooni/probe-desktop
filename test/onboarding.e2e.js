@@ -155,7 +155,7 @@ describe('Onboarding Story 1', () => {
     // await screenshotApp(app, 'onboarding-success')
   })
 
-  test('Check if Crash Reporting is enabled in Settings', async () => {
+  test.onLinux('Check if Crash Reporting is enabled in Settings', async () => {
     await app.client
       .$('div[data-testid=sidebar-item-settings]')
       .click()
@@ -287,7 +287,7 @@ describe('Onboarding Story 2', () => {
     expect(runButtonExists).toBeTruthy()
   })
 
-  test('Check if Crash Reporting is disabled in Settings', async () => {
+  test.onLinux('Check if Crash Reporting is disabled in Settings', async () => {
     await app.client
       .$('div[data-testid=sidebar-item-settings]')
       .click()
