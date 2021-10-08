@@ -13,7 +13,8 @@ export async function getStaticPaths() {
       { params: { testGroup: 'im' } },
       { params: { testGroup: 'circumvention' } },
       { params: { testGroup: 'performance' } },
-      { params: { testGroup: 'middlebox' } }
+      { params: { testGroup: 'middlebox' } },
+      { params: { testGroup: 'experimental' } }
     ],
     fallback: false // See the "fallback" section below
   }

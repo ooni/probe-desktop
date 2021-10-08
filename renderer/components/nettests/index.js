@@ -11,6 +11,7 @@ import middlebox from './middleboxes'
 import performance from './performance'
 import websites from './websites'
 import circumvention from './circumvention'
+import experimental from './experimental'
 
 import web_connectivity from './websites/WebConnectivity'
 import http_header_field_manipulation from './middleboxes/HttpHeaderFieldManipulation'
@@ -24,6 +25,7 @@ import psiphon from './circumvention/Psiphon'
 import tor from './circumvention/Tor'
 import riseupvpn from './circumvention/RiseupVPN'
 import signal from './im/Signal'
+import stunreachability from './experimental/StunReachability'
 import { default as animation } from '../../public/static/animations/loadingTests.json'
 
 const iconSize = 200
@@ -35,6 +37,7 @@ export const testGroups = {
   middlebox,
   performance,
   circumvention,
+  experimental,
   'default': {
     'color': theme.colors.gray7,
     'description': '',
@@ -62,13 +65,14 @@ export const tests = {
   tor,
   riseupvpn,
   signal,
+  stunreachability,
   'default': {
     'name': 'Default',
   }
 }
 
 // Note: The order of test groups controls how they are rendered in the home screen
-export const testList  = ['websites', 'im', 'circumvention', 'performance', 'middlebox'].map(key => ({
+export const testList  = ['websites', 'im', 'circumvention', 'performance', 'middlebox', 'experimental'].map(key => ({
   name: testGroups[key].name,
   key: key,
   color: testGroups[key].color,
@@ -92,5 +96,6 @@ export const cliTestKeysToGroups = {
   'nettests.Psiphon': 'circumvention',
   'nettests.Tor': 'circumvention',
   'nettests.RiseupVPN': 'circumvention',
-  'nettests.Signal': 'im'
+  'nettests.Signal': 'im',
+  'nettests.StunReachability': 'experimental'
 }

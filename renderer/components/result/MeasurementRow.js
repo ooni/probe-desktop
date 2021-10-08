@@ -197,7 +197,8 @@ const rowMap = {
   'im': TestRow,
   'middlebox': TestRow,
   'performance': TestRow,
-  'circumvention': TestRow
+  'circumvention': TestRow,
+  'experimental': TestRow,
 }
 
 const MeasurementRow = ({ groupName, measurement }) => {

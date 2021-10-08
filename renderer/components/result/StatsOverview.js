@@ -219,7 +219,8 @@ const statsMap = {
   'im': IMStats,
   'middlebox': MiddleboxStats,
   'performance': PerformanceStats,
-  'circumvention': CircumventionStats
+  'circumvention': CircumventionStats,
+  'experimental': React.Fragment,
 }
 
 const StatsOverview = ({name, anomalyCount, totalCount, testKeys}) => {

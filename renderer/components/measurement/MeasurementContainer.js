@@ -28,6 +28,7 @@ import { Psiphon } from '../nettests/circumvention/Psiphon'
 import { Tor } from '../nettests/circumvention/Tor'
 import { RiseupVPN } from '../nettests/circumvention/RiseupVPN'
 import { Signal } from '../nettests/im/Signal'
+import { StunReachability } from '../nettests/experimental/StunReachability'
 
 import FullHeightFlex from '../FullHeightFlex'
 import MethodologyButton from './MethodologyButton'
@@ -35,6 +36,7 @@ import ExplorerURLButton from './ExplorerURLButton'
 import RawDataContainer from './RawDataContainer'
 import { useRawData } from '../useRawData'
 import colorMap from '../colorMap'
+import { useRouter } from 'next/router'
 
 const detailsMap = {
   web_connectivity: WebConnectivity,
@@ -48,7 +50,8 @@ const detailsMap = {
   psiphon: Psiphon,
   tor: Tor,
   riseupvpn: RiseupVPN,
-  signal: Signal
+  signal: Signal,
+  // stunreachability: StunReachability
 }
 
 const HeroItemBox = ({ label, content, ...props }) => (
@@ -146,8 +149,20 @@ Hero.propTypes = {
   startTime: PropTypes.string
 }
 
+const DefaultDetails = () => {
+  const { rawData } = useRawData()
+  const router = useRouter()
+  return (
+    <RawDataContainer
+      rawData={rawData}
+      isOpen={true}
+      onClose={() => router.back()}
+    />
+  )
+}
+
 const MeasurementDetailContainer = ({ measurement, ...props }) => {
-  const TestDetails = detailsMap[measurement.test_name]
+  const TestDetails = detailsMap[measurement.test_name] ?? DefaultDetails
   return (
     <TestDetails measurement={measurement} {...props} />
   )
