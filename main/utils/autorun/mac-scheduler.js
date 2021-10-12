@@ -1,5 +1,6 @@
 const { app } = require('electron')
 const { writeFile, unlink } = require('fs').promises
+const { existsSync, writeFileSync } = require('fs-extra')
 const { spawnSync } = require('child_process')
 const { join } = require('path')
 const os = require('os')
@@ -30,6 +31,26 @@ const launchctl = (command, args) => {
 }
 
 module.exports = {
+  init: function (taskId, /* opts */) {
+    // Check if required files are on disk
+    // (Re)generate files that are missing or removed by an update
+    const taskPlistPath = getTaskPlistPath(taskId)
+    if (!existsSync(taskPlistPath)) {
+      log.verbose(`Autorun plist file missing at ${taskPlistPath}`)
+      try {
+        const plistTemplate = require('./taskTemplateMac')
+        const taskPlistStr = plistTemplate({
+          taskName: taskId,
+          pathToBinary: getBinaryPath(),
+          OONI_HOME_autorun: getAutorunHomeDir()
+        })
+        writeFileSync(taskPlistPath, taskPlistStr)
+        log.verbose(`Autorun plist file created at ${taskPlistPath}`)
+      } catch (e) {
+        log.error(`Failed to create autorun task plist file: ${taskPlistPath}: ${e.message}`)
+      }
+    }
+  },
   get: function (taskname) {
     return new Promise((resolve, reject) => {
       try {

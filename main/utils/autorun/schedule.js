@@ -20,6 +20,27 @@ const platforms = {
 
 const scheduler = platforms[process.platform]
 
+/**
+ * Initializes the autorun feature
+ * - Check if required files are on disk
+ * - (Re)generate files that are missing or removed by an update
+ * @param {Object} opts Options
+ */
+const init = (opts) => {
+  // TODO: Check for platform support right away
+  return scheduler.init(taskId, opts)
+}
+
+const getAutorunStatus = () => {
+  return new Promise((resolve, reject) => {
+    scheduler.get(taskId).then(() => {
+      resolve()
+    }).catch(() => {
+      reject()
+    })
+  })
+}
+
 // These task managment methods should be made platform-agnostic
 // by either using prototypes or some similar pattern
 const scheduleAutorun = () => {
@@ -60,6 +81,8 @@ const disableAutorun = () => {
 // checkIfAlreadyScheduled
 
 module.exports = {
+  init,
+  getAutorunStatus,
   scheduleAutorun,
   disableAutorun
 }
