@@ -148,7 +148,7 @@ const summaryMap = {
   'middlebox': MiddleboxSummary,
   'performance': PerformanceSummary,
   'circumvention': CircumventionSummary,
-  'experimental': React.Fragment,
+  'experimental': Box,
 }
 
 class ResultRow extends React.Component {

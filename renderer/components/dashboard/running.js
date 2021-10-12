@@ -173,7 +173,7 @@ const RunningTestnameLabel = ({ runningTestName }) => (
     </Heading>
     <Text fontSize={4} data-testid='text-running-test-name'>
       {runningTestName ? (
-        <FormattedMessage id={`Test.${runningTestName.split('.')[1]}.Fullname`} />
+        <FormattedMessage id={`Test.${runningTestName.split('.')[1]}.Fullname`} defaultMessage={runningTestName.split('.')[1]} />
       ) : (
         <span>&nbsp;</span>
       )}

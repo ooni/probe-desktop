@@ -25,7 +25,6 @@ import psiphon from './circumvention/Psiphon'
 import tor from './circumvention/Tor'
 import riseupvpn from './circumvention/RiseupVPN'
 import signal from './im/Signal'
-import stunreachability from './experimental/StunReachability'
 import { default as animation } from '../../public/static/animations/loadingTests.json'
 
 const iconSize = 200
@@ -48,6 +47,15 @@ export const testGroups = {
   }
 }
 
+/**
+ * For tests which don't need any specific UI code, use this to
+ * generate the minimum data structure for a test
+ * used in components across the app.
+*/
+const minimalTest = (testName) => ({
+  name: testName
+})
+
 // Metadata for tests
 // Contains: {
 //  name: Full descriptive name of the test, translated with <FormattedMessage>
@@ -65,7 +73,8 @@ export const tests = {
   tor,
   riseupvpn,
   signal,
-  stunreachability,
+  stunreachability: minimalTest('stunreachability'),
+  dnscheck: minimalTest('dnscheck'),
   'default': {
     'name': 'Default',
   }

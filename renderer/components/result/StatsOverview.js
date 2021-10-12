@@ -220,7 +220,7 @@ const statsMap = {
   'middlebox': MiddleboxStats,
   'performance': PerformanceStats,
   'circumvention': CircumventionStats,
-  'experimental': React.Fragment,
+  'experimental': Box,
 }
 
 const StatsOverview = ({name, anomalyCount, totalCount, testKeys}) => {

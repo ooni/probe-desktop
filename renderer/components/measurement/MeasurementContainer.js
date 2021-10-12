@@ -28,7 +28,6 @@ import { Psiphon } from '../nettests/circumvention/Psiphon'
 import { Tor } from '../nettests/circumvention/Tor'
 import { RiseupVPN } from '../nettests/circumvention/RiseupVPN'
 import { Signal } from '../nettests/im/Signal'
-import { StunReachability } from '../nettests/experimental/StunReachability'
 
 import FullHeightFlex from '../FullHeightFlex'
 import MethodologyButton from './MethodologyButton'
@@ -51,7 +50,6 @@ const detailsMap = {
   tor: Tor,
   riseupvpn: RiseupVPN,
   signal: Signal,
-  // stunreachability: StunReachability
 }
 
 const HeroItemBox = ({ label, content, ...props }) => (
