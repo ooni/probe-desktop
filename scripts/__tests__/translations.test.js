@@ -3,21 +3,18 @@ import { basename } from 'path'
 import csvParse from 'csv-parse/lib/sync'
 import { readFileSync } from 'fs'
 
+// Using the file in the translations repo instead of the local one: './data/lang-en.csv'
+const SOURCE_CSV_FILE = '../translations/probe-mobile/en/strings.csv'
+
 describe('Tests for translations', () => {
 
-  const langIdArray = csvParse(readFileSync('./data/lang-en.csv'), {from: 2}).map(row => row[0])
+  const langIdArray = csvParse(readFileSync(SOURCE_CSV_FILE), {from: 2}).map(row => row[0])
 
   const supportedLanguages = glob.sync('./lang/*.json').map((f) => basename(f, '.json'))
 
   test('Any supported languages are not missing', async () => {
     const expectedLanguagesArray = [
-      'ar', 'ca', 'de',
-      'el', 'en', 'es',
-      'fa', 'fr', 'hi',
-      'id', 'is', 'it',
-      'pt-rBR', 'ro', 'ru',
-      'sk', 'sq', 'th',
-      'tr', 'zh-rCN', 'zh-rTW',
+      'ar', 'ca', 'de', 'el', 'en', 'es', 'fa', 'fr', 'hi', 'id', 'is', 'it', 'nl', 'pt-rBR', 'ro', 'ru', 'sk', 'sq', 'sw', 'th', 'tr', 'zh-rCN', 'zh-rTW',
     ]
 
     expect(supportedLanguages.sort()).toEqual(expectedLanguagesArray.sort())

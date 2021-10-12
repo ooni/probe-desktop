@@ -1,18 +1,18 @@
 /* eslint-disable no-console */
-/* global require */
 const glob = require('glob')
 const { basename } = require('path')
 const csvParse = require('csv-parse/lib/sync')
 const { readFileSync, writeFileSync } = require('fs')
 
 const supportedLanguages = glob.sync('./lang/*.json').map((f) => basename(f, '.json'))
+const SOURCE_CSV_FILE = '../translations/probe-mobile/en/strings.csv'
 
-const lang = csvParse(readFileSync('./data/lang-en.csv'), {from: 2})
+const lang = csvParse(readFileSync(SOURCE_CSV_FILE), {from: 2})
   .reduce((messages, row) => {
     const id = row[0]
     const text = row[1].replace(/\{\{(\w+)\}\}/g, '{$1}')
 
-    if (messages.hasOwnProperty(id)) {
+    if (Object.prototype.hasOwnProperty.call(messages, id)) {
       throw new Error(`Duplicate message id: ${id}`)
     }
     messages[id] = text.trim()
@@ -32,3 +32,4 @@ const translationsMap = supportedLanguages
 const translationsContent = `window.OONITranslations = ${JSON.stringify(translationsMap)}`
 writeFileSync('./renderer/public/static/translations.js', translationsContent)
 console.log('> Wrote translations to: ./renderer/public/static/translations.js')
+/* eslint-enable no-console */
