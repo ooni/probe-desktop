@@ -11,7 +11,7 @@ describe('Tests for translations', () => {
 
   test('Any supported languages are not missing', async () => {
     const expectedLanguagesArray = [
-      'ar', 'ca', 'de',
+      'ar', 'ca', 'de', 'nl', 'sw',
       'el', 'en', 'es',
       'fa', 'fr', 'hi',
       'id', 'is', 'it',
