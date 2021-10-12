@@ -39,6 +39,7 @@ const StickyBox = styled(Box)`
   position: sticky;
   top: 0px;
   z-index: 1;
+  -webkit-app-region: drag;
 `
 
 const RawDataContainer = ({ rawData, isOpen, onClose }) => {
