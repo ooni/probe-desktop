@@ -76,7 +76,7 @@ const initializeConfig = (opts = {}) => {
  */
 
 const initConfigFile = async (options = {}) => {
-  const opts = Object.assign(defaultOptions, options)
+  const opts = Object.assign({}, defaultOptions, options)
   const config = initializeConfig(opts)
   await fs.ensureFile(opts.configFilePath)
   await fs.writeJson(opts.configFilePath, config, {spaces: '  '})

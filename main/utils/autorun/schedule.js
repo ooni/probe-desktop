@@ -15,7 +15,9 @@ const taskId = process.env.npm_package_build_appId || 'org.ooni.probe-desktop'
 
 const platforms = {
   win32: winScheduler,
-  darwin: macScheduler
+  darwin: macScheduler,
+  // Add a placeholder module to allow CI tests to run on ubuntu-18.04
+  linux: { init: () => {} }
 }
 
 const scheduler = platforms[process.platform]

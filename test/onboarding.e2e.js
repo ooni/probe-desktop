@@ -7,10 +7,10 @@ describe('Onboarding Story 1', () => {
   beforeAll(async () => {
     app = await startApp()
     await resetData(app)
+    await app.restart()
   })
 
   afterAll(async () => {
-    await resetData(app)
     await stopApp(app)
   })
 
@@ -174,6 +174,8 @@ describe('Onboarding Story 2', () => {
 
   beforeAll(async () => {
     app = await startApp()
+    await resetData(app)
+    await app.restart()
   })
 
   afterAll(async () => {
