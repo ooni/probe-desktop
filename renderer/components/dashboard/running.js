@@ -249,7 +249,7 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
   const onMessage = useCallback((event, data) => {
     switch (data.key) {
     case 'ooni.run.progress':
-      var currentTestGroup = cliTestKeysToGroups[data.testKey]
+      var currentTestGroup = cliTestKeysToGroups[data.testKey] ?? 'experimental'
       if (testGroupName !== currentTestGroup
         && testList.findIndex(item => item.key === currentTestGroup) > -1
       ) {
