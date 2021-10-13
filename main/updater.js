@@ -18,8 +18,14 @@ autoUpdater.logger.transports.file.level = 'info'
 autoUpdater.autoDownload = false
 
 function sendStatusToWindow(text, options = {}) {
-  const aboutWindow = openAboutWindow(options['showWindow'] === true)
   log.info(text)
+  // HACK: Do not open about window if running in test environment
+  // This prevents tests from picking up the about window to test for
+  // UI elements rendered in the main window.
+  if (process.env.NODE_ENV === 'test') {
+    return
+  }
+  const aboutWindow = openAboutWindow(options['showWindow'] === true)
   if (aboutWindow.isVisible()) {
     aboutWindow.webContents.send('update-message', text)
   } else {
