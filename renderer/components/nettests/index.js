@@ -74,7 +74,6 @@ export const tests = {
   riseupvpn,
   signal,
   stunreachability: minimalTest('stunreachability'),
-  dnscheck: minimalTest('dnscheck'),
   'default': {
     'name': 'Default',
   }
@@ -106,5 +105,4 @@ export const cliTestKeysToGroups = {
   'nettests.Tor': 'circumvention',
   'nettests.RiseupVPN': 'circumvention',
   'nettests.Signal': 'im',
-  'nettests.StunReachability': 'experimental'
 }

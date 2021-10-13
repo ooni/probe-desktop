@@ -182,7 +182,7 @@ const MeasurementContainer = ({ measurement, isAnomaly }) => {
   // anomaly-ness based backgaround color, in case nettest doesn't send
   // an override in `heroBG`
   const backgroundColor = isAnomaly ? colorMap.anomaly : colorMap.reachable
-  const testFullName = tests[testName].name
+  const testFullName = tests[testName]?.name ?? testName
 
   return (
     <MeasurementDetailContainer
@@ -233,7 +233,7 @@ const MeasurementContainer = ({ measurement, isAnomaly }) => {
                   : <FormattedNumber value={Number(runtime).toFixed(1)} style='unit' unit='second' unitDisplay='narrow' />
                 </Box>
                 <Box ml='auto'>
-                  <MethodologyButton href={tests[testName].methodology} />
+                  <MethodologyButton href={tests[testName]?.methodology} />
                 </Box>
               </Flex>
               <FullHeightFlex>
