@@ -11224,10 +11224,10 @@ onetime@^5.1.2:
   dependencies:
     mimic-fn "^2.1.0"
 
-ooni-components@^0.4.6:
-  version "0.4.6"
-  resolved "https://registry.yarnpkg.com/ooni-components/-/ooni-components-0.4.6.tgz#bc9a11bac2d33ed6cbb59d3f4f588610585dae23"
-  integrity sha512-cMhZjkfPJAK6riuf/fXXnxv1jBWswReOHO4kAVauSMGVe63Y0KQGVxpUZcRx2uAcEzMo+FASUgwyr2D7NwnFRA==
+ooni-components@^0.4.7:
+  version "0.4.7"
+  resolved "https://registry.yarnpkg.com/ooni-components/-/ooni-components-0.4.7.tgz#bc2b4bcde579ab83106b38e5bce0262441f99913"
+  integrity sha512-azeTT/C2YNEpeslwZUULOeI5ckDI32iZ2zKeJneGJ9gb+e2XT87Sfol/2HWcfFRgvW9Ci7ZG3yxIVbEINxGS+w==
   dependencies:
     "@rebass/forms" "^4.0.6"
     "@rebass/preset" "^4.0.5"

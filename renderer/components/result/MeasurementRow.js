@@ -142,15 +142,21 @@ const StatusBox = ({testName, testKeys, isAnomaly}) => {
 }
 
 const TestNameIcon = ({ testName }) => {
-  const icon = tests[testName].icon && React.cloneElement(
-    tests[testName].icon,
-    {size: 40}
-  )
+  let name = testName
+  let icon = null
+
+  if (testName in tests) {
+    name = tests[testName].name
+    icon = tests[testName].icon && React.cloneElement(
+      tests[testName].icon,
+      {size: 40}
+    )
+  }
 
   return (
     <Flex alignItems='center'>
       {icon && <IconContainer>{icon}</IconContainer>}
-      <Text data-testid='measured-test-name'>{tests[testName] && tests[testName].name}</Text>
+      <Text data-testid='measured-test-name'>{name}</Text>
     </Flex>
   )
 }
@@ -197,7 +203,8 @@ const rowMap = {
   'im': TestRow,
   'middlebox': TestRow,
   'performance': TestRow,
-  'circumvention': TestRow
+  'circumvention': TestRow,
+  'experimental': TestRow,
 }
 
 const MeasurementRow = ({ groupName, measurement }) => {

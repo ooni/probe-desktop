@@ -147,7 +147,8 @@ const summaryMap = {
   'im': IMSummary,
   'middlebox': MiddleboxSummary,
   'performance': PerformanceSummary,
-  'circumvention': CircumventionSummary
+  'circumvention': CircumventionSummary,
+  'experimental': Box,
 }
 
 class ResultRow extends React.Component {

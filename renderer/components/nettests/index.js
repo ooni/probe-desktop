@@ -11,6 +11,7 @@ import middlebox from './middleboxes'
 import performance from './performance'
 import websites from './websites'
 import circumvention from './circumvention'
+import experimental from './experimental'
 
 import web_connectivity from './websites/WebConnectivity'
 import http_header_field_manipulation from './middleboxes/HttpHeaderFieldManipulation'
@@ -35,6 +36,7 @@ export const testGroups = {
   middlebox,
   performance,
   circumvention,
+  experimental,
   'default': {
     'color': theme.colors.gray7,
     'description': '',
@@ -44,6 +46,15 @@ export const testGroups = {
     animation
   }
 }
+
+/**
+ * For tests which don't need any specific UI code, use this to
+ * generate the minimum data structure for a test
+ * used in components across the app.
+*/
+const minimalTest = (testName) => ({
+  name: testName
+})
 
 // Metadata for tests
 // Contains: {
@@ -62,13 +73,14 @@ export const tests = {
   tor,
   riseupvpn,
   signal,
+  stunreachability: minimalTest('stunreachability'),
   'default': {
     'name': 'Default',
   }
 }
 
 // Note: The order of test groups controls how they are rendered in the home screen
-export const testList  = ['websites', 'im', 'circumvention', 'performance', 'middlebox'].map(key => ({
+export const testList  = ['websites', 'im', 'circumvention', 'performance', 'middlebox', 'experimental'].map(key => ({
   name: testGroups[key].name,
   key: key,
   color: testGroups[key].color,
@@ -92,5 +104,5 @@ export const cliTestKeysToGroups = {
   'nettests.Psiphon': 'circumvention',
   'nettests.Tor': 'circumvention',
   'nettests.RiseupVPN': 'circumvention',
-  'nettests.Signal': 'im'
+  'nettests.Signal': 'im',
 }

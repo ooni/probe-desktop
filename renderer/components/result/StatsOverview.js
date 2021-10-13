@@ -219,7 +219,8 @@ const statsMap = {
   'im': IMStats,
   'middlebox': MiddleboxStats,
   'performance': PerformanceStats,
-  'circumvention': CircumventionStats
+  'circumvention': CircumventionStats,
+  'experimental': Box,
 }
 
 const StatsOverview = ({name, anomalyCount, totalCount, testKeys}) => {

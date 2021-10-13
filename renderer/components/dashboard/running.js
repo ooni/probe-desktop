@@ -173,7 +173,7 @@ const RunningTestnameLabel = ({ runningTestName }) => (
     </Heading>
     <Text fontSize={4} data-testid='text-running-test-name'>
       {runningTestName ? (
-        <FormattedMessage id={`Test.${runningTestName.split('.')[1]}.Fullname`} />
+        <FormattedMessage id={`Test.${runningTestName.split('.')[1]}.Fullname`} defaultMessage={runningTestName.split('.')[1]} />
       ) : (
         <span>&nbsp;</span>
       )}
@@ -249,7 +249,7 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
   const onMessage = useCallback((event, data) => {
     switch (data.key) {
     case 'ooni.run.progress':
-      var currentTestGroup = cliTestKeysToGroups[data.testKey]
+      var currentTestGroup = cliTestKeysToGroups[data.testKey] ?? 'experimental'
       if (testGroupName !== currentTestGroup
         && testList.findIndex(item => item.key === currentTestGroup) > -1
       ) {

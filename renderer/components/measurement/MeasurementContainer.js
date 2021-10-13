@@ -35,6 +35,7 @@ import ExplorerURLButton from './ExplorerURLButton'
 import RawDataContainer from './RawDataContainer'
 import { useRawData } from '../useRawData'
 import colorMap from '../colorMap'
+import { useRouter } from 'next/router'
 
 const detailsMap = {
   web_connectivity: WebConnectivity,
@@ -48,7 +49,7 @@ const detailsMap = {
   psiphon: Psiphon,
   tor: Tor,
   riseupvpn: RiseupVPN,
-  signal: Signal
+  signal: Signal,
 }
 
 const HeroItemBox = ({ label, content, ...props }) => (
@@ -146,8 +147,20 @@ Hero.propTypes = {
   startTime: PropTypes.string
 }
 
+const DefaultDetails = () => {
+  const { rawData } = useRawData()
+  const router = useRouter()
+  return (
+    <RawDataContainer
+      rawData={rawData}
+      isOpen={true}
+      onClose={() => router.back()}
+    />
+  )
+}
+
 const MeasurementDetailContainer = ({ measurement, ...props }) => {
-  const TestDetails = detailsMap[measurement.test_name]
+  const TestDetails = detailsMap[measurement.test_name] ?? DefaultDetails
   return (
     <TestDetails measurement={measurement} {...props} />
   )
@@ -169,7 +182,7 @@ const MeasurementContainer = ({ measurement, isAnomaly }) => {
   // anomaly-ness based backgaround color, in case nettest doesn't send
   // an override in `heroBG`
   const backgroundColor = isAnomaly ? colorMap.anomaly : colorMap.reachable
-  const testFullName = tests[testName].name
+  const testFullName = tests[testName]?.name ?? testName
 
   return (
     <MeasurementDetailContainer
@@ -220,7 +233,7 @@ const MeasurementContainer = ({ measurement, isAnomaly }) => {
                   : <FormattedNumber value={Number(runtime).toFixed(1)} style='unit' unit='second' unitDisplay='narrow' />
                 </Box>
                 <Box ml='auto'>
-                  <MethodologyButton href={tests[testName].methodology} />
+                  <MethodologyButton href={tests[testName]?.methodology} />
                 </Box>
               </Flex>
               <FullHeightFlex>

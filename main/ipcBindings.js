@@ -62,7 +62,7 @@ const ipcBindingsForMain = (ipcMain) => {
     const sender = event.sender
     // TODO: Should figure out a way to share this list between main and renderer
     // Cannot import `testGroups` as-is from 'renderer/components/nettests/index.js'
-    const supportedTestGroups = ['websites', 'circumvention', 'im', 'middlebox', 'performance']
+    const supportedTestGroups = ['websites', 'circumvention', 'im', 'middlebox', 'performance', 'experimental']
     // if testGroupToRun is `all` then iterate on a list of all runnable testGroups
     // instead of launching `ooniprobe all` to avoid the maxRuntimeTimer killing
     // tests other than `websites`
