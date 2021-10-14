@@ -1,5 +1,3 @@
-/* global windows, require, module */
-
 import { Runner } from '../run'
 import childProcess from 'child_process'
 import log from 'electron-log'
@@ -43,6 +41,8 @@ jest.mock('../../paths', () => ({
   getBinaryPath: jest.fn(() => 'build/probe-cli/linux_amd64'),
 }))
 
+const currentVersion = process.env.npm_package_version
+
 // eslint-disable-next-line
 window.windows = {
   main: {
@@ -59,7 +59,7 @@ describe('Tests for Runner class', () => {
     const cmdArgs = [
       '--batch',
       '--software-name=ooniprobe-desktop',
-      '--software-version=3.5.2',
+      `--software-version=${currentVersion}`,
       'run',
       'im',
     ]

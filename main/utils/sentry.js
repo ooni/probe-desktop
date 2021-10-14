@@ -1,4 +1,3 @@
-/* global module */
 const { init } = require('@sentry/electron')
 const isDev = require('electron-is-dev')
 const log = require('electron-log')

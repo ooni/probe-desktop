@@ -46,6 +46,8 @@ jest.mock('../utils/paths', () => ({
   getBinaryPath: jest.fn(() => 'build/probe-cli/linux_amd64'),
 }))
 
+const currentVersion = process.env.npm_package_version
+
 describe('Hard reset', () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -55,12 +57,11 @@ describe('Hard reset', () => {
     const cmdArgs = [
       '--batch',
       '--software-name=ooniprobe-desktop',
-      '--software-version=3.5.2',
+      `--software-version=${currentVersion}`,
       'reset',
       '--force',
     ]
     hardReset()
-
     expect(childProcess.spawn.mock.calls[0][1]).toEqual(cmdArgs)
   })
 })
@@ -74,7 +75,7 @@ describe('List measurements', () => {
     const cmdArgs = [
       '--batch',
       '--software-name=ooniprobe-desktop',
-      '--software-version=3.5.2',
+      `--software-version=${currentVersion}`,
       'list',
       '11',
     ]
@@ -93,7 +94,7 @@ describe('List Results', () => {
     const cmdArgs = [
       '--batch',
       '--software-name=ooniprobe-desktop',
-      '--software-version=3.5.2',
+      `--software-version=${currentVersion}`,
       'list',
     ]
     listResults('list')
@@ -111,7 +112,7 @@ describe('Show measurements', () => {
     const cmdArgs = [
       '--batch',
       '--software-name=ooniprobe-desktop',
-      '--software-version=3.5.2',
+      `--software-version=${currentVersion}`,
       'show',
       'FKS 43',
     ]
