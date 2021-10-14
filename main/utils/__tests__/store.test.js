@@ -1,7 +1,6 @@
 import log from 'electron-log'
 import Store from 'electron-store'
 import { init, get, set, reset } from '../store'
-import fs from 'fs-extra'
 
 jest.mock('electron-util', () => ({
   is: {
@@ -48,15 +47,7 @@ describe('Tests for Store', () => {
     jest.clearAllMocks()
   })
 
-  test('init calls Store class, returns a store value and creates .first-run file', async () => {
-    // Remove .first-run if it exists to check if init() creates
-    // a new one
-    const firstRunFileExists = await fs.exists('test/mockFiles/bin/.first-run')
-
-    if (firstRunFileExists) {
-      await fs.remove('test/mockFiles/bin/.first-run')
-    }
-
+  test('init calls Store class, returns a store value', async () => {
     const schema = {
       autorun: {
         type: 'object',
@@ -92,9 +83,6 @@ describe('Tests for Store', () => {
 
     // Store constructor is called with correct arguments
     expect(Store.mock.calls[0][0]).toEqual({ name: 'settings', schema })
-
-    // init() creates a .first-run file in mocked Binary Directory
-    await expect(fs.exists('test/mockFiles/bin/.first-run')).resolves.toBe(true)
   })
 
   test('.get calls store.get and returns the value of provided key', async () => {
