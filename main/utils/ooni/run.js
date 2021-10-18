@@ -57,9 +57,14 @@ class Runner {
       this.etaReportInterval = setInterval((maxRunTime) => {
         const timeLeftInTimer = this.getTimeLeftInTimer()
         const percentCompleted = (maxRunTime - timeLeftInTimer * 1000) / maxRunTime
+        // Send progress messages similar to the ones from probe-cli for renderer
+        // to update the progress bar and ETA. `testKey` is needed to make sure it
+        // doesn't get mistaken for an unrecognized test and switch to experimental 
+        // group context (icon, animation, name, color etc)
         windows.main.send('ooni', {
           key: 'ooni.run.progress',
           percentage: percentCompleted,
+          testKey: 'nettests.WebConnectivity',
           eta: timeLeftInTimer
         })
       }, 1000, maxRunTime)
