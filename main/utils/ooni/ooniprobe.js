@@ -105,7 +105,7 @@ class Ooniprobe extends EventEmitter {
       })
 
       self.ooni.stdout.pipe(split2()).on('data', line => {
-        log.verbose('stdout: ', line.toString())
+        log.debug('stdout: ', line.toString())
         try {
           const msg = JSON.parse(line.toString('utf8'))
           self.emit('data', msg)
