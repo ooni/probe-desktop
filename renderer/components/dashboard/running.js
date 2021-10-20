@@ -205,58 +205,38 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
   // on multiple channels for updates.
   // e.g `ooniprobe.running-test`, `ooniprobe.progress`, `ooniprobe.stopping'`
 
-  useEffect(() => {
-
-    ipcRenderer.send('ooniprobe.run', { testGroupToRun, inputFile })
-
-    ipcRenderer.on('ooni', onMessage)
-    ipcRenderer.on('ooniprobe.running-test', (_, testGroup) => {
-      setTestGroupName(testGroup)
-    })
-    ipcRenderer.on('ooniprobe.done', (_, completedTestGroup) => {
-      const logMessage = `Finished running ${completedTestGroup}`
-      setLogLines(oldLogLines => [...oldLogLines, logMessage])
-      setPercent(0)
-    })
-    ipcRenderer.on('ooniprobe.completed', () => {
-      setStopped(true)
-      router.push('/test-results')
-    })
-
-    ipcRenderer.on('ooniprobe.error', (_, error) => {
-      const logMessage = error
-      setLogLines(oldLogLines => [...oldLogLines, logMessage])
-    })
-
-    return () => {
-      ipcRenderer.removeListener('ooni', onMessage)
-      ipcRenderer.removeAllListeners('ooniprobe.running-test')
-      ipcRenderer.removeAllListeners('ooniprobe.done')
-      ipcRenderer.removeAllListeners('ooniprobe.error')
-    }
-  }, []) /* eslint-disable-line react-hooks/exhaustive-deps */
-  /* Do not add dependencies. This is componentDidMount */
-
-  // Update rest of the state when a new testGroup starts running
-  // Without this, it will continue to show the last test name from
-  // the previous group.
-  // This is expected to happen only during "Run All"
-  useEffect(() => {
+  const onTestGroupStart = useCallback((_, testGroup) => {
+    setTestGroupName(testGroup)
+    // Reset the test name to prevent showing a name from the previous group
+    // `null` will render a generic 'Preparing tests...' label
     setRunningTestName(null)
-  }, [testGroupName])
+  }, [])
 
-  const onToggleLog = useCallback(() => {
-    setLogOpen(!logOpen)
-  }, [logOpen])
+  const onTestGroupDone = useCallback((_, completedTestGroup) => {
+    const logMessage = `Finished running ${completedTestGroup}`
+    setLogLines(oldLogLines => [...oldLogLines, logMessage])
+    setPercent(0)
+  }, [])
+
+  const onRunCompleted = useCallback(() => {
+    setStopped(true)
+    router.push('/test-results')
+  }, [router])
+
+  const onRunError = useCallback((_, error) => {
+    const logMessage = error.toString()
+    setLogLines(oldLogLines => [...oldLogLines, logMessage])
+  }, [])
 
   const onMessage = useCallback((event, data) => {
     switch (data.key) {
     case 'ooni.run.progress':
-      var currentTestGroup = cliTestKeysToGroups[data.testKey] ?? 'experimental'
-      if (testGroupName !== currentTestGroup
-        && testList.findIndex(item => item.key === currentTestGroup) > -1
+
+      var latestTestGroup = cliTestKeysToGroups[data.testKey] ?? 'experimental'
+      if (testGroupName !== latestTestGroup
+        && testList.findIndex(item => item.key === latestTestGroup) > -1
       ) {
-        setTestGroupName(currentTestGroup)
+        setTestGroupName(latestTestGroup)
       }
       data.testKey && setRunningTestName(data.testKey)
       data.message && setProgressLine(data.message)
@@ -276,6 +256,45 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
       break
     }
   }, [testGroupName, setPercent, setEta, setProgressLine, setError, setRunningTestName, setLogLines])
+
+  /* On Mount */
+  useEffect(() => {
+    ipcRenderer.send('ooniprobe.run', { testGroupToRun, inputFile })
+
+    ipcRenderer.on('ooni', onMessage)
+    ipcRenderer.on('ooniprobe.running-test', onTestGroupStart)
+    ipcRenderer.on('ooniprobe.done', onTestGroupDone)
+    ipcRenderer.on('ooniprobe.completed', onRunCompleted)
+    ipcRenderer.on('ooniprobe.error', onRunError)
+
+    return () => {
+      ipcRenderer.removeListener('ooni', onMessage)
+      ipcRenderer.removeAllListeners('ooniprobe.running-test')
+      ipcRenderer.removeAllListeners('ooniprobe.done')
+      ipcRenderer.removeAllListeners('ooniprobe.error')
+    }
+  }, []) /* eslint-disable-line react-hooks/exhaustive-deps */
+  /* Do not add dependencies. This is componentDidMount */
+
+  // Update rest of the state when a new testGroup starts running
+  // Without this, it will continue to show the last test name from
+  // the previous group.
+  // This is expected to happen only during "Run All"
+  // useEffect(() => {
+  //   console.log(`isMountingRef: ${isMountingRef.current}`)
+  //   if (isMountingRef.current === false) {
+  //     console.log(`Update mode`)
+  //     setRunningTestName(null)
+  //   } else {
+  //     console.log(`Mounting mode`)
+  //     isMountingRef.current = false
+  //   }
+  // }, [testGroupName])
+
+  const onToggleLog = useCallback(() => {
+    setLogOpen(!logOpen)
+  }, [logOpen])
+
 
   const onKill = useCallback(() => {
     if (isStopping !== true) {
