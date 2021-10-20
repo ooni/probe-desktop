@@ -237,9 +237,12 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
   }, []) /* eslint-disable-line react-hooks/exhaustive-deps */
   /* Do not add dependencies. This is componentDidMount */
 
-  // Reset progressbar when group name changes during 'Run All'
+  // Update rest of the state when a new testGroup starts running
+  // Without this, it will continue to show the last test name from
+  // the previous group.
+  // This is expected to happen only during "Run All"
   useEffect(() => {
-    setPercent(0)
+    setRunningTestName(null)
   }, [testGroupName])
 
   const onToggleLog = useCallback(() => {
