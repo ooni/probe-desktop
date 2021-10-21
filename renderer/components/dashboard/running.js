@@ -8,7 +8,6 @@ import {
   Box,
   Heading,
   Text,
-  Container,
   theme
 } from 'ooni-components'
 import { Line as LineProgress } from 'rc-progress'
@@ -23,7 +22,8 @@ import { StripedProgress } from './StripedProgress'
 import StopTestModal from '../ConfirmationModal'
 import NoRTLFlip from '../NoRTLFlip'
 
-const StyledRunningTest = styled.div`
+const StyledRunningTest = styled(Flex)`
+  flex-grow: 1;
   text-align: center;
   color: white;
   /* This affects the <LineProgress> direction */
@@ -99,11 +99,8 @@ CodeLog.propTypes = {
   lines: PropTypes.array,
 }
 
-const LogContainer = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+const LogContainer = styled(Box)`
+  margin-top: auto;
 `
 
 export const Log = ({lines, onToggleLog, open}) => (
@@ -128,12 +125,13 @@ const CloseButtonContainer = styled.div`
   cursor: pointer;
 `
 
-const WindowContainer = styled.div`
+const WindowContainer = styled(Flex)`
+  flex-direction: column;
   min-height: 100vh;
   background-color: ${props => props.bg};
 `
 
-const WindowDraggable = styled.div`
+const WindowDraggable = styled(Box)`
   background-color: ${props => props.bg};
   height: 50px;
   width: 100%;
@@ -141,12 +139,17 @@ const WindowDraggable = styled.div`
   -webkit-app-region: drag;
 `
 
-const ContentContainer = styled.div`
-  width: 100%;
+const ContentContainer = styled(Flex)`
+  flex-grow: 1;
   z-index: 10;
 `
 ContentContainer.displayName = 'ContentContainer'
 
+const StyledProgressLine = styled(Text)`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
 const Title = ({ groupName }) => (
   <Heading h={2} data-testid='heading-test-group-name'>
     {groupName ? groupName : <span>&nbsp;</span>}
@@ -191,7 +194,7 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
   const [logOpen, setLogOpen] = useState(false)
   const [error, setError] = useState(null)
   const [runningTestName, setRunningTestName] = useState(null)
-  const [progressLine, setProgressLine] = useState('')
+  const [progressLine, setProgressLine] = useState(null)
   const [logLines, setLogLines] = useState([])
   const [percent, setPercent] = useState(0)
   const [eta, setEta] = useState(-1)
@@ -205,55 +208,38 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
   // on multiple channels for updates.
   // e.g `ooniprobe.running-test`, `ooniprobe.progress`, `ooniprobe.stopping'`
 
-  useEffect(() => {
+  const onTestGroupStart = useCallback((_, testGroup) => {
+    setTestGroupName(testGroup)
+    // Reset the test name to prevent showing a name from the previous group
+    // `null` will render a generic 'Preparing tests...' label
+    setRunningTestName(null)
+  }, [])
 
-    ipcRenderer.send('ooniprobe.run', { testGroupToRun, inputFile })
-
-    ipcRenderer.on('ooni', onMessage)
-    ipcRenderer.on('ooniprobe.running-test', (_, testGroup) => {
-      setTestGroupName(testGroup)
-    })
-    ipcRenderer.on('ooniprobe.done', (_, completedTestGroup) => {
-      const logMessage = `Finished running ${completedTestGroup}`
-      setLogLines(oldLogLines => [...oldLogLines, logMessage])
-      setPercent(0)
-    })
-    ipcRenderer.on('ooniprobe.completed', () => {
-      setStopped(true)
-      router.push('/test-results')
-    })
-
-    ipcRenderer.on('ooniprobe.error', (_, error) => {
-      const logMessage = error
-      setLogLines(oldLogLines => [...oldLogLines, logMessage])
-    })
-
-    return () => {
-      ipcRenderer.removeListener('ooni', onMessage)
-      ipcRenderer.removeAllListeners('ooniprobe.running-test')
-      ipcRenderer.removeAllListeners('ooniprobe.done')
-      ipcRenderer.removeAllListeners('ooniprobe.error')
-    }
-  }, []) /* eslint-disable-line react-hooks/exhaustive-deps */
-  /* Do not add dependencies. This is componentDidMount */
-
-  // Reset progressbar when group name changes during 'Run All'
-  useEffect(() => {
+  const onTestGroupDone = useCallback((_, completedTestGroup) => {
+    const logMessage = `Finished running ${completedTestGroup}`
+    setLogLines(oldLogLines => [...oldLogLines, logMessage])
     setPercent(0)
-  }, [testGroupName])
+  }, [])
 
-  const onToggleLog = useCallback(() => {
-    setLogOpen(!logOpen)
-  }, [logOpen])
+  const onRunCompleted = useCallback(() => {
+    setStopped(true)
+    router.push('/test-results')
+  }, [router])
+
+  const onRunError = useCallback((_, error) => {
+    const logMessage = error.toString()
+    setLogLines(oldLogLines => [...oldLogLines, logMessage])
+  }, [])
 
   const onMessage = useCallback((event, data) => {
     switch (data.key) {
     case 'ooni.run.progress':
-      var currentTestGroup = cliTestKeysToGroups[data.testKey] ?? 'experimental'
-      if (testGroupName !== currentTestGroup
-        && testList.findIndex(item => item.key === currentTestGroup) > -1
+
+      var latestTestGroup = cliTestKeysToGroups[data.testKey] ?? 'experimental'
+      if (testGroupName !== latestTestGroup
+        && testList.findIndex(item => item.key === latestTestGroup) > -1
       ) {
-        setTestGroupName(currentTestGroup)
+        setTestGroupName(latestTestGroup)
       }
       data.testKey && setRunningTestName(data.testKey)
       data.message && setProgressLine(data.message)
@@ -273,6 +259,30 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
       break
     }
   }, [testGroupName, setPercent, setEta, setProgressLine, setError, setRunningTestName, setLogLines])
+
+  /* On Mount */
+  useEffect(() => {
+    ipcRenderer.send('ooniprobe.run', { testGroupToRun, inputFile })
+
+    ipcRenderer.on('ooni', onMessage)
+    ipcRenderer.on('ooniprobe.running-test', onTestGroupStart)
+    ipcRenderer.on('ooniprobe.done', onTestGroupDone)
+    ipcRenderer.on('ooniprobe.completed', onRunCompleted)
+    ipcRenderer.on('ooniprobe.error', onRunError)
+
+    return () => {
+      ipcRenderer.removeListener('ooni', onMessage)
+      ipcRenderer.removeAllListeners('ooniprobe.running-test')
+      ipcRenderer.removeAllListeners('ooniprobe.done')
+      ipcRenderer.removeAllListeners('ooniprobe.error')
+    }
+  }, []) /* eslint-disable-line react-hooks/exhaustive-deps */
+  /* Do not add dependencies. This is componentDidMount */
+
+  const onToggleLog = useCallback(() => {
+    setLogOpen(!logOpen)
+  }, [logOpen])
+
 
   const onKill = useCallback(() => {
     if (isStopping !== true) {
@@ -295,9 +305,9 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
   return (
     <WindowContainer bg={testGroup.color}>
       <WindowDraggable bg={testGroup.color} />
-      <ContentContainer color={testGroup.color}>
+      <ContentContainer color={testGroup.color} flexDirection='column'>
         <StyledRunningTest isRTL={isRTL}>
-          <Container>
+          <Flex flexDirection='column' px={3} justifyContent='space-evenly' sx={{ flexGrow: 1 }}>
             {(isStopping || showModal) || (
               <CloseButtonContainer>
                 <MdClear onClick={() => setModalState(true)} size={30} />
@@ -365,22 +375,27 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
                 <FormattedMessage id='Dashboard.Running.Stopping.Notice' />
               </Text>
             )}
-            {eta > 0 &&
-              <Flex justifyContent='center'>
-                <Box pr={1}>
-                  <FormattedMessage id='Dashboard.Running.EstimatedTimeLeft' />
-                </Box>
-                <Box>
-                  {moment.duration(eta*1000).locale(locale).humanize()}
-                </Box>
-              </Flex>
-            }
-            {progressLine && <Text data-testid='test-progress-message'>{progressLine}</Text>}
-          </Container>
-
-          <Log lines={logLines} onToggleLog={onToggleLog} open={logOpen} />
+            <Flex justifyContent='center'>
+              {eta > 0 ? (
+                <>
+                  <Box pr={1}>
+                    <FormattedMessage id='Dashboard.Running.EstimatedTimeLeft' />
+                  </Box>
+                  <Box>
+                    {moment.duration(eta*1000).locale(locale).humanize()}
+                  </Box>
+                </>
+              ):(
+                <span> &nbsp; </span>
+              )}
+            </Flex>
+            <StyledProgressLine data-testid='test-progress-message'>
+              {progressLine ?? <span> &nbsp; </span> }
+            </StyledProgressLine>
+          </Flex>
           {error && <p>{error}</p>}
         </StyledRunningTest>
+        <Log lines={logLines} onToggleLog={onToggleLog} open={logOpen} />
       </ContentContainer>
     </WindowContainer>
   )
