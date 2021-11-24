@@ -14,20 +14,21 @@ const dstDir = path.join(appRoot, 'build', 'probe-cli')
 const download = () => {
   ensureDirSync(dstDir)
   const osarchs = [
-    "darwin-amd64",
-    "linux-amd64",
-    "windows-amd64",
+    'darwin-amd64',
+    'linux-amd64',
+    'windows-amd64',
   ]
-  for (let i = 0; i < osarchs.length; i += 1) {
-    const extension = (osarchs[i] === "windows-amd64") ? ".exe" : ""
-    const filename = "ooniprobe-" + osarchs[i] + extension
+  var osarch
+  for (osarch of osarchs) {
+    const extension = osarch.includes('windows') ? '.exe' : ''
+    const filename = `ooniprobe-${osarch}${extension}`
     const fileURL = `${baseURL}/${filename}`
-    const versionedFilename = probeVersion + "__" + filename
+    const versionedFilename = `${probeVersion}__${filename}`
     if (existsSync(`${dstDir}/${versionedFilename}`) === false) {
       console.log(`download ${versionedFilename}`)
       execSync(`curl -#f -L -o ${dstDir}/${versionedFilename} ${fileURL}`)
     }
-    const osarch = osarchs[i].replace("-", "_")
+    osarch = osarch.replace('-', '_')
     ensureDirSync(`${dstDir}/${osarch}`)
     execSync(`cp ${dstDir}/${versionedFilename} ${dstDir}/${osarch}/ooniprobe${extension}`)
     execSync(`chmod +x ${dstDir}/${osarch}/ooniprobe${extension}`)
