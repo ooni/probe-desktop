@@ -4,6 +4,7 @@ renderer/.next
 renderer/out
 /bin/
 /build/probe-cli/
+/build/tor/
 yarn-error.log
 
 # dependencies
