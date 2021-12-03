@@ -67,6 +67,46 @@
         {
           "from": "./build/probe-cli/windows_amd64/ooniprobe.exe",
           "to": "./bin/ooniprobe.exe"
+        },
+        {
+          "from": "./build/tor/windows_amd64/libwinpthread-1.dll",
+          "to": "./bin/libwinpthread-1.dll"
+        },
+        {
+          "from": "./build/tor/windows_amd64/tor.exe",
+          "to": "./bin/tor.exe"
+        },
+        {
+          "from": "./build/tor/windows_amd64/libcrypto-1_1-x64.dll",
+          "to": "./bin/libcrypto-1_1-x64.dll"
+        },
+        {
+          "from": "./build/tor/windows_amd64/libevent_extra-2-1-7.dll",
+          "to": "./bin/libevent_extra-2-1-7.dll"
+        },
+        {
+          "from": "./build/tor/windows_amd64/zlib1.dll",
+          "to": "./bin/zlib1.dll"
+        },
+        {
+          "from": "./build/tor/windows_amd64/libgcc_s_seh-1.dll",
+          "to": "./bin/libgcc_s_seh-1.dll"
+        },
+        {
+          "from": "./build/tor/windows_amd64/libssl-1_1-x64.dll",
+          "to": "./bin/libssl-1_1-x64.dll"
+        },
+        {
+          "from": "./build/tor/windows_amd64/libevent_core-2-1-7.dll",
+          "to": "./bin/libevent_core-2-1-7.dll"
+        },
+        {
+          "from": "./build/tor/windows_amd64/libssp-0.dll",
+          "to": "./bin/libssp-0.dll"
+        },
+        {
+          "from": "./build/tor/windows_amd64/libevent-2-1-7.dll",
+          "to": "./bin/libevent-2-1-7.dll"
         }
       ]
     },
@@ -92,6 +132,14 @@
         {
           "from": "./build/probe-cli/darwin_amd64/ooniprobe",
           "to": "./bin/ooniprobe"
+        },
+        {
+          "from": "./build/tor/darwin_amd64/libevent-2.1.7.dylib",
+          "to": "./bin/libevent-2.1.7.dylib"
+        },
+        {
+          "from": "./build/tor/darwin_amd64/tor",
+          "to": "./bin/tor"
         }
       ]
     },
