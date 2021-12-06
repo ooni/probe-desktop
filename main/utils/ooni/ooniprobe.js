@@ -9,7 +9,7 @@ const split2 = require('split2')
 
 const Sentry = require('@sentry/electron')
 
-const { getBinaryPath, getHomeDir } = require('../paths')
+const { getProbeBinaryPath, getTorBinaryPath, getHomeDir } = require('../paths')
 const pkgJson = require('../../../package.json')
 
 const GetHomeShortPath = () => {
@@ -30,7 +30,8 @@ const GetHomeShortPath = () => {
 class Ooniprobe extends EventEmitter {
   constructor(props) {
     super()
-    this._binaryPath = (props && props.binaryPath) || getBinaryPath()
+    this._probeBinaryPath = (props && props.probeBinaryPath) || getProbeBinaryPath()
+    this._torBinaryPath = (props && props.torBinaryPath) || getTorBinaryPath()
     this.ooni = null
   }
 
@@ -52,7 +53,8 @@ class Ooniprobe extends EventEmitter {
 
     return new Promise((resolve, reject) => {
       try {
-        let binPath = self._binaryPath,
+        let probeBinPath = self._probeBinaryPath,
+          torBinPath = self._torBinaryPath,
           options = {
             stdio: ['pipe', 'pipe', 'pipe'],
             env: {
@@ -80,6 +82,9 @@ class Ooniprobe extends EventEmitter {
             log.error('failed to determine the home shortpath. Things will break with user homes which contain non-ascii characters.')
           }
         }
+        if (torBinPath !== '') {
+          options.env['TOR_BINARY'] = torBinPath
+        }
         const fixedArgs = [
           '--batch',
           `--software-name=${pkgJson.name}`,
@@ -88,8 +93,8 @@ class Ooniprobe extends EventEmitter {
         const commandArgs = fixedArgs.concat(argv)
 
         log.info(`running "ooniprobe ${argv.join(' ')}"`)
-        log.verbose('running: ', binPath, commandArgs, options)
-        self.ooni = childProcess.spawn(binPath, commandArgs, options)
+        log.verbose('running: ', probeBinPath, commandArgs, options)
+        self.ooni = childProcess.spawn(probeBinPath, commandArgs, options)
       } catch (err) {
         reject(err)
         return
@@ -129,7 +134,7 @@ class Ooniprobe extends EventEmitter {
           resolve()
           return
         }
-        reject(new Error(`Running '${this._binaryPath} ${argv.join(' ')}' failed with exit code: ${code}`))
+        reject(new Error(`Running '${this._probeBinaryPath} ${argv.join(' ')}' failed with exit code: ${code}`))
       })
     })
   }

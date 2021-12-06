@@ -28,7 +28,7 @@ const { execSync } = require('child_process')
 const log = require('electron-log')
 const { app } = require('electron')
 const { join } = require('path')
-const { getBinaryDirectory, getAutorunHomeDir, getBinaryPath } = require('../paths')
+const { getBinaryDirectory, getAutorunHomeDir, getProbeBinaryPath, getTorBinaryPath } = require('../paths')
 const { writeFile, unlink } = require('fs').promises
 const { existsSync, writeFileSync } = require('fs-extra')
 const { taskXMLTemplate, taskBatchTemplate, taskVBScriptTemplate } = require('./taskTemplateWin')
@@ -54,7 +54,8 @@ module.exports = {
         // Create batch file to run ooniprobe run unattended
         const batchFileStr = taskBatchTemplate({
           OONI_HOME_autorun: getAutorunHomeDir(),
-          pathToBinary: getBinaryPath()
+          pathToProbeBinary: getProbeBinaryPath(),
+          pathToTorBinary: getTorBinaryPath()
         })
         writeFileSync(taskBatchFilePath, batchFileStr)
         log.debug(`Autorun task batch file created: ${taskBatchFilePath}`)
@@ -160,7 +161,8 @@ module.exports = {
             // Create batch file to run ooniprobe run unattended
             const batchFileStr = taskBatchTemplate({
               OONI_HOME_autorun: getAutorunHomeDir(),
-              pathToBinary: getBinaryPath()
+              pathToProbeBinary: getProbeBinaryPath(),
+              pathToTorBinary: getTorBinaryPath()
             })
             await writeFile(taskBatchFilePath, batchFileStr)
             log.debug(`Autorun task batch file created: ${taskBatchFilePath}`)

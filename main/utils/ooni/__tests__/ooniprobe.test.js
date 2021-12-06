@@ -31,14 +31,15 @@ jest.mock('child_process', () => ({
 
 jest.mock('../../paths', () => ({
   getHomeDir: jest.fn(() => '/home/user/probe-desktop/ooni_home'),
-  getBinaryPath: jest.fn(() => 'build/probe-cli/linux_amd64'),
+  getProbeBinaryPath: jest.fn(() => 'build/probe-cli/linux_amd64'),
+  getTorBinaryPath: jest.fn(() => 'build/tor/linux_amd64'),
 }))
 
 describe('Test the initialization of Ooniprobe instances', () => {
   test('Ooniprobe instances are initialized in an expected way', async () => {
     const ooniInstance = new Ooniprobe()
-    expect(ooniInstance._binaryPath).toBeTruthy()
-    expect(ooniInstance._binaryPath).toMatch(/linux_amd64/i)
+    expect(ooniInstance._probeBinaryPath).toBeTruthy()
+    expect(ooniInstance._probeBinaryPath).toMatch(/linux_amd64/i)
     expect(ooniInstance.ooni).toBeNull()
 
     // Checking if the kill and call functions are

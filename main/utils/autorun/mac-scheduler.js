@@ -6,7 +6,7 @@ const { join } = require('path')
 const os = require('os')
 const log = require('electron-log')
 
-const { getAutorunHomeDir, getBinaryPath } = require('../paths')
+const { getAutorunHomeDir, getProbeBinaryPath, getTorBinaryPath } = require('../paths')
 
 const domainTarget = `gui/${os.userInfo().uid}`
 const getServiceTarget = appId => `${domainTarget}/${appId}`
@@ -41,7 +41,8 @@ module.exports = {
         const plistTemplate = require('./taskTemplateMac')
         const taskPlistStr = plistTemplate({
           taskName: taskId,
-          pathToBinary: getBinaryPath(),
+          pathToProbeBinary: getProbeBinaryPath(),
+          pathToTorBinary: getTorBinaryPath(),
           OONI_HOME_autorun: getAutorunHomeDir()
         })
         writeFileSync(taskPlistPath, taskPlistStr)
@@ -75,7 +76,8 @@ module.exports = {
       const plistTemplate = require('./taskTemplateMac')
       const taskPlistStr = plistTemplate({
         taskName: taskname,
-        pathToBinary: getBinaryPath(),
+        pathToProbeBinary: getProbeBinaryPath(),
+        pathToTorBinary: getTorBinaryPath(),
         OONI_HOME_autorun: getAutorunHomeDir()
       })
       const taskPlistPath = getTaskPlistPath(taskname)

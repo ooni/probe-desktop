@@ -1,4 +1,4 @@
-module.exports = ({ taskName, pathToBinary, OONI_HOME_autorun }) =>
+module.exports = ({ taskName, pathToProbeBinary, pathToTorBinary, OONI_HOME_autorun }) =>
 `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -11,12 +11,16 @@ module.exports = ({ taskName, pathToBinary, OONI_HOME_autorun }) =>
     <true/>
     <key>EnvironmentVariables</key>
     <dict>
+        <key>TOR_BINARY</key>
+        <string>${pathToTorBinary}</string>
+    </dict>
+    <dict>
         <key>OONI_HOME</key>
         <string>${OONI_HOME_autorun}</string>
     </dict>
     <key>ProgramArguments</key>
     <array>
-        <string>${pathToBinary}</string>
+        <string>${pathToProbeBinary}</string>
         <string>--software-name=ooniprobe-desktop-unattended</string>
         <string>--log-handler=syslog</string>
         <string>run</string>

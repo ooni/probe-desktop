@@ -66,10 +66,11 @@ const taskXMLTemplate = ({ taskName, taskRun, cwd }) =>
 `
 
 // This batch file is needed to use a different OONI_HOME for autorun
-const taskBatchTemplate = ({ pathToBinary, OONI_HOME_autorun }) =>
+const taskBatchTemplate = ({ pathToProbeBinary, pathToTorBinary, OONI_HOME_autorun }) =>
 `@echo off
 set OONI_HOME=${OONI_HOME_autorun}
-${pathToBinary} --software-name=ooniprobe-desktop-unattended run unattended
+set TOR_BINARY=${pathToTorBinary}
+${pathToProbeBinary} --software-name=ooniprobe-desktop-unattended run unattended
 `
 
 // This VBScript launches the batch file without opening a cmd.exe window
