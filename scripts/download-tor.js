@@ -1,6 +1,7 @@
 /* global require */
 
 const path = require('path')
+const process = require('process')
 const { execSync } = require('child_process')
 const { existsSync, ensureDirSync } = require('fs-extra')
 
@@ -39,6 +40,10 @@ const download = () => {
   ensureDirSync(dstDir)
   let platform
   for (platform of Object.keys(platformMap)) {
+    if (platform == 'darwin_amd64' && process.platform !== 'darwin') {
+      console.log('Downloading macOS assets is only supported on macOS')
+      continue
+    }
     const extractor = platformMap[platform]['extractor']
     const pkgName = platformMap[platform]['pkgName']
     const pkgURL = `${baseURL}/${pkgName}`
