@@ -42,7 +42,8 @@ In order to start hacking on this, we assume you have `node` and `yarn`
 installed.
 
 Then you can run:
-```
+
+```bash
 yarn install
 ```
 
@@ -65,9 +66,9 @@ yarn run start
 
 ## Update the translations
 
-* Save the strings from the canonical spreadsheet into `data/lang-en.csv`
-* Run `$ node scripts/update-translations.js`
-* Commit `data/lang-en.csv`, `lang/*.json` and `renderer/static/translations.js`
+- Save the strings from the canonical spreadsheet into `data/lang-en.csv`
+- Run `$ node scripts/update-translations.js`
+- Commit `data/lang-en.csv`, `lang/*.json` and `renderer/static/translations.js`
 into git
 
 ## Build and sign macOS app
@@ -91,7 +92,7 @@ OONI_TEAMID=YWCG8FZTLT
 where `TOKEN` is a [personal github token](https://github.com/settings/tokens/new)
 with repository scope, `your@apple.id` is the Apple ID you are using as part of our
 team, `XXXX` is a password specific application created by visiting
-https://appleid.apple.com and logging in as `your@apple.id`, and
+[appleid.apple.com](https://appleid.apple.com) and logging in as `your@apple.id`, and
 `YWCG8FZTLT` is the team ID used by OONI.
 
 Then, run:
