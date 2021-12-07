@@ -14,7 +14,6 @@ initConfigFile({ configFilePath: join(getAutorunHomeDir(), 'config.json') })
 const log = require('electron-log')
 const winScheduler = require('./windows-scheduler')
 const macScheduler = require('./mac-scheduler')
-const { writeFileSync } = require('fs')
 const taskId = process.env.npm_package_build_appId || 'org.ooni.probe-desktop'
 
 const platforms = {
