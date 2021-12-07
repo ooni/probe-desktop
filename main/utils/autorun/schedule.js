@@ -1,16 +1,20 @@
 const { join } = require('path')
 const { initConfigFile } = require('../config')
 const { getAutorunHomeDir } = require('../paths')
+const { readFileSync, writeFileSync } = require('fs-extra')
+const path = require('path')
+
+const LATEST_AUTORUN_VERSION = 1
 
 // Initialize OONI_HOME for autorun by generating a fresh config file
 // in the OONI_HOME for autorun
 // Note: initConfigFile in turn initializes Sentry (again) with no extra effect
 initConfigFile({ configFilePath: join(getAutorunHomeDir(), 'config.json') })
 
-
 const log = require('electron-log')
 const winScheduler = require('./windows-scheduler')
 const macScheduler = require('./mac-scheduler')
+const { writeFileSync } = require('fs')
 const taskId = process.env.npm_package_build_appId || 'org.ooni.probe-desktop'
 
 const platforms = {
@@ -28,9 +32,23 @@ const scheduler = platforms[process.platform]
  * - (Re)generate files that are missing or removed by an update
  * @param {Object} opts Options
  */
-const init = (opts) => {
+const init = async (opts) => {
   // TODO: Check for platform support right away
-  return scheduler.init(taskId, opts)
+  const currentAutorunVersion = getAutorunVersion()
+  if (currentAutorunVersion < LATEST_AUTORUN_VERSION) {
+    try {
+      await scheduler.get(taskId)
+      log.debug('Task found.')
+      await scheduler.delete(taskId)
+      await scheduler.create(taskId)
+    } catch (e) {
+      // When we don't find the task, there is no need to overwrite the autorun
+      // files, since they are going to be written with the latest version once
+      // the user enabled autorun for the first time
+      log.debug('Task not found')
+    }
+  }
+  await scheduler.init(taskId, opts)
 }
 
 const getAutorunStatus = () => {
@@ -41,6 +59,16 @@ const getAutorunStatus = () => {
       reject()
     })
   })
+}
+
+const getAutorunVersion = () => {
+  const autorunVersionPath = path.join(getAutorunHomeDir(), 'autorun_version')
+  try {
+    const autorunVersion = readFileSync(autorunVersionPath, 'utf-8')
+    return Number(autorunVersion)
+  } catch(e) {
+    return 0
+  }
 }
 
 // These task managment methods should be made platform-agnostic
@@ -58,6 +86,8 @@ const scheduleAutorun = () => {
       log.debug(`Task not found. Might not have been scheduled before: ${e}`)
     }).finally(() => {
       scheduler.create(taskId).then(() => {
+        const autorunVersionPath = path.join(getAutorunHomeDir(), 'autorun_version')
+        writeFileSync(autorunVersionPath, LATEST_AUTORUN_VERSION.toString(), 'utf-8')
         log.debug('Task created')
         resolve()
       }).catch((e) => {
