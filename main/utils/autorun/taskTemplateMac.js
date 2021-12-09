@@ -13,8 +13,6 @@ module.exports = ({ taskName, pathToProbeBinary, pathToTorBinary, OONI_HOME_auto
     <dict>
         <key>TOR_BINARY</key>
         <string>${pathToTorBinary}</string>
-    </dict>
-    <dict>
         <key>OONI_HOME</key>
         <string>${OONI_HOME_autorun}</string>
     </dict>

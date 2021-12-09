@@ -16,6 +16,11 @@ const winScheduler = require('./windows-scheduler')
 const macScheduler = require('./mac-scheduler')
 const taskId = process.env.npm_package_build_appId || 'org.ooni.probe-desktop'
 
+const writeAutorunVersion = () => {
+  const autorunVersionPath = path.join(getAutorunHomeDir(), 'autorun_version')
+  writeFileSync(autorunVersionPath, LATEST_AUTORUN_VERSION.toString(), 'utf-8')
+}
+
 const platforms = {
   win32: winScheduler,
   darwin: macScheduler,
@@ -40,6 +45,7 @@ const init = async (opts) => {
       log.debug('Task found.')
       await scheduler.delete(taskId)
       await scheduler.create(taskId)
+      writeAutorunVersion()
     } catch (e) {
       // When we don't find the task, there is no need to overwrite the autorun
       // files, since they are going to be written with the latest version once
@@ -85,8 +91,7 @@ const scheduleAutorun = () => {
       log.debug(`Task not found. Might not have been scheduled before: ${e}`)
     }).finally(() => {
       scheduler.create(taskId).then(() => {
-        const autorunVersionPath = path.join(getAutorunHomeDir(), 'autorun_version')
-        writeFileSync(autorunVersionPath, LATEST_AUTORUN_VERSION.toString(), 'utf-8')
+        writeAutorunVersion()
         log.debug('Task created')
         resolve()
       }).catch((e) => {
