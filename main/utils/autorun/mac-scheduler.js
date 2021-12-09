@@ -31,30 +31,6 @@ const launchctl = (command, args) => {
 }
 
 module.exports = {
-  init: function (taskId, /* opts */) {
-    // Check if required files are on disk
-    // (Re)generate files that are missing or removed by an update
-    return new Promise((resolve, reject) => {
-      const taskPlistPath = getTaskPlistPath(taskId)
-      if (!existsSync(taskPlistPath)) {
-        log.verbose(`Autorun plist file missing at ${taskPlistPath}`)
-        try {
-          const plistTemplate = require('./taskTemplateMac')
-          const taskPlistStr = plistTemplate({
-            taskName: taskId,
-            pathToProbeBinary: getProbeBinaryPath(),
-            pathToTorBinary: getTorBinaryPath(),
-            OONI_HOME_autorun: getAutorunHomeDir()
-          })
-          writeFileSync(taskPlistPath, taskPlistStr)
-          log.verbose(`Autorun plist file created at ${taskPlistPath}`)
-        } catch (e) {
-          log.error(`Failed to create autorun task plist file: ${taskPlistPath}: ${e.message}`)
-        }
-      }
-      resolve()
-    })
-  },
   get: function (taskname) {
     return new Promise((resolve, reject) => {
       try {

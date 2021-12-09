@@ -32,8 +32,7 @@ const scheduler = platforms[process.platform]
 
 /**
  * Initializes the autorun feature
- * - Check if required files are on disk
- * - (Re)generate files that are missing or removed by an update
+ * - Perform an upgrade of the schedules if necessary
  * @param {Object} opts Options
  */
 const init = async (opts) => {
@@ -53,7 +52,6 @@ const init = async (opts) => {
       log.debug('Task not found')
     }
   }
-  await scheduler.init(taskId, opts)
 }
 
 const getAutorunStatus = () => {
