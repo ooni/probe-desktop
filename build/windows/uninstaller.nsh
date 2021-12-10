@@ -8,7 +8,7 @@
   FileWrite $0 '$\r$\n'
   FileWrite $0 'set OONI_HOME=$APPDATA\OONI Probe\ooni_home_autorun'
   FileWrite $0 '$\r$\n'
-  FileWrite $0 'set TOR_BINARY=$resourceDir\bin\tor.exe'
+  FileWrite $0 'set OONI_TOR_BINARY=$resourceDir\bin\tor.exe'
   FileWrite $0 '$\r$\n'
   FileWrite $0 '$resourceDir\bin\ooniprobe.exe --software-name=ooniprobe-desktop-unattended run unattended'
   FileWrite $0 '$\r$\n'

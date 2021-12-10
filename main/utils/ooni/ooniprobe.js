@@ -83,7 +83,7 @@ class Ooniprobe extends EventEmitter {
           }
         }
         if (torBinPath !== '') {
-          options.env['TOR_BINARY'] = torBinPath
+          options.env['OONI_TOR_BINARY'] = torBinPath
         }
         const fixedArgs = [
           '--batch',

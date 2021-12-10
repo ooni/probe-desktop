@@ -55,7 +55,7 @@ const getProbeBinaryPath = () => {
 
 const getTorBinaryPath = () => {
   // We don't ship a tor binary on platforms other than macOS and windows, so we
-  // return an empty path to indicate we should not override the TOR_BINARY
+  // return an empty path to indicate we should not override the OONI_TOR_BINARY
   // environment variable for setting the path
   if (!is.macos && !is.windows) {
     return ''

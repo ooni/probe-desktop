@@ -11,7 +11,7 @@ module.exports = ({ taskName, pathToProbeBinary, pathToTorBinary, OONI_HOME_auto
     <true/>
     <key>EnvironmentVariables</key>
     <dict>
-        <key>TOR_BINARY</key>
+        <key>OONI_TOR_BINARY</key>
         <string>${pathToTorBinary}</string>
         <key>OONI_HOME</key>
         <string>${OONI_HOME_autorun}</string>
