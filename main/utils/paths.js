@@ -31,26 +31,38 @@ const getResourcesDirectory = () => {
   return './resources'
 }
 
-const getBinaryDirectory = () => {
+const getBinaryDirectory = (prefix = 'probe-cli') => {
   if (is.development || process.env.NODE_ENV === 'test') {
     if (is.macos) {
-      return path.join(getResourcesDirectory(), 'build/probe-cli/darwin_amd64')
+      return path.join(getResourcesDirectory(), `build/${prefix}/darwin_amd64`)
     }
     if (is.linux) {
-      return path.join(getResourcesDirectory(), 'build/probe-cli/linux_amd64')
+      return path.join(getResourcesDirectory(), `build/${prefix}/linux_amd64`)
     }
     if (is.windows) {
-      return path.join(getResourcesDirectory(), 'build/probe-cli/windows_amd64')
+      return path.join(getResourcesDirectory(), `build/${prefix}/windows_amd64`)
     }
     throw Error('Only macos and linux development is currently supported')
   }
   return path.join(getResourcesDirectory(), 'bin')
 }
 
-const getBinaryPath = () => {
+const getProbeBinaryPath = () => {
   const directoryPath = getBinaryDirectory()
   const suffix = getBinarySuffix()
   return path.join(directoryPath, 'ooniprobe' + suffix)
+}
+
+const getTorBinaryPath = () => {
+  // We don't ship a tor binary on platforms other than macOS and windows, so we
+  // return an empty path to indicate we should not override the OONI_TOR_BINARY
+  // environment variable for setting the path
+  if (!is.macos && !is.windows) {
+    return ''
+  }
+  const directoryPath = getBinaryDirectory('tor')
+  const suffix = getBinarySuffix()
+  return path.join(directoryPath, 'tor' + suffix)
 }
 
 const getHomeDir = () => {
@@ -68,7 +80,8 @@ const getAutorunHomeDir = () => {
 }
 
 const debugGetAllPaths = () => ({
-  'binaryPath': getBinaryPath(),
+  'probeBinaryPath': getProbeBinaryPath(),
+  'torBinaryPath': getTorBinaryPath(),
   'binaryDirectory': getBinaryDirectory(),
   'binarySuffix': getBinarySuffix(),
   'homeDir': getHomeDir(),
@@ -77,7 +90,8 @@ const debugGetAllPaths = () => ({
 })
 
 module.exports = {
-  getBinaryPath,
+  getProbeBinaryPath,
+  getTorBinaryPath,
   getBinaryDirectory,
   getBinarySuffix,
   getHomeDir,

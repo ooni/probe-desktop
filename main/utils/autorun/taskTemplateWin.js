@@ -65,24 +65,6 @@ const taskXMLTemplate = ({ taskName, taskRun, cwd }) =>
 </Task>
 `
 
-// This batch file is needed to use a different OONI_HOME for autorun
-const taskBatchTemplate = ({ pathToBinary, OONI_HOME_autorun }) =>
-`@echo off
-set OONI_HOME=${OONI_HOME_autorun}
-${pathToBinary} --software-name=ooniprobe-desktop-unattended run unattended
-`
-
-// This VBScript launches the batch file without opening a cmd.exe window
-// Based on https://superuser.com/a/198530
-const taskVBScriptTemplate = ({ taskBatchFileName = 'ooniprobe-unattended.bat' }) =>
-`Dim WinScriptHost
-Set WinScriptHost = CreateObject ("Wscript.Shell")
-WinScriptHost.Run Chr(34) & "${taskBatchFileName}" & Chr(34), 0
-Set WinScriptHost = Nothing
-`
-
 module.exports = {
-  taskXMLTemplate,
-  taskBatchTemplate,
-  taskVBScriptTemplate
+  taskXMLTemplate
 }

@@ -168,7 +168,7 @@ app.whenReady().then(async () => {
   const config = await getConfig()
 
   // Initialize autorun
-  autorun.init()
+  await autorun.init()
 
   // XXX Only allow one instance of OONI Probe running
   // at the same time

@@ -38,7 +38,8 @@ jest.mock('child_process', () => ({
 
 jest.mock('../../paths', () => ({
   getHomeDir: jest.fn(() => '/home/user/probe-desktop/ooni_home'),
-  getBinaryPath: jest.fn(() => 'build/probe-cli/linux_amd64'),
+  getProbeBinaryPath: jest.fn(() => 'build/probe-cli/linux_amd64'),
+  getTorBinaryPath: jest.fn(() => 'build/tor/linux_amd64'),
 }))
 
 const currentVersion = process.env.npm_package_version

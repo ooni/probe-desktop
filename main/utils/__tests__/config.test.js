@@ -29,7 +29,8 @@ jest.mock('../paths', () => {
   return {
     getHomeDir: jest.fn(() => 'test/mockFiles'),
     getAutorunHomeDir: jest.fn(() => 'test/mockFiles/autorun'),
-    getBinaryPath: jest.fn(() => 'build/probe-cli/linux_amd64'),
+    getProbeBinaryPath: jest.fn(() => 'build/probe-cli/linux_amd64'),
+    getTorBinaryPath: jest.fn(() => 'build/tor/linux_amd64'),
   }
 })
 

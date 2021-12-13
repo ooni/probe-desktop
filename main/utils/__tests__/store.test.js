@@ -19,7 +19,8 @@ log.error = jest.fn()
 jest.mock('../paths', () => ({
   getHomeDir: jest.fn(() => '/home/user/probe-desktop/ooni_home'),
   getBinaryDirectory: jest.fn(() => 'test/mockFiles/bin'),
-  getBinaryPath: jest.fn(() => 'build/probe-cli/linux_amd64'),
+  getProbeBinaryPath: jest.fn(() => 'build/probe-cli/linux_amd64'),
+  getTorBinaryPath: jest.fn(() => 'build/tor/linux_amd64'),
 }))
 
 jest.mock('electron-store', () =>

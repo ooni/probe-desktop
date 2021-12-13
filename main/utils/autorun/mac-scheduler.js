@@ -6,7 +6,7 @@ const { join } = require('path')
 const os = require('os')
 const log = require('electron-log')
 
-const { getAutorunHomeDir, getBinaryPath } = require('../paths')
+const { getAutorunHomeDir, getProbeBinaryPath, getTorBinaryPath } = require('../paths')
 
 const domainTarget = `gui/${os.userInfo().uid}`
 const getServiceTarget = appId => `${domainTarget}/${appId}`
@@ -31,26 +31,6 @@ const launchctl = (command, args) => {
 }
 
 module.exports = {
-  init: function (taskId, /* opts */) {
-    // Check if required files are on disk
-    // (Re)generate files that are missing or removed by an update
-    const taskPlistPath = getTaskPlistPath(taskId)
-    if (!existsSync(taskPlistPath)) {
-      log.verbose(`Autorun plist file missing at ${taskPlistPath}`)
-      try {
-        const plistTemplate = require('./taskTemplateMac')
-        const taskPlistStr = plistTemplate({
-          taskName: taskId,
-          pathToBinary: getBinaryPath(),
-          OONI_HOME_autorun: getAutorunHomeDir()
-        })
-        writeFileSync(taskPlistPath, taskPlistStr)
-        log.verbose(`Autorun plist file created at ${taskPlistPath}`)
-      } catch (e) {
-        log.error(`Failed to create autorun task plist file: ${taskPlistPath}: ${e.message}`)
-      }
-    }
-  },
   get: function (taskname) {
     return new Promise((resolve, reject) => {
       try {
@@ -75,7 +55,8 @@ module.exports = {
       const plistTemplate = require('./taskTemplateMac')
       const taskPlistStr = plistTemplate({
         taskName: taskname,
-        pathToBinary: getBinaryPath(),
+        pathToProbeBinary: getProbeBinaryPath(),
+        pathToTorBinary: getTorBinaryPath(),
         OONI_HOME_autorun: getAutorunHomeDir()
       })
       const taskPlistPath = getTaskPlistPath(taskname)
