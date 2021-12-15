@@ -74,6 +74,7 @@ export const tests = {
   riseupvpn,
   signal,
   stunreachability: minimalTest('stunreachability'),
+  dnscheck: minimalTest('dnscheck'),
   'default': {
     'name': 'Default',
   }
