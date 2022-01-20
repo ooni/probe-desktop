@@ -46,14 +46,13 @@ const RiseupVPN = ({measurement, isAnomaly, render, rawData}) => {
     let failedBridgeGateways = 0
 
     if (rawData) {
-      const failingGateways = rawData.test_keys.failing_gateways
+      const failingGateways = rawData?.test_keys?.failing_gateways
       if (failingGateways && Array.isArray(failingGateways)) {
         for (const gateway of failingGateways) {
           const { transport_type = '' } = gateway
           if (transport_type === 'openvpn') {
             failedOpenVPNGateways++
-          }
-          if (transport_type === 'obfs4') {
+          } else if (transport_type === 'obfs4') {
             failedBridgeGateways++
           }
         }
