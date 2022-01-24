@@ -13,7 +13,7 @@ const longDescription = <div>
   <FormattedMarkdownMessage
     id={'Dashboard.Experimental.Overview.Paragraph'}
     values={{
-      experimental_test_list: '* **stun-reachability**\n'
+      experimental_test_list: '* **stun-reachability**\n* **dnscheck**\n* **torsf**\n'
     }}
   />
 </div>

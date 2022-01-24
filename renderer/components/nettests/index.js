@@ -77,7 +77,8 @@ export const tests = {
   dnscheck: minimalTest('dnscheck'),
   'default': {
     'name': 'Default',
-  }
+  },
+  torsf: minimalTest('torsf')
 }
 
 // Note: The order of test groups controls how they are rendered in the home screen
