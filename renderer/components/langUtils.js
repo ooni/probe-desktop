@@ -1,8 +1,6 @@
-/* global require */
 import osLocale from 'os-locale'
 
 const defaultLocale = 'en'
-const defaultLocaleName = 'English'
 
 export const getMessages = (locale = null) => {
   let supportedMessages = {
@@ -13,7 +11,7 @@ export const getMessages = (locale = null) => {
     supportedMessages = window.OONITranslations
   }
 
-  if (supportedMessages.hasOwnProperty(locale)) {
+  if (locale in supportedMessages) {
     const mergedMessages = Object.assign(
       {},
       supportedMessages[defaultLocale],
@@ -21,7 +19,7 @@ export const getMessages = (locale = null) => {
     )
     return mergedMessages
   } else {
-    return supportedMessages
+    return supportedMessages[defaultLocale]
   }
 }
 
