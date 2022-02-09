@@ -7,12 +7,12 @@ import Raven from 'raven-js'
 export const useRawData = (msmtID = null) => {
   const [rawData, setRawData] = React.useState(null)
   const [error, setError] = React.useState(null)
+  const { query } = useRouter()
 
   const remote = electron.remote
   const { showMeasurement } = remote.require('./actions')
 
   if (!msmtID) {
-    const { query } = useRouter()
     msmtID = query.measurementID
   }
 
