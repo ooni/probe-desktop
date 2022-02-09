@@ -84,6 +84,10 @@ class Ooniprobe extends EventEmitter {
         }
         if (torBinPath !== '') {
           options.env['OONI_TOR_BINARY'] = torBinPath
+        } else if (is.linux) {
+          // We don't support bundling the tor binary under Linux, so try a best
+          // effort strategy and hope that it's installed in the PATH
+          options.env['PATH'] = process.env.PATH
         }
         const fixedArgs = [
           '--batch',
