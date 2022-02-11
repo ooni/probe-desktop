@@ -11,7 +11,7 @@ export const parseTestKeys = (testKeys) => {
   try {
     parsedTestKeys = JSON.parse(testKeys)
   } catch (e) {
-    log.error(`error in parsing testKeys: ${e}`)
+    log.error(`error in parsing testKeys: ${e}; ${testKeys}`)
   }
   return parsedTestKeys
 }
