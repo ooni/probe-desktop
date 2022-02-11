@@ -87,8 +87,8 @@ const UrlList = ({ incomingList = [] }) => {
     dispatch({type: 'update', value: { idx, url, hasError, error }})
   }, [dispatch])
 
-  const onAddUrl = useCallback((idx, url) => {
-    dispatch({type: 'add', value: { url } })
+  const onAddUrl = useCallback(() => {
+    dispatch({type: 'add', value: { url: '' } })
   }, [dispatch])
 
   const onRemoveUrl = useCallback((idx) => {
@@ -98,13 +98,13 @@ const UrlList = ({ incomingList = [] }) => {
   const onKeyEnter = useCallback((idx) => {
     // if pressed in the last entry, then add a new entry
     if (idx === testList.length - 1) {
-      dispatch({ type: 'add', value: '' })
+      dispatch({ type: 'add', value: { url: '' } })
     }
     // else send focus to the next one
     // .focus() needs refs which aren't passed down well by ooni-components@0.3.x
   }, [testList.length])
 
-  const notReady = testList[0]?.url.length === 0 || testList.reduce((acc, { hasError }) => {
+  const notReady = testList[0]?.url?.length === 0 || testList.reduce((acc, { hasError }) => {
     return acc || (typeof hasError !== 'undefined' ? hasError : true)
   }, false)
 
