@@ -17,7 +17,7 @@ describe('Tests for Settings page', () => {
     await screenshotApp(app, expect.getState().currentTestName)
   })
 
-  test('Clicking on "Settings" tab loads it up correctly', async () => {
+  test('Clicking on Settings tab loads it up correctly', async () => {
     await app.client
       .$('div[data-testid=sidebar-item-settings]')
       .click()
@@ -99,30 +99,7 @@ describe('Tests for Settings page', () => {
   })
 
   test('Language changes in other screens', async () => {
-    // Checking for Test Results screen
-    await app.client
-      .$('div[data-testid=sidebar-item-test-results]')
-      .click()
-      .pause(1000)
-
-    await app.client.waitUntilWindowLoaded()
-
-    const labelTests = await app.client
-      .$('div[data-testid=overview-tests]')
-      .getText()
-    const labelNetworks = await app.client
-      .$('div[data-testid=overview-networks]')
-      .getText()
-    const labelDataUsage = await app.client
-      .$('div[data-testid=overview-data-usage-label]')
-      .getText()
-
-    expect(labelTests).toContain('Pruebas')
-    expect(labelNetworks).toContain('Redes')
-    expect(labelDataUsage).toContain('Uso de datos')
-
-    await screenshotApp(app, 'test-results-in-spanish')
-
+    
     // Checking for Dashboard screen
     await app.client
       .$('div[data-testid=sidebar-item-dashboard]')

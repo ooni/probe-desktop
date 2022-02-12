@@ -24,21 +24,21 @@ const AutorunConfirmation = ({ show, onClose }) => {
   return (
     <Modal width='60%' show={show}>
       <StyledCloseButton onClick={onClose}><MdClose size={24} /></StyledCloseButton>
-      <Container>
-        <Heading h={4} my={3} textAlign='center'>
+      <Container data-testid='modal-autorun-confirmation'>
+        <Heading h={4} my={3} textAlign='center' data-testid='heading-autorun-confirmation'>
           <FormattedMessage id='Modal.Autorun.Modal.Title' />
         </Heading>
-        <Flex>
+        <Flex data-testid='text-autorun-confirmation'>
           <FormattedMarkdownMessage id='Modal.Autorun.Modal.Text' />
         </Flex>
         <Flex justifyContent='flex-end' my={3}>
-          <Button ml={2} inverted onClick={onCancel}>
+          <Button ml={2} inverted onClick={onCancel} data-testid='button-autorun-no'>
             <strong><FormattedMessage id='Modal.NoThanks' /></strong>
           </Button>
-          <Button ml={2} inverted onClick={onRemindLater}>
+          <Button ml={2} inverted onClick={onRemindLater} data-testid='button-autorun-remind-later'>
             <strong><FormattedMessage id='Modal.Autorun.Modal.Button.RemindLater' /></strong>
           </Button>
-          <Button ml={2} onClick={onConfirm}>
+          <Button ml={2} onClick={onConfirm} data-testid='button-autorun-yes'>
             <strong><FormattedMessage id='Modal.SoundsGreat' /></strong>
           </Button>
         </Flex>

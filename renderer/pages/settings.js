@@ -85,6 +85,7 @@ const Settings = () => {
               <AutorunCheckbox
                 label={<FormattedMessage id='Settings.AutomatedTesting.RunAutomatically' />}
                 optionKey='autorun.enabled'
+                data-testid='checkbox-autorun'
               />
               <Text as='small'><em><FormattedMarkdownMessage id='Settings.AutomatedTesting.RunAutomatically.Footer' /></em></Text>
             </Section>

@@ -163,7 +163,7 @@ describe('Onboarding Story 1', () => {
       .pause(1000)
 
     const crashReportSelected = await app.client.isSelected(
-      '[data-testid="advanced.send_crash_reports"]'
+      '[data-testid=send_crash_reports]'
     )
     expect(crashReportSelected).toBeTruthy()
   })
@@ -173,6 +173,13 @@ describe('Onboarding Story 2', () => {
   let app
 
   beforeAll(async () => {
+    // Start app -> reset app -> close app
+    // ===> As a result, when the app starts up the next time,
+    //      it starts from the onboarding screen
+    app = await startApp()
+    await resetData(app)
+    await stopApp(app)
+
     app = await startApp()
     await resetData(app)
     await app.restart()
@@ -290,7 +297,7 @@ describe('Onboarding Story 2', () => {
       .pause(1000)
 
     const crashReportSelected = await app.client.isSelected(
-      '[data-testid="advanced.send_crash_reports"]'
+      '[data-testid=send_crash_reports]'
     )
     expect(crashReportSelected).toBeFalsy()
   })

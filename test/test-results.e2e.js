@@ -1,4 +1,4 @@
-import { startApp, stopApp, screenshotApp } from './utils'
+import { startApp, stopApp, screenshotApp, resetData } from './utils'
 
 jest.setTimeout(600000)
 
@@ -19,11 +19,42 @@ describe('Tests for Test-Results screen', () => {
   })
 
   afterAll(async () => {
+    await resetData(app)
     await stopApp(app)
   })
 
   afterEach(async () => {
     await screenshotApp(app, expect.getState().currentTestName)
+  })
+
+  test.onMac('Enable Autorun on Mac', async () => {
+    await app.client.waitUntil(
+      async () =>
+        app.client.isVisible('div[data-testid=modal-autorun-confirmation]'),
+      30000
+    )
+
+    await app.client
+    .$('button[data-testid=button-autorun-yes]')
+    .click()
+    .pause(500)
+
+    await app.client.waitUntilWindowLoaded()
+  })
+
+  test.onWindows('Enable Autorun on Mac', async () => {
+    await app.client.waitUntil(
+      async () =>
+        app.client.isVisible('div[data-testid=modal-autorun-confirmation]'),
+      30000
+    )
+
+    await app.client
+    .$('button[data-testid=button-autorun-yes]')
+    .click()
+    .pause(500)
+
+    await app.client.waitUntilWindowLoaded()
   })
 
   test('Page shows two IM measurement result rows', async () => {
