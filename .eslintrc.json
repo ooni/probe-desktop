@@ -6,8 +6,6 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:jest/recommended",
-    "plugin:jest/style",
     "plugin:react-hooks/recommended"
   ],
   "parserOptions": {
@@ -18,7 +16,7 @@
     "ecmaVersion": 2020,
     "sourceType": "module"
   },
-  "plugins": ["react", "jest"],
+  "plugins": ["react", "jest", "testing-library"],
   "rules": {
     "indent": ["error", 2],
     "linebreak-style": ["error", "unix"],
@@ -28,7 +26,15 @@
   },
   "overrides": [
     {
-      "files": ["test/**/*.js"],
+      "files": [
+        "**/__tests__/**/*.[jt]s?(x)",
+        "test/**/*.js"
+      ],
+      "extends": [
+        "plugin:testing-library/react",
+        "plugin:jest/recommended",
+        "plugin:jest/style"
+      ],
       "env": { "jest/globals": true }
     },
     {
