@@ -50,3 +50,9 @@ jobs:
           run: yarn test:e2e
         env:
           LANG: en # By default LANG seems to be set to "C" which isn't handled
+
+      - name: Upload screenshots as workflow artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: E2E-Screenshots
+          path: test/screenshots/**/*.png
