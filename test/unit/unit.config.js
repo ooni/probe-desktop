@@ -8,4 +8,5 @@ module.exports = {
   moduleNameMapper: {
     'electron': '<rootDir>/test/mocks/electronMock.js',
   },
+  testEnvironment: 'jest-environment-jsdom'
 }

@@ -5,7 +5,7 @@ const process = require('process')
 const { execSync } = require('child_process')
 const { existsSync, ensureDirSync } = require('fs-extra')
 
-const baseURL = 'https://dist.torproject.org/torbrowser/11.0.4/'
+const baseURL = 'https://dist.torproject.org/torbrowser/11.0.6/'
 
 const appRoot = path.resolve(path.join(__dirname, '..'))
 const dstDir = path.join(appRoot, 'build', 'tor')
@@ -30,7 +30,7 @@ const platformMap = {
     'extractor': extractWin
   },
   'darwin_amd64': {
-    'pkgName': 'TorBrowser-11.0.4-osx64_en-US.dmg',
+    'pkgName': 'TorBrowser-11.0.6-osx64_en-US.dmg',
     'extractor': extractMac
   }
 }

@@ -60,7 +60,8 @@ module.exports = {
     if (app && app.isRunning) {
       const screenshotBuffer = await app.browserWindow.capturePage()
       if (screenshotBuffer) {
-        const filename = path.resolve(screenshotsDir, `${label}.png`)
+        const cleanFileName = label.replace(/\s+/gi, '-').replace(/[^a-zA-Z0-9\-]/gi, '')
+        const filename = path.resolve(screenshotsDir, `${cleanFileName}.png`)
         fs.writeFileSync(filename, screenshotBuffer)
       }
     }

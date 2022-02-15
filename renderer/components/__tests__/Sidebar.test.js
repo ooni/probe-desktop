@@ -3,11 +3,7 @@
  */
 
 import React from 'react'
-import { screen, render, cleanup, fireEvent } from '@testing-library/react'
-import { theme } from 'ooni-components'
-import { ThemeProvider } from 'styled-components'
-import { IntlProvider } from 'react-intl'
-import English from '../../../lang/en.json'
+import { screen, render, cleanup, fireEvent } from '../../../test/unit/utils'
 
 import Sidebar from '../Sidebar'
 import { version } from '../../../package.json'
@@ -24,34 +20,17 @@ jest.mock('next/router', () => ({
   },
 }))
 
-const renderComponent = (component, locale = 'en', messages = English) => {
-  return render(
-    <IntlProvider locale={locale} messages={messages}>
-      <ThemeProvider theme={theme}>{component}</ThemeProvider>
-    </IntlProvider>
-  )
-}
+const renderSidebar = () => render(<Sidebar><></></Sidebar>)
 
 describe('Tests for Sidebar component', () => {
-  beforeEach(() => {
-    renderComponent(
-      <Sidebar>
-        <></>
-      </Sidebar>
-    )
-  })
-
-  afterEach(() => {
-    cleanup()
-    jest.clearAllMocks()
-  })
-
   test('Displays the correct version', async () => {
+    renderSidebar()
     const versionNumber = screen.getByTestId('sidebar-version-number')
     expect(versionNumber.innerHTML).toMatch(version)
   })
 
   test('Clicking on Dashboard NavItem calls pushes router to /dashboard', async () => {
+    renderSidebar()
     const navItemDashboard = screen.getByTestId('sidebar-item-dashboard')
     fireEvent.click(navItemDashboard)
 
@@ -59,6 +38,7 @@ describe('Tests for Sidebar component', () => {
   })
 
   test('Clicking on Test Results NavItem calls pushes router to /test-results', async () => {
+    renderSidebar()
     const navItemTestResults = screen.getByTestId('sidebar-item-test-results')
     fireEvent.click(navItemTestResults)
 
@@ -66,6 +46,7 @@ describe('Tests for Sidebar component', () => {
   })
 
   test('Clicking on Settings NavItem calls pushes router to /settings', async () => {
+    renderSidebar()
     const navItemSettings = screen.getByTestId('sidebar-item-settings')
     fireEvent.click(navItemSettings)
 
