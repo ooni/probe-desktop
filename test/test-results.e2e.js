@@ -568,4 +568,44 @@ describe('Tests for Test-Results screen', () => {
       ).resolves.toBe(true)
     })
   })
+
+  // Experimental
+  describe('Experimental test measurements', () => {
+    beforeAll(async () => {
+      await app.client
+        .$('div[data-testid=sidebar-item-test-results]')
+        .click()
+        .pause(1000)
+
+      await app.client.waitUntilWindowLoaded()
+
+      await app.client
+        .$('div[data-testid=test-result-experimental]')
+        .click()
+        .pause(1000)
+
+      await app.client.waitUntilWindowLoaded()
+    })
+
+    test('There is at least one Experimental measurements', async () => {
+      const rows = await app.client.$$('div[data-testid=measured-test-name]')
+      expect(rows.length).toBeGreaterThan(0)
+    })
+
+    test('Detailed Measurements load up correctly', async () => {
+      await app.client
+        .$('div[data-testid=measured-test-name]')
+        .click()
+        .pause(1000)
+
+      const title = await app.client.getText('h3[data-testid=heading-json-viewer]')
+      expect(title).toBe('Data')
+
+      const jsonContainerVisible = await app.client.isVisible('div[data-testid=container-json-viewer]')
+      expect(jsonContainerVisible).toBeTruthy()
+
+      const jsonViewerVisible = await app.client.isVisible('div[data-testid=data-json-viewer]')
+      expect(jsonViewerVisible).toBeTruthy()
+    })
+  })
 })
