@@ -348,11 +348,11 @@ describe('Circumvention test', () => {
       'Psiphon Test',
       300000
     )
-    await app.client.waitUntilTextExists(
-      'div[data-testid=text-running-test-name]',
-      'RiseupVPN Test',
-      300000
-    )
+    // await app.client.waitUntilTextExists(
+    //   'div[data-testid=text-running-test-name]',
+    //   'RiseupVPN Test',
+    //   300000
+    // )
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'Tor Test',
@@ -546,6 +546,81 @@ describe('Middleboxes test', () => {
 
     await expect(
       app.client.isVisible('div[data-testid=test-result-middlebox]')
+    ).resolves.toBe(true)
+  })
+})
+
+// Experimental test
+describe('Experimental test', () => {
+  let app
+
+  beforeAll(async () => {
+    app = await startApp()
+  })
+
+  afterAll(async () => {
+    await stopApp(app)
+  })
+
+  test('Experimental test successfully starts', async () => {
+    await app.client
+      .$('div[data-testid=run-card-experimental]')
+      .click()
+      .pause(500)
+
+    await app.client.waitUntilWindowLoaded()
+
+    await screenshotApp(app, 'runtest-description-experimental')
+
+    await app.client.waitUntil(
+      () => app.client.isVisible('button[data-testid=button-run-test]'),
+      300000
+    )
+
+    await app.client
+      .$('button[data-testid=button-run-test]')
+      .click()
+      .pause(500)
+
+    await app.client.waitUntilWindowLoaded()
+    const headingTestGroupName = await app.client.getText(
+      'h2[data-testid=heading-test-group-name]'
+    )
+    expect(headingTestGroupName).toBe('Experimental')
+
+    const headingPreparingTests = await app.client.getText(
+      'h3[data-testid=heading-running-test-name]'
+    )
+    expect(headingPreparingTests).toBe('Preparing test...')
+  })
+
+  test('Experimental test performs some tests', async () => {
+    const testNameExists = await app.client.isVisible(
+      'div[data-testid=text-running-test-name]'
+    )
+    expect(testNameExists).toBeTruthy()
+
+    await screenshotApp(app, 'runtest-running-experimental')
+
+    await app.client.waitUntil(
+      async () =>
+        (await app.client.isVisible(
+          'div[data-testid=running-animation-animation]'
+        )) === false,
+      300000
+    )
+  })
+
+  test('Loads Test Results page on completion', async () => {
+    await app.client.waitUntilWindowLoaded()
+
+    await app.client.waitUntil(
+      async () => app.client.isVisible('div[data-testid=overview-tests]'),
+      300000
+    )
+
+    await expect(
+      app.client.isVisible('div[data-testid=test-result-experimental]')
     ).resolves.toBe(true)
   })
 })

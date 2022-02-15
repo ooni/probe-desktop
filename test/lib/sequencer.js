@@ -11,11 +11,11 @@ class CustomSequencer extends TestSequencer {
       'onboarding',
       'sidebar',
       'dashboard',
+      'localization',
       'settings',
       'runtest-individual',
       'runtest-all',
       'test-results',
-      'localization'
     ]
 
     // based on: https://github.com/facebook/jest/issues/6194#issuecomment-521521514
