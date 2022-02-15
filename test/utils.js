@@ -20,14 +20,22 @@ const execHardReset = (app) => {
   })
 }
 
+const defaultOptions = {
+  locale: 'en'
+}
+
 module.exports = {
-  async startApp() {
+  async startApp(options = {}) {
+
+    const { locale } = Object.assign({}, defaultOptions, options)
+
     const app = await new Application({
       path: electronPath,
       args: [path.join(__dirname, '..')],
       env: {
         NODE_ENV: 'test',
-        ELECTRON_IS_DEV: false
+        ELECTRON_IS_DEV: 0,
+        LANG: locale
       },
       startTimeout: 30000,
       waitTimeout: 30000,
