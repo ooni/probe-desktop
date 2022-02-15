@@ -45,10 +45,17 @@ Section.propTypes = {
 }
 
 const Settings = () => {
-  const [config, /*setConfig, loading, err*/] = useConfig()
-  const maxRuntimeEnabled = useMemo(() => {
-    return config ? config.nettests.websites_enable_max_runtime : undefined
-  }, [config])
+  const [maxRuntimeEnabled] = useConfig('nettests.websites_enable_max_runtime')
+  const [/* maxRuntime */, setMaxRuntime] = useConfig('nettests.websites_max_runtime')
+
+  // This keeps the values of websites_enable_max_runtime(bool) and websites_max_runtime (number)
+  // in sync. Withtout this, `probe-cli` continues to use the number in `websites_max_runtime`
+  // even if `websites_enable_max_runtime` is false (unchecked).
+  const syncMaxRuntimeWidgets = (newValue) => {
+    if (newValue === false) {
+      setMaxRuntime(0)
+    }
+  }
 
   return (
     <Layout>
@@ -71,6 +78,7 @@ const Settings = () => {
               <BooleanOption
                 label={<FormattedMessage id='Settings.Websites.MaxRuntimeEnabled' />}
                 optionKey='nettests.websites_enable_max_runtime'
+                onChange={syncMaxRuntimeWidgets}
               />
               <NumberOption
                 label={<FormattedMessage id='Settings.Websites.MaxRuntime' />}
