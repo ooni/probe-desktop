@@ -32,7 +32,7 @@ const NDT = ({measurement, render}) => {
   const server = useMemo(() => {
     try {
       if (rawData) {
-        if (rawData.test_keys.server.hostname) {
+        if (rawData?.test_keys?.server?.hostname) {
           return rawData.test_keys.server.hostname
         }
       } else {
