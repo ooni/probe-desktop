@@ -90,11 +90,11 @@ describe('All network tests run successfully', () => {
       300000
     )
 
-    await app.client.waitUntilTextExists(
-      'div[data-testid=text-running-test-name]',
-      'RiseupVPN Test',
-      300000
-    )
+    // await app.client.waitUntilTextExists(
+    //   'div[data-testid=text-running-test-name]',
+    //   'RiseupVPN Test',
+    //   300000
+    // )
 
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',

@@ -268,9 +268,9 @@ describe('Tests for Test-Results screen', () => {
       await app.client.waitUntilWindowLoaded()
     })
 
-    test('There are total 3 Circumvention measurements', async () => {
+    test('There are total 2 Circumvention measurements', async () => {
       const rows = await app.client.$$('div[data-testid=measured-test-name]')
-      expect(rows).toHaveLength(3)
+      expect(rows).toHaveLength(2)
     })
 
     test('Result rows displayed for all 3 tests', async () => {
@@ -278,7 +278,7 @@ describe('Tests for Test-Results screen', () => {
         'div div[data-testid=measured-test-name]'
       )
       expect(testedApps.sort()).toEqual(
-        ['Psiphon Test', 'RiseupVPN Test', 'Tor Test'].sort()
+        ['Psiphon Test', 'Tor Test'].sort()
       )
 
       // await screenshotApp(app, 'test-results-measurements-circumvention')
