@@ -235,4 +235,29 @@ describe('All network tests run successfully', () => {
       300000
     )
   })
+
+  test('Experimental test runs from start to finish', async () => {
+    await app.client.waitUntilWindowLoaded()
+
+    await app.client.waitUntilTextExists(
+      'h2[data-testid=heading-test-group-name]',
+      'Experimental',
+      300000
+    )
+
+    const animationVisible = await app.client.isVisible(
+      'div[data-testid=running-animation-experimental]'
+    )
+    expect(animationVisible).toBe(true)
+
+    await screenshotApp(app, 'runtestall-experimental')
+
+    await app.client.waitUntil(
+      async () =>
+        (await app.client.isVisible(
+          'div[data-testid=running-animation-experimental]'
+        )) === false,
+      300000
+    )
+  })
 })
