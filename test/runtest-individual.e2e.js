@@ -348,11 +348,11 @@ describe('Circumvention test', () => {
       'Psiphon Test',
       300000
     )
-    await app.client.waitUntilTextExists(
-      'div[data-testid=text-running-test-name]',
-      'RiseupVPN Test',
-      300000
-    )
+    // await app.client.waitUntilTextExists(
+    //   'div[data-testid=text-running-test-name]',
+    //   'RiseupVPN Test',
+    //   300000
+    // )
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'Tor Test',
