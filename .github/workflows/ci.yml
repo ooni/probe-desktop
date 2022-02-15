@@ -52,6 +52,7 @@ jobs:
           LANG: en # By default LANG seems to be set to "C" which isn't handled
 
       - name: Upload screenshots as workflow artifacts
+        if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: E2E-Screenshots
