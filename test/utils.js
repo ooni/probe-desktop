@@ -24,6 +24,38 @@ const defaultOptions = {
   locale: 'en'
 }
 
+const proxy = (client) => {
+  const handler = {
+    get: (obj, prop) => {
+      if (prop in client) {
+        return client[prop].bind(client)
+      }
+
+      return async (selector, ...args) => {
+
+        const elem = await client.$(selector)
+
+        if (elem[prop]) {
+          return await elem[prop](...args)
+        }
+
+        throw new Error(`"${prop}" is not a known client or element method`)
+      }
+    }
+  }
+
+  return new Proxy({}, handler)
+}
+
+// const boostApp = (app) => {
+//   app.client.addCommand('getText', async (selector) => {
+//     const elem = await app.client.$(selector)
+//     return elem.getText()
+//   })
+
+//   return app
+// }
+
 module.exports = {
   async startApp(options = {}) {
 
@@ -42,7 +74,12 @@ module.exports = {
       chromeDriverArgs: ['–remote-debugging-port=12209']
     })
 
-    return app.start()
+    await app.start()
+    await app.client.waitUntilWindowLoaded()
+
+    app.utils = proxy(app.client)
+
+    return app
   },
 
   async stopApp(app) {

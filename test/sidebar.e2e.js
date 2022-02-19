@@ -4,12 +4,11 @@ beforeAll(() => {
   jest.setTimeout(30000)
 })
 
-describe.skip('Sidebar Works', () => {
+describe('Sidebar Works', () => {
   let app
 
   beforeEach(async () => {
     app = await startApp()
-    return app
   })
 
   afterEach(async () => {

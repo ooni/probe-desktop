@@ -8,10 +8,7 @@ describe('Tests for Test-Results screen', () => {
   beforeAll(async () => {
     app = await startApp()
 
-    await app.client
-      .$('div[data-testid=sidebar-item-test-results]')
-      .click()
-      .pause(1000)
+    await app.utils.click('div[data-testid=sidebar-item-test-results]')
 
     await app.client.waitUntilWindowLoaded()
 
@@ -56,10 +53,7 @@ describe('Tests for Test-Results screen', () => {
   // IM
   describe('IM test measurements', () => {
     beforeAll(async () => {
-      await app.client
-        .$('div[data-testid=test-result-im]')
-        .click()
-        .pause(1000)
+      await app.utils.click('div[data-testid=test-result-im]')
 
       await app.client.waitUntilWindowLoaded()
     })
@@ -70,7 +64,7 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Result rows displayed for all 4 tests', async () => {
-      const testedApps = await app.client.getText(
+      const testedApps = await app.utils.getText(
         'div div[data-testid=measured-test-name]'
       )
       expect(testedApps.sort()).toEqual(
@@ -86,11 +80,7 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Detailed Measurements load up correctly', async () => {
-      await app.client
-        .$$('div[data-testid=measured-test-name]')
-        .$('div=Signal Test')
-        .click()
-        .pause(1000)
+      await app.utils.click('div=Signal Test')
 
       await app.client.waitUntilWindowLoaded()
 
@@ -106,16 +96,16 @@ describe('Tests for Test-Results screen', () => {
     test('Explorer button is displayed with correct link', async () => {
       await app.client.waitUntil(
         () =>
-          app.client.isVisible('button[data-testid=button-show-in-explorer]'),
-        120000
+          app.utils.isDisplayed('button[data-testid=button-show-in-explorer]'),
+        { timeout: 120000 }
       )
 
-      const explorerButtonText = await app.client.getText(
+      const explorerButtonText = await app.utils.getText(
         'button[data-testid=button-show-in-explorer]'
       )
       expect(explorerButtonText).toBe('Show In OONI Explorer')
 
-      const explorerButtonHref = await app.client.getAttribute(
+      const explorerButtonHref = await app.utils.getAttribute(
         'button[data-testid=button-show-in-explorer]',
         'href'
       )
@@ -128,29 +118,26 @@ describe('Tests for Test-Results screen', () => {
 
     test('Methodology link is correctly displayed', async () => {
       await expect(
-        app.client.getAttribute('=Methodology', 'href')
+        app.utils.getAttribute('=Methodology', 'href')
       ).resolves.toBe('https://ooni.org/nettest/signal/')
     })
 
     test('Data button loads up raw data', async () => {
-      await app.client
-        .$('button[data-testid=button-data-raw]')
-        .click()
-        .pause(1000)
+      await app.utils.click('button[data-testid=button-data-raw]')
 
       await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntil(
-        () => app.client.isVisible('div[data-testid=container-json-viewer]'),
-        120000
+        () => app.utils.isDisplayed('div[data-testid=container-json-viewer]'),
+        { timeout: 120000 }
       )
 
       await expect(
-        app.client.getText('h3[data-testid=heading-json-viewer]')
+        app.utils.getText('h3[data-testid=heading-json-viewer]')
       ).resolves.toBe('Data')
 
       await expect(
-        app.client.isVisible('div[data-testid=data-json-viewer]')
+        app.utils.isDisplayed('div[data-testid=data-json-viewer]')
       ).resolves.toBe(true)
     })
   })
@@ -158,17 +145,11 @@ describe('Tests for Test-Results screen', () => {
   // Websites
   describe('Website test measurements', () => {
     beforeAll(async () => {
-      await app.client
-        .$('div[data-testid=sidebar-item-test-results]')
-        .click()
-        .pause(1000)
+      await app.utils.click('div[data-testid=sidebar-item-test-results]')
 
       await app.client.waitUntilWindowLoaded()
 
-      await app.client
-        .$('div[data-testid=test-result-websites]')
-        .click()
-        .pause(1000)
+      await app.utils.click('div[data-testid=test-result-websites]')
 
       await app.client.waitUntilWindowLoaded()
     })
@@ -183,16 +164,13 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Detailed Measurements load up correctly', async () => {
-      await app.client
-        .$('div[data-testid=measured-url-row')
-        .click()
-        .pause(1000)
+      await app.utils.click('div[data-testid=measured-url-row')
 
       await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntil(
-        () => app.client.isVisible('h4[data-testid=heading-test-name-full]'),
-        120000
+        () => app.utils.isDisplayed('h4[data-testid=heading-test-name-full]'),
+        { timeout: 120000 }
       )
 
       // await screenshotApp(app, 'test-results-detailed-websites')
@@ -201,16 +179,16 @@ describe('Tests for Test-Results screen', () => {
     test('Explorer button is displayed with correct link', async () => {
       await app.client.waitUntil(
         () =>
-          app.client.isVisible('button[data-testid=button-show-in-explorer]'),
-        120000
+          app.utils.isDisplayed('button[data-testid=button-show-in-explorer]'),
+        { timeout: 120000 }
       )
 
-      const explorerButtonText = await app.client.getText(
+      const explorerButtonText = await app.utils.getText(
         'button[data-testid=button-show-in-explorer]'
       )
       expect(explorerButtonText).toBe('Show In OONI Explorer')
 
-      const explorerButtonHref = await app.client.getAttribute(
+      const explorerButtonHref = await app.utils.getAttribute(
         'button[data-testid=button-show-in-explorer]',
         'href'
       )
@@ -223,29 +201,26 @@ describe('Tests for Test-Results screen', () => {
 
     test('Methodology link is correctly displayed', async () => {
       await expect(
-        app.client.getAttribute('=Methodology', 'href')
+        app.utils.getAttribute('=Methodology', 'href')
       ).resolves.toBe('https://ooni.org/nettest/web-connectivity/')
     })
 
     test('Data button loads up raw data', async () => {
-      await app.client
-        .$('button[data-testid=button-data-raw]')
-        .click()
-        .pause(1000)
+      await app.utils.click('button[data-testid=button-data-raw]')
 
       await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntil(
-        () => app.client.isVisible('div[data-testid=container-json-viewer]'),
-        120000
+        () => app.utils.isDisplayed('div[data-testid=container-json-viewer]'),
+        { timeout: 120000 }
       )
 
       await expect(
-        app.client.getText('h3[data-testid=heading-json-viewer]')
+        app.utils.getText('h3[data-testid=heading-json-viewer]')
       ).resolves.toBe('Data')
 
       await expect(
-        app.client.isVisible('div[data-testid=data-json-viewer]')
+        app.utils.isDisplayed('div[data-testid=data-json-viewer]')
       ).resolves.toBe(true)
     })
   })
@@ -253,17 +228,11 @@ describe('Tests for Test-Results screen', () => {
   // Circumvention
   describe('Circumvention test measurements', () => {
     beforeAll(async () => {
-      await app.client
-        .$('div[data-testid=sidebar-item-test-results]')
-        .click()
-        .pause(1000)
+      await app.utils.click('div[data-testid=sidebar-item-test-results]')
 
       await app.client.waitUntilWindowLoaded()
 
-      await app.client
-        .$('div[data-testid=test-result-circumvention]')
-        .click()
-        .pause(1000)
+      await app.utils.click('div[data-testid=test-result-circumvention]')
 
       await app.client.waitUntilWindowLoaded()
     })
@@ -274,22 +243,16 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Result rows displayed for all 3 tests', async () => {
-      const testedApps = await app.client.getText(
+      const testedApps = await app.utils.getText(
         'div div[data-testid=measured-test-name]'
       )
       expect(testedApps.sort()).toEqual(
         ['Psiphon Test', 'Tor Test'].sort()
       )
-
-      // await screenshotApp(app, 'test-results-measurements-circumvention')
     })
 
     test('Detailed Measurements load up correctly', async () => {
-      await app.client
-        .$$('div[data-testid=measured-test-name]')
-        .$('div=Tor Test')
-        .click()
-        .pause(1000)
+      await app.utils.click('div=Tor Test')
 
       await app.client.waitUntilWindowLoaded()
 
@@ -305,16 +268,16 @@ describe('Tests for Test-Results screen', () => {
     test('Explorer button is displayed with correct link', async () => {
       await app.client.waitUntil(
         () =>
-          app.client.isVisible('button[data-testid=button-show-in-explorer]'),
-        120000
+          app.utils.isDisplayed('button[data-testid=button-show-in-explorer]'),
+        { timeout: 120000 }
       )
 
-      const explorerButtonText = await app.client.getText(
+      const explorerButtonText = await app.utils.getText(
         'button[data-testid=button-show-in-explorer]'
       )
       expect(explorerButtonText).toBe('Show In OONI Explorer')
 
-      const explorerButtonHref = await app.client.getAttribute(
+      const explorerButtonHref = await app.utils.getAttribute(
         'button[data-testid=button-show-in-explorer]',
         'href'
       )
@@ -327,29 +290,26 @@ describe('Tests for Test-Results screen', () => {
 
     test('Methodology link is correctly displayed', async () => {
       await expect(
-        app.client.getAttribute('=Methodology', 'href')
+        app.utils.getAttribute('=Methodology', 'href')
       ).resolves.toBe('https://ooni.org/nettest/tor')
     })
 
     test('Data button loads up raw data', async () => {
-      await app.client
-        .$('button[data-testid=button-data-raw]')
-        .click()
-        .pause(1000)
+      await app.utils.click('button[data-testid=button-data-raw]')
 
       await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntil(
-        () => app.client.isVisible('div[data-testid=container-json-viewer]'),
-        120000
+        () => app.utils.isDisplayed('div[data-testid=container-json-viewer]'),
+        { timeout: 120000 }
       )
 
       await expect(
-        app.client.getText('h3[data-testid=heading-json-viewer]')
+        app.utils.getText('h3[data-testid=heading-json-viewer]')
       ).resolves.toBe('Data')
 
       await expect(
-        app.client.isVisible('div[data-testid=data-json-viewer]')
+        app.utils.isDisplayed('div[data-testid=data-json-viewer]')
       ).resolves.toBe(true)
     })
   })
@@ -357,17 +317,11 @@ describe('Tests for Test-Results screen', () => {
   // Performance
   describe('Performance test measurements', () => {
     beforeAll(async () => {
-      await app.client
-        .$('div[data-testid=sidebar-item-test-results]')
-        .click()
-        .pause(1000)
+      await app.utils.click('div[data-testid=sidebar-item-test-results]')
 
       await app.client.waitUntilWindowLoaded()
 
-      await app.client
-        .$('div[data-testid=test-result-performance]')
-        .click()
-        .pause(1000)
+      await app.utils.click('div[data-testid=test-result-performance]')
 
       await app.client.waitUntilWindowLoaded()
     })
@@ -378,7 +332,7 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Result rows displayed for all 2 tests', async () => {
-      const testedParams = await app.client.getText(
+      const testedParams = await app.utils.getText(
         'div div[data-testid=measured-test-name]'
       )
       expect(testedParams.sort()).toEqual(
@@ -389,11 +343,7 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Detailed Measurements load up correctly', async () => {
-      await app.client
-        .$$('div[data-testid=measured-test-name]')
-        .$('div=NDT Speed Test')
-        .click()
-        .pause(1000)
+      await app.utils.click('div=NDT Speed Test')
 
       await app.client.waitUntilWindowLoaded()
 
@@ -409,16 +359,16 @@ describe('Tests for Test-Results screen', () => {
     test('Explorer button is displayed with correct link', async () => {
       await app.client.waitUntil(
         () =>
-          app.client.isVisible('button[data-testid=button-show-in-explorer]'),
-        120000
+          app.utils.isDisplayed('button[data-testid=button-show-in-explorer]'),
+        { timeout: 120000 }
       )
 
-      const explorerButtonText = await app.client.getText(
+      const explorerButtonText = await app.utils.getText(
         'button[data-testid=button-show-in-explorer]'
       )
       expect(explorerButtonText).toBe('Show In OONI Explorer')
 
-      const explorerButtonHref = await app.client.getAttribute(
+      const explorerButtonHref = await app.utils.getAttribute(
         'button[data-testid=button-show-in-explorer]',
         'href'
       )
@@ -431,29 +381,26 @@ describe('Tests for Test-Results screen', () => {
 
     test('Methodology link is correctly displayed', async () => {
       await expect(
-        app.client.getAttribute('=Methodology', 'href')
+        app.utils.getAttribute('=Methodology', 'href')
       ).resolves.toBe('https://ooni.org/nettest/ndt/')
     })
 
     test('Data button loads up raw data', async () => {
-      await app.client
-        .$('button[data-testid=button-data-raw]')
-        .click()
-        .pause(1000)
+      await app.utils.click('button[data-testid=button-data-raw]')
 
       await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntil(
-        () => app.client.isVisible('div[data-testid=container-json-viewer]'),
-        120000
+        () => app.utils.isDisplayed('div[data-testid=container-json-viewer]'),
+        { timeout: 120000 }
       )
 
       await expect(
-        app.client.getText('h3[data-testid=heading-json-viewer]')
+        app.utils.getText('h3[data-testid=heading-json-viewer]')
       ).resolves.toBe('Data')
 
       await expect(
-        app.client.isVisible('div[data-testid=data-json-viewer]')
+        app.utils.isDisplayed('div[data-testid=data-json-viewer]')
       ).resolves.toBe(true)
     })
   })
@@ -461,17 +408,11 @@ describe('Tests for Test-Results screen', () => {
   // Middleboxes
   describe('Middleboxes test measurements', () => {
     beforeAll(async () => {
-      await app.client
-        .$('div[data-testid=sidebar-item-test-results]')
-        .click()
-        .pause(1000)
+      await app.utils.click('div[data-testid=sidebar-item-test-results]')
 
       await app.client.waitUntilWindowLoaded()
 
-      await app.client
-        .$('div[data-testid=test-result-middlebox]')
-        .click()
-        .pause(1000)
+      await app.utils.click('div[data-testid=test-result-middlebox]')
 
       await app.client.waitUntilWindowLoaded()
     })
@@ -482,7 +423,7 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Result rows displayed for all 2 tests', async () => {
-      const testedParams = await app.client.getText(
+      const testedParams = await app.utils.getText(
         'div div[data-testid=measured-test-name]'
       )
       expect(testedParams.sort()).toEqual(
@@ -496,11 +437,7 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Detailed Measurements load up correctly', async () => {
-      await app.client
-        .$$('div[data-testid=measured-test-name]')
-        .$('div=HTTP Header Field Manipulation Test')
-        .click()
-        .pause(1000)
+      await app.utils.click('div=HTTP Header Field Manipulation Test')
 
       await app.client.waitUntilWindowLoaded()
 
@@ -516,16 +453,16 @@ describe('Tests for Test-Results screen', () => {
     test('Explorer button is displayed with correct link', async () => {
       await app.client.waitUntil(
         () =>
-          app.client.isVisible('button[data-testid=button-show-in-explorer]'),
-        120000
+          app.utils.isDisplayed('button[data-testid=button-show-in-explorer]'),
+        { timeout: 120000 }
       )
 
-      const explorerButtonText = await app.client.getText(
+      const explorerButtonText = await app.utils.getText(
         'button[data-testid=button-show-in-explorer]'
       )
       expect(explorerButtonText).toBe('Show In OONI Explorer')
 
-      const explorerButtonHref = await app.client.getAttribute(
+      const explorerButtonHref = await app.utils.getAttribute(
         'button[data-testid=button-show-in-explorer]',
         'href'
       )
@@ -540,31 +477,28 @@ describe('Tests for Test-Results screen', () => {
 
     test('Methodology link is correctly displayed', async () => {
       await expect(
-        app.client.getAttribute('=Methodology', 'href')
+        app.utils.getAttribute('=Methodology', 'href')
       ).resolves.toBe(
         'https://ooni.org/nettest/http-header-field-manipulation/'
       )
     })
 
     test('Data button loads up raw data', async () => {
-      await app.client
-        .$('button[data-testid=button-data-raw]')
-        .click()
-        .pause(1000)
+      await app.utils.click('button[data-testid=button-data-raw]')
 
       await app.client.waitUntilWindowLoaded()
 
       await app.client.waitUntil(
-        () => app.client.isVisible('div[data-testid=container-json-viewer]'),
-        120000
+        () => app.utils.isDisplayed('div[data-testid=container-json-viewer]'),
+        { timeout: 120000 }
       )
 
       await expect(
-        app.client.getText('h3[data-testid=heading-json-viewer]')
+        app.utils.getText('h3[data-testid=heading-json-viewer]')
       ).resolves.toBe('Data')
 
       await expect(
-        app.client.isVisible('div[data-testid=data-json-viewer]')
+        app.utils.isDisplayed('div[data-testid=data-json-viewer]')
       ).resolves.toBe(true)
     })
   })
@@ -572,17 +506,11 @@ describe('Tests for Test-Results screen', () => {
   // Experimental
   describe('Experimental test measurements', () => {
     beforeAll(async () => {
-      await app.client
-        .$('div[data-testid=sidebar-item-test-results]')
-        .click()
-        .pause(1000)
+      await app.utils.click('div[data-testid=sidebar-item-test-results]')
 
       await app.client.waitUntilWindowLoaded()
 
-      await app.client
-        .$('div[data-testid=test-result-experimental]')
-        .click()
-        .pause(1000)
+      await app.utils.click('div[data-testid=test-result-experimental]')
 
       await app.client.waitUntilWindowLoaded()
     })
@@ -593,18 +521,15 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Detailed Measurements load up correctly', async () => {
-      await app.client
-        .$('div[data-testid=measured-test-name]')
-        .click()
-        .pause(1000)
+      await app.utils.click('div[data-testid=measured-test-name]')
 
-      const title = await app.client.getText('h3[data-testid=heading-json-viewer]')
+      const title = await app.utils.getText('h3[data-testid=heading-json-viewer]')
       expect(title).toBe('Data')
 
-      const jsonContainerVisible = await app.client.isVisible('div[data-testid=container-json-viewer]')
+      const jsonContainerVisible = await app.utils.isDisplayed('div[data-testid=container-json-viewer]')
       expect(jsonContainerVisible).toBeTruthy()
 
-      const jsonViewerVisible = await app.client.isVisible('div[data-testid=data-json-viewer]')
+      const jsonViewerVisible = await app.utils.isDisplayed('div[data-testid=data-json-viewer]')
       expect(jsonViewerVisible).toBeTruthy()
     })
   })
