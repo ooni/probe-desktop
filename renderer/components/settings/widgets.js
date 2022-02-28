@@ -28,15 +28,18 @@ const StyledErrorMessage = styled(Box).attrs({
   color: ${props => props.theme.colors.red5};
 `
 
-export const BooleanOption = ({ label, optionKey, disabled = false, ...rest }) => {
+export const BooleanOption = ({ label, optionKey, disabled = false, onChange, ...rest }) => {
   const [checked, setConfigValue] = useConfig(optionKey)
 
   const handleChange = useCallback((event) => {
     const target = event.target
     const newValue = Boolean(target.type === 'checkbox' ? target.checked : target.value)
+    if (typeof onChange === 'function') {
+      onChange(newValue)
+    }
 
     setConfigValue(newValue)
-  }, [setConfigValue])
+  }, [setConfigValue, onChange])
 
   return (
     <StyledLabel my={2} disabled={disabled} alignItems='center'>
