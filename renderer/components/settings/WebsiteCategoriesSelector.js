@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useState, useMemo, useCallback, useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
 import {
   Flex, Box,
@@ -13,7 +13,7 @@ import {
 import * as CategoryIcons from 'ooni-components/dist/icons'
 import { MdClose } from 'react-icons/md'
 import styled from 'styled-components'
-import electron from 'electron'
+import electron, { ipcRenderer } from 'electron'
 import { RemoveScroll } from 'react-remove-scroll'
 
 import { useConfig } from './useConfig'
@@ -88,13 +88,15 @@ CategoryList.propTypes = {
   handleChange: PropTypes.func
 }
 
+
 export const WebsiteCategoriesSelector = () => {
   const [showCategoriesModal, setShowCategoriesModal] = useState(false)
   const [categoryListInConfig, setCategoryListInConfig] = useConfig('nettests.websites_enabled_category_codes')
   const [selectedCategoryCodes, setSelectedCategoryCodes] = useState(categoryListInConfig || [])
 
-  const remote = electron.remote
-  const { availableCategoriesList } = remote.require('./utils/config')
+  const availableCategoriesList = useMemo(() => (
+    ipcRenderer.sendSync('config.categories')
+  ), [])
 
 
   const isNotDirty = useMemo(() => {

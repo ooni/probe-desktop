@@ -1,12 +1,6 @@
 import React from 'react'
-
-import Layout from '../components/Layout'
-import FormattedMarkdownMessage from '../components/FormattedMarkdownMessage'
 import humanize from 'humanize'
-import formatSpeed from '../components/formatSpeed'
-
 import { Line as LineProgress } from 'rc-progress'
-
 import OONIHorizontalMonochromeInverted from 'ooni-components/components/svgs/logos/OONI-HorizontalMonochromeInverted.svg'
 import {
   Container,
@@ -17,11 +11,12 @@ import {
   Box,
   theme
 } from 'ooni-components'
-
-const { remote } = require('electron')
-const { ipcRenderer } = require('electron')
+import { ipcRenderer } from 'electron'
 import styled from 'styled-components'
 
+import Layout from '../components/Layout'
+import FormattedMarkdownMessage from '../components/FormattedMarkdownMessage'
+import formatSpeed from '../components/formatSpeed'
 import { version } from '../../package.json'
 
 const CodeWithWrap = styled.code`
@@ -84,11 +79,12 @@ class About extends React.Component {
   }
 
   onReset() {
-    const { hardReset } = remote.require('./actions')
-    hardReset().then(() => {
-      this.setState({
-        msg: 'Successfully reset OONI Probe. Please close and re-open the application.'
-      })
+    ipcRenderer.invoke('reset').then((success) => {
+      if (success) {
+        this.setState({
+          msg: 'Successfully reset OONI Probe. Please close and re-open the application.'
+        })
+      }
     })
   }
 
@@ -104,9 +100,9 @@ class About extends React.Component {
   }
 
   componentDidMount() {
-    const paths = remote.require('./utils/paths')
+    const paths = ipcRenderer.sendSync('debugGetAllPaths')
     this.setState({
-      debugPaths: paths.debugGetAllPaths()
+      debugPaths: paths
     })
     ipcRenderer.on('update-message', this.onUpdateMessage)
     ipcRenderer.on('update-progress', this.onUpdateProgress)

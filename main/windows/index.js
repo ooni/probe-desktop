@@ -24,7 +24,7 @@ const mainWindow = (url = 'dashboard') => {
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,
-      enableRemoteModule: true
+      enableRemoteModule: true,
     }
   })
   win.loadURL(windowURL(url))

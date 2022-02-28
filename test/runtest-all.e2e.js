@@ -18,18 +18,15 @@ describe('All network tests run successfully', () => {
   })
 
   test('Tests start successfully on click of RUN button', async () => {
-    await app.client
-      .$('button[data-testid=button-dashboard-run]')
-      .click()
-      .pause(1000)
+    await app.utils.click('button[data-testid=button-dashboard-run]')
 
     await app.client.waitUntil(
-      () => app.client.isVisible('h3[data-testid=heading-running-test-name]'),
-      120000
+      () => app.utils.isDisplayed('h3[data-testid=heading-running-test-name]'),
+      { timeout: 300000 }
     )
 
     await expect(
-      app.client.getText('h3[data-testid=heading-running-test-name]')
+      app.utils.getText('h3[data-testid=heading-running-test-name]')
     ).resolves.toBe('Preparing test...')
 
     // await screenshotApp(app, 'runtestall-started')
@@ -54,19 +51,21 @@ describe('All network tests run successfully', () => {
       300000
     )
 
-    const animationVisible = await app.client.isVisible(
+    const animationVisible = await app.utils.isDisplayed(
       'div[data-testid=running-animation-websites]'
     )
     expect(animationVisible).toBe(true)
 
     await screenshotApp(app, 'runtestall-websites')
 
+    await app.client.setTimeout({ implicit: 0 })
+
     await app.client.waitUntil(
       async () =>
-        (await app.client.isVisible(
+        (await app.utils.isDisplayed(
           'div[data-testid=running-animation-websites]'
         )) === false,
-      300000
+      { timeout: 300000 }
     )
   })
 
@@ -79,7 +78,7 @@ describe('All network tests run successfully', () => {
       300000
     )
 
-    const animationVisible = await app.client.isVisible(
+    const animationVisible = await app.utils.isDisplayed(
       'div[data-testid=running-animation-circumvention]'
     )
     expect(animationVisible).toBe(true)
@@ -106,10 +105,10 @@ describe('All network tests run successfully', () => {
 
     await app.client.waitUntil(
       async () =>
-        (await app.client.isVisible(
+        (await app.utils.isDisplayed(
           'div[data-testid=running-animation-circumvention]'
         )) === false,
-      300000
+      { timeout: 300000 }
     )
   })
 
@@ -122,7 +121,7 @@ describe('All network tests run successfully', () => {
       300000
     )
 
-    const animationVisible = await app.client.isVisible(
+    const animationVisible = await app.utils.isDisplayed(
       'div[data-testid=running-animation-im]'
     )
     expect(animationVisible).toBe(true)
@@ -130,40 +129,39 @@ describe('All network tests run successfully', () => {
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'Facebook Messenger Test',
-      300000
+      10000
     )
 
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'Telegram Test',
-      300000
+      10000
     )
 
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'WhatsApp Test',
-      300000
+      10000
     )
 
     await app.client.waitUntilTextExists(
       'div[data-testid=text-running-test-name]',
       'Signal Test',
-      300000
+      10000
     )
 
     await screenshotApp(app, 'runtestall-im')
 
     await app.client.waitUntil(
       async () =>
-        (await app.client.isVisible(
+        (await app.utils.isDisplayed(
           'div[data-testid=running-animation-circumvention]'
         )) === false,
-      300000
+      { timeout: 300000 }
     )
   })
 
   test('Middleboxes test runs from start to finish', async () => {
-    await app.client.waitUntilWindowLoaded()
 
     await app.client.waitUntilTextExists(
       'h2[data-testid=heading-test-group-name]',
@@ -171,7 +169,7 @@ describe('All network tests run successfully', () => {
       300000
     )
 
-    const animationVisible = await app.client.isVisible(
+    const animationVisible = await app.utils.isDisplayed(
       'div[data-testid=running-animation-middlebox]'
     )
     expect(animationVisible).toBe(true)
@@ -192,10 +190,10 @@ describe('All network tests run successfully', () => {
 
     await app.client.waitUntil(
       async () =>
-        (await app.client.isVisible(
+        (await app.utils.isDisplayed(
           'div[data-testid=running-animation-circumvention]'
         )) === false,
-      300000
+      { timeout: 300000 }
     )
   })
 
@@ -208,7 +206,7 @@ describe('All network tests run successfully', () => {
       300000
     )
 
-    const animationVisible = await app.client.isVisible(
+    const animationVisible = await app.utils.isDisplayed(
       'div[data-testid=running-animation-performance]'
     )
     expect(animationVisible).toBe(true)
@@ -229,10 +227,10 @@ describe('All network tests run successfully', () => {
 
     await app.client.waitUntil(
       async () =>
-        (await app.client.isVisible(
+        (await app.utils.isDisplayed(
           'div[data-testid=running-animation-performance]'
         )) === false,
-      300000
+      { timeout: 300000 }
     )
   })
 
@@ -245,7 +243,7 @@ describe('All network tests run successfully', () => {
       300000
     )
 
-    const animationVisible = await app.client.isVisible(
+    const animationVisible = await app.utils.isDisplayed(
       'div[data-testid=running-animation-experimental]'
     )
     expect(animationVisible).toBe(true)
@@ -254,10 +252,10 @@ describe('All network tests run successfully', () => {
 
     await app.client.waitUntil(
       async () =>
-        (await app.client.isVisible(
+        (await app.utils.isDisplayed(
           'div[data-testid=running-animation-experimental]'
         )) === false,
-      300000
+      { timeout: 300000 }
     )
   })
 })

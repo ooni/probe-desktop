@@ -10,7 +10,9 @@ describe('Tests for Settings page', () => {
   })
 
   afterAll(async () => {
-    await stopApp(app)
+    if (app && app.isRunning()) {
+      await stopApp(app)
+    }
   })
 
   afterEach(async () => {
@@ -18,20 +20,17 @@ describe('Tests for Settings page', () => {
   })
 
   test('Clicking on "Settings" tab loads it up correctly', async () => {
-    await app.client
-      .$('div[data-testid=sidebar-item-settings]')
-      .click()
-      .pause(1000)
+    await app.utils.click('div[data-testid=sidebar-item-settings]')
 
     await app.client.waitUntilWindowLoaded()
 
-    const labelTestOptionsVisible = await app.client.isVisible(
+    const labelTestOptionsVisible = await app.utils.isDisplayed(
       `h4=${En['Settings.TestOptions.Label']}`
     )
-    const labelAutoTestingVisible = await app.client.isVisible(
+    const labelAutoTestingVisible = await app.utils.isDisplayed(
       `h4=${En['Settings.AutomatedTesting.Label']}`
     )
-    const labelPrivacyVisible = await app.client.isVisible(
+    const labelPrivacyVisible = await app.utils.isDisplayed(
       `h4=${En['Settings.Privacy.Label']}`
     )
 
@@ -41,81 +40,69 @@ describe('Tests for Settings page', () => {
   })
 
   test('Language changes to Spanish', async () => {
-    const languageLabelEn = await app.client.isVisible('label=Language')
+    const languageLabelEn = await app.utils.isDisplayed('label=Language')
     expect(languageLabelEn).toBe(true)
 
-    const languageSelectValue = await app.client
-      .$('select[data-testid=select-language]')
-      .getValue()
+    const languageSelectValue = await app.utils.getValue('select[data-testid=select-language]')
     expect(languageSelectValue).toBe('en')
 
     // Clicking and selecting value instead of using using setValue() because
     // webdriver thinks the <select> option is in a wrong state (uneditable)
-    await app.client
-      .$('select[data-testid=select-language]')
-      .click()
-      .pause(1000)
-    await app.client
-      .$('option=Spanish')
-      .click()
-      .pause(1000)
+    const languageSelector = await app.client.$('select[data-testid=select-language]')
+    await languageSelector.selectByVisibleText('Spanish')
 
-    const languageLabelEs = await app.client.isVisible('label=Idioma')
+    const languageLabelEs = await app.utils.isDisplayed('label=Idioma')
     expect(languageLabelEs).toBe(true)
 
+    // Temporarily reduce timeouts.implicit to fast-fail webdriver::findelement
+    const timeouts = await app.client.getTimeouts()
+
     // English labels are not visible anymore
-    const labelTestOptionsVisibleEn = await app.client.isVisible(
+    await app.client.setTimeout({ implicit: 0 })
+    const labelTestOptionsVisibleEn = await app.utils.isDisplayed(
       `h4=${En['Settings.TestOptions.Label']}`
     )
     expect(labelTestOptionsVisibleEn).toBe(false)
 
-    const labelAutoTestingVisibleEn = await app.client.isVisible(
+    const labelAutoTestingVisibleEn = await app.utils.isDisplayed(
       `h4=${En['Settings.AutomatedTesting.Label']}`
     )
     expect(labelAutoTestingVisibleEn).toBe(false)
 
-    const labelPrivacyVisibleEn = await app.client.isVisible(
+    const labelPrivacyVisibleEn = await app.utils.isDisplayed(
       `h4=${En['Settings.Privacy.Label']}`
     )
     expect(labelPrivacyVisibleEn).toBe(false)
 
     // Spanish labels are visible
-    const labelTestOptionsVisibleEs = await app.client.isVisible(
+    const labelTestOptionsVisibleEs = await app.utils.isDisplayed(
       `h4=${Es['Settings.TestOptions.Label']}`
     )
     expect(labelTestOptionsVisibleEs).toBe(true)
 
-    const labelAutoTestingVisibleEs = await app.client.isVisible(
+    const labelAutoTestingVisibleEs = await app.utils.isDisplayed(
       `h4=${Es['Settings.AutomatedTesting.Label']}`
     )
     expect(labelAutoTestingVisibleEs).toBe(true)
 
-    const labelPrivacyVisibleEs = await app.client.isVisible(
+    const labelPrivacyVisibleEs = await app.utils.isDisplayed(
       `h4=${Es['Settings.Privacy.Label']}`
     )
     expect(labelPrivacyVisibleEs).toBe(true)
-
+    // Restore timeout values
+    await app.client.setTimeout(timeouts)
     // await screenshotApp(app, 'settings-in-spanish')
   })
 
   test('Language changes in other screens', async () => {
     // Checking for Test Results screen
-    await app.client
-      .$('div[data-testid=sidebar-item-test-results]')
-      .click()
-      .pause(1000)
+    await app.utils.click('div[data-testid=sidebar-item-test-results]')
 
     await app.client.waitUntilWindowLoaded()
 
-    const labelTests = await app.client
-      .$('div[data-testid=overview-tests]')
-      .getText()
-    const labelNetworks = await app.client
-      .$('div[data-testid=overview-networks]')
-      .getText()
-    const labelDataUsage = await app.client
-      .$('div[data-testid=overview-data-usage-label]')
-      .getText()
+    const labelTests = await app.utils.getText('div[data-testid=overview-tests]')
+    const labelNetworks = await app.utils.getText('div[data-testid=overview-networks]')
+    const labelDataUsage = await app.utils.getText('div[data-testid=overview-data-usage-label]')
 
     expect(labelTests).toContain('Pruebas')
     expect(labelNetworks).toContain('Redes')
@@ -124,16 +111,11 @@ describe('Tests for Settings page', () => {
     await screenshotApp(app, 'test-results-in-spanish')
 
     // Checking for Dashboard screen
-    await app.client
-      .$('div[data-testid=sidebar-item-dashboard]')
-      .click()
-      .pause(1000)
+    await app.utils.click('div[data-testid=sidebar-item-dashboard]')
 
     await app.client.waitUntilWindowLoaded()
 
-    const runButtonText = await app.client
-      .$('button[data-testid=button-dashboard-run]')
-      .getText()
+    const runButtonText = await app.utils.getText('button[data-testid=button-dashboard-run]')
 
     expect(runButtonText).toMatch(Es['Dashboard.Overview.Run'])
 
@@ -141,40 +123,28 @@ describe('Tests for Settings page', () => {
   })
 
   test('Changing language back to En', async () => {
-    await app.client
-      .$('div[data-testid=sidebar-item-settings]')
-      .click()
-      .pause(1000)
+    await app.utils.click('div[data-testid=sidebar-item-settings]')
 
     await app.client.waitUntilWindowLoaded()
 
-    await app.client
-      .$('select[data-testid=select-language]')
-      .click()
-      .pause(1000)
-    await app.client
-      .$('option=inglés')
-      .click()
-      .pause(1000)
+    const languageSelector = await app.client.$('select[data-testid=select-language]')
+    await languageSelector.selectByVisibleText('inglés')
 
-    const languageLabelEn = await app.client.isVisible('label=Language')
+    const languageLabelEn = await app.utils.isDisplayed('label=Language')
     expect(languageLabelEn).toBe(true)
 
     // await screenshotApp(app, 'settings-in-english')
   })
 
   test('Clicking on button to edit Website categories brings up modal', async () => {
-    await app.client
-      .$('button[data-testid=website-categories-edit-button]')
-      .click()
-      .pause(1000)
+    await app.utils.click('button[data-testid=website-categories-edit-button]')
 
-    const modalHeadingVisible = await app.client.isVisible(
+    const modalHeadingVisible = await app.utils.isDisplayed(
       `h4=${En['Settings.Websites.Categories.Label']}`
     )
     expect(modalHeadingVisible).toBe(true)
 
-    const saveButtonEnabled = await app.client.isEnabled(
+    const saveButtonEnabled = await app.utils.isEnabled(
       `button=${En['Settings.Websites.Categories.Selection.Done']}`
     )
     expect(saveButtonEnabled).toBe(false)
@@ -183,22 +153,16 @@ describe('Tests for Settings page', () => {
   })
 
   test('Modal Deselect All buttons work as expected', async () => {
-    const websiteCount = await app.client.getText(
+    const websiteCount = await app.utils.getText(
       'div[data-testid=website-category-count]'
     )
     expect(websiteCount).toBe('30 categories enabled')
 
-    await app.client
-      .$(`button=${En['Settings.Websites.Categories.Selection.None']}`)
-      .click()
-      .pause(1000)
+    await app.utils.click(`button=${En['Settings.Websites.Categories.Selection.None']}`)
 
-    await app.client
-      .$(`button=${En['Settings.Websites.Categories.Selection.Done']}`)
-      .click()
-      .pause(1000)
+    await app.utils.click(`button=${En['Settings.Websites.Categories.Selection.Done']}`)
 
-    const websiteCountNew = await app.client.getText(
+    const websiteCountNew = await app.utils.getText(
       'div[data-testid=website-category-count]'
     )
     expect(websiteCountNew).toBe('0 categories enabled')
@@ -207,22 +171,13 @@ describe('Tests for Settings page', () => {
   })
 
   test('Modal Select All buttons work as expected', async () => {
-    await app.client
-      .$('button[data-testid=website-categories-edit-button]')
-      .click()
-      .pause(1000)
+    await app.utils.click('button[data-testid=website-categories-edit-button]')
 
-    await app.client
-      .$(`button=${En['Settings.Websites.Categories.Selection.All']}`)
-      .click()
-      .pause(1000)
+    await app.utils.click(`button=${En['Settings.Websites.Categories.Selection.All']}`)
 
-    await app.client
-      .$(`button=${En['Settings.Websites.Categories.Selection.Done']}`)
-      .click()
-      .pause(1000)
+    await app.utils.click(`button=${En['Settings.Websites.Categories.Selection.Done']}`)
 
-    const websiteCountNew = await app.client.getText(
+    const websiteCountNew = await app.utils.getText(
       'div[data-testid=website-category-count]'
     )
     expect(websiteCountNew).toBe('30 categories enabled')
@@ -233,35 +188,17 @@ describe('Tests for Settings page', () => {
   test('Individual categories can be enabled or disabled', async () => {
     await app.client.waitUntilWindowLoaded()
 
-    await app.client
-      .$('button[data-testid=website-categories-edit-button]')
-      .click()
-      .pause(1000)
+    await app.utils.click('button[data-testid=website-categories-edit-button]')
 
     // Simulate unchecking of checkboxes by clicking on them
-    await app.client
-      .$('input[data-testid=category-checkbox-ANON]')
-      .click()
-      .pause(1000)
-    await app.client
-      .$('input[data-testid=category-checkbox-CTRL]')
-      .click()
-      .pause(1000)
-    await app.client
-      .$('input[data-testid=category-checkbox-GAME]')
-      .click()
-      .pause(1000)
-    await app.client
-      .$('input[data-testid=category-checkbox-LGBT]')
-      .click()
-      .pause(1000)
+    await app.utils.click('input[data-testid=category-checkbox-ANON]')
+    await app.utils.click('input[data-testid=category-checkbox-CTRL]')
+    await app.utils.click('input[data-testid=category-checkbox-GAME]')
+    await app.utils.click('input[data-testid=category-checkbox-LGBT]')
 
-    await app.client
-      .$(`button=${En['Settings.Websites.Categories.Selection.Done']}`)
-      .click()
-      .pause(1000)
+    await app.utils.click(`button=${En['Settings.Websites.Categories.Selection.Done']}`)
 
-    const websiteCountNew = await app.client.getText(
+    const websiteCountNew = await app.utils.getText(
       'div[data-testid=website-category-count]'
     )
     expect(websiteCountNew).toBe('26 categories enabled')
@@ -269,17 +206,8 @@ describe('Tests for Settings page', () => {
     await screenshotApp(app, 'settings-some-website-categories-selected')
 
     // Bring back to default settings (all website categories selected)
-    await app.client
-      .$('button[data-testid=website-categories-edit-button]')
-      .click()
-      .pause(1000)
-    await app.client
-      .$(`button=${En['Settings.Websites.Categories.Selection.All']}`)
-      .click()
-      .pause(1000)
-    await app.client
-      .$(`button=${En['Settings.Websites.Categories.Selection.Done']}`)
-      .click()
-      .pause(1000)
+    await app.utils.click('button[data-testid=website-categories-edit-button]')
+    await app.utils.click(`button=${En['Settings.Websites.Categories.Selection.All']}`)
+    await app.utils.click(`button=${En['Settings.Websites.Categories.Selection.Done']}`)
   })
 })

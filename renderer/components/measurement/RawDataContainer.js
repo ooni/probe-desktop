@@ -124,7 +124,7 @@ const RawDataContainer = ({ rawData, isOpen, onClose }) => {
         </StickyBox>
         <Box width={1} data-testid='data-json-viewer'>
           <StyledReactJsonContainer>
-            <JsonViewer src={rawData} />
+            {rawData && <JsonViewer src={rawData} />}
           </StyledReactJsonContainer>
         </Box>
       </Flex>

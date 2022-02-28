@@ -16,9 +16,9 @@ describe('Dashboard tests', () => {
   })
 
   test('Run button is displayed on Dashboard', async () => {
-    const runButtonText = await app.client
-      .$('button[data-testid=button-dashboard-run]')
-      .getText()
+    const runButtonText = await app.utils.getText(
+      'button[data-testid=button-dashboard-run]'
+    )
 
     expect(runButtonText).toMatch('Run')
   })
@@ -54,17 +54,17 @@ describe('Dashboard tests', () => {
 
     testDetails.forEach((itr) => {
       test(`${itr.id} test card is visible`, async () => {
-        const isCardVisible = await app.client.isVisible(
+        const isCardVisible = await app.utils.isDisplayed(
           `div[data-testid=run-card-${itr.id}]`
         )
         expect(isCardVisible).toBe(true)
 
-        const cardName = await app.client.getText(
+        const cardName = await app.utils.getText(
           `div[data-testid=run-card-${itr.id}] div[data-testid=run-card-name-${itr.id}]`
         )
         expect(cardName).toBe(itr.name)
 
-        const cardDesc = await app.client.getText(
+        const cardDesc = await app.utils.getText(
           `div[data-testid=run-card-${itr.id}] div[data-testid=run-card-description-${itr.id}]`
         )
         expect(cardDesc).toBe(itr.desc)
@@ -73,22 +73,21 @@ describe('Dashboard tests', () => {
   })
 
   test('Clicking on "Test Results" tab loads the Test Results Page', async () => {
-    await app.client
-      .$('div[data-testid=sidebar-item-test-results]')
-      .click()
-      .pause(500)
-
+    await app.utils.click(
+      'div[data-testid=sidebar-item-test-results]'
+    )
+      
     await app.client.waitUntilWindowLoaded()
 
-    const labelTests = await app.client
-      .$('div[data-testid=overview-tests]')
-      .getText()
-    const labelNetworks = await app.client
-      .$('div[data-testid=overview-networks]')
-      .getText()
-    const labelDataUsage = await app.client
-      .$('div[data-testid=overview-data-usage-label]')
-      .getText()
+    const labelTests = await app.utils.getText(
+      'div[data-testid=overview-tests]')
+
+    const labelNetworks = await app.utils.getText(
+      'div[data-testid=overview-networks]')
+
+    const labelDataUsage = await app.utils.getText(
+      'div[data-testid=overview-data-usage-label]')
+
 
     expect(labelTests).toContain('Tests')
     expect(labelNetworks).toContain('Networks')
@@ -98,16 +97,14 @@ describe('Dashboard tests', () => {
   })
 
   test('Clicking on "Settings" tab loads the Settings page', async () => {
-    await app.client
-      .$('div[data-testid=sidebar-item-settings]')
-      .click()
-      .pause(500)
+    await app.utils
+      .click('div[data-testid=sidebar-item-settings]')
     
     await app.client.waitUntilWindowLoaded()
 
     // Checking for the "Settings" heading
     // Rest of the assertions are in settings.e2e.js
-    const labelTestOptionsVisible = await app.client.isVisible('h3=Settings')
+    const labelTestOptionsVisible = await app.utils.isDisplayed('h3=Settings')
     expect(labelTestOptionsVisible).toBe(true)
 
     // screenshotApp(app, 'dashboard-settings-page')

@@ -18,9 +18,7 @@ describe('Localized version is displayed for supported languages', () => {
   // Tests
   test('Check if the app shows content in French', async () => {
     // 'Run' button label
-    const runButtonText = await app.client
-      .$('button[data-testid=button-dashboard-run]')
-      .getText()
+    const runButtonText = await app.utils.getText('button[data-testid=button-dashboard-run]')
 
     expect(runButtonText).toMatch('Lancer')
   })
@@ -43,9 +41,7 @@ describe('Unsupported language (Malayalam) falls back to English', () => {
 
   test('Run button label in English', async () => {
     // 'Run' button label
-    const runButtonText = await app.client
-      .$('button[data-testid=button-dashboard-run]')
-      .getText()
-    expect(runButtonText).toMatch('Run')
+    const runButtonText = await app.utils.getText('button[data-testid=button-dashboard-run]')
+    expect(runButtonText).toBe('Run')
   })
 })

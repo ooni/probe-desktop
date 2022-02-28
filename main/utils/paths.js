@@ -14,7 +14,7 @@ const getResourcesDirectory = () => {
     return rsrcPath
   }
 
-  const appPath = (electron.app || electron.remote.app).getPath('exe')
+  const appPath = electron.app.getPath('exe')
 
   if (is.macos) {
     return path.join(appPath, '../../Resources')
@@ -66,7 +66,7 @@ const getTorBinaryPath = () => {
 }
 
 const getHomeDir = () => {
-  const userDataPath = (electron.app || electron.remote.app).getPath('userData')
+  const userDataPath = electron.app.getPath('userData')
   if (is.development || process.env.NODE_ENV === 'test') {
     return path.join(getResourcesDirectory(), 'ooni_home')
   }

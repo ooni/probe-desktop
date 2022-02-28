@@ -14,7 +14,7 @@ const LastTest = ({ testGroupName, ...rest }) => {
   const onLastResultResponse = useCallback((event, data) => {
     const { lastResult } = data
     if (lastResult) {
-      const diffInSeconds = (new Date() - new Date(lastResult)) / 1000
+      const diffInSeconds = (new Date(lastResult) - new Date()) / 1000
       setLastTestTime(diffInSeconds)
     }
   }, [])
@@ -32,7 +32,7 @@ const LastTest = ({ testGroupName, ...rest }) => {
     <Box {...rest}>
       <Text as='span' mr={1}>
         <FormattedMessage id='Dashboard.Overview.LatestTest' />
-      </Text> <FormattedRelativeTime value={-lastTestTime} updateIntervalInSeconds={600} />
+      </Text> <FormattedRelativeTime value={lastTestTime} updateIntervalInSeconds={600} />
     </Box>
   )
 }

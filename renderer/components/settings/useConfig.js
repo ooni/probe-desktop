@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { useState, useContext, useEffect, useCallback } from 'react'
-import { remote, ipcRenderer } from 'electron'
+import { ipcRenderer } from 'electron'
 
 export const ConfigContext = React.createContext([{}, () => {}])
 
@@ -10,8 +10,7 @@ export const ConfigProvider = (props) => {
 
   useEffect(() => {
     const loadConfigFromFile =  async () => {
-      const { getConfig } = remote.require('./utils/config')
-      const config = await getConfig()
+      const config = await ipcRenderer.invoke('config.get')
       setState(config)
       setLoading(false)
     }
@@ -53,9 +52,7 @@ export const useConfig = (key = null) => {
 
   const setConfigValue = useCallback((value) => {
     setPending(true)
-    const { setConfig } = remote.require('./utils/config')
-
-    setConfig(key, currentValue, value)
+    ipcRenderer.invoke('config.set', key, currentValue, value)
       .then((result) => {
         setConfigContext(result)
       })
