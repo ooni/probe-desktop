@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { useMemo } from 'react'
+import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
 import {
@@ -46,7 +46,7 @@ Section.propTypes = {
 
 const Settings = () => {
   const [maxRuntimeEnabled] = useConfig('nettests.websites_enable_max_runtime')
-  const [/* maxRuntime */, setMaxRuntime] = useConfig('nettests.websites_max_runtime')
+  const [maxRuntime, setMaxRuntime] = useConfig('nettests.websites_max_runtime')
 
   // This keeps the values of websites_enable_max_runtime(bool) and websites_max_runtime (number)
   // in sync. Withtout this, `probe-cli` continues to use the number in `websites_max_runtime`
@@ -54,6 +54,8 @@ const Settings = () => {
   const syncMaxRuntimeWidgets = (newValue) => {
     if (newValue === false) {
       setMaxRuntime(0)
+    } else {
+      setMaxRuntime(90)
     }
   }
 
@@ -81,6 +83,7 @@ const Settings = () => {
                 onChange={syncMaxRuntimeWidgets}
               />
               <NumberOption
+                key={maxRuntime} /* Used to re-render widget when value changes in `syncMaxRuntimeWidgets()` */
                 label={<FormattedMessage id='Settings.Websites.MaxRuntime' />}
                 optionKey='nettests.websites_max_runtime'
                 min={60}
