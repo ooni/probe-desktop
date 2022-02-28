@@ -82,14 +82,14 @@ const Settings = () => {
                 optionKey='nettests.websites_enable_max_runtime'
                 onChange={syncMaxRuntimeWidgets}
               />
-              <NumberOption
+              {maxRuntimeEnabled && <NumberOption
                 key={maxRuntime} /* Used to re-render widget when value changes in `syncMaxRuntimeWidgets()` */
                 label={<FormattedMessage id='Settings.Websites.MaxRuntime' />}
                 optionKey='nettests.websites_max_runtime'
                 min={60}
                 max={999}
                 disabled={!maxRuntimeEnabled}
-              />
+              />}
             </Section>
             {/* Autorun */}
             <Section title={<FormattedMessage id='Settings.AutomatedTesting.Label' />}>
