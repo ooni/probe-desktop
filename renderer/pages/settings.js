@@ -46,18 +46,6 @@ Section.propTypes = {
 
 const Settings = () => {
   const [maxRuntimeEnabled] = useConfig('nettests.websites_enable_max_runtime')
-  const [maxRuntime, setMaxRuntime] = useConfig('nettests.websites_max_runtime')
-
-  // This keeps the values of websites_enable_max_runtime(bool) and websites_max_runtime (number)
-  // in sync. Withtout this, `probe-cli` continues to use the number in `websites_max_runtime`
-  // even if `websites_enable_max_runtime` is false (unchecked).
-  const syncMaxRuntimeWidgets = (newValue) => {
-    if (newValue === false) {
-      setMaxRuntime(0)
-    } else {
-      setMaxRuntime(90)
-    }
-  }
 
   return (
     <Layout>
@@ -80,10 +68,8 @@ const Settings = () => {
               <BooleanOption
                 label={<FormattedMessage id='Settings.Websites.MaxRuntimeEnabled' />}
                 optionKey='nettests.websites_enable_max_runtime'
-                onChange={syncMaxRuntimeWidgets}
               />
               {maxRuntimeEnabled && <NumberOption
-                key={maxRuntime} /* Used to re-render widget when value changes in `syncMaxRuntimeWidgets()` */
                 label={<FormattedMessage id='Settings.Websites.MaxRuntime' />}
                 optionKey='nettests.websites_max_runtime'
                 min={60}
