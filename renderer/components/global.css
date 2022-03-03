@@ -1,0 +1,62 @@
+@font-face {
+  font-family: "Fira Sans";
+  src: url('/static/fonts/FiraSans-Light.woff') format('woff');
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url('/static/fonts/FiraSans-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url('/static/fonts/FiraSans-Italic.woff') format('woff');
+  font-style: italic;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url('/static/fonts/FiraSans-SemiBold.woff') format('woff');
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url('/static/fonts/FiraSans-Bold.woff') format('woff');
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Source Code Pro";
+  src: url('/static/fonts/SourceCodePro-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Source Code Pro";
+  src: url('/static/fonts/SourceCodePro-Bold.woff') format('woff');
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Charter";
+  src: url('/static/fonts/Charter-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Charter";
+  src: url('/static/fonts/Charter-Bold.woff') format('woff');
+  font-style: normal;
+  font-weight: 700;
+}

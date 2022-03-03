@@ -4,9 +4,6 @@ import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl'
 import { getMessages, getLocale } from '../components/langUtils'
 import { useConfig } from '../components/settings/useConfig'
 import moment from 'moment'
-// Polyfill Intl.DisplayNames to display language names in the selected language
-import '@formatjs/intl-displaynames/polyfill'
-require('@formatjs/intl-displaynames/locale-data/en')
 
 // This is optional but highly recommended
 // since it prevents memory leak
@@ -44,14 +41,11 @@ const IntlProvider = ({ children }) => {
 
   const [activeLang, activateLang] = useState(languageConfig || systemLocale || 'en')
 
-  require(`@formatjs/intl-displaynames/locale-data/${activeLang}`)
-
   const messages = getMessages(activeLang)
 
   const intl = createIntl({ locale: activeLang, messages }, cache)
 
   const changeLocale = (locale) => {
-    require(`@formatjs/intl-displaynames/locale-data/${locale}`)
     activateLang(locale)
     // HACK: We strip `zh-TW` to `zh` which is not recognized by momentjs
     moment.locale(locale === 'zh' ? 'zh-TW' : locale)
