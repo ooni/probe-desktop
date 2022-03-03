@@ -262,8 +262,15 @@ const ipcBindingsForMain = (ipcMain) => {
   })
 
   ipcMain.handle('config.set', async (event, key, currentValue, value) => {
-    // const config = await getConfig()
-    // const currentValue = key.split('.').reduce((o,i) => o[i], config)
+    // This keeps the values of websites_enable_max_runtime(bool) and websites_max_runtime (number)
+    // in sync. Withtout this, `probe-cli` continues to use the number in `websites_max_runtime`
+    // even if `websites_enable_max_runtime` is false (unchecked).
+    if (key === 'nettests.websites_enable_max_runtime') {
+      const maxRuntimeCurrentValue = await getConfig('nettests.websites_max_runtime')
+      const maxRuntimeNewValue = value === true ? 90 : 0
+      await setConfig('nettests.websites_max_runtime', maxRuntimeCurrentValue, maxRuntimeNewValue)
+    }
+
     const newConfig = await setConfig(key, currentValue, value)
     return newConfig
   })
