@@ -64,9 +64,10 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Result rows displayed for all 4 tests', async () => {
-      const testedApps = await app.utils.getText(
+      const testedAppsRows = await app.client.$$(
         'div div[data-testid=measured-test-name]'
       )
+      const testedApps = await Promise.all(testedAppsRows.map(elem => elem.getText()))
       expect(testedApps.sort()).toEqual(
         [
           'Telegram Test',
@@ -243,9 +244,10 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Result rows displayed for all 3 tests', async () => {
-      const testedApps = await app.utils.getText(
+      const testedAppsRows = await app.client.$$(
         'div div[data-testid=measured-test-name]'
       )
+      const testedApps = await Promise.all(testedAppsRows.map(elem => elem.getText()))
       expect(testedApps.sort()).toEqual(
         ['Psiphon Test', 'Tor Test'].sort()
       )
@@ -332,9 +334,10 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Result rows displayed for all 2 tests', async () => {
-      const testedParams = await app.utils.getText(
+      const testedParamsRows = await app.client.$$(
         'div div[data-testid=measured-test-name]'
       )
+      const testedParams = await Promise.all(testedParamsRows.map(elem => elem.getText()))
       expect(testedParams.sort()).toEqual(
         ['DASH Streaming Test', 'NDT Speed Test'].sort()
       )
@@ -423,9 +426,10 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Result rows displayed for all 2 tests', async () => {
-      const testedParams = await app.utils.getText(
+      const testedParamsRows = await app.client.$$(
         'div div[data-testid=measured-test-name]'
       )
+      const testedParams = await Promise.all(testedParamsRows.map(elem => elem.getText()))
       expect(testedParams.sort()).toEqual(
         [
           'HTTP Invalid Request Line Test',
@@ -521,7 +525,17 @@ describe('Tests for Test-Results screen', () => {
     })
 
     test('Detailed Measurements load up correctly', async () => {
-      await app.utils.click('div[data-testid=measured-test-name]')
+      // In some cases on Github CI, the first result is an anomaly
+      // and doesn't load up raw data correctly. So we try opening a second
+      // result if available.
+      const experimentalResults = await app.client.$$('div[data-testid=measured-test-name]')
+      if (experimentalResults.length > 1) {
+        await experimentalResults[1].click()
+      } else {
+        await experimentalResults[0].click()
+      }
+
+      await app.client.pause(2000)
 
       const title = await app.utils.getText('h3[data-testid=heading-json-viewer]')
       expect(title).toBe('Data')

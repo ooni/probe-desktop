@@ -155,7 +155,7 @@ describe('All network tests run successfully', () => {
     await app.client.waitUntil(
       async () =>
         (await app.utils.isDisplayed(
-          'div[data-testid=running-animation-circumvention]'
+          'div[data-testid=running-animation-im]'
         )) === false,
       { timeout: 300000 }
     )
@@ -191,7 +191,7 @@ describe('All network tests run successfully', () => {
     await app.client.waitUntil(
       async () =>
         (await app.utils.isDisplayed(
-          'div[data-testid=running-animation-circumvention]'
+          'div[data-testid=running-animation-middlebox]'
         )) === false,
       { timeout: 300000 }
     )
