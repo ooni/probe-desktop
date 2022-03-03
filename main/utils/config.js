@@ -1,7 +1,6 @@
 const path = require('path')
 const fs = require('fs-extra')
 const log = require('electron-log')
-const Sentry = require('./sentry')
 
 const { getHomeDir, getAutorunHomeDir } = require('./paths')
 
@@ -83,6 +82,7 @@ const initConfigFile = async (options = {}) => {
   await fs.writeJson(opts.configFilePath, config, {spaces: '  '})
 
   // Now that a config file is available, let's try to initialize Sentry again
+  const Sentry = require('./sentry')
   Sentry()
 }
 
