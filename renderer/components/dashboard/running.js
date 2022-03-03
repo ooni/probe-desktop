@@ -12,7 +12,7 @@ import {
 } from 'ooni-components'
 import { Line as LineProgress } from 'rc-progress'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { MdClear, MdKeyboardArrowUp, MdKeyboardArrowDown} from 'react-icons/md'
+import { MdClear } from 'react-icons/md'
 import Lottie from 'react-lottie-player'
 import moment from 'moment'
 const debug = require('debug')('ooniprobe-desktop.renderer.components.dashboard.running')
@@ -20,7 +20,7 @@ const debug = require('debug')('ooniprobe-desktop.renderer.components.dashboard.
 import { testList, cliTestKeysToGroups, testGroups } from '../nettests'
 import { StripedProgress } from './StripedProgress'
 import StopTestModal from '../ConfirmationModal'
-import NoRTLFlip from '../NoRTLFlip'
+import { Logs } from './Logs'
 
 const StyledRunningTest = styled(Flex)`
   flex-grow: 1;
@@ -31,90 +31,6 @@ const StyledRunningTest = styled(Flex)`
     transform: scaleX(${props => props.isRTL ? -1 : 1});
   }
 `
-
-const CodeLogContainer = styled(NoRTLFlip)`
-  margin: 0 auto;
-  width: 100%;
-  height: 300px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  overflow-wrap: break-word;
-  background-color: black;
-`
-
-const Lines = styled(Text)`
-  padding-block-start: 20px;
-  padding-inline-start: 20px;
-  color: white;
-  font-family: monospace;
-  white-space: pre;
-  text-align: start;
-`
-
-const ToggleButtonContainer = styled(Flex)`
-  align-items: center;
-  justify-content: center;
-  color: ${props => props.theme.colors.white};
-  cursor: pointer;
-  &:hover {
-    color: ${props => props.theme.colors.gray4};
-  }
-`
-
-export const ToggleLogButton = ({open, onClick}) => {
-  if (open) {
-    return <ToggleButtonContainer onClick={onClick} data-testid='toggle-log-button'>
-      <Box>
-        <FormattedMessage id='Dashboard.Running.CloseLog' />
-      </Box>
-      <Box>
-        <MdKeyboardArrowDown size={30} />
-      </Box>
-    </ToggleButtonContainer>
-  }
-  return <ToggleButtonContainer onClick={onClick} data-testid='toggle-log-button'>
-    <Box>
-      <FormattedMessage id='Dashboard.Running.ShowLog' />
-    </Box>
-    <Box>
-      <MdKeyboardArrowUp size={30} />
-    </Box>
-  </ToggleButtonContainer>
-}
-
-ToggleLogButton.propTypes = {
-  open: PropTypes.bool,
-  onClick: PropTypes.func
-}
-
-const CodeLog = ({lines}) => {
-  return (
-    <CodeLogContainer>
-      <Lines>{lines.join('\n')}</Lines>
-    </CodeLogContainer>
-  )
-}
-
-CodeLog.propTypes = {
-  lines: PropTypes.array,
-}
-
-const LogContainer = styled(Box)`
-  margin-top: auto;
-`
-
-export const Log = ({lines, onToggleLog, open}) => (
-  <LogContainer>
-    <ToggleLogButton onClick={onToggleLog} open={open} />
-    {open && <CodeLog lines={lines} />}
-  </LogContainer>
-)
-
-Log.propTypes = {
-  lines: PropTypes.array,
-  onToggleLog: PropTypes.func,
-  open: PropTypes.bool
-}
 
 const CloseButtonContainer = styled.div`
   color: white;
@@ -395,7 +311,7 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
           </Flex>
           {error && <p>{error}</p>}
         </StyledRunningTest>
-        <Log lines={logLines} onToggleLog={onToggleLog} open={logOpen} />
+        <Logs lines={logLines} onToggleLog={onToggleLog} open={logOpen} />
       </ContentContainer>
     </WindowContainer>
   )
