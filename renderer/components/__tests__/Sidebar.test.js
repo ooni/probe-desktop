@@ -3,7 +3,7 @@
  */
 
 import React from 'react'
-import { screen, render, cleanup, fireEvent } from '../../../test/unit/utils'
+import { screen, render, fireEvent } from '../../../test/unit/utils'
 
 import Sidebar from '../Sidebar'
 import { version } from '../../../package.json'
