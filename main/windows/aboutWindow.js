@@ -1,7 +1,5 @@
-/* global require, module */
-
-const windowURL = require('./windowURL')
 const electron = require('electron')
+const windowURL = require('./windowURL')
 
 let window = null
 
@@ -14,7 +12,9 @@ const aboutWindow = () => {
     show: false,
     backgroundColor: '#fff',
     webPreferences: {
-      nodeIntegration: true
+      contextIsolation: false,
+      nodeIntegration: true,
+      enableRemoteModule: true,
     }
   })
 
