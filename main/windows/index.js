@@ -11,7 +11,7 @@ const mainWindow = (url = 'dashboard') => {
   let windowHeight = 640
 
   if (isWinOS) {
-    windowHeight -= 12
+    windowHeight += 50
   }
 
   const win = new electron.BrowserWindow({
