@@ -10,7 +10,7 @@ const formatSpeed = (speed) => {
   }
   if (speed < 1000) {
     return {
-      value: speed,
+      value: speed.toFixed(1),
       unit: 'kbps'
     }
   }
