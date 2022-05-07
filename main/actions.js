@@ -1,10 +1,13 @@
 const { Ooniprobe } = require('./utils/ooni/ooniprobe')
+const { getAutorunHomeDir } = require('./utils/paths')
+const fs = require('fs-extra')
 const log = require('electron-log')
 const Sentry = require('@sentry/electron')
 
 const hardReset = () => {
   const ooni = new Ooniprobe()
   log.info('hardReset: performing a hard reset of the installation')
+  fs.removeSync(getAutorunHomeDir())
   return ooni.call(['reset', '--force'])
 }
 
