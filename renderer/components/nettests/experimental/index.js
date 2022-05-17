@@ -13,7 +13,7 @@ const longDescription = <div>
   <FormattedMarkdownMessage
     id={'Dashboard.Experimental.Overview.Paragraph'}
     values={{
-      experimental_test_list: '* **stun-reachability**\n* **dnscheck**\n* **torsf**\n'
+      experimental_test_list: '* **[STUN Reachability](https://github.com/ooni/spec/blob/master/nettests/ts-025-stun-reachability.md)**\n* **[DNS Check](https://github.com/ooni/spec/blob/master/nettests/ts-028-dnscheck.md)**\n* **[Tor Snowflake](https://ooni.org/nettest/tor-snowflake/)**\n'
     }}
   />
 </div>
