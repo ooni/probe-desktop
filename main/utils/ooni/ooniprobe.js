@@ -45,7 +45,7 @@ class Ooniprobe extends EventEmitter {
     this.ooni.stdin.end()
   }
 
-  call(argv) {
+  call(argv, env) {
     const self = this
     if (self.ooni !== null) {
       throw Error('can only use call once per instance. Create a new Oooniprobe object!')
@@ -61,7 +61,8 @@ class Ooniprobe extends EventEmitter {
               'OONI_HOME': getHomeDir(),
               // See https://github.com/ooni/probe-cli/pull/111 for documentation
               // concerning the design of killing ooniprobe portably
-              'OONI_STDIN_EOF_IMPLIES_SIGTERM': 'true'
+              'OONI_STDIN_EOF_IMPLIES_SIGTERM': 'true',
+              ...env,
             }
           }
         if (is.windows) {
