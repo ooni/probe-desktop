@@ -1,11 +1,17 @@
 const { Ooniprobe } = require('./utils/ooni/ooniprobe')
+const { getAutorunHomeDir } = require('./utils/paths')
 const log = require('electron-log')
 const Sentry = require('@sentry/electron')
 
 const hardReset = () => {
-  const ooni = new Ooniprobe()
+  const ooniHome = new Ooniprobe()
+  const ooniAutorunHome = new Ooniprobe()
   log.info('hardReset: performing a hard reset of the installation')
-  return ooni.call(['reset', '--force'])
+
+  return Promise.all([
+    ooniHome.call(['reset', '--force']), 
+    ooniAutorunHome.call(['reset', '--force'], {'OONI_HOME': getAutorunHomeDir()})
+  ])
 }
 
 const listMeasurements = (resultID) => {
