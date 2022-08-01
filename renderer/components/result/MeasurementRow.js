@@ -10,7 +10,7 @@ import {
 import { FormattedMessage, useIntl } from 'react-intl'
 import {
   Tick
-} from 'ooni-components/dist/icons'
+} from 'ooni-components/icons'
 
 import { tests } from '../nettests'
 import styled, { css } from 'styled-components'
@@ -24,7 +24,7 @@ import { parseTestKeys } from '../utils'
 // XXX this should be moved to the design-system
 import { MdPriorityHigh, MdCloudOff } from 'react-icons/md'
 
-import * as OOIcons from 'ooni-components/dist/icons'
+import * as OOIcons from 'ooni-components/icons'
 
 const BorderedFlex = styled(Flex)`
   padding-top: 20px;

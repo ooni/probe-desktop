@@ -1,7 +1,7 @@
 import React from 'react'
 import humanize from 'humanize'
 import { Line as LineProgress } from 'rc-progress'
-import OONIHorizontalMonochromeInverted from 'ooni-components/components/svgs/logos/OONI-HorizontalMonochromeInverted.svg'
+import OONIHorizontalMonochromeInverted from 'ooni-components/svgs/logos/OONI-HorizontalMonochromeInverted.svg'
 import {
   Container,
   Button,

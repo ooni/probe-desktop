@@ -8,7 +8,7 @@ import {
   Box
 } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
-import OONILogo from 'ooni-components/components/svgs/logos/Probe-HorizontalMonochrome.svg'
+import OONILogo from 'ooni-components/svgs/logos/Probe-HorizontalMonochrome.svg'
 import { MdWeb, MdHistory } from 'react-icons/md'
 import { FaCog } from 'react-icons/fa'
 

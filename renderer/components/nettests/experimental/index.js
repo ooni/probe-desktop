@@ -1,8 +1,8 @@
 import React from 'react'
 import { theme } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
-import { NettestGroupExperimental } from 'ooni-components/dist/icons'
-import animation from 'ooni-components/components/animations/RunningExperimental.json'
+import { NettestGroupExperimental } from 'ooni-components/icons'
+import animation from 'ooni-components/animations/RunningExperimental.json'
 
 import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
 

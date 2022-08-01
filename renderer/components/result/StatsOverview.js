@@ -7,7 +7,7 @@ import StatBox from '../to-migrate/StatBox'
 
 import {
   NettestGroupMiddleBoxes,
-} from 'ooni-components/dist/icons'
+} from 'ooni-components/icons'
 
 import {
   Flex,

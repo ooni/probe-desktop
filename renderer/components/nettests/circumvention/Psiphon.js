@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { Flex, Box, Text } from 'ooni-components'
-import { NettestPsiphon } from 'ooni-components/dist/icons'
+import { NettestPsiphon } from 'ooni-components/icons'
 
 import colorMap from '../../colorMap'
 import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
