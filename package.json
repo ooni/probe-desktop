@@ -154,10 +154,10 @@
     "@sentry/cli": "^1.61.0",
     "@sentry/integrations": "^6.0.4",
     "@sentry/node": "^5.12.1",
-    "@storybook/addon-actions": "5.2.1",
-    "@storybook/addon-links": "5.2.1",
-    "@storybook/addon-storysource": "5.2.1",
-    "@storybook/react": "5.2.1",
+    "@storybook/addon-actions": "5.3.18",
+    "@storybook/addon-links": "5.3.18",
+    "@storybook/addon-storysource": "5.3.18",
+    "@storybook/react": "5.3.18",
     "@testing-library/dom": "^7.31.2",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^11.2.7",
@@ -187,7 +187,7 @@
     "jest-styled-components": "^7.0.4",
     "moment-range": "^4.0.2",
     "next": "^10.0.3",
-    "ooni-components": "^0.4.7",
+    "ooni-components": "0.4.8",
     "os-locale": "^5.0.0",
     "prop-types": "15.7.2",
     "raven-js": "^3.27.2",
@@ -230,6 +230,9 @@
     "moment": "^2.24.0",
     "semver": "^7.3.5",
     "split2": "^2.2.0"
+  },
+  "resolutions": {
+    "shell-quote": "1.7.3"
   },
   "optionalDependencies": {
     "fsevents": "2.3.2"
