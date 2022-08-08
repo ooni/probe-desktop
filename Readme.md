@@ -118,8 +118,8 @@ You will need a copy of the code signing key for windows that ends with `.p12`.
 
 To generate a signed build you will have to set the environment variables:
 ```
-CSC_LINK=/path/to/key.p12
-CSC_KEY_PASSWORD=KEY_PASSWORD
+WIN_CSC_LINK=/path/to/key.p12
+WIN_CSC_KEY_PASSWORD=KEY_PASSWORD
 ```
 
 You will then be able to run:
