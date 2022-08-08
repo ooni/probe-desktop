@@ -47,13 +47,21 @@ Then you can run:
 yarn install
 ```
 
-You will also need to have copied a compiled binary of `probe-cli` into the
-directory for the platform you plan to do development on.
+You will also need to have copied a compiled binary of `probe-cli` and `tor`
+into the directory for the platform you plan to do development on.
 
-You can download them by running:
+To verify the downloaded tor binaries you should import the PGP key of the tor
+developers as follows (it can be verified from:
+https://support.torproject.org/tbb/how-to-verify-signature/):
+```
+gpg --recv-keys EF6E286DDA85EA2A4BA7DE684E2C6E8793298290
+```
+
+You can then download the assets by running:
 
 ```bash
-yarn run probe-cli
+yarn run download:probe-cli
+yarn run download:tor
 ```
 
 ## Run app in development mode

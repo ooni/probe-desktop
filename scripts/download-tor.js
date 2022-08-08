@@ -65,6 +65,7 @@ const download = () => {
       execSync(`gpg --quiet --verify ${dstDir}/${sig} ${dstDir}/${pkgName}`)
     } catch (e) {
       console.error(`Signature verification failure: ${e}`)
+      process.exit(1)
     }
     ensureDirSync(`${dstDir}/${platform}`)
     extractor(pkgName)
