@@ -9,7 +9,7 @@ const torBrowserVersion = '11.5.1'
 const torWinVersion = '0.4.7.8'
 const libEventVersion = '2.1.7'
 
-const baseURL = `https://dist.torproject.org/torbrowser/${torBrowserVersion}/`
+const baseURL = `https://archive.torproject.org/torbrowser/${torBrowserVersion}/`
 
 const appRoot = path.resolve(path.join(__dirname, '..'))
 const dstDir = path.join(appRoot, 'build', 'tor')

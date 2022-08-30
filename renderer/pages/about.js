@@ -17,7 +17,7 @@ import styled from 'styled-components'
 import Layout from '../components/Layout'
 import FormattedMarkdownMessage from '../components/FormattedMarkdownMessage'
 import formatSpeed from '../components/formatSpeed'
-import { version } from '../../package.json'
+import { version, probeVersion } from '../../package.json'
 
 const CodeWithWrap = styled.code`
   word-wrap: break-word;
@@ -129,6 +129,9 @@ class About extends React.Component {
           </Box>
           <Box mt={3}>
             <Text fontSize={14} color='white'>{version}</Text>
+          </Box>
+          <Box mt={3}>
+            <Text fontSize={14} color='white'>Probe CLI version: {probeVersion}</Text>
           </Box>
         </Flex>
         <Container>
