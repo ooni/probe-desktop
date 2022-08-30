@@ -5,7 +5,7 @@ const process = require('process')
 const { execSync } = require('child_process')
 const { existsSync, ensureDirSync } = require('fs-extra')
 
-const baseURL = 'https://dist.torproject.org/torbrowser/11.0.6/'
+const baseURL = 'https://archive.torproject.org/tor-package-archive/torbrowser/11.0.6/'
 
 const appRoot = path.resolve(path.join(__dirname, '..'))
 const dstDir = path.join(appRoot, 'build', 'tor')
