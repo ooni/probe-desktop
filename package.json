@@ -232,7 +232,9 @@
     "split2": "^2.2.0"
   },
   "resolutions": {
-    "shell-quote": "1.7.3"
+    "shell-quote": "1.7.3",
+    "immer": "9.0.6",
+    "minimist": "1.2.6"
   },
   "optionalDependencies": {
     "fsevents": "2.3.2"
