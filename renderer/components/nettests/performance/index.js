@@ -7,9 +7,9 @@ import {
 import { FormattedMessage } from 'react-intl'
 
 import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
-import { default as animation } from 'ooni-components/components/animations/RunningPerformance.json'
+import { default as animation } from 'ooni-components/animations/RunningPerformance.json'
 
-import { NettestGroupPerformance } from 'ooni-components/dist/icons'
+import { NettestGroupPerformance } from 'ooni-components/icons'
 
 const color = theme.colors.fuchsia6
 const name = <FormattedMessage id="Test.Performance.Fullname" />

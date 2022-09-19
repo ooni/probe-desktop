@@ -10,7 +10,7 @@ import {
   Button
 } from 'ooni-components'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
-import { Tick } from 'ooni-components/dist/icons'
+import { Tick } from 'ooni-components/icons'
 import { MdPriorityHigh } from 'react-icons/md'
 import styled from 'styled-components'
 

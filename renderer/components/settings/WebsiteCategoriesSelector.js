@@ -10,12 +10,11 @@ import {
   Container,
   Heading
 } from 'ooni-components'
-import * as CategoryIcons from 'ooni-components/dist/icons'
+import * as CategoryIcons from 'ooni-components/icons'
 import { MdClose } from 'react-icons/md'
 import styled from 'styled-components'
 import electron, { ipcRenderer } from 'electron'
 import { RemoveScroll } from 'react-remove-scroll'
-
 import { useConfig } from './useConfig'
 import { StyledCloseButton } from '../ConfirmationModal'
 
@@ -24,7 +23,8 @@ const FlexWithBottomBorder = styled(Flex)`
 `
 
 const CategoryEntry = ({ code, enabled, handleChange }) => {
-  const CategoryIcon = CategoryIcons.hasOwnProperty(`CategoryCode${code}`) ? (
+
+  const CategoryIcon = CategoryIcons[`CategoryCode${code}`] ? (
     CategoryIcons[`CategoryCode${code}`]
   ) : (
     CategoryIcons['Cross']

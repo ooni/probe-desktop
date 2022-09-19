@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Flex, Box, Text } from 'ooni-components'
-import { IconButton } from 'ooni-components/dist/atoms/IconButton'
+import { IconButton } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 import { MdKeyboardArrowUp, MdKeyboardArrowDown, MdVerticalAlignBottom } from 'react-icons/md'
 
