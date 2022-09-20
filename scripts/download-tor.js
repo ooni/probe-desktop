@@ -5,7 +5,11 @@ const process = require('process')
 const { execSync } = require('child_process')
 const { existsSync, ensureDirSync } = require('fs-extra')
 
-const baseURL = 'https://archive.torproject.org/tor-package-archive/torbrowser/11.0.6/'
+const torBrowserVersion = '11.5.1'
+const torWinVersion = '0.4.7.8'
+const libEventVersion = '2.1.7'
+
+const baseURL = `https://archive.torproject.org/tor-package-archive/torbrowser/${torBrowserVersion}`
 
 const appRoot = path.resolve(path.join(__dirname, '..'))
 const dstDir = path.join(appRoot, 'build', 'tor')
@@ -20,17 +24,17 @@ const extractMac = (pkgName) => {
   const ret = execSync(`hdiutil attach "${dstDir}/${pkgName}"`)
   const mountPoint = ret.toString().split('\t')[2].trim()
   execSync(`cp "${mountPoint}/Tor Browser.app/Contents/MacOS/Tor/tor.real" ${dstDir}/darwin_amd64/tor`)
-  execSync(`cp "${mountPoint}/Tor Browser.app/Contents/MacOS/Tor/libevent-2.1.7.dylib" ${dstDir}/darwin_amd64/`)
+  execSync(`cp "${mountPoint}/Tor Browser.app/Contents/MacOS/Tor/libevent-${libEventVersion}.dylib" ${dstDir}/darwin_amd64/`)
   execSync(`hdiutil detach "${mountPoint}"`)
 }
 
 const platformMap = {
   'windows_amd64': {
-    'pkgName': 'tor-win64-0.4.6.9.zip',
+    'pkgName': `tor-win64-${torWinVersion}.zip`,
     'extractor': extractWin
   },
   'darwin_amd64': {
-    'pkgName': 'TorBrowser-11.0.6-osx64_en-US.dmg',
+    'pkgName': `TorBrowser-${torBrowserVersion}-osx64_en-US.dmg`,
     'extractor': extractMac
   }
 }
@@ -61,6 +65,7 @@ const download = () => {
       execSync(`gpg --quiet --verify ${dstDir}/${sig} ${dstDir}/${pkgName}`)
     } catch (e) {
       console.error(`Signature verification failure: ${e}`)
+      process.exit(1)
     }
     ensureDirSync(`${dstDir}/${platform}`)
     extractor(pkgName)
