@@ -75,7 +75,7 @@ yarn run start
 ## Update the translations
 
 - Save the strings from the canonical spreadsheet into `data/lang-en.csv`
-- Run `$ node scripts/update-translations.js`
+- Run `node scripts/update-translations.js`
 - Commit `data/lang-en.csv`, `lang/*.json` and `renderer/static/translations.js`
 into git
 
