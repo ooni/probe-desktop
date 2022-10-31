@@ -17,6 +17,8 @@ jobs:
       - uses: actions/checkout@v2
       - run: curl -fsSLO https://github.com/bassosimone.gpg
       - run: gpg --import bassosimone.gpg
+      # import they tor signing key
+      - run: gpg --recv-keys EF6E286DDA85EA2A4BA7DE684E2C6E8793298290
 
       - name: Setup Node.js
         uses: actions/setup-node@v1
