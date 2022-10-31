@@ -15,8 +15,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - run: curl -fsSLO https://github.com/bassosimone.gpg
-      - run: gpg --import bassosimone.gpg
+      # import they simone signing key
+      - run: curl -sSL https://github.com/bassosimone.gpg | gpg --import -
+      # import they tor signing key
+      - run: curl -sSL https://openpgpkey.torproject.org/.well-known/openpgpkey/torproject.org/hu/kounek7zrdx745qydx6p59t9mqjpuhdf | gpg --import -
 
       - name: Setup Node.js
         uses: actions/setup-node@v1
