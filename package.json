@@ -25,7 +25,7 @@
     "packonly:linux": "electron-builder --linux",
     "packonly:mac": "electron-builder --mac",
     "packonly:win": "electron-builder --win --x64",
-    "publish": "yarn run build:clean && electron-builder --mac --win -p always",
+    "publish": "yarn run build:clean && electron-builder --mac --win --linux -p always",
     "publish:mac": "yarn run build:clean && electron-builder --mac -p always",
     "publish:win": "yarn run build:clean && electron-builder --win -p always",
     "icon-gen": "icon-gen -i static/Icon-Color.svg -o build/icons -r --ico --icns",
