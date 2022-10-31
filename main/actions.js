@@ -9,7 +9,7 @@ const hardReset = () => {
   log.info('hardReset: performing a hard reset of the installation')
 
   return Promise.all([
-    ooniHome.call(['reset', '--force']), 
+    ooniHome.call(['reset', '--force']),
     ooniAutorunHome.call(['reset', '--force'], {'OONI_HOME': getAutorunHomeDir()})
   ])
 }
