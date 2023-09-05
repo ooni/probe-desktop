@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
-import { ipcRenderer } from 'electron'
 import styled from 'styled-components'
 import {
   Flex,
@@ -124,14 +123,14 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
   // on multiple channels for updates.
   // e.g `ooniprobe.running-test`, `ooniprobe.progress`, `ooniprobe.stopping'`
 
-  const onTestGroupStart = useCallback((_, testGroup) => {
+  const onTestGroupStart = useCallback((testGroup) => {
     setTestGroupName(testGroup)
     // Reset the test name to prevent showing a name from the previous group
     // `null` will render a generic 'Preparing tests...' label
     setRunningTestName(null)
   }, [])
 
-  const onTestGroupDone = useCallback((_, completedTestGroup) => {
+  const onTestGroupDone = useCallback((completedTestGroup) => {
     const logMessage = `Finished running ${completedTestGroup}`
     setLogLines(oldLogLines => [...oldLogLines, logMessage])
     setPercent(0)
@@ -142,12 +141,12 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
     router.push('/test-results')
   }, [router])
 
-  const onRunError = useCallback((_, error) => {
+  const onRunError = useCallback((error) => {
     const logMessage = error.toString()
     setLogLines(oldLogLines => [...oldLogLines, logMessage])
   }, [])
 
-  const onMessage = useCallback((event, data) => {
+  const onMessage = useCallback((data) => {
     switch (data.key) {
     case 'ooni.run.progress':
 
@@ -178,19 +177,28 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
 
   /* On Mount */
   useEffect(() => {
-    ipcRenderer.send('ooniprobe.run', { testGroupToRun, inputFile })
+    window.electron.ooniprobe.run(testGroupToRun, inputFile)
 
-    ipcRenderer.on('ooni', onMessage)
-    ipcRenderer.on('ooniprobe.running-test', onTestGroupStart)
-    ipcRenderer.on('ooniprobe.done', onTestGroupDone)
-    ipcRenderer.on('ooniprobe.completed', onRunCompleted)
-    ipcRenderer.on('ooniprobe.error', onRunError)
+    const removeOoniListener = window.electron.ooni(onMessage)
+    // ipcRenderer.on('ooni', onMessage)
+    const removeRunningTestListener = window.electron.ooniprobe.runningTest(onTestGroupStart)
+    // ipcRenderer.on('ooniprobe.running-test', onTestGroupStart)
+    const removeDoneListener = window.electron.ooniprobe.done(onTestGroupDone)
+    // ipcRenderer.on('ooniprobe.done', onTestGroupDone)
+    window.electron.ooniprobe.completed(onRunCompleted)
+    // ipcRenderer.on('ooniprobe.completed', onRunCompleted)
+    const removeErrorListener = window.electron.ooniprobe.error(onRunError)
+    // ipcRenderer.on('ooniprobe.error', onRunError)
 
     return () => {
-      ipcRenderer.removeListener('ooni', onMessage)
-      ipcRenderer.removeAllListeners('ooniprobe.running-test')
-      ipcRenderer.removeAllListeners('ooniprobe.done')
-      ipcRenderer.removeAllListeners('ooniprobe.error')
+      removeOoniListener()
+      // ipcRenderer.removeListener('ooni', onMessage)
+      removeRunningTestListener()
+      // ipcRenderer.removeAllListeners('ooniprobe.running-test')
+      removeDoneListener()
+      // ipcRenderer.removeAllListeners('ooniprobe.done')
+      removeErrorListener()
+      // ipcRenderer.removeAllListeners('ooniprobe.error')
     }
   }, []) /* eslint-disable-line react-hooks/exhaustive-deps */
   /* Do not add dependencies. This is componentDidMount */
@@ -202,7 +210,7 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
 
   const onKill = useCallback(() => {
     if (isStopping !== true) {
-      ipcRenderer.send('ooniprobe.stop')
+      window.electron.ooniprobe.stop()
       setIsStopping(true)
     }
   }, [isStopping, setIsStopping])

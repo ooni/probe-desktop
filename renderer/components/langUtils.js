@@ -1,4 +1,4 @@
-import osLocale from 'os-locale'
+// import osLocale from 'os-locale'
 
 const defaultLocale = 'en'
 
@@ -40,7 +40,7 @@ export const getLocale = () => {
   }
 
   // If found, use os-locale to detect user's system locale
-  navigatorLang = osLocale.sync() || navigatorLang
+  // navigatorLang = osLocale.sync() || navigatorLang
 
   return navigatorLang.split('-')[0].split('_')[0]
 }

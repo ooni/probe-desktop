@@ -2,12 +2,8 @@ import React, { useCallback, useEffect, useReducer } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import { Flex, Box, Button } from 'ooni-components'
-import { ipcRenderer } from 'electron'
 import { FormattedMessage } from 'react-intl'
 // import debounce from 'lodash.debounce'
-
-const inputFileRequest = 'fs.write.request'
-const inputFileResponse = 'fs.write.response'
 
 import URL from './URL'
 import AddUrlButton from './AddUrlButton'
@@ -49,13 +45,14 @@ const UrlList = ({ incomingList = [] }) => {
 
   const runTest = useCallback(() => {
     // generate file
-    ipcRenderer.send(inputFileRequest, testList.map(x => x.url).join('\n'))
+    const testListString = testList.map(x => x.url).join('\n')
+    window.electron.fs.write.request(testListString)
     // send file to ooniprobe run websites --input-file <file-name>
   }, [testList])
 
   useEffect(() => {
     // TODO: on(inputFileError)
-    ipcRenderer.on(inputFileResponse, (event, args) => {
+    const fn = (args) => {
       router.push(
         {
           pathname: '/dashboard/running',
@@ -65,9 +62,11 @@ const UrlList = ({ incomingList = [] }) => {
           },
         }
       )
-    })
+    }
+    const removeResponseListener = window.electron.fs.write.response(fn)
+    
     return () => {
-      ipcRenderer.removeAllListeners(inputFileResponse)
+      removeResponseListener()
     }
   }, [router])
 

@@ -13,7 +13,6 @@ import {
 import * as CategoryIcons from 'ooni-components/dist/icons'
 import { MdClose } from 'react-icons/md'
 import styled from 'styled-components'
-import electron, { ipcRenderer } from 'electron'
 import { RemoveScroll } from 'react-remove-scroll'
 
 import { useConfig } from './useConfig'
@@ -95,7 +94,7 @@ export const WebsiteCategoriesSelector = () => {
   const [selectedCategoryCodes, setSelectedCategoryCodes] = useState(categoryListInConfig || [])
 
   const availableCategoriesList = useMemo(() => (
-    ipcRenderer.sendSync('config.categories')
+    window.electron.config.categories()
   ), [])
 
 

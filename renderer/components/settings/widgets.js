@@ -7,8 +7,7 @@ import {
   Input,
 } from 'ooni-components'
 import styled from 'styled-components'
-import log from 'electron-log'
-import { ipcRenderer } from 'electron'
+// import log from 'electron-log'
 
 import { useConfig } from './useConfig'
 import { FormattedMessage } from 'react-intl'
@@ -128,7 +127,7 @@ export const AutorunCheckbox = ({ label, optionKey, disabled = false, ...rest })
   const [busy, setBusy] = useState(true)
 
   useEffect(() => {
-    ipcRenderer.invoke('autorun.status').then(status => {
+    window.electron.autorun.status().then(status => {
       setChecked(status)
       setBusy(false)
     })
@@ -140,9 +139,9 @@ export const AutorunCheckbox = ({ label, optionKey, disabled = false, ...rest })
     const newValue = Boolean(target.type === 'checkbox' ? target.checked : target.value)
     if (newValue === true) {
       // Try to enable autorun
-      ipcRenderer.invoke('autorun.schedule').then(scheduled => {
+      window.electron.autorun.schedule().then(scheduled => {
         if (scheduled) {
-          log.verbose('scheduling successful. updating checkbox UI')
+          // log.verbose('scheduling successful. updating checkbox UI')
           setChecked(newValue)
         }
       }).finally(() => {
@@ -150,9 +149,9 @@ export const AutorunCheckbox = ({ label, optionKey, disabled = false, ...rest })
       })
     } else {
       // Try to disable autorun
-      ipcRenderer.invoke('autorun.disable').then(success => {
+      window.electron.autorun.disable().then(success => {
         if (success) {
-          log.verbose('Unscheduling successful. updating checkbox UI')
+          // log.verbose('Unscheduling successful. updating checkbox UI')
           setChecked(newValue)
         }
       }).finally(() => {

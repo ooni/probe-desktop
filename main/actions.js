@@ -113,7 +113,7 @@ const showMeasurement = (msmtID) => {
         Sentry.addBreadcrumb({
           category: 'actions',
           message: data.message,
-          level: Sentry.Severity.Error
+          level: 'error',
         })
         reject(data.message)
         return

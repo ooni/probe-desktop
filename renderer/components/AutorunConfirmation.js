@@ -3,22 +3,21 @@ import PropTypes from 'prop-types'
 import { Modal, Container, Flex, Button, Heading } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 import { MdClose } from 'react-icons/md'
-import { ipcRenderer } from 'electron'
 
 import { StyledCloseButton } from './ConfirmationModal'
 import FormattedMarkdownMessage from './FormattedMarkdownMessage'
 
 const AutorunConfirmation = ({ show, onClose }) => {
   const onConfirm = useCallback(() => {
-    ipcRenderer.invoke('autorun.schedule')
+    window.electron.autorun.schedule()
     onClose()
   }, [onClose])
   const onRemindLater = useCallback(() => {
-    ipcRenderer.send('autorun.remind-later')
+    window.electron.autorun.remindLater()
     onClose()
   }, [onClose])
   const onCancel = useCallback(() => {
-    ipcRenderer.send('autorun.cancel')
+    window.electron.autorun.cancel()
     onClose()
   }, [onClose])
   return (

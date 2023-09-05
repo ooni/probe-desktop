@@ -13,7 +13,7 @@ import { MdWeb, MdHistory } from 'react-icons/md'
 import { FaCog } from 'react-icons/fa'
 
 import NoRTLFlip from './NoRTLFlip'
-import { version } from '../../package.json'
+import pckg from '../../package.json'
 
 const StyledNavItem = styled.div`
   position: relative;
@@ -102,9 +102,9 @@ const SidebarContainer = styled(Box)`
 const MainContainer = styled(Box)`
 `
 
-const StyledOONILogo = styled(OONILogo)`
-  fill: ${props => props.theme.colors.gray5};
-`
+// const StyledOONILogo = styled(OONILogo)`
+//   fill: ${props => props.theme.colors.gray5};
+// `
 
 const Sidebar = ({ children }) => {
   const { pathname } = useRouter()
@@ -133,12 +133,12 @@ const Sidebar = ({ children }) => {
           </Box>
           <Box pr={2}>
             <Box pl={4}>
-              <StyledOONILogo />
+              {/* <StyledOONILogo /> */}
             </Box>
             <Box mb={2}>
               <NoRTLFlip>
                 <Text fontSize={12} textAlign='right' color='gray7' data-testid='sidebar-version-number'>
-                  {version}
+                  {pckg.version}
                 </Text>
               </NoRTLFlip>
             </Box>

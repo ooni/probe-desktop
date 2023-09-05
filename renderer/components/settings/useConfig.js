@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React, { useState, useContext, useEffect, useCallback } from 'react'
-import { ipcRenderer } from 'electron'
 
 export const ConfigContext = React.createContext([{}, () => {}])
 
@@ -10,7 +9,7 @@ export const ConfigProvider = (props) => {
 
   useEffect(() => {
     const loadConfigFromFile =  async () => {
-      const config = await ipcRenderer.invoke('config.get')
+      const config = await window.electron.config.get()
       setState(config)
       setLoading(false)
     }
@@ -37,7 +36,7 @@ export const getConfigValue = (config, optionKey) => optionKey.split('.').reduce
 export const useConfig = (key = null) => {
   const [config, setConfigContext] = useContext(ConfigContext)
   if (config === null) {
-    ipcRenderer.invoke('get-fresh-config').then((config) => {
+    window.electron.config.getFreshConfig().then((config) => {
       setConfigContext(config)
     })
   }
@@ -52,7 +51,7 @@ export const useConfig = (key = null) => {
 
   const setConfigValue = useCallback((value) => {
     setPending(true)
-    ipcRenderer.invoke('config.set', key, currentValue, value)
+    window.electron.config.set(key, currentValue, value)
       .then((result) => {
         setConfigContext(result)
       })
