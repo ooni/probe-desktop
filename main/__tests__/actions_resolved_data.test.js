@@ -1,5 +1,5 @@
 import { listMeasurements, listResults, showMeasurement } from '../actions'
-import log from 'electron-log'
+import log from 'electron-log/main'
 import Sentry from '@sentry/electron'
 import { Ooniprobe } from '../utils/ooni/ooniprobe'
 

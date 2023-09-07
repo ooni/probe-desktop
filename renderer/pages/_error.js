@@ -1,7 +1,7 @@
 /* global require */
 import React from 'react'
 import Error from 'next/error'
-import * as Sentry from '@sentry/electron'
+import * as Sentry from '@sentry/electron/renderer'
 
 const debug = require('debug')('ooniprobe-desktop.renderer.pages._error')
 

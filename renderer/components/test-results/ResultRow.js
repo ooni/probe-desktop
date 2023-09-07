@@ -9,7 +9,7 @@ import {
 } from 'ooni-components'
 import Link from 'next/link'
 import { MdWeb, MdDone, MdClear, MdWarning } from 'react-icons/md'
-import * as Sentry from '@sentry/electron'
+import * as Sentry from '@sentry/electron/renderer'
 
 import { testGroups } from '../nettests'
 import RightArrow from '../RightArrow'
@@ -186,7 +186,7 @@ class ResultRow extends React.Component {
       Sentry.addBreadcrumb({
         category: 'results',
         message: 'name key is missing in result',
-        level: Sentry.Severity.Error
+        level: 'error',
       })
       Sentry.captureException(e)
       return null
@@ -228,7 +228,7 @@ class ResultRow extends React.Component {
       Sentry.addBreadcrumb({
         category: 'results',
         message: 'date key is missing in result',
-        level: Sentry.Severity.Error
+        level: 'error',
       })
       Sentry.captureException(e)
       return null
@@ -263,7 +263,7 @@ class ResultRow extends React.Component {
       Sentry.addBreadcrumb({
         category: 'results',
         message: 'test_keys is missing in result',
-        level: Sentry.Severity.Error
+        level: 'error',
       })
       Sentry.captureException(e)
       return null

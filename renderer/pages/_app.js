@@ -1,21 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import log from 'electron-log/renderer'
 import IntlProvider from '../components/IntlProvider'
 import { ConfigProvider } from '../components/settings/useConfig'
 import '../components/global.css'
+import { init as initSentry } from '../components/initSentry'
 
 log.transports.console.level = process.env.NODE_ENV === 'development' ? 'debug' : 'info'
-// log.transports.file.level = 'debug'
 
 const MyApp = ({ Component, pageProps, err }) => {
-
-  // Workaround for https://github.com/zeit/next.js/issues/8592
-  const modifiedPageProps = { ...pageProps, err }
+  useEffect(() => {
+    initSentry()
+  }, [])
 
   return (
     <ConfigProvider>
       <IntlProvider>
-        <Component {...modifiedPageProps} />
+        <Component {...pageProps} err={err} />
       </IntlProvider>
     </ConfigProvider>
   )

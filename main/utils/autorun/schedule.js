@@ -11,7 +11,7 @@ const LATEST_AUTORUN_VERSION = 1
 // Note: initConfigFile in turn initializes Sentry (again) with no extra effect
 initConfigFile({ configFilePath: join(getAutorunHomeDir(), 'config.json') })
 
-const log = require('electron-log')
+const log = require('electron-log/main')
 const winScheduler = require('./windows-scheduler')
 const macScheduler = require('./mac-scheduler')
 const taskId = process.env.npm_package_build_appId || 'org.ooni.probe-desktop'

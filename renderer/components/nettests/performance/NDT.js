@@ -6,8 +6,8 @@ import {
   Text
 } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
-import * as Sentry from '@sentry/electron'
-import log from 'electron-log'
+import * as Sentry from '@sentry/electron/renderer'
+import log from 'electron-log/renderer'
 
 import StatusBox from '../../measurement/StatusBox'
 import formatSpeed from '../../formatSpeed'

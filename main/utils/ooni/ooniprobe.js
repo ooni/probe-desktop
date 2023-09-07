@@ -2,12 +2,12 @@ const { EventEmitter } = require('events')
 const childProcess = require('child_process')
 const os = require('os')
 const path = require('path')
-const log = require('electron-log')
+const log = require('electron-log/main')
 const { is } = require('electron-util')
 
 const split2 = require('split2')
 
-const Sentry = require('@sentry/electron')
+const Sentry = require('@sentry/electron/main')
 
 const { getProbeBinaryPath, getTorBinaryPath, getHomeDir } = require('../paths')
 const pkgJson = require('../../../package.json')

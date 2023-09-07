@@ -1,7 +1,7 @@
 const { Ooniprobe } = require('./utils/ooni/ooniprobe')
 const { getAutorunHomeDir } = require('./utils/paths')
-const log = require('electron-log')
-const Sentry = require('@sentry/electron')
+const log = require('electron-log/main')
+const Sentry = require('@sentry/electron/main')
 
 const hardReset = () => {
   const ooniHome = new Ooniprobe()

@@ -2,7 +2,7 @@
 
 import { Ooniprobe } from '../ooniprobe'
 import childProcess from 'child_process'
-import log from 'electron-log'
+import log from 'electron-log/main'
 import pkgJson from '../../../../package.json'
 import Sentry from '@sentry/electron'
 import { Readable } from 'stream'

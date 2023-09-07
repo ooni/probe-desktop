@@ -1,6 +1,6 @@
 /* global require */
 import React, { useState, useEffect } from 'react'
-// import * as Sentry from '@sentry/node'
+import * as Sentry from '@sentry/electron/renderer'
 
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
@@ -22,7 +22,7 @@ const TestResults = () => {
       // Upon mount, wait a bit and show prompt about enabling autorun
       window.electron.autorun.maybeRemind()
     }).catch(err => {
-      // Sentry.captureException(err, {extra: {scope: 'renderer.listResults'}})
+      Sentry.captureException(err, {extra: {scope: 'renderer.listResults'}})
       debug('error triggered', err)
       setError(err)
       setLoading(false)

@@ -1,6 +1,6 @@
 import { Runner } from '../run'
 import childProcess from 'child_process'
-import log from 'electron-log'
+import log from 'electron-log/main'
 import Sentry from '@sentry/electron'
 
 jest.mock('electron-util', () => ({

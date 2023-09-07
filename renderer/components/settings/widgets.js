@@ -7,7 +7,7 @@ import {
   Input,
 } from 'ooni-components'
 import styled from 'styled-components'
-// import log from 'electron-log'
+import log from 'electron-log/renderer'
 
 import { useConfig } from './useConfig'
 import { FormattedMessage } from 'react-intl'
@@ -141,7 +141,7 @@ export const AutorunCheckbox = ({ label, optionKey, disabled = false, ...rest })
       // Try to enable autorun
       window.electron.autorun.schedule().then(scheduled => {
         if (scheduled) {
-          // log.verbose('scheduling successful. updating checkbox UI')
+          log.verbose('scheduling successful. updating checkbox UI')
           setChecked(newValue)
         }
       }).finally(() => {
@@ -151,7 +151,7 @@ export const AutorunCheckbox = ({ label, optionKey, disabled = false, ...rest })
       // Try to disable autorun
       window.electron.autorun.disable().then(success => {
         if (success) {
-          // log.verbose('Unscheduling successful. updating checkbox UI')
+          log.verbose('Unscheduling successful. updating checkbox UI')
           setChecked(newValue)
         }
       }).finally(() => {

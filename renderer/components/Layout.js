@@ -6,9 +6,7 @@ import stylisRTLPlugin from 'stylis-plugin-rtl'
 import { useIntl } from 'react-intl'
 
 import GlobalStyle from './globalStyle'
-// import { init as initSentry } from '../components/initSentry'
 import AutorunConfirmation from './AutorunConfirmation'
-
 
 const Layout = ({ children }) => {
   const [showPrompt, setShowPrompt] = useState(false)
@@ -22,7 +20,6 @@ const Layout = ({ children }) => {
   }, [setShowPrompt])
 
   useEffect(() => {
-    // initSentry()
     // Prepare to show prompt when main process signals back
     const removeShowPromptListeners = window.electron.autorun.showPrompt(showAutomaticTestPrompt)
 

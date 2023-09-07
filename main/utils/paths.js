@@ -3,7 +3,7 @@
 const path = require('path')
 const { is } = require('electron-util')
 const electron = require('electron')
-const log = require('electron-log')
+const log = require('electron-log/main')
 
 const getBinarySuffix = () => (process.platform === 'win32' ? '.exe' : '')
 

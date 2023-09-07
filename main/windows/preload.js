@@ -9,7 +9,7 @@ contextBridge.exposeInMainWorld('electron', {
     }
   },
   config: {
-    get: () => ipcRenderer.invoke('config.get'),
+    get: (data) => ipcRenderer.invoke('config.get', data),
     getFreshConfig: () => ipcRenderer.invoke('get-fresh-config'),
     set: (key, currentValue, value) => ipcRenderer.invoke('config.set', key, currentValue, value),
     onboard: (crashReportsOptIn) => ipcRenderer.invoke('config.onboard', { crashReportsOptIn }),

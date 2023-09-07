@@ -1,10 +1,9 @@
 const { app } = require('electron')
 const { writeFile, unlink } = require('fs').promises
-const { existsSync, writeFileSync } = require('fs-extra')
 const { spawnSync } = require('child_process')
 const { join } = require('path')
 const os = require('os')
-const log = require('electron-log')
+const log = require('electron-log/main')
 
 const { getAutorunHomeDir, getProbeBinaryPath, getTorBinaryPath } = require('../paths')
 

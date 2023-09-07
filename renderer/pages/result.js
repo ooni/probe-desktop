@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-// import * as Sentry from '@sentry/node'
+import * as Sentry from '@sentry/electron/renderer'
 import { useRouter } from 'next/router'
 import Debug from 'debug'
 
@@ -41,11 +41,11 @@ const Result = () => {
       setMeasurementSummary(summary)
       setMeasurementRows(sortMeasurementRows(rows))
     }).catch(err => {
-      // Sentry.withScope((scope) => {
-      //   scope.setTag('context', 'renderer.listMeasurements')
-      //   Sentry.captureException(err)
-      // })
-      // debug('error triggered', err)
+      Sentry.withScope((scope) => {
+        scope.setTag('context', 'renderer.listMeasurements')
+        Sentry.captureException(err)
+      })
+      debug('error triggered', err)
       setError(err)
     }).finally(() => {
       setLoading(false)

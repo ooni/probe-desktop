@@ -9,7 +9,7 @@
 */
 
 const { openAboutWindow } = require('./windows')
-const log = require('electron-log')
+const log = require('electron-log/main')
 const { autoUpdater } = require('electron-updater')
 const semver = require('semver')
 
