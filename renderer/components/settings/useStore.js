@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-// import log from 'electron-log'
+import log from 'electron-log/renderer'
 
 export const useStore = (key) => {
   const [currentValue, setCurrentValue] = useState(window.electron.prefs.get(key))
@@ -10,7 +10,7 @@ export const useStore = (key) => {
     // returns `true` if success, error message on failure
     if (result !== true) {
       setError(result)
-      // log.error(result)
+      log.error(result)
     }
     setCurrentValue(value)
   }, [key])
