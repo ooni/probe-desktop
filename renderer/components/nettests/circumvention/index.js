@@ -1,8 +1,8 @@
 import React from 'react'
 import { theme } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
-import { NettestGroupCircumvention } from 'ooni-components/dist/icons'
-import { default as animation } from 'ooni-components/components/animations/RunningCircumvention.json'
+import { NettestGroupCircumvention } from 'ooni-components/icons'
+import animation from 'ooni-components/animations/RunningCircumvention.json'
 
 import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
 

@@ -6,7 +6,7 @@ import { useIntl, FormattedMessage, FormattedRelativeTime } from 'react-intl'
 const LastTest = ({ testGroupName, ...rest }) => {
   const intl = useIntl()
   const fallback = intl.formatMessage({ id: 'Dashboard.Overview.LastRun.Never' })
-  const [lastTestTime, setLastTestTime] = useState(fallback)
+  const [lastTestTime, setLastTestTime] = useState(null)
   const onLastResultResponse = useCallback((data) => {
     const { lastResult } = data
     if (lastResult) {
@@ -28,7 +28,11 @@ const LastTest = ({ testGroupName, ...rest }) => {
     <Box {...rest}>
       <Text as='span' mr={1}>
         <FormattedMessage id='Dashboard.Overview.LatestTest' />
-      </Text> <FormattedRelativeTime value={lastTestTime} updateIntervalInSeconds={600} />
+      </Text> {
+        lastTestTime ?
+          <FormattedRelativeTime value={lastTestTime} updateIntervalInSeconds={600} /> : 
+          fallback
+      }
     </Box>
   )
 }

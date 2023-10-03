@@ -1,6 +1,6 @@
 // Packages
 const initializeSentry = require('./utils/sentry')
-// // Get sentry up and running (if already)
+// Get sentry up and running (if already)
 initializeSentry()
 const { app, Menu, ipcMain } = require('electron')
 const prepareNext = require('electron-next')

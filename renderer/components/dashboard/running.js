@@ -38,6 +38,7 @@ const CloseButtonContainer = styled.div`
   right: 10px;
   z-index: 99999;
   cursor: pointer;
+  -webkit-app-region: no-drag;
 `
 
 const WindowContainer = styled(Flex)`
@@ -200,7 +201,7 @@ const Running = ({ testGroupToRun, inputFile = null }) => {
       removeErrorListener()
       // ipcRenderer.removeAllListeners('ooniprobe.error')
     }
-  }, []) /* eslint-disable-line react-hooks/exhaustive-deps */
+  }, [])
   /* Do not add dependencies. This is componentDidMount */
 
   const onToggleLog = useCallback(() => {

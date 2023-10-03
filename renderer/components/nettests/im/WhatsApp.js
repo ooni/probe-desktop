@@ -6,7 +6,7 @@ import {
   Text
 } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
-import { NettestWhatsApp } from 'ooni-components/dist/icons'
+import { NettestWhatsApp } from 'ooni-components/icons'
 
 import StatusBox from '../../measurement/StatusBox'
 

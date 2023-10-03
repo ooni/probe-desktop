@@ -52,6 +52,11 @@ SummaryContainer.defaultProps = {
   mx: 'auto'
 }
 
+const StyledLink = styled(Link)`
+text-decoration: none;
+color: black;
+`
+
 const WebsitesSummary = ({anomalyCount, totalCount}) => (
   <SummaryContainer>
     <Box>
@@ -275,7 +280,7 @@ class ResultRow extends React.Component {
       resultID,
     } = this.props
     return <BorderedRow data-testid={`test-result-${this.props.name}`}>
-      <Link href={{ pathname: '/result', query: {resultID} }} passHref>
+      <StyledLink href={{ pathname: '/result', query: {resultID} }}>
         <Flex alignItems='center'>
           <Box pr={2} width={4/16}>
             {this.renderIcon()}
@@ -293,7 +298,7 @@ class ResultRow extends React.Component {
             <RightArrowStyled />
           </Box>
         </Flex>
-      </Link>
+      </StyledLink>
     </BorderedRow>
   }
 }

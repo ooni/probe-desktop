@@ -41,18 +41,16 @@ export const BooleanOption = ({ label, optionKey, disabled = false, onChange, ..
   }, [setConfigValue, onChange])
 
   return (
-    <StyledLabel my={2} disabled={disabled} alignItems='center'>
-      <Checkbox
-        mr={1}
-        className='checkbox'
-        data-testid={optionKey}
-        checked={checked}
-        onChange={handleChange}
-        disabled={disabled}
-        {...rest}
-      />
-      {label}
-    </StyledLabel>
+    <Checkbox
+      label={label}
+      my={2}
+      className='checkbox'
+      data-testid={optionKey}
+      checked={checked}
+      onChange={handleChange}
+      disabled={disabled}
+      {...rest}
+    />
   )
 }
 
@@ -79,19 +77,15 @@ export const NumberOption = ({ label, optionKey, disabled = false, ...rest}) => 
   }, [setConfigValue])
 
   return (
-    <StyledLabel my={2} disabled={disabled}>
-      <Box width='3em'>
-        <Input
-          type='number'
-          value={value}
-          onChange={handleChange}
-          disabled={disabled}
-          {...rest}
-        />
-      </Box>
-      <Box mx={2}>{label}</Box>
-      {error && <StyledErrorMessage>{error}</StyledErrorMessage>}
-    </StyledLabel>
+    <Input
+      label={label}
+      type='number'
+      value={value}
+      onChange={handleChange}
+      disabled={disabled}
+      error={error}
+      {...rest}
+    />
   )
 }
 
@@ -122,7 +116,7 @@ export const ListOption = ({ optionKey, children }) => {
 }
 
 // This widget is wired to the pesistent storage in main/utils/store.js
-export const AutorunCheckbox = ({ label, optionKey, disabled = false, ...rest }) => {
+export const AutorunCheckbox = ({ label, disabled = false, ...rest }) => {
   const [checked, setChecked] = useState(null)
   const [busy, setBusy] = useState(true)
 
@@ -162,16 +156,14 @@ export const AutorunCheckbox = ({ label, optionKey, disabled = false, ...rest })
   }, [])
 
   return (
-    <StyledLabel alignItems='center' my={2} disabled={disabled || busy}>
-      <Checkbox
-        mr={1}
-        checked={checked}
-        onChange={handleChange}
-        disabled={disabled || busy}
-        {...rest}
-      />
-      {label}
-    </StyledLabel>
+    <Checkbox
+      my={2}
+      label={label}
+      checked={checked}
+      onChange={handleChange}
+      disabled={disabled || busy}
+      {...rest}
+    />
   )
 }
 

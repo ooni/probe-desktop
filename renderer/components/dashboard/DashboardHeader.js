@@ -41,6 +41,8 @@ const RunAllContainer = styled(Box)`
 const RunAllButton = styled(Button).attrs({
   width: 2/5,
 })`
+  -webkit-app-region: no-drag;
+  cursor: pointer;
   box-shadow: 0px 0px 6px 0px ${props => props.theme.colors.gray7};
   border: 1px solid ${props => props.theme.colors.gray3};
   border-radius: 16px;

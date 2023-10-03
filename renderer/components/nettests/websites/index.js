@@ -4,13 +4,13 @@ import {
   theme,
 } from 'ooni-components'
 
-import { default as animation } from 'ooni-components/components/animations/RunningWebsites.json'
+import animation from 'ooni-components/animations/RunningWebsites.json'
 
 import { FormattedMessage } from 'react-intl'
 
 import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
 
-import { NettestGroupWebsites } from 'ooni-components/dist/icons'
+import { NettestGroupWebsites } from 'ooni-components/icons'
 
 const color = theme.colors.indigo6
 const name = <FormattedMessage id="Test.Websites.Fullname" />

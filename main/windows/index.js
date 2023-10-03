@@ -23,8 +23,6 @@ const mainWindow = (url = 'dashboard') => {
     show: false,
     preload: resolve('main/utils/sentry.js'),
     webPreferences: {
-      // contextIsolation: false,
-      // nodeIntegration: true,
       preload: join(__dirname, 'preload.js'),
       enableRemoteModule: true,
     }

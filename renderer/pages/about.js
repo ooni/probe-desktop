@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import humanize from 'humanize'
 import { Line as LineProgress } from 'rc-progress'
-import OONIHorizontalMonochromeInverted from 'ooni-components/components/svgs/logos/OONI-HorizontalMonochromeInverted.svg'
+import OONIHorizontalMonochromeInverted from 'ooni-components/svgs/logos/OONI-HorizontalMonochromeInverted.svg'
 import {
   Container,
   Button,
@@ -16,7 +16,7 @@ import styled from 'styled-components'
 import Layout from '../components/Layout'
 import FormattedMarkdownMessage from '../components/FormattedMarkdownMessage'
 import formatSpeed from '../components/formatSpeed'
-import { version, probeVersion } from '../../package.json'
+import pkgJson from '../../package.json'
 
 const CodeWithWrap = styled.code`
   word-wrap: break-word;
@@ -93,14 +93,14 @@ const About = () => {
   return (
     <Layout>
       <Flex flexDirection='column' alignItems='center' bg='blue5' py={5}>
-        {/* <Box>
+        <Box>
           <OONIHorizontalMonochromeInverted width='200px' />
-        </Box> */}
-        <Box mt={3}>
-          <Text fontSize={14} color='white'>{version}</Text>
         </Box>
         <Box mt={3}>
-          <Text fontSize={14} color='white'>Probe CLI version: {probeVersion}</Text>
+          <Text fontSize={14} color='white'>{pkgJson.version}</Text>
+        </Box>
+        <Box mt={3}>
+          <Text fontSize={14} color='white'>Probe CLI version: {pkgJson.probeVersion}</Text>
         </Box>
       </Flex>
       <Container>

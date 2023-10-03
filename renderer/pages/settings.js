@@ -16,7 +16,7 @@ import { LanguageSelector } from '../components/settings/LanguageSelector'
 import { WebsiteCategoriesSelector } from '../components/settings/WebsiteCategoriesSelector'
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
-import { default as pkgJson } from '../../package.json'
+import pkgJson from '../../package.json'
 import FormattedMarkdownMessage from '../components/FormattedMarkdownMessage'
 
 const TopBar = styled.div`

@@ -13,8 +13,6 @@ const aboutWindow = () => {
     show: false,
     backgroundColor: '#fff',
     webPreferences: {
-      // contextIsolation: false,
-      // nodeIntegration: true,
       enableRemoteModule: true,
       preload: join(__dirname, 'preload.js'),
     }
