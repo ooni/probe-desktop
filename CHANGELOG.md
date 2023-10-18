@@ -62,7 +62,7 @@ probe-cli: 3.9.2
 - Updated dependencies: `ooni-components`, `styled-components`, `rebass`
 - Pin to `styled-components@v5.1.1` because 5.2.x introduces this bug: styled-components/styled-components#3273
 - Use `Modal` component from `ooni-components` instead of the forked one in the repo.
-- Moved icons for Signal and RiseupVPN tests to `ooni-comopnents`
+- Moved icons for Signal and RiseupVPN tests to `ooni-components`
 
 ### Removed
 

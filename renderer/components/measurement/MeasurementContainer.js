@@ -26,7 +26,6 @@ import { NDT } from '../nettests/performance/NDT'
 import { Dash } from '../nettests/performance/Dash'
 import { Psiphon } from '../nettests/circumvention/Psiphon'
 import { Tor } from '../nettests/circumvention/Tor'
-import { RiseupVPN } from '../nettests/circumvention/RiseupVPN'
 import { Signal } from '../nettests/im/Signal'
 
 import FullHeightFlex from '../FullHeightFlex'
@@ -48,7 +47,6 @@ const detailsMap = {
   dash: Dash,
   psiphon: Psiphon,
   tor: Tor,
-  riseupvpn: RiseupVPN,
   signal: Signal,
 }
 
