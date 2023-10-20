@@ -15,6 +15,7 @@ const aboutWindow = () => {
     webPreferences: {
       enableRemoteModule: true,
       preload: join(__dirname, 'preload.js'),
+      sandbox: false,
     }
   })
 

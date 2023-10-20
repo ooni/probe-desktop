@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Flex, Box, Text } from 'ooni-components'
+import { Flex, Box } from 'ooni-components'
 
 import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
 

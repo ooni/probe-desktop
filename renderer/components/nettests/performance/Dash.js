@@ -15,7 +15,6 @@ import performanceTestGroup from './index'
 const Dash = ({measurement, render}) => {
   const testKeys = JSON.parse(measurement.test_keys)
   const {
-    connect_latency,
     median_bitrate,
     min_playout_delay
   } = testKeys
@@ -23,21 +22,6 @@ const Dash = ({measurement, render}) => {
   // Get human readable description of the bitrate (e.g 4k, FHD, 240p)
   const optimalQuality = formatBitrate(median_bitrate)
   const bitrate = formatSpeed(median_bitrate)
-
-  const DashHero = (
-    <Box width={1} p={3}>
-      <Flex flexWrap='wrap' my={4} alignItems='center'>
-        <Box my={3}>
-          <FormattedMessage
-            id='TestResults.Details.Performance.Dash.VideoWithoutBuffering'
-            values={{
-              VideoQuality: optimalQuality
-            }}
-          />
-        </Box>
-      </Flex>
-    </Box>
-  )
 
   const DashTitle = (
     <FormattedMessage

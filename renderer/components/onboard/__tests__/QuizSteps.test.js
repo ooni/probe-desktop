@@ -1,13 +1,9 @@
-/**
- * @jest-environment jsdom
- */
 import React from 'react'
 import {
   screen,
   render,
   fireEvent,
   waitForElementToBeRemoved,
-  cleanup,
 } from '@testing-library/react'
 import { theme } from 'ooni-components'
 import { ThemeProvider } from 'styled-components'
@@ -15,6 +11,9 @@ import { IntlProvider, FormattedMessage } from 'react-intl'
 import English from '../../../../lang/en.json'
 
 import QuizSteps from '../QuizSteps'
+
+const toggleQuiz = jest.fn()
+const onQuizComplete = jest.fn()
 
 const renderComponent = (component, locale = 'en', messages = English) => {
   return render(
@@ -24,45 +23,42 @@ const renderComponent = (component, locale = 'en', messages = English) => {
   )
 }
 
+const setup = () => {
+  renderComponent(
+    <QuizSteps
+      onClose={toggleQuiz}
+      onDone={onQuizComplete}
+      questionList={[
+        <FormattedMessage
+          key="Onboarding.PopQuiz.1.Question"
+          id="Onboarding.PopQuiz.1.Question"
+        />,
+        <FormattedMessage
+          key="Onboarding.PopQuiz.2.Question"
+          id="Onboarding.PopQuiz.2.Question"
+        />,
+      ]}
+      actuallyList={[
+        <FormattedMessage
+          key="Onboarding.PopQuiz.1.Wrong.Paragraph"
+          id="Onboarding.PopQuiz.1.Wrong.Paragraph"
+        />,
+        <FormattedMessage
+          key="Onboarding.PopQuiz.2.Wrong.Paragraph"
+          id="Onboarding.PopQuiz.2.Wrong.Paragraph"
+        />,
+      ]}
+    />
+  )
+}
+
 describe('Tests for QuizSteps', () => {
-  const toggleQuiz = jest.fn()
-  const onQuizComplete = jest.fn()
-
-  beforeEach(() => {
-    renderComponent(
-      <QuizSteps
-        onClose={toggleQuiz}
-        onDone={onQuizComplete}
-        questionList={[
-          <FormattedMessage
-            key="Onboarding.PopQuiz.1.Question"
-            id="Onboarding.PopQuiz.1.Question"
-          />,
-          <FormattedMessage
-            key="Onboarding.PopQuiz.2.Question"
-            id="Onboarding.PopQuiz.2.Question"
-          />,
-        ]}
-        actuallyList={[
-          <FormattedMessage
-            key="Onboarding.PopQuiz.1.Wrong.Paragraph"
-            id="Onboarding.PopQuiz.1.Wrong.Paragraph"
-          />,
-          <FormattedMessage
-            key="Onboarding.PopQuiz.2.Wrong.Paragraph"
-            id="Onboarding.PopQuiz.2.Wrong.Paragraph"
-          />,
-        ]}
-      />
-    )
-  })
-
   afterEach(() => {
     onQuizComplete.mockClear()
-    cleanup()
   })
 
   test('User Story with correct answers', async () => {
+    setup()
     const yesButton1 = screen.getByText(English['Onboarding.PopQuiz.True'])
     fireEvent.click(yesButton1)
     const lottiePlayerFirst = screen.getByTestId('quiz-steps-tick')
@@ -77,6 +73,7 @@ describe('Tests for QuizSteps', () => {
   })
 
   test('User Story with incorrect answers', async () => {
+    setup()
     const falseButton1 = screen.getByText(English['Onboarding.PopQuiz.False'])
     fireEvent.click(falseButton1)
     const lottiePlayer1 = screen.getByTestId('quiz-steps-cross')
@@ -108,6 +105,7 @@ describe('Tests for QuizSteps', () => {
     expect(onQuizComplete).toHaveBeenCalledTimes(1)
   })
   test('User Story with first input incorrect and second input correct', async () => {
+    setup()
     const falseButton1 = screen.getByText(English['Onboarding.PopQuiz.False'])
     fireEvent.click(falseButton1)
     const lottiePlayer1 = screen.getByTestId('quiz-steps-cross')
@@ -131,6 +129,7 @@ describe('Tests for QuizSteps', () => {
     expect(onQuizComplete).toHaveBeenCalledTimes(1)
   })
   test('User Story with first input correct and second input incorrect', async () => {
+    setup()
     const yesButton1 = screen.getByText(English['Onboarding.PopQuiz.True'])
     fireEvent.click(yesButton1)
     const lottiePlayerFirst = screen.getByTestId('quiz-steps-tick')

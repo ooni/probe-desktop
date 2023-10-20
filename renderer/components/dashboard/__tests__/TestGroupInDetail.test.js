@@ -1,9 +1,5 @@
 // TODO: Can parametrize these tests based on testGroups
 
-/**
- * @jest-environment jsdom
- */
-
 import React, { useState, createContext } from 'react'
 import PropTypes from 'prop-types'
 import { theme } from 'ooni-components'
@@ -14,13 +10,15 @@ import {
   render,
   waitFor,
   fireEvent,
-  cleanup,
 } from '@testing-library/react'
 
 import English from '../../../../lang/en.json'
 import { testGroups } from '../../nettests'
 import TestGroupInDetail from '../TestGroupInDetail'
 import { initializeConfig } from '../../../../main/utils/config'
+import api from '../../../../main/windows/api'
+
+Object.defineProperty(window, 'electron', { value: api })
 
 // For Using Intl formatting outside React Hooks
 const cache = createIntlCache()
@@ -115,7 +113,6 @@ const getEstimatedSizeAndTime = (testGroup) => {
 describe('Test if TestGroupInDetail component is correctly rendered', () => {
   const runTest = jest.fn()
   afterEach(() => {
-    cleanup()
     runTest.mockClear()
   })
 
@@ -247,7 +244,6 @@ describe('Test if TestGroupInDetail component is correctly rendered', () => {
 describe('TestGroupInDetail is correctly rendered for Website test', () => {
   const runTest = jest.fn()
   afterEach(() => {
-    cleanup()
     runTest.mockClear()
   })
 

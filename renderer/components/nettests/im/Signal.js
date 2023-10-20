@@ -4,7 +4,7 @@ import { Box, Text } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 import { NettestSignal } from 'ooni-components/icons'
 
-const Signal = ({ measurement, isAnomaly, render }) => {
+const Signal = ({ isAnomaly, render }) => {
 
   const heroTitle = isAnomaly ? (
     <FormattedMessage id='TestResults.Details.InstantMessaging.Signal.LikelyBlocked.Hero.Title' />

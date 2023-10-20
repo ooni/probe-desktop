@@ -25,6 +25,7 @@ const mainWindow = (url = 'dashboard') => {
     webPreferences: {
       preload: join(__dirname, 'preload.js'),
       enableRemoteModule: true,
+      sandbox: false,
     }
   })
   win.loadURL(windowURL(url))

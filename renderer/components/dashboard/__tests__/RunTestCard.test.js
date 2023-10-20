@@ -1,10 +1,7 @@
-/**
- * @jest-environment jsdom
- */
-
 import React from 'react'
-import { screen, render, cleanup, fireEvent } from '@testing-library/react'
+import { screen, render, fireEvent } from '@testing-library/react'
 import { theme } from 'ooni-components'
+
 import { ThemeProvider } from 'styled-components'
 import { IntlProvider } from 'react-intl'
 import English from '../../../../lang/en.json'
@@ -37,7 +34,6 @@ describe('Tests for RunTestCard component', () => {
   const router = useRouter()
 
   afterEach(() => {
-    cleanup()
     jest.clearAllMocks()
   })
 

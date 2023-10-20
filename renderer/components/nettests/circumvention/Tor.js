@@ -167,14 +167,10 @@ const Tor = ({measurement, isAnomaly, render}) => {
   const testKeys = JSON.parse(measurement.test_keys)
 
   const {
-    or_port_accessible,
-    or_port_total,
     or_port_dirauth_accessible,
     or_port_dirauth_total,
     obfs4_accessible,
     obfs4_total,
-    dir_port_accessible,
-    dir_port_total,
   } = testKeys
 
   const heroTitle = isAnomaly ? (
