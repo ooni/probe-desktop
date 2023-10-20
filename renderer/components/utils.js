@@ -1,6 +1,7 @@
 import log from 'electron-log/renderer'
 
-export const openInBrowser = (url, event) => {
+// export const openInBrowser = (url, event) => {
+export const openInBrowser = () => {
   // var shell = require('shell')
   // event.preventDefault()
   // shell.openExternal(url)

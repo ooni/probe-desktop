@@ -1,31 +1,31 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
-  Box,
-  Label,
+  // Box,
+  // Label,
   Checkbox,
   Input,
 } from 'ooni-components'
-import styled from 'styled-components'
+// import styled from 'styled-components'
 import log from 'electron-log/renderer'
 
 import { useConfig } from './useConfig'
 import { FormattedMessage } from 'react-intl'
 
-const StyledLabel = styled(Label)`
-  color: ${props => props.disabled ? props.theme.colors.gray6 : 'inherited'};
-  cursor: ${props => props.disabled ? 'not-allowed' : 'inherited'};
-  & input,select,option {
-    color: ${props => props.disabled ? props.theme.colors.gray6 : 'inherited'};
-    cursor: ${props => props.disabled ? 'not-allowed' : 'inherited'};
-  }
-`
+// const StyledLabel = styled(Label)`
+//   color: ${props => props.disabled ? props.theme.colors.gray6 : 'inherited'};
+//   cursor: ${props => props.disabled ? 'not-allowed' : 'inherited'};
+//   & input,select,option {
+//     color: ${props => props.disabled ? props.theme.colors.gray6 : 'inherited'};
+//     cursor: ${props => props.disabled ? 'not-allowed' : 'inherited'};
+//   }
+// `
 
-const StyledErrorMessage = styled(Box).attrs({
-  fontSize: '10px'
-})`
-  color: ${props => props.theme.colors.red5};
-`
+// const StyledErrorMessage = styled(Box).attrs({
+//   fontSize: '10px'
+// })`
+//   color: ${props => props.theme.colors.red5};
+// `
 
 export const BooleanOption = ({ label, optionKey, disabled = false, onChange, ...rest }) => {
   const [checked, setConfigValue] = useConfig(optionKey)
