@@ -8,9 +8,9 @@ import { FormattedMessage } from 'react-intl'
 
 import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
 
-import { default as animation } from 'ooni-components/components/animations/RunningMiddleBoxes.json'
+import animation from 'ooni-components/animations/RunningMiddleBoxes.json'
 
-import { NettestGroupMiddleBoxes } from 'ooni-components/dist/icons'
+import { NettestGroupMiddleBoxes } from 'ooni-components/icons'
 
 const color = theme.colors.violet8
 const name = <FormattedMessage id="Test.Middleboxes.Fullname" />

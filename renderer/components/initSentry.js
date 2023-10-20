@@ -1,11 +1,10 @@
-import * as Sentry from '@sentry/node'
+import * as Sentry from '@sentry/electron/renderer'
 import { RewriteFrames } from '@sentry/integrations'
-import { ipcRenderer } from 'electron'
-import log from 'electron-log'
+import log from 'electron-log/renderer'
 
 export const init = async () => {
   try {
-    const sendCrashReports = await ipcRenderer.invoke('config.get', 'advanced.send_crash_reports')
+    const sendCrashReports = await window.electron.config.get('advanced.send_crash_reports')
     if (sendCrashReports) {
       log.debug('Initializing Sentry in renderer...')
       if (process.env.NEXT_PUBLIC_SENTRY_DSN) {

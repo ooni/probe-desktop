@@ -22,11 +22,7 @@ const Dashboard = () => {
           <Flex flexDirection="column">
             {testList.map((t, idx) => (
               <RunTestCard
-                onClick={
-                  () => router.push('/dashboard/[testGroup]',
-                    `/dashboard/${t.key}`
-                  )
-                }
+                onClick={() => router.push(`/dashboard/${t.key}`)}
                 key={idx}
                 id={t.key}
                 {...t}

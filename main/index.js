@@ -1,11 +1,15 @@
 // Packages
+const initializeSentry = require('./utils/sentry')
+// Get sentry up and running (if already)
+initializeSentry()
 const { app, Menu, ipcMain } = require('electron')
 const prepareNext = require('electron-next')
 const { is } = require('electron-util')
 const isDev = require('electron-is-dev')
 const fixPath = require('fix-path')
-const Sentry = require('@sentry/electron')
-const log = require('electron-log')
+const Sentry = require('@sentry/electron/main')
+const log = require('electron-log/main')
+log.initialize()
 log.transports.console.level = isDev ? 'debug' : 'info'
 log.transports.file.level = 'debug'
 
@@ -13,7 +17,6 @@ const { getConfig, maybeMigrate, initConfigFile } = require('./utils/config')
 const { mainWindow, openAboutWindow } = require('./windows')
 const toggleWindow = require('./windows/toggle')
 const { ipcBindingsForMain } = require('./ipcBindings')
-const initializeSentry = require('./utils/sentry')
 const store = require('./utils/store')
 const updater = require('./updater')
 const autorun = require('./utils/autorun/schedule')
@@ -26,8 +29,6 @@ if (!app.requestSingleInstanceLock()) {
   log.info('Second instance not allowed. Quitting.')
   app.quit()
 }
-// Get sentry up and running (if already)
-initializeSentry()
 
 // initialize store in app.getPath('userData')/settings.json
 store.init()

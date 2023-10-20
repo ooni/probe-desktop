@@ -1,4 +1,3 @@
-import React from 'react'
 import { Flex } from 'ooni-components'
 import styled from 'styled-components'
 

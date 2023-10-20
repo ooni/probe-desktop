@@ -1,4 +1,3 @@
-/* global require */
 import React from 'react'
 import { useRouter } from 'next/router'
 

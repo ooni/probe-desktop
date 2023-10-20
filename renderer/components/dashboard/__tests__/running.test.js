@@ -1,15 +1,11 @@
-/**
- * @jest-environment jsdom
- */
-
 import React from 'react'
 
 import { screen, render, cleanup, fireEvent } from '../../../../test/unit/utils'
+
 import { ipcRenderer } from 'electron'
 import { testGroups } from '../../nettests'
-
+import api from '../../../../main/windows/api'
 import Running from '../running'
-
 // Mocking useRouter().push()
 const mockRouterPush = jest.fn()
 jest.mock('next/router', () => ({
@@ -19,6 +15,8 @@ jest.mock('next/router', () => ({
     }
   },
 }))
+
+Object.defineProperty(window, 'electron', { value: api })
 
 // scrollIntoView is not implemented in jsdom
 window.HTMLElement.prototype.scrollIntoView = jest.fn()

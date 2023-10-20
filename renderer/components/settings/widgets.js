@@ -1,32 +1,31 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
-  Box,
-  Label,
+  // Box,
+  // Label,
   Checkbox,
   Input,
 } from 'ooni-components'
-import styled from 'styled-components'
-import log from 'electron-log'
-import { ipcRenderer } from 'electron'
+// import styled from 'styled-components'
+import log from 'electron-log/renderer'
 
 import { useConfig } from './useConfig'
 import { FormattedMessage } from 'react-intl'
 
-const StyledLabel = styled(Label)`
-  color: ${props => props.disabled ? props.theme.colors.gray6 : 'inherited'};
-  cursor: ${props => props.disabled ? 'not-allowed' : 'inherited'};
-  & input,select,option {
-    color: ${props => props.disabled ? props.theme.colors.gray6 : 'inherited'};
-    cursor: ${props => props.disabled ? 'not-allowed' : 'inherited'};
-  }
-`
+// const StyledLabel = styled(Label)`
+//   color: ${props => props.disabled ? props.theme.colors.gray6 : 'inherited'};
+//   cursor: ${props => props.disabled ? 'not-allowed' : 'inherited'};
+//   & input,select,option {
+//     color: ${props => props.disabled ? props.theme.colors.gray6 : 'inherited'};
+//     cursor: ${props => props.disabled ? 'not-allowed' : 'inherited'};
+//   }
+// `
 
-const StyledErrorMessage = styled(Box).attrs({
-  fontSize: '10px'
-})`
-  color: ${props => props.theme.colors.red5};
-`
+// const StyledErrorMessage = styled(Box).attrs({
+//   fontSize: '10px'
+// })`
+//   color: ${props => props.theme.colors.red5};
+// `
 
 export const BooleanOption = ({ label, optionKey, disabled = false, onChange, ...rest }) => {
   const [checked, setConfigValue] = useConfig(optionKey)
@@ -42,18 +41,16 @@ export const BooleanOption = ({ label, optionKey, disabled = false, onChange, ..
   }, [setConfigValue, onChange])
 
   return (
-    <StyledLabel my={2} disabled={disabled} alignItems='center'>
-      <Checkbox
-        mr={1}
-        className='checkbox'
-        data-testid={optionKey}
-        checked={checked}
-        onChange={handleChange}
-        disabled={disabled}
-        {...rest}
-      />
-      {label}
-    </StyledLabel>
+    <Checkbox
+      label={label}
+      my={2}
+      className='checkbox'
+      data-testid={optionKey}
+      checked={checked}
+      onChange={handleChange}
+      disabled={disabled}
+      {...rest}
+    />
   )
 }
 
@@ -80,19 +77,15 @@ export const NumberOption = ({ label, optionKey, disabled = false, ...rest}) => 
   }, [setConfigValue])
 
   return (
-    <StyledLabel my={2} disabled={disabled}>
-      <Box width='3em'>
-        <Input
-          type='number'
-          value={value}
-          onChange={handleChange}
-          disabled={disabled}
-          {...rest}
-        />
-      </Box>
-      <Box mx={2}>{label}</Box>
-      {error && <StyledErrorMessage>{error}</StyledErrorMessage>}
-    </StyledLabel>
+    <Input
+      label={label}
+      type='number'
+      value={value}
+      onChange={handleChange}
+      disabled={disabled}
+      error={error}
+      {...rest}
+    />
   )
 }
 
@@ -123,12 +116,12 @@ export const ListOption = ({ optionKey, children }) => {
 }
 
 // This widget is wired to the pesistent storage in main/utils/store.js
-export const AutorunCheckbox = ({ label, optionKey, disabled = false, ...rest }) => {
+export const AutorunCheckbox = ({ label, disabled = false, ...rest }) => {
   const [checked, setChecked] = useState(null)
   const [busy, setBusy] = useState(true)
 
   useEffect(() => {
-    ipcRenderer.invoke('autorun.status').then(status => {
+    window.electron.autorun.status().then(status => {
       setChecked(status)
       setBusy(false)
     })
@@ -140,7 +133,7 @@ export const AutorunCheckbox = ({ label, optionKey, disabled = false, ...rest })
     const newValue = Boolean(target.type === 'checkbox' ? target.checked : target.value)
     if (newValue === true) {
       // Try to enable autorun
-      ipcRenderer.invoke('autorun.schedule').then(scheduled => {
+      window.electron.autorun.schedule().then(scheduled => {
         if (scheduled) {
           log.verbose('scheduling successful. updating checkbox UI')
           setChecked(newValue)
@@ -150,7 +143,7 @@ export const AutorunCheckbox = ({ label, optionKey, disabled = false, ...rest })
       })
     } else {
       // Try to disable autorun
-      ipcRenderer.invoke('autorun.disable').then(success => {
+      window.electron.autorun.disable().then(success => {
         if (success) {
           log.verbose('Unscheduling successful. updating checkbox UI')
           setChecked(newValue)
@@ -163,16 +156,14 @@ export const AutorunCheckbox = ({ label, optionKey, disabled = false, ...rest })
   }, [])
 
   return (
-    <StyledLabel alignItems='center' my={2} disabled={disabled || busy}>
-      <Checkbox
-        mr={1}
-        checked={checked}
-        onChange={handleChange}
-        disabled={disabled || busy}
-        {...rest}
-      />
-      {label}
-    </StyledLabel>
+    <Checkbox
+      my={2}
+      label={label}
+      checked={checked}
+      onChange={handleChange}
+      disabled={disabled || busy}
+      {...rest}
+    />
   )
 }
 

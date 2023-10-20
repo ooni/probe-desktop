@@ -1,9 +1,4 @@
-/**
- * @jest-environment jsdom
- */
-
 import React from 'react'
-import { cleanup } from '@testing-library/react'
 import { theme } from 'ooni-components'
 import { ThemeProvider } from 'styled-components'
 import renderer from 'react-test-renderer'
@@ -11,11 +6,6 @@ import renderer from 'react-test-renderer'
 import Stepper from '../Stepper'
 
 describe('Tests from Stepper component', () => {
-  
-  afterEach(() => {
-    cleanup()
-  })
-
   test('With active index 0', async () => {
     const component = renderer
       .create(

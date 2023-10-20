@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ipcRenderer } from 'electron'
-import * as Sentry from '@sentry/node'
+import * as Sentry from '@sentry/electron/renderer'
 import { useRouter } from 'next/router'
 import Debug from 'debug'
 
@@ -33,7 +32,7 @@ const Result = () => {
 
   const loadMeasurements = (resultID) => {
     debug('listing result_id ', resultID)
-    return ipcRenderer.invoke('list-results', resultID).then(measurementList => {
+    return window.electron.results.list(resultID).then(measurementList => {
       const {
         rows,
         summary

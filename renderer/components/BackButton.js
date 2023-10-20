@@ -9,6 +9,7 @@ const StyledBackLink = styled.a`
      without 'no-drag' the cursor:pointer isn't honored.
      https://www.electronjs.org/docs/api/frameless-window#draggable-region */
   -webkit-app-region: no-drag;
+  display: block;
   color: ${props => props.theme.colors.white};
   cursor: pointer;
   &:hover {

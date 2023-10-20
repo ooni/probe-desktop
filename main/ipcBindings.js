@@ -1,5 +1,5 @@
 const { app } = require('electron')
-const log = require('electron-log')
+const log = require('electron-log/main')
 const fs = require('fs-extra')
 const { is } = require('electron-util')
 

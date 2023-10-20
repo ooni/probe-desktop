@@ -1,5 +1,3 @@
-/* global require, module */
-
 const { resolve } = require('app-root-path')
 const { format } = require('url')
 

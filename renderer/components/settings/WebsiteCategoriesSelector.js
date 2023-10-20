@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { useState, useMemo, useCallback, useEffect } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import { FormattedMessage } from 'react-intl'
 import {
   Flex, Box,
@@ -10,21 +10,17 @@ import {
   Container,
   Heading
 } from 'ooni-components'
-import * as CategoryIcons from 'ooni-components/dist/icons'
-import { MdClose } from 'react-icons/md'
+import * as CategoryIcons from 'ooni-components/icons'
 import styled from 'styled-components'
-import electron, { ipcRenderer } from 'electron'
 import { RemoveScroll } from 'react-remove-scroll'
-
 import { useConfig } from './useConfig'
-import { StyledCloseButton } from '../ConfirmationModal'
 
 const FlexWithBottomBorder = styled(Flex)`
   border-bottom: 1px solid ${props => props.theme.colors.gray5};
 `
 
 const CategoryEntry = ({ code, enabled, handleChange }) => {
-  const CategoryIcon = CategoryIcons.hasOwnProperty(`CategoryCode${code}`) ? (
+  const CategoryIcon = Object.hasOwn(CategoryIcons, `CategoryCode${code}`) ? (
     CategoryIcons[`CategoryCode${code}`]
   ) : (
     CategoryIcons['Cross']
@@ -66,6 +62,10 @@ const StyledCategoryList = styled(Box)`
   position: relative;
 `
 
+const StyledModal = styled(Modal)`
+-webkit-app-region: no-drag;
+`
+
 // Pick category codes, names, descriptions from the intl context
 const CategoryList = ({ availableCategoriesList, enabledCategories, handleChange }) => {
   return (
@@ -95,7 +95,7 @@ export const WebsiteCategoriesSelector = () => {
   const [selectedCategoryCodes, setSelectedCategoryCodes] = useState(categoryListInConfig || [])
 
   const availableCategoriesList = useMemo(() => (
-    ipcRenderer.sendSync('config.categories')
+    window.electron.config.categories()
   ), [])
 
 
@@ -166,8 +166,7 @@ export const WebsiteCategoriesSelector = () => {
         </Button>
       </Box>
       <RemoveScroll enabled={showCategoriesModal}>
-        <Modal width='60%' show={showCategoriesModal}>
-          <StyledCloseButton onClick={() => onClose()}><MdClose size={24} /></StyledCloseButton>
+        <StyledModal width='60%' show={showCategoriesModal} onHideClick={onClose}>
           <Container>
             <Heading h={4} my={3} textAlign='center'>
               <FormattedMessage id='Settings.Websites.Categories.Label' />
@@ -189,7 +188,7 @@ export const WebsiteCategoriesSelector = () => {
               </Button>
             </Flex>
           </Container>
-        </Modal>
+        </StyledModal>
       </RemoveScroll>
     </Flex>
   )

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { Flex, Box, Text } from 'ooni-components'
-import { NettestRiseupVPN } from 'ooni-components/dist/icons'
+import { NettestRiseupVPN } from 'ooni-components/icons'
 
 import colorMap from '../../colorMap'
 import FormattedMarkdownMessage from '../../FormattedMarkdownMessage'
@@ -65,7 +65,7 @@ const RiseupVPN = ({measurement, isAnomaly, render, rawData}) => {
       }
     }
     return null
-  }, [rawData]) /* eslint-disable-line react-hooks/exhaustive-deps */
+  }, [rawData])
 
   const RiseupVPNDetails = () => {
     return(

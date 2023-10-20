@@ -26,7 +26,6 @@ import {
   Flex,
   Heading
 } from 'ooni-components'
-import NLink from 'next/link'
 
 import FormattedMarkdownMessage from '../FormattedMarkdownMessage'
 import ExternalLink from '../ExternalLink'
@@ -92,9 +91,7 @@ const SectionThingsToKnow = ({onNext, quizActive, quizComplete, toggleQuiz, onQu
         </Button>
       </Box>
       <Box mt={3} mx='auto'>
-        <NLink href='https://ooni.org/about/risks/' passHref>
-          <ExternalLink color='gray3'><FormattedMessage id="Settings.About.Content.LearnMore" /></ExternalLink>
-        </NLink>
+        <ExternalLink href='https://ooni.org/about/risks/' color='gray3'><FormattedMessage id="Settings.About.Content.LearnMore" /></ExternalLink>
       </Box>
     </Flex>
   </div>

@@ -1,6 +1,6 @@
-const { init } = require('@sentry/electron')
+const { init } = require('@sentry/electron/main')
 const isDev = require('electron-is-dev')
-const log = require('electron-log')
+const log = require('electron-log/main')
 
 const { name } = require('../../package.json')
 const { getConfig } = require('../utils/config')

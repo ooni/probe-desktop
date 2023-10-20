@@ -1,6 +1,6 @@
 /* global windows */
 const { Ooniprobe } = require('./ooniprobe')
-const log = require('electron-log')
+const log = require('electron-log/main')
 
 class Runner {
   constructor({testGroupName, inputFile = null}) {

@@ -8,16 +8,16 @@ import {
   Box
 } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
-import OONILogo from 'ooni-components/components/svgs/logos/Probe-HorizontalMonochrome.svg'
+import OONILogo from 'ooni-components/svgs/logos/Probe-HorizontalMonochrome.svg'
 import { MdWeb, MdHistory } from 'react-icons/md'
 import { FaCog } from 'react-icons/fa'
 
 import NoRTLFlip from './NoRTLFlip'
-import { version } from '../../package.json'
+import pckg from '../../package.json'
 
 const StyledNavItem = styled.div`
   position: relative;
-  color: ${props => props.isActive ? props.theme.colors.blue5 : props.theme.colors.gray4};
+  color: ${props => props.$isActive ? props.theme.colors.blue5 : props.theme.colors.gray4};
   margin-bottom: 16px;
   padding-left: 16px;
   padding-right: 16px;
@@ -36,7 +36,7 @@ const StyledNavItem = styled.div`
 `
 
 const ColoredStrip = styled.span`
-  display: ${props => props.active ? 'block' : 'none'};
+  display: ${props => props.$active ? 'block' : 'none'};
   height: 100%;
   width: 8px;
   background: ${props => props.theme.colors.blue5};
@@ -54,7 +54,7 @@ const NavItem = ({href, icon, label, pathName}) => {
   }
 
   return (
-    <StyledNavItem isActive={isActive}>
+    <StyledNavItem $isActive={isActive}>
       <Flex alignItems='center' onClick={handleLinkClick} data-testid={`sidebar-item-${href.substring(1)}`}>
         <Flex alignItems='center'>
           <Box>
@@ -65,7 +65,7 @@ const NavItem = ({href, icon, label, pathName}) => {
           </Box>
         </Flex>
       </Flex>
-      <ColoredStrip active={isActive} />
+      <ColoredStrip $active={isActive} />
     </StyledNavItem>
   )
 }
@@ -138,7 +138,7 @@ const Sidebar = ({ children }) => {
             <Box mb={2}>
               <NoRTLFlip>
                 <Text fontSize={12} textAlign='right' color='gray7' data-testid='sidebar-version-number'>
-                  {version}
+                  {pckg.version}
                 </Text>
               </NoRTLFlip>
             </Box>
@@ -155,7 +155,10 @@ const Sidebar = ({ children }) => {
 }
 
 Sidebar.propTypes = {
-  children: PropTypes.element
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element),
+    PropTypes.element
+  ])
 }
 export default Sidebar
 

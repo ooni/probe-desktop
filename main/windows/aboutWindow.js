@@ -1,5 +1,6 @@
 const electron = require('electron')
 const windowURL = require('./windowURL')
+const { join } = require('path')
 
 let window = null
 
@@ -12,9 +13,9 @@ const aboutWindow = () => {
     show: false,
     backgroundColor: '#fff',
     webPreferences: {
-      contextIsolation: false,
-      nodeIntegration: true,
       enableRemoteModule: true,
+      preload: join(__dirname, 'preload.js'),
+      sandbox: false,
     }
   })
 

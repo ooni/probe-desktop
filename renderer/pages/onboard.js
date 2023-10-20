@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
 
 import Router from 'next/router'
-import { ipcRenderer } from 'electron'
 import styled from 'styled-components'
 
 import Layout from '../components/Layout'
@@ -14,7 +13,7 @@ const SectionContainer = styled.div`
 const Onboard = () => {
 
   const onGo = useCallback(async (crashReportsOptIn) => {
-    await ipcRenderer.invoke('config.onboard', { crashReportsOptIn })
+    await window.electron.config.onboard(crashReportsOptIn)
     Router.push('/dashboard')
   }, [])
 

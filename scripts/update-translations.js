@@ -1,17 +1,17 @@
 /* eslint-disable no-console */
-/* global require */
 const glob = require('glob')
 const { basename } = require('path')
-const csvParse = require('csv-parse/lib/sync')
+const { parse } = require('csv-parse/sync')
 const { readFileSync, writeFileSync } = require('fs')
 
 const supportedLanguages = glob.sync('./lang/*.json').map((f) => basename(f, '.json'))
 
-const lang = csvParse(readFileSync('./data/lang-en.csv'), {from: 2})
+const lang = parse(readFileSync('./data/lang-en.csv'), {from: 2})
   .reduce((messages, row) => {
     const id = row[0]
     const text = row[1].replace(/\{\{(\w+)\}\}/g, '{$1}')
 
+    // eslint-disable-next-line no-prototype-builtins
     if (messages.hasOwnProperty(id)) {
       throw new Error(`Duplicate message id: ${id}`)
     }

@@ -9,7 +9,7 @@ import {
 } from 'ooni-components'
 import Link from 'next/link'
 import { MdWeb, MdDone, MdClear, MdWarning } from 'react-icons/md'
-import * as Sentry from '@sentry/electron'
+import * as Sentry from '@sentry/electron/renderer'
 
 import { testGroups } from '../nettests'
 import RightArrow from '../RightArrow'
@@ -51,6 +51,11 @@ SummaryContainer.defaultProps = {
   width: 2/3,
   mx: 'auto'
 }
+
+const StyledLink = styled(Link)`
+text-decoration: none;
+color: black;
+`
 
 const WebsitesSummary = ({anomalyCount, totalCount}) => (
   <SummaryContainer>
@@ -186,7 +191,7 @@ class ResultRow extends React.Component {
       Sentry.addBreadcrumb({
         category: 'results',
         message: 'name key is missing in result',
-        level: Sentry.Severity.Error
+        level: 'error',
       })
       Sentry.captureException(e)
       return null
@@ -228,7 +233,7 @@ class ResultRow extends React.Component {
       Sentry.addBreadcrumb({
         category: 'results',
         message: 'date key is missing in result',
-        level: Sentry.Severity.Error
+        level: 'error',
       })
       Sentry.captureException(e)
       return null
@@ -263,7 +268,7 @@ class ResultRow extends React.Component {
       Sentry.addBreadcrumb({
         category: 'results',
         message: 'test_keys is missing in result',
-        level: Sentry.Severity.Error
+        level: 'error',
       })
       Sentry.captureException(e)
       return null
@@ -275,7 +280,7 @@ class ResultRow extends React.Component {
       resultID,
     } = this.props
     return <BorderedRow data-testid={`test-result-${this.props.name}`}>
-      <Link href={{ pathname: '/result', query: {resultID} }} passHref>
+      <StyledLink href={{ pathname: '/result', query: {resultID} }}>
         <Flex alignItems='center'>
           <Box pr={2} width={4/16}>
             {this.renderIcon()}
@@ -293,7 +298,7 @@ class ResultRow extends React.Component {
             <RightArrowStyled />
           </Box>
         </Flex>
-      </Link>
+      </StyledLink>
     </BorderedRow>
   }
 }

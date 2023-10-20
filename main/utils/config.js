@@ -1,6 +1,6 @@
 const path = require('path')
 const fs = require('fs-extra')
-const log = require('electron-log')
+const log = require('electron-log/main')
 
 const { getHomeDir, getAutorunHomeDir } = require('./paths')
 

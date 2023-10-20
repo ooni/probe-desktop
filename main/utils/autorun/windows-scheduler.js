@@ -25,10 +25,10 @@ SOFTWARE.
 // Based on: https://github.com/AndreaFranchini/windows-scheduler/blob/master/task.js
 
 const { execSync } = require('child_process')
-const log = require('electron-log')
+const log = require('electron-log/main')
 const { app } = require('electron')
 const { join } = require('path')
-const { getBinaryDirectory, getAutorunHomeDir, getProbeBinaryPath, getTorBinaryPath } = require('../paths')
+const { getBinaryDirectory } = require('../paths')
 const { writeFile, unlink } = require('fs').promises
 const { taskXMLTemplate } = require('./taskTemplateWin')
 

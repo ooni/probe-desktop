@@ -3,31 +3,16 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Box, Input, Button } from 'ooni-components'
 import { MdRemoveCircle } from 'react-icons/md'
-import { FormattedMessage } from 'react-intl'
+import { useIntl } from 'react-intl'
 
 const URLBox = styled(Box)`
   position: relative;
-  & label {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 8px;
-    color: ${props => props.theme.colors.gray5};
-    background-color: transparent;
-  }
   & button {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 23px;
     right: 0;
     padding: 0;
   }
-`
-
-const URLInput = styled(Input)`
-  background-color: ${props => props.theme.colors.gray1};
-  padding-top: 32px;
-  padding-left: 8px;
 `
 
 const RemoveButton = styled(Button)`
@@ -42,8 +27,8 @@ const RemoveButton = styled(Button)`
   }
 `
 
-
 const URL = ({ idx, url, error, onUpdate, onRemove, onKeyEnter }) => {
+  const intl = useIntl()
   const [dirty, setDirty] = useState(false)
 
   const validateURL = useCallback((input) => {
@@ -103,7 +88,8 @@ const URL = ({ idx, url, error, onUpdate, onRemove, onKeyEnter }) => {
 
   return (
     <URLBox my={3}>
-      <URLInput
+      <Input
+        label={intl.formatMessage({id: 'Settings.Websites.CustomURL.URL'})}
         id={idx}
         name={idx}
         spellCheck={false}
@@ -115,9 +101,6 @@ const URL = ({ idx, url, error, onUpdate, onRemove, onKeyEnter }) => {
         error={error}
         data-testid={`input-add-url-${idx}`}
       />
-      <label htmlFor={idx}>
-        <FormattedMessage id='Settings.Websites.CustomURL.URL' />
-      </label>
       {onRemove &&
         <RemoveButton onClick={onDelete} data-testid={`urlRemove${idx}`}>
           <MdRemoveCircle size={32} />

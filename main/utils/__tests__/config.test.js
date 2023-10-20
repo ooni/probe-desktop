@@ -7,7 +7,7 @@ import {
   maybeMigrate,
 } from '../config'
 
-import log from 'electron-log'
+import log from 'electron-log/main'
 import fs from 'fs-extra'
 import Sentry from '../sentry'
 

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { Flex, Box, Text, theme } from 'ooni-components'
-import { Cross, Tick, NettestTor } from 'ooni-components/dist/icons'
+import { Cross, Tick, NettestTor } from 'ooni-components/icons'
 import { useTable, useSortBy } from 'react-table'
 import styled from 'styled-components'
 import { useClipboard } from 'use-clipboard-copy'
@@ -167,14 +167,10 @@ const Tor = ({measurement, isAnomaly, render}) => {
   const testKeys = JSON.parse(measurement.test_keys)
 
   const {
-    or_port_accessible,
-    or_port_total,
     or_port_dirauth_accessible,
     or_port_dirauth_total,
     obfs4_accessible,
     obfs4_total,
-    dir_port_accessible,
-    dir_port_total,
   } = testKeys
 
   const heroTitle = isAnomaly ? (

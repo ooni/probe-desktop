@@ -7,6 +7,7 @@ module.exports = {
   testSequencer: '<rootDir>/test/lib/sequencer.js',
   moduleNameMapper: {
     'electron': '<rootDir>/test/mocks/electronMock.js',
+    '^csv-parse/sync': '<rootDir>/node_modules/csv-parse/dist/cjs/sync.cjs'
   },
-  testEnvironment: 'jest-environment-jsdom'
+  testEnvironment: 'jsdom',
 }
