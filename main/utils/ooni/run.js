@@ -18,7 +18,6 @@ class Runner {
     } catch (e) {
       log.debug(`Failed to find a running ooniprobe process to kill. code: ${e.code}`)
     }
-
   }
 
   run() {

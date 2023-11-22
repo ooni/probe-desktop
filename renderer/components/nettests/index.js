@@ -23,7 +23,6 @@ import ndt from './performance/NDT'
 import dash from './performance/Dash'
 import psiphon from './circumvention/Psiphon'
 import tor from './circumvention/Tor'
-import riseupvpn from './circumvention/RiseupVPN'
 import signal from './im/Signal'
 import { default as animation } from '../../public/static/animations/loadingTests.json'
 
@@ -71,7 +70,7 @@ export const tests = {
   dash,
   psiphon,
   tor,
-  riseupvpn,
+  riseupvpn: minimalTest('riseupvpn'),
   signal,
   stunreachability: minimalTest('stunreachability'),
   dnscheck: minimalTest('dnscheck'),
@@ -105,6 +104,5 @@ export const cliTestKeysToGroups = {
   'nettests.NDT': 'performance',
   'nettests.Psiphon': 'circumvention',
   'nettests.Tor': 'circumvention',
-  'nettests.RiseupVPN': 'circumvention',
   'nettests.Signal': 'im',
 }
