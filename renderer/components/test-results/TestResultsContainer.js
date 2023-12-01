@@ -170,7 +170,7 @@ const TestResultsContainer = ({results}) => {
 
   // We try to add rows which were reported as errors by probe-cli into
   // the results. Missing fields are handled in `ResultRow`
-  const fullRows = rows.concat(errors)
+  const fullRows = rows?.concat(errors)
 
   const byMonth = groupRowsByMonth(fullRows)
 
