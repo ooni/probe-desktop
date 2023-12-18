@@ -142,3 +142,12 @@ yarn run publish:win
 after the `yarn run publish` command has run successfully. If you do so users
 of the OONI Probe Desktop app will get an error when they start the app because
 the auto-update system will try to fetch the metadata associated with that tag.
+
+
+This project is tested with BrowserStack.
+
+This project is tested with BrowserStack
+
+This project is sponsored by Browserstack.
+
+This project is sponsored by Browserstack
