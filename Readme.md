@@ -34,7 +34,7 @@ Moreover, since it's written in electron, we plan on also supporting Linux deskt
 
 For some background on the decision to use electron and the libraries we chose
 to use, see: [Writing a modern cross-platform desktop
-app](https://ooni.torproject.org/post/writing-a-modern-cross-platform-desktop-app/).
+app](https://ooni.org/post/writing-a-modern-cross-platform-desktop-app/).
 
 ## Setup
 
