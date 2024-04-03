@@ -131,6 +131,7 @@
       "entitlementsInherit": "./build/entitlements.mac.inherit.plist",
       "category": "public.app-category.tools",
       "icon": "build/icons/app.icns",
+      "requirements": "electron-builder-requirements.txt",
       "extraResources": [
         {
           "from": "./build/probe-cli/darwin_amd64/ooniprobe",
