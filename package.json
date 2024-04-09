@@ -62,6 +62,10 @@
       ]
     },
     "win": {
+      "publisherName": [
+        "ASSOCIAZIONE HERMES",
+        "Open Observatory of Network Interference (OONI)"
+      ],
       "target": [
         "nsis"
       ],
