@@ -221,19 +221,11 @@ const Tor = ({measurement, isAnomaly, render}) => {
       accessor: 'type'
     },
     {
-      Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Connect' />,
-      accessor: 'connect',
+      Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Accessible' />,
+      accessor: 'failure',
       collapse: true,
       Cell: ConnectionStatusCell,
       sortType: statusColumnSort
-    },
-    {
-      Header: <FormattedMessage id='TestResults.Details.Circumvention.Tor.Table.Header.Handshake' />,
-      accessor: 'handshake',
-      collapse: true,
-      Cell: ConnectionStatusCell,
-      sortType: statusColumnSort
-
     },
     {
       accessor: 'connectFailure',
@@ -247,25 +239,11 @@ const Tor = ({measurement, isAnomaly, render}) => {
     const targets = rawData ? rawData.test_keys.targets : {}
     return (
       Object.keys(targets).map(target => {
-        // Connection Status values
-        // false: Didn't run (N/A)
-        // null: No failure a.k.a success
-        // string: Failure with error string
-        let connectStatus = false, handshakeStatus = false
-        if (targets[target].summary.connect) {
-          connectStatus = targets[target].summary.connect.failure
-        }
-
-        if (targets[target].summary.handshake) {
-          handshakeStatus = targets[target].summary.handshake.failure
-        }
-
         return {
           name: targets[target].target_name || target,
           address: targets[target].target_address,
           type: targets[target].target_protocol,
-          connect: connectStatus,
-          handshake: handshakeStatus
+          failure: targets[target].failure,
         }
       })
     )
