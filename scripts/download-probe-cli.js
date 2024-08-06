@@ -26,19 +26,7 @@ const download = () => {
     }
     osarch = osarch.replace('-', '_')
     ensureDirSync(`${dstDir}/${osarch}`)
-    if (osarch === 'windows_amd64') {
-      execSync(
-        `cp ${dstDir}/${versionedFilename} ${dstDir}/${osarch}/ooniprobe${extension}-unsigned`
-      )
-      execSync(
-        `osslsigncode sign -pkcs12 ${process.env.WIN_CSC_LINK} -pass ${process.env.WIN_CSC_KEY_PASSWORD} -n "OONI Probe CLI" -i https://ooni.org/ -in ${dstDir}/${osarch}/ooniprobe${extension}-unsigned -out ${dstDir}/${osarch}/ooniprobe${extension}`
-      )
-      execSync(`rm -rf ${dstDir}/${osarch}/ooniprobe${extension}-unsigned`)
-    } else {
-      execSync(
-        `cp ${dstDir}/${versionedFilename} ${dstDir}/${osarch}/ooniprobe${extension}`
-      )
-    }
+    execSync(`cp ${dstDir}/${versionedFilename} ${dstDir}/${osarch}/ooniprobe${extension}`)
     execSync(`chmod +x ${dstDir}/${osarch}/ooniprobe${extension}`)
   }
 }
