@@ -190,7 +190,7 @@
     "jest-css-modules-transform": "^4.2.1",
     "jest-styled-components": "^7.0.4",
     "moment-range": "^4.0.2",
-    "next": "^10.0.3",
+    "next": "^14.2.21",
     "ooni-components": "0.4.8",
     "os-locale": "^5.0.0",
     "prop-types": "15.7.2",
