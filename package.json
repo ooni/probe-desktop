@@ -238,7 +238,9 @@
   "resolutions": {
     "shell-quote": "1.7.3",
     "immer": "9.0.6",
-    "minimist": "1.2.6"
+    "minimist": "1.2.6",
+    "loader-utils": "1.4.2",
+    "fsevents": "1.2.11"
   },
   "optionalDependencies": {
     "fsevents": "2.3.2"
