@@ -34,8 +34,7 @@
     "test:unit": "jest -c test/unit/unit.config.js",
     "test:e2e": "jest -c test/lib/integration.config.js --testRegex 'e2e.js' --runInBand",
     "test:unit:debug": "node --inspect-brk node_modules/.bin/jest --runInBand -c test/lib/unit.config.js",
-    "postinstall": "electron-builder install-app-deps",
-    "storybook": "start-storybook -p 6006"
+    "postinstall": "electron-builder install-app-deps"
   },
   "build": {
     "appId": "org.ooni.probe-desktop",
@@ -164,10 +163,6 @@
     "@sentry/cli": "^1.61.0",
     "@sentry/integrations": "^6.0.4",
     "@sentry/node": "^5.12.1",
-    "@storybook/addon-actions": "5.3.18",
-    "@storybook/addon-links": "5.3.18",
-    "@storybook/addon-storysource": "5.3.18",
-    "@storybook/react": "5.3.18",
     "@testing-library/dom": "^7.31.2",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^11.2.7",
