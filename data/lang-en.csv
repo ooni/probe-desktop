@@ -369,6 +369,10 @@ Modal.InterruptTest.Paragraph,This will interrupt the current test from this mom
 Modal.Autorun.Modal.Title,Would you like to run tests automatically?,,,
 Modal.Autorun.Modal.Text,"By enabling automatic testing, OONI Probe tests will run automatically on a regular basis (and you don’t need to remember to manually run tests).",,,
 Modal.Autorun.Modal.Button.RemindLater,Remind me later,,FALSE,TRUE
+Modal.BetaUpdate.Title,New beta version available,,,
+Modal.BetaUpdate.Text,"A new beta version of OONI Probe Desktop is available. Download it to try out the latest features and improvements.",,,
+Modal.BetaUpdate.Button.RemindLater,Remind me later,,,
+Modal.BetaUpdate.Button.Download,Download,,,
 Toast.CopiedToClipboard,Copied to clipboard,,,
 Snackbar.ResultsNotUploaded.Text,Not uploaded,,,
 Snackbar.ResultsNotUploaded.Upload,Upload,,,

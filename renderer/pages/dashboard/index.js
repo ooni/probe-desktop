@@ -1,9 +1,10 @@
 /* global */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Flex, Container } from 'ooni-components'
 import { useRouter } from 'next/router'
 
 import Layout from '../../components/Layout'
+import { PROMPT_DELAY, shouldShowPrompt } from '../../components/betaUpdateConfig'
 import Sidebar from '../../components/Sidebar'
 import RunTestCard from '../../components/dashboard/RunTestCard'
 import useRunTest from '../../components/dashboard/useRunTest'
@@ -13,6 +14,14 @@ import { testList } from '../../components/nettests'
 const Dashboard = () => {
   const router = useRouter()
   const onRunTest = useRunTest()
+
+  useEffect(() => {
+    if (!shouldShowPrompt()) return
+    const timer = setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('show-beta-update'))
+    }, PROMPT_DELAY)
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <Layout>
