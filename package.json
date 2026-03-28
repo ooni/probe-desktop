@@ -227,7 +227,7 @@
     "electron-next": "3.1.5",
     "electron-store": "^7.0.2",
     "electron-unhandled": "^3.0.0",
-    "electron-updater": "^4.3.1",
+    "electron-updater": "^6.3.0",
     "electron-util": "^0.12.1",
     "fix-path": "^2.1.0",
     "fs-extra": "^8.1.0",
