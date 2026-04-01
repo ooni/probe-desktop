@@ -100,6 +100,7 @@ const SidebarContainer = styled(Box)`
 `
 
 const MainContainer = styled(Box)`
+  background-color: white;
 `
 
 const StyledOONILogo = styled(OONILogo)`

@@ -14,7 +14,7 @@ const DashBoardHeaderContainer = styled.div`
 `
 
 const DashboardHeaderBG = styled.div`
-  background-color: ${props => props.theme.colors.blue5};
+  background-color: ${(props) => props.theme.colors.blue5};
   height: 80px;
   position: relative;
   overflow: hidden;
@@ -39,18 +39,18 @@ const RunAllContainer = styled(Box)`
 `
 
 const RunAllButton = styled(Button).attrs({
-  width: 2/5,
+  width: 2 / 5,
 })`
-  box-shadow: 0px 0px 6px 0px ${props => props.theme.colors.gray7};
-  border: 1px solid ${props => props.theme.colors.gray3};
+  box-shadow: 0px 0px 6px 0px ${(props) => props.theme.colors.gray7};
+  border: 1px solid ${(props) => props.theme.colors.gray3};
   border-radius: 16px;
 
   &:hover {
-    box-shadow: 0px 0px 6px 1px ${props => props.theme.colors.gray7};
+    box-shadow: 0px 0px 6px 1px ${(props) => props.theme.colors.gray7};
   }
 
   &:active {
-    box-shadow: 0px 0px 6px 2px ${props => props.theme.colors.gray7};
+    box-shadow: 0px 0px 6px 2px ${(props) => props.theme.colors.gray7};
   }
 `
 
@@ -60,18 +60,23 @@ export const DashboardHeader = ({ onRunAll }) => (
       <Ellipse />
     </DashboardHeaderBG>
     <RunAllContainer>
-      <RunAllButton inverted onClick={onRunAll} fontSize={2} data-testid='button-dashboard-run'>
-        <Text as='span' fontWeight='bold' fontSize={3}>
-          <FormattedMessage id='Dashboard.Overview.Run' />
+      <RunAllButton
+        inverted
+        onClick={onRunAll}
+        fontSize={2}
+        data-testid="button-dashboard-run"
+      >
+        <Text as="span" fontWeight="bold" fontSize={3}>
+          <FormattedMessage id="Dashboard.Overview.Run" />
         </Text>
       </RunAllButton>
-      <LastTest testGroupName='all' pt={3} color='black' bg='WHITE'/>
+      <LastTest testGroupName="all" pt={3} color="black" bg="WHITE" />
     </RunAllContainer>
   </DashBoardHeaderContainer>
 )
 
 DashboardHeader.propTypes = {
-  onRunAll: PropTypes.func
+  onRunAll: PropTypes.func,
 }
 
 export default DashboardHeader
