@@ -7,6 +7,8 @@ export const REMIND_LATER_INTERVAL = 24 * 60 * 60 * 1000
 
 const STORAGE_KEY = 'betaUpdate.remindLaterTimestamp'
 
+export const DOWNLOAD_URL = 'https://github.com/ooni/probe-multiplatform/releases/latest'
+
 export const setRemindLater = () => {
   localStorage.setItem(STORAGE_KEY, Date.now().toString())
 }

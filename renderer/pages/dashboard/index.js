@@ -1,5 +1,5 @@
 /* global */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Flex, Container, Box, Text } from 'ooni-components'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
@@ -8,6 +8,7 @@ import Layout from '../../components/Layout'
 import {
   PROMPT_DELAY,
   shouldShowPrompt,
+  DOWNLOAD_URL
 } from '../../components/betaUpdateConfig'
 import Sidebar from '../../components/Sidebar'
 import RunTestCard from '../../components/dashboard/RunTestCard'
@@ -27,16 +28,12 @@ const DeprecationNotice = styled(Box)`
   );
   border-radius: 8px;
   color: white;
-  // box-shadow: 0px 0px 6px 0px ${(props) => props.theme.colors.gray7};
 `
 
 const DownloadButton = styled(Button)`
   color: ${(props) => props.theme.colors.orange6};
   border-radius: 8px;
 `
-
-const desktopBetaUrl =
-  'https://github.com/ooni/probe-multiplatform/releases/latest'
 
 const Dashboard = () => {
   const router = useRouter()
@@ -75,7 +72,7 @@ const Dashboard = () => {
                         mt={3}
                         fontWeight="bolder"
                         inverted
-                        onClick={(e) => openInBrowser(desktopBetaUrl, e)}
+                        onClick={(e) => openInBrowser(DOWNLOAD_URL, e)}
                       >
                         Download Beta
                       </DownloadButton>

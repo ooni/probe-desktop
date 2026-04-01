@@ -7,19 +7,19 @@ import { shell } from 'electron'
 
 import { StyledCloseButton } from './ConfirmationModal'
 import FormattedMarkdownMessage from './FormattedMarkdownMessage'
-import { setRemindLater } from './betaUpdateConfig'
-
-const DOWNLOAD_URL = 'https://ooni.org/install'
+import { setRemindLater, DOWNLOAD_URL } from './betaUpdateConfig'
 
 const BetaUpdateConfirmation = ({ show, onClose }) => {
   const onDownload = useCallback(() => {
     shell.openExternal(DOWNLOAD_URL)
     onClose()
   }, [onClose])
+
   const onRemindLater = useCallback(() => {
     setRemindLater()
     onClose()
   }, [onClose])
+
   return (
     <Modal width='60%' show={show}>
       <StyledCloseButton onClick={onClose}><MdClose size={24} /></StyledCloseButton>
