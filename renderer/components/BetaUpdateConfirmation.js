@@ -12,6 +12,7 @@ import { setRemindLater, DOWNLOAD_URL } from './betaUpdateConfig'
 const BetaUpdateConfirmation = ({ show, onClose }) => {
   const onDownload = useCallback(() => {
     shell.openExternal(DOWNLOAD_URL)
+    setRemindLater()
     onClose()
   }, [onClose])
 
@@ -22,7 +23,7 @@ const BetaUpdateConfirmation = ({ show, onClose }) => {
 
   return (
     <Modal width='60%' show={show}>
-      <StyledCloseButton onClick={onClose}><MdClose size={24} /></StyledCloseButton>
+      <StyledCloseButton onClick={onRemindLater}><MdClose size={24} /></StyledCloseButton>
       <Container>
         <Heading h={4} my={3} textAlign='center'>
           <FormattedMessage id='Modal.BetaUpdate.Title' />
@@ -31,9 +32,6 @@ const BetaUpdateConfirmation = ({ show, onClose }) => {
           <FormattedMarkdownMessage id='Modal.BetaUpdate.Text' />
         </Flex>
         <Flex justifyContent='flex-end' my={3}>
-          <Button ml={2} inverted onClick={onClose}>
-            <strong><FormattedMessage id='Modal.NoThanks' /></strong>
-          </Button>
           <Button ml={2} inverted onClick={onRemindLater}>
             <strong><FormattedMessage id='Modal.BetaUpdate.Button.RemindLater' /></strong>
           </Button>
