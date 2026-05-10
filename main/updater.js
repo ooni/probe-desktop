@@ -12,10 +12,19 @@ const { openAboutWindow } = require('./windows')
 const log = require('electron-log')
 const { autoUpdater } = require('electron-updater')
 const semver = require('semver')
+const { version } = require('../package.json')
 
 autoUpdater.logger = log
 autoUpdater.logger.transports.file.level = 'info'
 autoUpdater.autoDownload = false
+autoUpdater.currentVersion = version
+
+// Configure updater to fetch from custom repository
+autoUpdater.setFeedURL({
+  provider: 'github',
+  owner: 'aanorbel',
+  repo: 'oomplt-test'
+})
 
 function sendStatusToWindow(text, options = {}) {
   log.info(text)
@@ -82,7 +91,7 @@ function checkForUpdatesAndInstall() {
   autoUpdater.checkForUpdates().then((info) => {
     // If the check returns something, make sure the new version is
     // greater than the current version, and then initiate download.
-    if (semver.gt(info.updateInfo.version, autoUpdater.currentVersion.version, { includePrerelease: true })) {
+    if (semver.gt(info.updateInfo.version, autoUpdater.currentVersion, { includePrerelease: true })) {
       downloadUpdate(info.cancellationToken)
     } else {
       log.info('No updates available')
